@@ -1,6 +1,6 @@
 import java.util.*;
 import java.io.*;
-import org.joda.*;
+import org.joda.time.DateTime;
 
 public class Logic {
 
@@ -135,10 +135,48 @@ public class Logic {
 	}
 	private static void analyzeAddInput(String[] parameterList)
 	{
+		String priority,keywords;
+		int reminderTime;
+		keywords=getKeyWords(parameterList);
+		priority=getPriority(parameterList);
+		reminderTime=getReminderTime(parameterList);
 		
 	}
 	private static void updateEvent(int index)
 	{
 		
+	}
+	private static String getKeyWords(String[] parameterList)
+	{
+		return "";
+	}
+	private static String getPriority(String[] parameterList)
+	{
+		return "";
+	}
+	private static int getReminderTime(String[] parameterList)
+	{
+		return -1;
+	}
+	private static Vector<String> getHashTags(String[] parameterList)
+	{
+		Vector<String> listOfHashTags=new Vector<String>();
+		for(int i=0;i<parameterList.length;i++)
+		{
+			if(parameterList[i].startsWith("#"))
+			{
+				String[] tempArray=parameterList[i].split("#");
+				for(int j=0;j<tempArray.length;j++)
+				{
+					listOfHashTags.add(tempArray[i]);
+				}
+			}
+		}
+		return listOfHashTags;
+	}
+	private static DateTime getStartTime(String[] parameterList)
+	{
+		DateTime startTime=new DateTime();
+		return startTime;
 	}
 }
