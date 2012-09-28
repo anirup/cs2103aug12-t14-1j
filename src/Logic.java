@@ -1,13 +1,20 @@
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.io.*;
 import org.joda.time.DateTime;
+import org.joda.time.Duration;
 
 public class Logic {
 
+	private static final String Priority_Normal = "NORMAL";
+	private static final String Priority_Low = "LOW";
+	private static final String Priority_High = "HIGH";
 	private static boolean searchState;
 	private static ListOfEvent list;
 	private static ListOfEvent searchResults;
-	private static UserLog lastTasks;
+	private static UserLog prevTasks;
+
 	public Logic() {
 		searchState = false;
 		list = new ListOfEvent();
@@ -15,168 +22,166 @@ public class Logic {
 	}
 
 	public static void analyze(String userInput) {
-		String[] parameterList=userInput.split("..");
-		String command=getCommand(parameterList);
-		if(command.equalsIgnoreCase("add")){
+		String[] parameterList = userInput.split("..");
+		String command = getCommand(parameterList);
+		if (command.equalsIgnoreCase("add")) {
 			analyzeAddInput(parameterList);
 			searchToFalse();
-		}
-		else if(command.equalsIgnoreCase("delete"))
-		{
-			if(searchState==true)
-			{
+		} else if (command.equalsIgnoreCase("delete")) {
+			if (searchState == true) {
 				int index = getInteger(parameterList);
 				list.remove(index);
 				searchToFalse();
-			}
-			else if (searchState==false)
-			{
+			} else if (searchState == false) {
 				analyzeAndSearch(parameterList);
 				searchToTrue();
 			}
-		}
-		else if(command.equalsIgnoreCase("update"))
-		{
-			if(searchState==true)
-			{
-				int index= getInteger(parameterList);
+		} else if (command.equalsIgnoreCase("update")) {
+			if (searchState == true) {
+				int index = getInteger(parameterList);
 				updateEvent(index);
 				searchToFalse();
-			}
-			else if (searchState==false)
-			{
+			} else if (searchState == false) {
 				analyzeAndSearch(parameterList);
 				searchToTrue();
 			}
-		}
-		else if(command.equalsIgnoreCase("search"))
-		{
+		} else if (command.equalsIgnoreCase("search")) {
 			analyzeAndSearch(parameterList);
-		}
-		else if(command.equalsIgnoreCase("done"))
-		{
-			if(searchState==true)
-			{
-				int index= getInteger(parameterList);
+		} else if (command.equalsIgnoreCase("done")) {
+			if (searchState == true) {
+				int index = getInteger(parameterList);
 				markDone(index);
 				searchToFalse();
-			}
-			else if (searchState==false)
-			{
+			} else if (searchState == false) {
 				analyzeAndSearch(parameterList);
 				searchToTrue();
 			}
-		}
-		else if(command.equalsIgnoreCase("undone"))
-		{
-			if(searchState==true)
-			{
-				int index= getInteger(parameterList);
+		} else if (command.equalsIgnoreCase("undone")) {
+			if (searchState == true) {
+				int index = getInteger(parameterList);
 				markNotDone(index);
 				searchToFalse();
-			}
-			else if (searchState==false)
-			{
+			} else if (searchState == false) {
 				analyzeAndSearch(parameterList);
 				searchToTrue();
 			}
-		}
-		else if(command.equalsIgnoreCase("undo"))
-		{
+		} else if (command.equalsIgnoreCase("undo")) {
 			undoLast();
-		}
-		else if(command.equalsIgnoreCase("deletep"))
-		{
+		} else if (command.equalsIgnoreCase("deletep")) {
 			deleteHashDeleted();
 		}
 
 	}
-	private static void searchToTrue()
-	{
-		searchState=true;
+
+	private static void searchToTrue() {
+		searchState = true;
 	}
-	private static void searchToFalse()
-	{
-		searchState=false;
+
+	private static void searchToFalse() {
+		searchState = false;
 	}
-	private static String getCommand(String[] parameterList)
-	{
+
+	private static String getCommand(String[] parameterList) {
 		return parameterList[0];
 	}
-	private static int getInteger(String[] parameterList)
-	{
-		try
-		{
+
+	private static int getInteger(String[] parameterList) {
+		try {
 			return Integer.parseInt(parameterList[1]);
-		}
-		catch(NumberFormatException e)
-		{
+		} catch (NumberFormatException e) {
 			System.out.println("Invalid argument");
 			return -1;
 		}
 	}
-	private static void undoLast()
-	{
-		
+
+	private static void undoLast() {
+		prevTasks.rollBack();
 	}
-	private static void deleteHashDeleted(){
-		
+
+	private static void deleteHashDeleted() {
+
 	}
-	private static void analyzeAndSearch(String[] parameterList)
-	{
-		
+
+	private static void analyzeAndSearch(String[] parameterList) {
+
 	}
-	private static void markNotDone(int index)
-	{
-		
+
+	private static void markNotDone(int index) {
+
 	}
-	private static void markDone(int index){
-		
+
+	private static void markDone(int index) {
+
 	}
-	private static void analyzeAddInput(String[] parameterList)
-	{
-		String priority,keywords;
-		int reminderTime;
-		keywords=getKeyWords(parameterList);
-		priority=getPriority(parameterList);
-		reminderTime=getReminderTime(parameterList);
-		
+
+	private static void analyzeAddInput(String[] parameterList) {
+		String priority, keywords;
+		Duration reminderTime;
+		keywords = getKeyWords(parameterList);
+		priority = getPriority(parameterList);
+		reminderTime = getReminderTime(parameterList);
+		Vector<String> resultHashTags=getHashTags(parameterList);
+		resultHashTags.add(priority);
+
 	}
-	private static void updateEvent(int index)
-	{
-		
+
+	private static void updateEvent(int index) {
+
 	}
-	private static String getKeyWords(String[] parameterList)
-	{
+
+	private static String getKeyWords(String[] parameterList) {
 		return "";
 	}
-	private static String getPriority(String[] parameterList)
-	{
-		return "";
-	}
-	private static int getReminderTime(String[] parameterList)
-	{
-		return -1;
-	}
-	private static Vector<String> getHashTags(String[] parameterList)
-	{
-		Vector<String> listOfHashTags=new Vector<String>();
+
+	private static String getPriority(String[] parameterList) {
 		for(int i=0;i<parameterList.length;i++)
 		{
-			if(parameterList[i].startsWith("#"))
+			if(parameterList[i].trim().equalsIgnoreCase(Priority_High) || parameterList[i].trim().equalsIgnoreCase("h"))
 			{
-				String[] tempArray=parameterList[i].split("#");
-				for(int j=0;j<tempArray.length;j++)
+				return Priority_High;
+			}
+			else if(parameterList[i].trim().equalsIgnoreCase(Priority_Low) || parameterList[i].trim().equalsIgnoreCase("l"))
+			{
+				return Priority_Low;
+			}
+		}
+		return Priority_Normal;
+	}
+
+	private static Duration getReminderTime(String[] parameterList) {
+		long miliseconds=0;
+		Vector<Long> timeParameter= new Vector<Long>();
+		for(int i=0;i<parameterList.length;i++){
+			if(parameterList[i].trim().startsWith("r-")|| parameterList[i].trim().startsWith("R-"))
+			{
+				Pattern p = Pattern.compile("\\d+");
+				Matcher matches = p.matcher(parameterList[i].trim());
+				while(matches.find())
 				{
-					listOfHashTags.add(tempArray[i]);
+					timeParameter.add(Long.parseLong(matches.group()));
 				}
 			}
 		}
+		return (new Duration(miliseconds));
+	}
+
+	private static Vector<String> getHashTags(String[] parameterList) {
+		Vector<String> listOfHashTags = new Vector<String>();
+		for (int i = 0; i < parameterList.length; i++) {
+			int startHashCode = parameterList[i].indexOf('#');
+			if (startHashCode > -1) {
+				String[] hashCodes = parameterList[i].substring(startHashCode).split("#");
+				for (int j = 0; j < hashCodes.length; j++) {
+					listOfHashTags.add(hashCodes[i].trim());
+				}
+			}
+
+		}
 		return listOfHashTags;
 	}
-	private static DateTime getStartTime(String[] parameterList)
-	{
-		DateTime startTime=new DateTime();
+
+	private static DateTime getStartTime(String[] parameterList) {
+		DateTime startTime = new DateTime();
 		return startTime;
 	}
 }
