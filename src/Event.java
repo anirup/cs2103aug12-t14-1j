@@ -1,5 +1,3 @@
-import java.io.File;
-import java.io.IOException;
 
 public class Event implements Comparable<Event>{
 	protected String _eventID;
@@ -8,12 +6,12 @@ public class Event implements Comparable<Event>{
 	protected Clock _eventReminder;
 	protected boolean _isDone;
 	
-	protected static final String SPLITTER = "";
-	protected static final String NEW_LINE = "\n";
-	protected static final String SPACE = " ";
+	public static final String SPLITTER = "||";
+	protected final String NEW_LINE = "\n";
+	public static final String SPACE = " ";
 	
 	private static StringBuilder eventContent = new StringBuilder();
-	
+
 	public Event() {
 		_eventID = null;
 		_eventName = null;
@@ -30,6 +28,18 @@ public class Event implements Comparable<Event>{
 		_isDone = isDone;
 		
 		return;
+	}
+	
+	public boolean searchInName(String keyWord) {
+		return false;
+	}
+	
+	public boolean searchInHashTag(String keyWord) {
+		return false;
+	}
+	
+	public boolean searchInTime(Clock keyWord) {
+		return false;
 	}
 	
 	public String getEventID() {
@@ -56,11 +66,9 @@ public class Event implements Comparable<Event>{
 	public boolean isDone() {
 		return _isDone;
 	}
-
-	public String composeEventContent() {		
-		appendEventContent();
-		
-		return eventContent.toString();
+	
+	public Clock getEventTime() {
+		return null;
 	}
 	
 	public boolean isSameEvent(Event anotherEvent) {
@@ -83,39 +91,43 @@ public class Event implements Comparable<Event>{
 	}
 	
 	private void appendEventID() {
-		eventContent.append(_eventID);
+		String content = addSplitter(_eventID, SPLITTER);
+		eventContent.append(content);
 	}
 	
 	private void appendEventReminder() {
-		String contentToAppend = composeContent(_eventReminder.toString(), NEW_LINE);
-		eventContent.append(contentToAppend);
+		String content = addSplitter(_eventReminder.toString(), SPLITTER);
+		eventContent.append(content);
 	}
 
 	private void appendEventHashTag() {
 		for (int position = 0; position < _eventHashTag.length; position++) {
 			String hashTagToAppend = _eventHashTag[position];
-			String contentToAppend = composeContent(hashTagToAppend, SPACE);
+			String contentToAppend = addSplitter(hashTagToAppend, SPACE);
 			eventContent.append(contentToAppend);
 		}
-		eventContent.append(NEW_LINE);
+		eventContent.append(SPLITTER);
 		return;
 	}
 
 	private void appendEventName() {
-		String contentToAppend = composeContent(_eventName, NEW_LINE);
-		eventContent.append(contentToAppend);
+		String content = addSplitter(_eventName, SPLITTER);
+		eventContent.append(content);
 	}
 	
 	private void appendIsDone() {
-		String contentToAppend = Boolean.toString(_isDone);
-		eventContent.append(contentToAppend);
+		String eventStatus = Boolean.toString(_isDone);
+		String content = addSplitter(eventStatus, SPLITTER);
+		eventContent.append(content);
 	}
 
-	public String composeContent(String content, String splitter) {
+	protected static String addSplitter(String content, String splitter) {
 		return content + splitter;
 	}
 
-	public void writeEventToFile(File database) throws IOException {
-		return;
+	public String toString() {
+		appendEventContent();
+		
+		return eventContent.toString();
 	}
 }

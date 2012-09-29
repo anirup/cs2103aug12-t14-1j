@@ -1,4 +1,5 @@
 
+
 public class UserLog {
 	enum LOG_TYPE {
 		ADD, UPDATE, DELETE;
@@ -14,7 +15,7 @@ public class UserLog {
 		return _logType;
 	}
 	
-	public void rollBack() {
-		return;
+	public String rollBack() {
+		return null;
 	}
 }

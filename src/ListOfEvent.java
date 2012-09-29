@@ -1,13 +1,14 @@
-import java.io.IOException;
+
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 
 
 public class ListOfEvent {
-	private static List<Event> listOfEvent = new LinkedList<Event>();
+	private static LinkedList<Event> listOfEvent = new LinkedList<Event>();
 	
-	public static List<Event> getCurrentListOfEvent() {
+	public static LinkedList<Event> getCurrentListOfEvent() {
 		return listOfEvent;
 	}
 	
@@ -89,16 +90,66 @@ public class ListOfEvent {
 		return -1;
 	}
 	
-	public static void sortByTime() {
-		Collections.sort(listOfEvent);
+	public static LinkedList<Event> searchInName(String keyWord) {
+		LinkedList<Event> result = new LinkedList<Event>();
+		
+		Iterator<Event> iterator = listOfEvent.iterator();
+		
+		while(iterator.hasNext()) {
+			Event currentEvent = iterator.next();
+			if (currentEvent.searchInName(keyWord)) {
+				result.add(currentEvent);
+			}
+		}
+		
+		return result;
 	}
 	
-	// IMPT: at the end of all use case, u might want to sync the current list of events to the text file 
-	public static void syncToDatabase() throws IOException {
-		for (int position = 0; position < listOfEvent.size(); position++) {
-			Event eventToUpdate = listOfEvent.get(position);
-			DatabaseManager.updateDatabase(eventToUpdate);
+	public static LinkedList<Event> searchInHashTag(String keyWord) {
+		LinkedList<Event> result = new LinkedList<Event>();
+		
+		Iterator<Event> iterator = listOfEvent.iterator();
+		
+		while(iterator.hasNext()) {
+			Event currentEvent = iterator.next();
+			if (currentEvent.searchInHashTag(keyWord)) {
+				result.add(currentEvent);
+			}
 		}
-		return;
+		
+		return result;
+	}
+	
+	public static LinkedList<Event> searchInTime(Clock keyWord) {
+		LinkedList<Event> result = new LinkedList<Event>();
+		
+		Iterator<Event> iterator = listOfEvent.iterator();
+		
+		while(iterator.hasNext()) {
+			Event currentEvent = iterator.next();
+			if (currentEvent.searchInTime(keyWord)) {
+				result.add(currentEvent);
+			}
+		}
+		
+		return result;
+	}
+	
+	public static void sortByName() {
+		Comparator<Event> cmp = new CompareEventByName();
+		
+		Collections.sort(listOfEvent, cmp);
+	}
+	
+	public static void sortByID() {
+		Comparator<Event> cmp = new CompareEventByID();
+		
+		Collections.sort(listOfEvent, cmp);
+	}
+	
+	public static void sortByTime() {
+		Comparator<Event> cmp = new CompareEventByTime();
+		
+		Collections.sort(listOfEvent, cmp);
 	}
 }

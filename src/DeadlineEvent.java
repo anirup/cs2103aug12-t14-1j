@@ -1,13 +1,8 @@
-import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.text.ParseException;
-
 
 public class DeadlineEvent extends Event{
 	private Clock _eventTime;
 	
-	private static RandomAccessFile randomAccessFile;
 	public static final String DEADLINE_EVENT_INDICATOR = "deadline";
 	
 	public DeadlineEvent() {
@@ -35,42 +30,20 @@ public class DeadlineEvent extends Event{
 	public int compareTo(DeadlineEvent anotherEvent) throws ParseException {
 		return this.getEventTime().toDate().compareTo(anotherEvent.getEventTime().toDate());
 	}
-	
-	public void writeEventToFile(File file) throws IOException{
-		randomAccessFile = new RandomAccessFile(file, "rw");
-		seekWritePosition();
-		writeToFile();
-		randomAccessFile.close();
-		return;
-	}
-	
-	private void writeToFile() throws IOException {
-		String eventContent = composeEventContent();
-		randomAccessFile.writeChars(DEADLINE_EVENT_INDICATOR);
-		randomAccessFile.writeChars(eventContent);	
-		return;
-	}
-	
-	private void seekWritePosition() throws IOException {
-		long writePosition = randomAccessFile.length();	
-		randomAccessFile.seek(writePosition);
-		return;
-	}
-	
-	public String composeEventContent() {
-		StringBuilder timedEventContent = new StringBuilder();
-		
-		String taskContent = super.composeEventContent();
-		timedEventContent.append(taskContent);
-		
-		appendEventTimeToStringBuilder(timedEventContent);
-		
-		return timedEventContent.toString();
-	}
 
-	private void appendEventTimeToStringBuilder(StringBuilder timedTaskContent) {
-		String contentToAppend = _eventTime.toString();
-		timedTaskContent.append(contentToAppend);
+	public int compareTo(FloatingEvent anotherEvent) {
+		return 1;
+	}
+	public String toString() {
+		StringBuilder eventContent = new StringBuilder();	
+		eventContent.append(super.toString());
+		appendEventTime(eventContent);
+		return eventContent.toString();
+	}
+	
+	private void appendEventTime(StringBuilder eventContent) {
+		String contentToAppend = super.addSplitter(_eventTime.toString(), super.NEW_LINE);
+		eventContent.append(contentToAppend);
 		
 		return;
 	}

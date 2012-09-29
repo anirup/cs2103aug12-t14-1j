@@ -1,12 +1,5 @@
-import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
 
-public class FloatingEvent extends Event{
-	private static RandomAccessFile randomAccessFile;
-	
-	public static final String FLOATING_EVENT_INDICATOR = "floating";
-	
+public class FloatingEvent extends Event{	
 	public FloatingEvent() {
 		super();
 	}
@@ -19,22 +12,12 @@ public class FloatingEvent extends Event{
 		super(event.getEventID(), event.getEventName(), event.getEventHashTag(), event.getEventReminder(), event.isDone());
 	}
 	
-	public void writeEventToFile(File file) throws IOException{
-		randomAccessFile = new RandomAccessFile(file, "rw");
-		seekWritePosition();
-		writeToFile();
-		randomAccessFile.close();
-		return;
-	}
-
-	private void writeToFile() throws IOException {
-		String eventContent = composeEventContent();
-		randomAccessFile.writeChars(FLOATING_EVENT_INDICATOR);
-		randomAccessFile.writeChars(eventContent);		
+	public String toString() {
+		return super.toString();
 	}
 	
-	private void seekWritePosition() throws IOException {
-		long writePosition = randomAccessFile.length();	
-		randomAccessFile.seek(writePosition);
+	public Clock getEventTime() {
+		Clock eventTime = new Clock();
+		return eventTime;
 	}
 }

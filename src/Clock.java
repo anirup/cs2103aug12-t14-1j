@@ -1,7 +1,8 @@
+
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 
 public class Clock {
 	private String _time;
@@ -38,10 +39,17 @@ public class Clock {
 	public String toString() {
 		StringBuilder date = new StringBuilder();
 		
-		date.append(_time + "\n");
-		date.append(_dateFormat + "\n");
+		date.append(_time + Event.SPLITTER);
+		date.append(_dateFormat + Event.SPLITTER);
 		
 		return date.toString();
+	}
+	
+	public int compareTo(Clock anotherTime) throws ParseException {
+		Date thisTimeDate = this.toDate();
+		Date anotherTimeDate = anotherTime.toDate();
+		
+		return thisTimeDate.compareTo(anotherTimeDate);
 	}
 	
 	public Date toDate() throws ParseException {

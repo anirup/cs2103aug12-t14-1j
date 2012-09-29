@@ -1,7 +1,9 @@
 
 public class UpdateLog extends UserLog{
 	private Event _eventAfterUpdated;
-	private Event _eventBeforeUpdated;
+	private Event _eventBeforeUpdated; 
+	
+	private static final String MESSAGE_UNDO_UPDATE = "Undo: Update %1$s by %2$s";
 	
 	public UpdateLog(Event eventBeforeUpdated, Event eventAfterUpdated) {
 		_logType = UserLog.LOG_TYPE.UPDATE;
@@ -17,9 +19,11 @@ public class UpdateLog extends UserLog{
 		return _eventAfterUpdated;
 	}
 	
-	public void rollBack() {
+	public String rollBack() {
 		ListOfEvent.update(_eventAfterUpdated, _eventBeforeUpdated);
-		return;
+	
+		String messageUndo = String.format(MESSAGE_UNDO_UPDATE, _eventBeforeUpdated.getEventName(), _eventAfterUpdated.getEventName());
+		return messageUndo;
 	}
 }
 

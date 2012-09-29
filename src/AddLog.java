@@ -1,6 +1,6 @@
-
 public class AddLog extends UserLog {
 	private Event _addedEvent;
+	private static final String MESSAGE_UNDO_ADD = "Undo: Add %1$s";
 	
 	public AddLog(Event addedEvent) {
 		_logType = UserLog.LOG_TYPE.ADD;
@@ -11,7 +11,9 @@ public class AddLog extends UserLog {
 		return _addedEvent;
 	}
 
-	public void rollBack() {
+	public String rollBack() {
 		ListOfEvent.remove(_addedEvent);
+		String messageUndo = String.format(MESSAGE_UNDO_ADD, _addedEvent.getEventName());
+		return messageUndo;
 	}
 }

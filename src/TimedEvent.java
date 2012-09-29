@@ -1,15 +1,7 @@
-import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.text.ParseException;
-
-
 public class TimedEvent extends Event{
 	private Clock _eventStartTime;
 	private Clock _eventEndTime;
-	
-	private static RandomAccessFile randomAccessFile;
-	public static final String TIMED_EVENT_INDICATOR = "timed";
 	
 	public TimedEvent() {
 		super();
@@ -43,42 +35,26 @@ public class TimedEvent extends Event{
 	public Clock getEventEndTime() {
 		return _eventEndTime;
 	}
-	
-	public void writeEventToFile(File file) throws IOException{
-		randomAccessFile = new RandomAccessFile(file, "rw");
-		seekWritePosition();
-		writeToFile();
-		randomAccessFile.close();
-		return;
-	}
-	
-	private void writeToFile() throws IOException {
-		String eventContent = composeEventContent();
-		randomAccessFile.writeChars(TIMED_EVENT_INDICATOR);
-		randomAccessFile.writeChars(eventContent);		
-	}
-	
-	private void seekWritePosition() throws IOException {
-		long writePosition = randomAccessFile.length();	
-		randomAccessFile.seek(writePosition);
+
+	public Clock getEventTime() {
+		return _eventStartTime;
 	}
 
-	public String composeEventContent() {
-		StringBuilder timedEventContent = new StringBuilder();
+	public String toString() {
+		StringBuilder eventContent = new StringBuilder();
 		
-		String taskContent = super.composeEventContent();
-		timedEventContent.append(taskContent);
+		eventContent.append(super.toString());
+		appendEventTime(eventContent);
 		
-		appendEventTime(timedEventContent);
+		return eventContent.toString();
 		
-		return timedEventContent.toString();
 	}
-
+	
 	private void appendEventTime(StringBuilder timedTaskContent) {
 		String contentToAppend = _eventStartTime.toString();
 		timedTaskContent.append(contentToAppend);
 		
-		contentToAppend = _eventEndTime.toString();
+		contentToAppend = super.addSplitter(_eventEndTime.toString(), super.NEW_LINE);
 		timedTaskContent.append(contentToAppend);
 		
 		return;

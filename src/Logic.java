@@ -7,17 +7,18 @@ import org.joda.time.Duration;
 
 public class Logic {
 
+	private static final String SPLIT_HASH = "#";
 	private static final String Priority_Normal = "NORMAL";
 	private static final String Priority_Low = "LOW";
 	private static final String Priority_High = "HIGH";
 	private static boolean searchState;
-	//private static ListOfEvent list;
+	// private static ListOfEvent list;
 	private static Vector<String> searchResults;
-	//private static UserLog prevTasks;
+	// private static UserLog prevTasks;
 
 	public Logic() {
 		searchState = false;
-		//list = new ListOfEvent();
+		// list = new ListOfEvent();
 		searchResults = new Vector<String>();
 	}
 
@@ -30,6 +31,7 @@ public class Logic {
 		} else if (command.equalsIgnoreCase("delete")) {
 			if (searchState == true) {
 				int index = getInteger(parameterList);
+				ListOfUserLog.add(new DeleteLog(ListOfEvent.get(index)));
 				ListOfEvent.remove(index);
 				searchToFalse();
 			} else if (searchState == false) {
@@ -67,8 +69,6 @@ public class Logic {
 			}
 		} else if (command.equalsIgnoreCase("undo")) {
 			undoLast();
-		} else if (command.equalsIgnoreCase("deletep")) {
-			deleteHashDeleted();
 		}
 
 	}
@@ -98,20 +98,27 @@ public class Logic {
 		ListOfUserLog.undo();
 	}
 
-	private static void deleteHashDeleted() {
-
-	}
-
-	private static void analyzeAndSearch(String[] parameterList) { // keywords have to be there but you can OR hash tags
+	private static void analyzeAndSearch(String[] parameterList) { // keywords
+																	// have to
+																	// be there
+																	// but you
+																	// can OR
+																	// hash tags
 
 	}
 
 	private static void markNotDone(int index) {
-
+		Event toBeReplaced=ListOfEvent.get(index);
+		Event replacingEvent=new Event(toBeReplaced.getEventID(),toBeReplaced.getEventName(),toBeReplaced.getEventHashTag(),toBeReplaced.getEventTime(),false);
+		ListOfUserLog.add(new UpdateLog(toBeReplaced, replacingEvent));
+		ListOfEvent.update(replacingEvent, toBeReplaced);
 	}
 
 	private static void markDone(int index) {
-
+		Event toBeReplaced=ListOfEvent.get(index);
+		Event replacingEvent=new Event(toBeReplaced.getEventID(),toBeReplaced.getEventName(),toBeReplaced.getEventHashTag(),toBeReplaced.getEventTime(),true);
+		ListOfUserLog.add(new UpdateLog(toBeReplaced, replacingEvent));
+		ListOfEvent.update(replacingEvent, toBeReplaced);
 	}
 
 	private static void analyzeAddInput(String[] parameterList) {
@@ -122,6 +129,7 @@ public class Logic {
 		reminderTime = getReminderTime(parameterList);
 		Vector<String> resultHashTags = getHashTags(parameterList);
 		resultHashTags.add(priority);
+		reminderTime=getReminderTime(parameterList);
 
 	}
 
@@ -130,7 +138,7 @@ public class Logic {
 	}
 
 	private static String getKeyWords(String[] parameterList) {
-		return "";
+		return parameterList[1].trim().substring(0, parameterList[1].indexOf(SPLIT_HASH));
 	}
 
 	private static String getPriority(String[] parameterList) {
@@ -148,7 +156,7 @@ public class Logic {
 
 	private static Duration getReminderTime(String[] parameterList) {
 		long miliseconds = 0;
-		int indexOfReminder;
+		int indexOfReminder = -1;
 		Vector<Long> timeQuantity = new Vector<Long>();
 		Vector<String> timeParameter = new Vector<String>();
 		for (int i = 0; i < parameterList.length; i++) {
@@ -163,24 +171,50 @@ public class Logic {
 			}
 			break;
 		}
-		if (timeQuantity.size() == 1) {
-			
-			
-			
+		if (indexOfReminder != -1) {
+			for (int j = 0; j < timeQuantity.size() - 1; j++) {
+				String firstLimitString = "" + timeParameter.get(j);
+				String secondLimitString = "" + timeParameter.get(j + 1);
+				int lastIndex = parameterList[indexOfReminder]
+						.indexOf(secondLimitString);
+				int firstIndex = firstLimitString.length()
+						+ parameterList[indexOfReminder]
+								.indexOf(firstLimitString);
+				String parameter = parameterList[indexOfReminder].substring(
+						firstIndex, lastIndex);
+				timeParameter.addElement(parameter.toLowerCase());
+			}
+			for (int k = 0; k < timeParameter.size(); k++) {
+				if (timeParameter.get(k).trim().startsWith("d")
+						|| timeParameter.get(k).trim().startsWith("day")
+						|| timeParameter.get(k).trim().startsWith("days")) {
+					miliseconds += timeQuantity.get(k) * 86400000;
+				} else if (timeParameter.get(k).trim().startsWith("h")
+						|| timeParameter.get(k).trim().startsWith("hr")
+						|| timeParameter.get(k).trim().startsWith("hour")) {
+					miliseconds += timeQuantity.get(k) * 3600000;
+				} else if (timeParameter.get(k).trim().startsWith("m")
+						|| timeParameter.get(k).trim().startsWith("min")
+						|| timeParameter.get(k).trim().startsWith("minute")) {
+					miliseconds += timeQuantity.get(k) * 60000;
+				} else if (timeParameter.get(k).trim().startsWith("s")
+						|| timeParameter.get(k).trim().startsWith("sec")
+						|| timeParameter.get(k).trim().startsWith("second")) {
+					miliseconds += timeQuantity.get(k) * 1000;
+				}
+			}
 		}
-		for (int j = 0; j < timeQuantity.size() - 1; j++) {
 
-		}
 		return (new Duration(miliseconds));
 	}
 
 	private static Vector<String> getHashTags(String[] parameterList) {
 		Vector<String> listOfHashTags = new Vector<String>();
 		for (int i = 0; i < parameterList.length; i++) {
-			int startHashCode = parameterList[i].indexOf('#');
+			int startHashCode = parameterList[i].indexOf(SPLIT_HASH);
 			if (startHashCode > -1) {
 				String[] hashCodes = parameterList[i].substring(startHashCode)
-						.split("#");
+						.split(SPLIT_HASH);
 				for (int j = 0; j < hashCodes.length; j++) {
 					listOfHashTags.add(hashCodes[i].trim());
 				}
@@ -191,7 +225,8 @@ public class Logic {
 	}
 
 	private static DateTime getStartTime(String[] parameterList) {
-		DateTime startTime = new DateTime();
-		return startTime;
+		DateTime currentTime = new DateTime();
+		
+		return currentTime;
 	}
 }

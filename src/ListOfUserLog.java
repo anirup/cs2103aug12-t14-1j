@@ -13,9 +13,8 @@ public class ListOfUserLog {
 		return listOfUserLog.pollLast();
 	}
 
-	public static void undo() {
+	public static String undo() {
 		UserLog lastUserLog = getLast();
-		lastUserLog.rollBack();	
-		return;
+		return lastUserLog.rollBack();
 	}	
 }
