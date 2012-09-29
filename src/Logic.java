@@ -108,29 +108,28 @@ public class Logic {
 	}
 
 	private static void markNotDone(int index) {
-		Event toBeReplaced=ListOfEvent.get(index);
-		Event replacingEvent=new Event(toBeReplaced.getEventID(),toBeReplaced.getEventName(),toBeReplaced.getEventHashTag(),toBeReplaced.getEventTime(),false);
-		ListOfUserLog.add(new UpdateLog(toBeReplaced, replacingEvent));
-		ListOfEvent.update(replacingEvent, toBeReplaced);
+		ListOfEvent.markUndone(index);
 	}
 
 	private static void markDone(int index) {
-		Event toBeReplaced=ListOfEvent.get(index);
-		Event replacingEvent=new Event(toBeReplaced.getEventID(),toBeReplaced.getEventName(),toBeReplaced.getEventHashTag(),toBeReplaced.getEventTime(),true);
-		ListOfUserLog.add(new UpdateLog(toBeReplaced, replacingEvent));
-		ListOfEvent.update(replacingEvent, toBeReplaced);
+		ListOfEvent.markDone(index);
 	}
 
 	private static void analyzeAddInput(String[] parameterList) {
-		String priority, keywords;
+		String priority, keywords,id;
 		Duration reminderTime;
+		id=getEventID();
 		keywords = getKeyWords(parameterList);
 		priority = getPriority(parameterList);
 		reminderTime = getReminderTime(parameterList);
 		Vector<String> resultHashTags = getHashTags(parameterList);
 		resultHashTags.add(priority);
-		reminderTime=getReminderTime(parameterList);
-
+		String startTimeDate=getStartTime(parameterList);
+		String endTimeDate=getEndTime(parameterList);
+		if(startTimeDate.equalsIgnoreCase(null)&&endTimeDate.equalsIgnoreCase(null))
+		{
+			
+		}
 	}
 
 	private static void updateEvent(int index) {
@@ -224,9 +223,17 @@ public class Logic {
 		return listOfHashTags;
 	}
 
-	private static DateTime getStartTime(String[] parameterList) {
+	private static String getStartTime(String[] parameterList) {
 		DateTime currentTime = new DateTime();
 		
-		return currentTime;
+		return currentTime.toString();
+	}
+	private static String getEndTime(String[] parameterList)
+	{
+		return (new DateTime()).toString();
+	}
+	private static String getEventID()
+	{
+		return "";
 	}
 }

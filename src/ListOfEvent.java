@@ -15,7 +15,14 @@ public class ListOfEvent {
 	public static int size() {
 		return listOfEvent.size();
 	}
-	
+	public static void markDone(int position)
+	{
+		listOfEvent.get(position).markDone();
+	}
+	public static void markUndone(int position)
+	{
+		listOfEvent.get(position).markUndone();
+	}	
 	public static void updateListOfEvent(LinkedList<Event> newListOfEvent) {
 		listOfEvent.clear();
 		listOfEvent = newListOfEvent;

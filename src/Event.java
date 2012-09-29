@@ -50,6 +50,10 @@ public class Event implements Comparable<Event>{
 		_isDone = true;
 		return;
 	}
+	public void markUndone(){
+		_isDone = false;
+		return;
+	}
 	
 	public String getEventName() {
 		return _eventName;
