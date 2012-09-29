@@ -11,14 +11,14 @@ public class Logic {
 	private static final String Priority_Low = "LOW";
 	private static final String Priority_High = "HIGH";
 	private static boolean searchState;
-	private static ListOfEvent list;
-	private static ListOfEvent searchResults;
-	private static UserLog prevTasks;
+	//private static ListOfEvent list;
+	private static Vector<String> searchResults;
+	//private static UserLog prevTasks;
 
 	public Logic() {
 		searchState = false;
-		list = new ListOfEvent();
-		searchResults = new ListOfEvent();
+		//list = new ListOfEvent();
+		searchResults = new Vector<String>();
 	}
 
 	public static void analyze(String userInput) {
@@ -30,7 +30,7 @@ public class Logic {
 		} else if (command.equalsIgnoreCase("delete")) {
 			if (searchState == true) {
 				int index = getInteger(parameterList);
-				list.remove(index);
+				ListOfEvent.remove(index);
 				searchToFalse();
 			} else if (searchState == false) {
 				analyzeAndSearch(parameterList);
@@ -95,14 +95,14 @@ public class Logic {
 	}
 
 	private static void undoLast() {
-		prevTasks.rollBack();
+		ListOfUserLog.undo();
 	}
 
 	private static void deleteHashDeleted() {
 
 	}
 
-	private static void analyzeAndSearch(String[] parameterList) {
+	private static void analyzeAndSearch(String[] parameterList) { // keywords have to be there but you can OR hash tags
 
 	}
 
@@ -120,7 +120,7 @@ public class Logic {
 		keywords = getKeyWords(parameterList);
 		priority = getPriority(parameterList);
 		reminderTime = getReminderTime(parameterList);
-		Vector<String> resultHashTags=getHashTags(parameterList);
+		Vector<String> resultHashTags = getHashTags(parameterList);
 		resultHashTags.add(priority);
 
 	}
@@ -134,14 +134,12 @@ public class Logic {
 	}
 
 	private static String getPriority(String[] parameterList) {
-		for(int i=0;i<parameterList.length;i++)
-		{
-			if(parameterList[i].trim().equalsIgnoreCase(Priority_High) || parameterList[i].trim().equalsIgnoreCase("h"))
-			{
+		for (int i = 0; i < parameterList.length; i++) {
+			if (parameterList[i].trim().equalsIgnoreCase(Priority_High)
+					|| parameterList[i].trim().equalsIgnoreCase("h")) {
 				return Priority_High;
-			}
-			else if(parameterList[i].trim().equalsIgnoreCase(Priority_Low) || parameterList[i].trim().equalsIgnoreCase("l"))
-			{
+			} else if (parameterList[i].trim().equalsIgnoreCase(Priority_Low)
+					|| parameterList[i].trim().equalsIgnoreCase("l")) {
 				return Priority_Low;
 			}
 		}
@@ -149,18 +147,29 @@ public class Logic {
 	}
 
 	private static Duration getReminderTime(String[] parameterList) {
-		long miliseconds=0;
-		Vector<Long> timeParameter= new Vector<Long>();
-		for(int i=0;i<parameterList.length;i++){
-			if(parameterList[i].trim().startsWith("r-")|| parameterList[i].trim().startsWith("R-"))
-			{
+		long miliseconds = 0;
+		int indexOfReminder;
+		Vector<Long> timeQuantity = new Vector<Long>();
+		Vector<String> timeParameter = new Vector<String>();
+		for (int i = 0; i < parameterList.length; i++) {
+			if (parameterList[i].trim().startsWith("r-")
+					|| parameterList[i].trim().startsWith("R-")) {
+				indexOfReminder = i;
 				Pattern p = Pattern.compile("\\d+");
 				Matcher matches = p.matcher(parameterList[i].trim());
-				while(matches.find())
-				{
-					timeParameter.add(Long.parseLong(matches.group()));
+				while (matches.find()) {
+					timeQuantity.add(Long.parseLong(matches.group()));
 				}
 			}
+			break;
+		}
+		if (timeQuantity.size() == 1) {
+			
+			
+			
+		}
+		for (int j = 0; j < timeQuantity.size() - 1; j++) {
+
 		}
 		return (new Duration(miliseconds));
 	}
@@ -170,7 +179,8 @@ public class Logic {
 		for (int i = 0; i < parameterList.length; i++) {
 			int startHashCode = parameterList[i].indexOf('#');
 			if (startHashCode > -1) {
-				String[] hashCodes = parameterList[i].substring(startHashCode).split("#");
+				String[] hashCodes = parameterList[i].substring(startHashCode)
+						.split("#");
 				for (int j = 0; j < hashCodes.length; j++) {
 					listOfHashTags.add(hashCodes[i].trim());
 				}
