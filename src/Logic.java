@@ -22,125 +22,24 @@ public class Logic {
 		searchResults = new Vector<String>();
 	}
 
-	public static void analyze(String userInput) {
-		String[] parameterList = userInput.split("..");
-		String command = getCommand(parameterList);
-		if (command.equalsIgnoreCase("add")) {
-			analyzeAddInput(parameterList);
-			searchToFalse();
-		} else if (command.equalsIgnoreCase("delete")) {
-			if (searchState == true) {
-				int index = getInteger(parameterList);
-				ListOfUserLog.add(new DeleteLog(ListOfEvent.get(index)));
-				ListOfEvent.remove(index);
-				searchToFalse();
-			} else if (searchState == false) {
-				analyzeAndSearch(parameterList);
-				searchToTrue();
-			}
-		} else if (command.equalsIgnoreCase("update")) {
-			if (searchState == true) {
-				int index = getInteger(parameterList);
-				updateEvent(index);
-				searchToFalse();
-			} else if (searchState == false) {
-				analyzeAndSearch(parameterList);
-				searchToTrue();
-			}
-		} else if (command.equalsIgnoreCase("search")) {
-			analyzeAndSearch(parameterList);
-		} else if (command.equalsIgnoreCase("done")) {
-			if (searchState == true) {
-				int index = getInteger(parameterList);
-				markDone(index);
-				searchToFalse();
-			} else if (searchState == false) {
-				analyzeAndSearch(parameterList);
-				searchToTrue();
-			}
-		} else if (command.equalsIgnoreCase("undone")) {
-			if (searchState == true) {
-				int index = getInteger(parameterList);
-				markNotDone(index);
-				searchToFalse();
-			} else if (searchState == false) {
-				analyzeAndSearch(parameterList);
-				searchToTrue();
-			}
-		} else if (command.equalsIgnoreCase("undo")) {
-			undoLast();
-		}
-
+	public static boolean getSearchState()
+	{
+		return searchState;
 	}
 
-	private static void searchToTrue() {
+	public static void searchToTrue() {
 		searchState = true;
 	}
 
-	private static void searchToFalse() {
+	public static void searchToFalse() {
 		searchState = false;
 	}
 
-	private static String getCommand(String[] parameterList) {
-		return parameterList[0];
-	}
-
-	private static int getInteger(String[] parameterList) {
-		try {
-			return Integer.parseInt(parameterList[1]);
-		} catch (NumberFormatException e) {
-			System.out.println("Invalid argument");
-			return -1;
-		}
-	}
-
-	private static void undoLast() {
-		ListOfUserLog.undo();
-	}
-
-	private static void analyzeAndSearch(String[] parameterList) { // keywords
-																	// have to
-																	// be there
-																	// but you
-																	// can OR
-																	// hash tags
-
-	}
-
-	private static void markNotDone(int index) {
-		ListOfEvent.markUndone(index);
-	}
-
-	private static void markDone(int index) {
-		ListOfEvent.markDone(index);
-	}
-
-	private static void analyzeAddInput(String[] parameterList) {
-		String priority, keywords,id;
-		Duration reminderTime;
-		id=getEventID();
-		keywords = getKeyWords(parameterList);
-		priority = getPriority(parameterList);
-		reminderTime = getReminderTime(parameterList);
-		Vector<String> resultHashTags = getHashTags(parameterList);
-		resultHashTags.add(priority);
-		String startTimeDate=getStartTime(parameterList);
-		String endTimeDate=getEndTime(parameterList);
-		if(startTimeDate.equalsIgnoreCase(null)&&endTimeDate.equalsIgnoreCase(null))
-		{
-			
-		}
-	}
-
-	private static void updateEvent(int index) {
-
-	}
-
-	private static String getKeyWords(String[] parameterList) {
+	public static String getKeyWords(String[] parameterList) {
 		return parameterList[1].trim().substring(0, parameterList[1].indexOf(SPLIT_HASH));
 	}
 
-	private static String getPriority(String[] parameterList) {
+	public static String getPriority(String[] parameterList) {
 		for (int i = 0; i < parameterList.length; i++) {
 			if (parameterList[i].trim().equalsIgnoreCase(Priority_High)
 					|| parameterList[i].trim().equalsIgnoreCase("h")) {
@@ -153,7 +52,7 @@ public class Logic {
 		return Priority_Normal;
 	}
 
-	private static Duration getReminderTime(String[] parameterList) {
+	public static Duration getReminderTime(String[] parameterList) {
 		long miliseconds = 0;
 		int indexOfReminder = -1;
 		Vector<Long> timeQuantity = new Vector<Long>();
@@ -207,7 +106,7 @@ public class Logic {
 		return (new Duration(miliseconds));
 	}
 
-	private static Vector<String> getHashTags(String[] parameterList) {
+	public static Vector<String> getHashTags(String[] parameterList) {
 		Vector<String> listOfHashTags = new Vector<String>();
 		for (int i = 0; i < parameterList.length; i++) {
 			int startHashCode = parameterList[i].indexOf(SPLIT_HASH);
@@ -222,17 +121,28 @@ public class Logic {
 		}
 		return listOfHashTags;
 	}
+	public static String getCommand(String[] parameterList) {
+		return parameterList[0];
+	}
 
-	private static String getStartTime(String[] parameterList) {
+	public static int getInteger(String[] parameterList) {
+		try {
+			return Integer.parseInt(parameterList[1]);
+		} catch (NumberFormatException e) {
+			System.out.println("Invalid argument");
+			return -1;
+		}
+	}
+	public static String getStartTime(String[] parameterList) {
 		DateTime currentTime = new DateTime();
 		
 		return currentTime.toString();
 	}
-	private static String getEndTime(String[] parameterList)
+	public static String getEndTime(String[] parameterList)
 	{
 		return (new DateTime()).toString();
 	}
-	private static String getEventID()
+	public static String getEventID()
 	{
 		return "";
 	}
