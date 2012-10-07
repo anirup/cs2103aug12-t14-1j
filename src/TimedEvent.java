@@ -1,4 +1,3 @@
-import java.text.ParseException;
 public class TimedEvent extends Event{
 	private Clock _eventStartTime;
 	private Clock _eventEndTime;
@@ -18,14 +17,6 @@ public class TimedEvent extends Event{
 		super(event.getEventID(), event.getEventName(), event.getEventHashTag(), event.getEventReminder(), event.isDone());
 		_eventStartTime = startTime;
 		_eventEndTime = endTime;
-	}
-	
-	public int compareTo(TimedEvent anotherEvent) throws ParseException {
-		return this.getEventStartTime().toDate().compareTo(anotherEvent.getEventStartTime().toDate());
-	}
-	
-	public int compareTo(DeadlineEvent anotherEvent) throws ParseException {
-		return this.getEventStartTime().toDate().compareTo(anotherEvent.getEventTime().toDate());
 	}
 	
 	public Clock getEventStartTime() {
@@ -48,6 +39,12 @@ public class TimedEvent extends Event{
 		
 		return eventContent.toString();
 		
+	}
+	
+	public void parse(String[] contentToExtract) {
+		super.parse(contentToExtract);
+		_eventStartTime = Event.extractTime(contentToExtract, INDEX_FOR_EVENT_START_TIME, INDEX_FOR_EVENT_START_TIME_DATEFORMAT);
+		_eventEndTime = Event.extractTime(contentToExtract, INDEX_FOR_EVENT_END_TIME, INDEX_FOR_EVENT_END_TIME_DATEFORMAT);	
 	}
 	
 	private void appendEventTime(StringBuilder timedTaskContent) {

@@ -1,5 +1,6 @@
 
 public class FloatingEvent extends Event{	
+	
 	public FloatingEvent() {
 		super();
 	}
@@ -14,6 +15,10 @@ public class FloatingEvent extends Event{
 	
 	public String toString() {
 		return super.toString();
+	}
+	
+	public void parse(String eventContent) {
+		
 	}
 	
 	public Clock getEventTime() {

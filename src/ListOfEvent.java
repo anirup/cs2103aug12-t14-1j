@@ -1,4 +1,5 @@
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -7,9 +8,50 @@ import java.util.LinkedList;
 
 public class ListOfEvent {
 	private static LinkedList<Event> listOfEvent = new LinkedList<Event>();
+	private static LinkedList<String> listOfEventInString = new LinkedList<String>();
+	
+	private static final int FLOATING_TYPE = 4;
+	private static final int DEADLINE_TYPE = 6;
+	private static final int TIMED_TYPE = 8;
 	
 	public static LinkedList<Event> getCurrentListOfEvent() {
 		return listOfEvent;
+	}
+	public static LinkedList<String> getListOfEventInString() {
+		return listOfEventInString;
+	}
+	
+	public static void setUpDataFromDatabase() throws Exception {
+		DatabaseManager.setUpDatabase();
+		listOfEventInString = DatabaseManager.retrieveDatabase();
+		setUpListOfEvent();
+	}
+	
+	public static void syncDataToDatabase() throws IOException {
+		DatabaseManager.syncToDatabase(listOfEventInString);
+	}
+	
+	private static void setUpListOfEvent() {
+		Iterator<String> iterator = listOfEventInString.iterator();
+		
+		while(iterator.hasNext()) {
+			String[] currentLine = iterator.next().split(Event.SPLITTER);
+			int eventType = currentLine.length;
+			if (eventType == FLOATING_TYPE) {
+				Event newEvent = new FloatingEvent();
+				newEvent.parse(currentLine);
+				listOfEvent.add(newEvent);
+			} else if (eventType == DEADLINE_TYPE) {
+				Event newEvent = new DeadlineEvent();
+				newEvent.parse(currentLine);
+				listOfEvent.add(newEvent);
+			} else if (eventType == TIMED_TYPE) {
+				Event newEvent = new TimedEvent();
+				newEvent.parse(currentLine);
+				listOfEvent.add(newEvent);
+			}
+		}
+		return;
 	}
 	
 	public static int size() {
