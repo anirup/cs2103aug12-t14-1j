@@ -1,4 +1,3 @@
-
 public class FloatingEvent extends Event{	
 	
 	public FloatingEvent() {
@@ -26,3 +25,4 @@ public class FloatingEvent extends Event{
 		return eventTime;
 	}
 }
+

@@ -1,13 +1,14 @@
 public class TimedEvent extends Event{
 	private Clock _eventStartTime;
 	private Clock _eventEndTime;
+	private static StringBuilder timedEventContent;
 	
 	public TimedEvent() {
 		super();
 		_eventStartTime = null;
 	}
 	
-	public TimedEvent(String eventID, String eventName, String[] hashTag, Clock reminder, Clock startTime, Clock endTime, boolean isDone) {
+	public TimedEvent(String eventID, String eventName, String[] hashTag, Clock reminder, boolean isDone, Clock startTime, Clock endTime) {
 		super(eventID, eventName, hashTag, reminder, isDone);
 		_eventStartTime = startTime;	
 		_eventEndTime = endTime;
@@ -32,12 +33,11 @@ public class TimedEvent extends Event{
 	}
 
 	public String toString() {
-		StringBuilder eventContent = new StringBuilder();
+		String eventContent = super.toString();
+		timedEventContent = new StringBuilder(eventContent);
+		appendEventTime();
 		
-		eventContent.append(super.toString());
-		appendEventTime(eventContent);
-		
-		return eventContent.toString();
+		return timedEventContent.toString();
 		
 	}
 	
@@ -47,12 +47,12 @@ public class TimedEvent extends Event{
 		_eventEndTime = Event.extractTime(contentToExtract, INDEX_FOR_EVENT_END_TIME, INDEX_FOR_EVENT_END_TIME_DATEFORMAT);	
 	}
 	
-	private void appendEventTime(StringBuilder timedTaskContent) {
+	private void appendEventTime() {
 		String contentToAppend = _eventStartTime.toString();
-		timedTaskContent.append(contentToAppend);
+		timedEventContent.append(contentToAppend);
 		
-		contentToAppend = super.addSplitter(_eventEndTime.toString(), super.NEW_LINE);
-		timedTaskContent.append(contentToAppend);
+		contentToAppend = _eventEndTime.toString();
+		timedEventContent.append(contentToAppend);
 		
 		return;
 	}
