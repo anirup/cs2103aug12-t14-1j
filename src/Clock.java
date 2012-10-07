@@ -1,5 +1,3 @@
-
-
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -29,8 +27,8 @@ public class Clock {
 	public String toString() {
 		StringBuilder date = new StringBuilder();
 		
-		date.append(_time + Event.SPLITTER);
-		date.append(_dateFormat + Event.SPLITTER);
+		date.append(_time + "..");
+		date.append(_dateFormat + "..");
 		
 		return date.toString();
 	}

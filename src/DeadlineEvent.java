@@ -8,7 +8,7 @@ public class DeadlineEvent extends Event{
 		_eventTime = null;
 	}
 	
-	public DeadlineEvent(String eventID, String eventName, String[] hashTag, Clock reminder, Clock time, boolean isDone) {
+	public DeadlineEvent(String eventID, String eventName, String[] hashTag, Clock reminder, boolean isDone, Clock time) {
 		super(eventID, eventName, hashTag, reminder, isDone);
 		_eventTime = time;
 	}
@@ -37,7 +37,7 @@ public class DeadlineEvent extends Event{
 	}
 	
 	private void appendEventTime(StringBuilder eventContent) {
-		String contentToAppend = super.addSplitter(_eventTime.toString(), super.NEW_LINE);
+		String contentToAppend = _eventTime.toString();
 		eventContent.append(contentToAppend);
 		
 		return;

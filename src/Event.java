@@ -6,7 +6,7 @@ public class Event {
 	protected Clock _eventReminder;
 	protected boolean _isDone;
 	
-	public static final String SPLITTER = "||";
+	public static final String SPLITTER = "..";
 	protected final String NEW_LINE = "\n";
 	public static final String SPACE = " ";
 	
@@ -21,7 +21,7 @@ public class Event {
 	protected static final int INDEX_FOR_EVENT_END_TIME = 8;
 	protected static final int INDEX_FOR_EVENT_END_TIME_DATEFORMAT = 9;
 	
-	private static StringBuilder eventContent = new StringBuilder();
+	private static StringBuilder eventContent;
 
 	public Event() {
 		_eventID = null;
@@ -129,6 +129,7 @@ public class Event {
 	}
 	
 	private void appendEventContent() {
+		eventContent = new StringBuilder();
 		appendEventID();
 		appendEventName();
 		appendEventHashTag();
@@ -142,7 +143,7 @@ public class Event {
 	}
 	
 	private void appendEventReminder() {
-		String content = addSplitter(_eventReminder.toString(), SPLITTER);
+		String content = _eventReminder.toString();
 		eventContent.append(content);
 	}
 
