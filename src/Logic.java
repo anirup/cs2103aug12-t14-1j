@@ -4,6 +4,7 @@ import java.util.regex.Pattern;
 import java.io.*;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
+import org.joda.time.LocalTime;
 
 public class Logic {
 
@@ -14,6 +15,8 @@ public class Logic {
 	private static boolean searchState;
 	// private static ListOfEvent list;
 	private static Vector<String> searchResults;
+	private static boolean fieldFound[] = new boolean[6];
+
 	// private static UserLog prevTasks;
 
 	public Logic() {
@@ -22,8 +25,7 @@ public class Logic {
 		searchResults = new Vector<String>();
 	}
 
-	public static boolean getSearchState()
-	{
+	public static boolean getSearchState() {
 		return searchState;
 	}
 
@@ -36,19 +38,24 @@ public class Logic {
 	}
 
 	public static String getKeyWords(String[] parameterList) {
-		return parameterList[1].trim().substring(0, parameterList[1].indexOf(SPLIT_HASH));
+		fieldFound[1] = true;
+		return parameterList[1].trim().substring(0,
+				parameterList[1].indexOf(SPLIT_HASH));
 	}
 
 	public static String getPriority(String[] parameterList) {
 		for (int i = 0; i < parameterList.length; i++) {
 			if (parameterList[i].trim().equalsIgnoreCase(Priority_High)
 					|| parameterList[i].trim().equalsIgnoreCase("h")) {
+				fieldFound[i] = true;
 				return Priority_High;
 			} else if (parameterList[i].trim().equalsIgnoreCase(Priority_Low)
 					|| parameterList[i].trim().equalsIgnoreCase("l")) {
+				fieldFound[i] = true;
 				return Priority_Low;
 			}
 		}
+		fieldFound[5] = true;
 		return Priority_Normal;
 	}
 
@@ -60,14 +67,17 @@ public class Logic {
 		for (int i = 0; i < parameterList.length; i++) {
 			if (parameterList[i].trim().startsWith("r-")
 					|| parameterList[i].trim().startsWith("R-")) {
+				fieldFound[i] = true;
 				indexOfReminder = i;
 				Pattern p = Pattern.compile("\\d+");
 				Matcher matches = p.matcher(parameterList[i].trim());
 				while (matches.find()) {
 					timeQuantity.add(Long.parseLong(matches.group()));
 				}
+				break;
+			} else {
+				fieldFound[4] = true;
 			}
-			break;
 		}
 		if (indexOfReminder != -1) {
 			for (int j = 0; j < timeQuantity.size() - 1; j++) {
@@ -121,7 +131,9 @@ public class Logic {
 		}
 		return listOfHashTags;
 	}
+
 	public static String getCommand(String[] parameterList) {
+		fieldFound[0] = true;
 		return parameterList[0];
 	}
 
@@ -133,17 +145,46 @@ public class Logic {
 			return -1;
 		}
 	}
+
 	public static String getStartTime(String[] parameterList) {
-		DateTime currentTime = new DateTime();
-		
-		return currentTime.toString();
+		String currentTime = "";
+		for (int i = 0; i < 6; i++) {
+			if (fieldFound[i] == false) {
+				String[] dateAndTime = parameterList[i].trim().split(" ");
+				if (dateAndTime[0].contains(":")) {
+					currentTime += dateAndTime[1] + "T" + dateAndTime[0].trim()
+							+ "+08:00";
+				} else if (dateAndTime[1].contains(":")) {
+					currentTime += dateAndTime[0] + "T" + dateAndTime[1].trim()
+							+ "+08:00";
+				}
+				break;
+			}
+		}
+
+		return currentTime;
 	}
-	public static String getEndTime(String[] parameterList)
-	{
-		return (new DateTime()).toString();
+
+	public static String getEndTime(String[] parameterList) {
+		String endTime = "";
+		for (int i = 0; i < 6; i++) {
+			if (fieldFound[i] == false) {
+				String[] dateAndTime = parameterList[i].trim().split(" ");
+				if (dateAndTime[0].contains(":")) {
+					endTime += dateAndTime[1] + "T" + dateAndTime[0].trim()
+							+ "+08:00";
+				} else if (dateAndTime[1].contains(":")) {
+					endTime += dateAndTime[0] + "T" + dateAndTime[1].trim()
+							+ "+08:00";
+				}
+				break;
+			}
+		}
+
+		return endTime;
 	}
-	public static String getEventID()
-	{
-		return "";
+
+	public static String getEventID() {
+		return LocalTime.now().toString();
 	}
 }
