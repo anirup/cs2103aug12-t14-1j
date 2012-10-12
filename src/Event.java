@@ -1,16 +1,27 @@
 
-public class Event implements Comparable<Event>{
+public class Event {
 	protected String _eventID;
 	protected String _eventName;
 	protected String[] _eventHashTag;
 	protected Clock _eventReminder;
 	protected boolean _isDone;
 	
-	public static final String SPLITTER = "||";
+	public static final String SPLITTER = "..";
 	protected final String NEW_LINE = "\n";
 	public static final String SPACE = " ";
 	
-	private static StringBuilder eventContent = new StringBuilder();
+	protected static final int INDEX_FOR_EVENT_ID = 0;
+	protected static final int INDEX_FOR_EVENT_NAME = 1;
+	protected static final int INDEX_FOR_EVENT_HASHTAG = 2;
+	protected static final int INDEX_FOR_EVENT_REMINDER_TIME = 3;
+	protected static final int INDEX_FOR_EVENT_REMINDER_DATEFORMAT = 4;
+	protected static final int INDEX_FOR_EVENT_ISDONE = 5;
+	protected static final int INDEX_FOR_EVENT_START_TIME = 6;
+	protected static final int INDEX_FOR_EVENT_START_TIME_DATEFORMAT = 7;
+	protected static final int INDEX_FOR_EVENT_END_TIME = 8;
+	protected static final int INDEX_FOR_EVENT_END_TIME_DATEFORMAT = 9;
+	
+	private static StringBuilder eventContent;
 
 	public Event() {
 		_eventID = null;
@@ -28,6 +39,40 @@ public class Event implements Comparable<Event>{
 		_isDone = isDone;
 		
 		return;
+	}
+	
+	public void parse(String[] contentToExtract) {		
+		extractEventID(contentToExtract);
+		extractEventName(contentToExtract);
+		extractEventHashTag(contentToExtract);
+		_eventReminder = extractTime(contentToExtract, INDEX_FOR_EVENT_REMINDER_TIME, INDEX_FOR_EVENT_REMINDER_DATEFORMAT);
+		extractEventIsDone(contentToExtract);
+		return;
+	}
+	
+	private void extractEventID(String[] contentToExtract) {
+		_eventID = contentToExtract[INDEX_FOR_EVENT_ID];
+	}
+	
+	private void extractEventName(String[] contentToExtract) {
+		_eventName = contentToExtract[INDEX_FOR_EVENT_NAME];
+	}
+	
+	private void extractEventHashTag(String[] contentToExtract) {
+		_eventHashTag = contentToExtract[INDEX_FOR_EVENT_HASHTAG].split(SPACE);
+	}
+	
+	protected static Clock extractTime(String[] contentToExtract, int indexTime, int indexTimeFormat) {
+		return new Clock(contentToExtract[indexTime], contentToExtract[indexTimeFormat]);
+	}
+	
+	private void extractEventIsDone(String[] contentToExtract) {
+		String isDone = contentToExtract[INDEX_FOR_EVENT_ISDONE];
+		if (isDone.trim().equalsIgnoreCase("true")) {
+			_isDone = true;
+		} else {
+			_isDone = false;
+		}
 	}
 	
 	public boolean searchInName(String keyWord) {
@@ -50,6 +95,7 @@ public class Event implements Comparable<Event>{
 		_isDone = true;
 		return;
 	}
+	
 	public void markUndone(){
 		_isDone = false;
 		return;
@@ -82,11 +128,8 @@ public class Event implements Comparable<Event>{
 		return currentEventID.equalsIgnoreCase(anotherEventID);
 	}
 	
-	public int compareTo(Event event) {
-		return this.getEventID().compareTo(event.getEventID());
-	}
-	
 	private void appendEventContent() {
+		eventContent = new StringBuilder();
 		appendEventID();
 		appendEventName();
 		appendEventHashTag();
@@ -100,7 +143,7 @@ public class Event implements Comparable<Event>{
 	}
 	
 	private void appendEventReminder() {
-		String content = addSplitter(_eventReminder.toString(), SPLITTER);
+		String content = _eventReminder.toString();
 		eventContent.append(content);
 	}
 

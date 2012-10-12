@@ -1,14 +1,14 @@
-import java.text.ParseException;
 public class TimedEvent extends Event{
 	private Clock _eventStartTime;
 	private Clock _eventEndTime;
+	private static StringBuilder timedEventContent;
 	
 	public TimedEvent() {
 		super();
 		_eventStartTime = null;
 	}
 	
-	public TimedEvent(String eventID, String eventName, String[] hashTag, Clock reminder, Clock startTime, Clock endTime, boolean isDone) {
+	public TimedEvent(String eventID, String eventName, String[] hashTag, Clock reminder, boolean isDone, Clock startTime, Clock endTime) {
 		super(eventID, eventName, hashTag, reminder, isDone);
 		_eventStartTime = startTime;	
 		_eventEndTime = endTime;
@@ -18,14 +18,6 @@ public class TimedEvent extends Event{
 		super(event.getEventID(), event.getEventName(), event.getEventHashTag(), event.getEventReminder(), event.isDone());
 		_eventStartTime = startTime;
 		_eventEndTime = endTime;
-	}
-	
-	public int compareTo(TimedEvent anotherEvent) throws ParseException {
-		return this.getEventStartTime().toDate().compareTo(anotherEvent.getEventStartTime().toDate());
-	}
-	
-	public int compareTo(DeadlineEvent anotherEvent) throws ParseException {
-		return this.getEventStartTime().toDate().compareTo(anotherEvent.getEventTime().toDate());
 	}
 	
 	public Clock getEventStartTime() {
@@ -41,21 +33,26 @@ public class TimedEvent extends Event{
 	}
 
 	public String toString() {
-		StringBuilder eventContent = new StringBuilder();
+		String eventContent = super.toString();
+		timedEventContent = new StringBuilder(eventContent);
+		appendEventTime();
 		
-		eventContent.append(super.toString());
-		appendEventTime(eventContent);
-		
-		return eventContent.toString();
+		return timedEventContent.toString();
 		
 	}
 	
-	private void appendEventTime(StringBuilder timedTaskContent) {
+	public void parse(String[] contentToExtract) {
+		super.parse(contentToExtract);
+		_eventStartTime = Event.extractTime(contentToExtract, INDEX_FOR_EVENT_START_TIME, INDEX_FOR_EVENT_START_TIME_DATEFORMAT);
+		_eventEndTime = Event.extractTime(contentToExtract, INDEX_FOR_EVENT_END_TIME, INDEX_FOR_EVENT_END_TIME_DATEFORMAT);	
+	}
+	
+	private void appendEventTime() {
 		String contentToAppend = _eventStartTime.toString();
-		timedTaskContent.append(contentToAppend);
+		timedEventContent.append(contentToAppend);
 		
-		contentToAppend = super.addSplitter(_eventEndTime.toString(), super.NEW_LINE);
-		timedTaskContent.append(contentToAppend);
+		contentToAppend = _eventEndTime.toString();
+		timedEventContent.append(contentToAppend);
 		
 		return;
 	}

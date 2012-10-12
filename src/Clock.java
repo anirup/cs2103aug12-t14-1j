@@ -1,8 +1,6 @@
-
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 public class Clock {
 	private String _time;
@@ -26,38 +24,26 @@ public class Clock {
 		return _dateFormat;
 	}
 	
-	public void updateTime(String time) {
-		_time = time;
-		return;
-	}
-	
-	public void updateDateFormat(String dateFormat) {
-		_dateFormat = dateFormat;
-		return;
-	}
-	
 	public String toString() {
 		StringBuilder date = new StringBuilder();
 		
-		date.append(_time + Event.SPLITTER);
-		date.append(_dateFormat + Event.SPLITTER);
+		date.append(_time + "..");
+		date.append(_dateFormat + "..");
 		
 		return date.toString();
 	}
 	
-	public int compareTo(Clock anotherTime) throws ParseException {
-		Date thisTimeDate = this.toDate();
-		Date anotherTimeDate = anotherTime.toDate();
+	public int compareTo(Clock anotherTime) {
+		DateTime thisTimeDate = this.toDate();
+		DateTime anotherTimeDate = anotherTime.toDate();
 		
 		return thisTimeDate.compareTo(anotherTimeDate);
 	}
 	
-	public Date toDate() throws ParseException {
-		SimpleDateFormat dateFormat = new SimpleDateFormat(_dateFormat);
+	public DateTime toDate() {
+		DateTimeFormatter pattern = DateTimeFormat.forPattern(_dateFormat);
 		
-		Date date = null;
-		
-		date = dateFormat.parse(_time);
+		DateTime date = pattern.parseDateTime(_time);
 		
 		return date;
 	}

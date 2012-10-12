@@ -2,19 +2,19 @@ import java.util.LinkedList;
 
 
 public class ListOfUserLog {
-	private static LinkedList<UserLog> listOfUserLog = new LinkedList<UserLog>();
+	private static LinkedList<ActionArchive> listOfUserLog = new LinkedList<ActionArchive>();
 	
-	public static void add(UserLog userLog) {
+	public static void add(ActionArchive userLog) {
 		listOfUserLog.add(userLog);
 		return;
 	}
 	
-	public static UserLog getLast() {
+	public static ActionArchive getLast() {
 		return listOfUserLog.pollLast();
 	}
 
 	public static String undo() {
-		UserLog lastUserLog = getLast();
+		ActionArchive lastUserLog = getLast();
 		return lastUserLog.rollBack();
 	}	
 }

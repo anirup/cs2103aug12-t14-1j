@@ -1,4 +1,3 @@
-import java.text.ParseException;
 
 public class DeadlineEvent extends Event{
 	private Clock _eventTime;
@@ -9,7 +8,7 @@ public class DeadlineEvent extends Event{
 		_eventTime = null;
 	}
 	
-	public DeadlineEvent(String eventID, String eventName, String[] hashTag, Clock reminder, Clock time, boolean isDone) {
+	public DeadlineEvent(String eventID, String eventName, String[] hashTag, Clock reminder, boolean isDone, Clock time) {
 		super(eventID, eventName, hashTag, reminder, isDone);
 		_eventTime = time;
 	}
@@ -23,17 +22,13 @@ public class DeadlineEvent extends Event{
 		return _eventTime;
 	}
 	
-	public int compareTo(TimedEvent anotherEvent) throws ParseException {
-		return this.getEventTime().toDate().compareTo(anotherEvent.getEventStartTime().toDate());
+	public void parse(String[] contentToExtract) {
+		super.parse(contentToExtract);
+		_eventTime = Event.extractTime(contentToExtract, Event.INDEX_FOR_EVENT_START_TIME, Event.INDEX_FOR_EVENT_START_TIME_DATEFORMAT);
 	}
 	
-	public int compareTo(DeadlineEvent anotherEvent) throws ParseException {
-		return this.getEventTime().toDate().compareTo(anotherEvent.getEventTime().toDate());
-	}
-
-	public int compareTo(FloatingEvent anotherEvent) {
-		return 1;
-	}
+	
+	
 	public String toString() {
 		StringBuilder eventContent = new StringBuilder();	
 		eventContent.append(super.toString());
@@ -42,7 +37,7 @@ public class DeadlineEvent extends Event{
 	}
 	
 	private void appendEventTime(StringBuilder eventContent) {
-		String contentToAppend = super.addSplitter(_eventTime.toString(), super.NEW_LINE);
+		String contentToAppend = _eventTime.toString();
 		eventContent.append(contentToAppend);
 		
 		return;
