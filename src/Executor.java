@@ -16,7 +16,7 @@ public class Executor {
 		} else if (command.equalsIgnoreCase("delete")) {
 			if (Logic.getSearchState() == true) {
 				int index = Logic.getInteger(parameterList);
-				ListOfUserLog.add(new DeleteLog(ListOfEvent.get(index)));
+				ListOfUserLog.add(new ActionArchiveDelete(ListOfEvent.get(index)));
 				ListOfEvent.remove(index);
 				Logic.searchToFalse();
 			} else if (Logic.getSearchState() == false) {
