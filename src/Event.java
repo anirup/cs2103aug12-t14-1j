@@ -133,8 +133,8 @@ public class Event {
 		appendEventID();
 		appendEventName();
 		appendEventHashTag();
-		appendEventReminder();		
 		appendIsDone();
+		appendEventReminder();		
 	}
 	
 	private void appendEventID() {
