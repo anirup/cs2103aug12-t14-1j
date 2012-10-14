@@ -65,7 +65,7 @@ public class Executor {
 				analyzeAndSearch(parameterList);
 				previousCommand = COMMAND_UPDATE;
 				searchToTrue();
-			}
+			} 
 		} else if (command.equalsIgnoreCase(COMMAND_SEARCH)) {
 			analyzeAndSearch(parameterList);
 			previousCommand = COMMAND_SEARCH;
@@ -110,7 +110,7 @@ public class Executor {
 		Event current = ListOfEvent.getCurrentListOfEvent().getFirst();															// be there
 		while(current!=null) {											// but you// can OR hash tags
 			boolean isAdded = false;
-			String hashTemp ="." ;
+			String hashTemp ="" ;
 			for(int k = 0; k< current.getEventHashTag().length; k++) {
 				hashTemp +=(current.getEventHashTag()[k] + ".");
 			}
@@ -181,5 +181,15 @@ public class Executor {
 	public static void updateEvent(int index) {
 
 		
+	}
+	
+	public String printDataBase() {
+		
+		String str = "";
+		for(int i = 0; i<ListOfEvent.size(); i++) {
+			str += ListOfEvent.get(i).toString();
+			str += '\n';
+		}
+		return str;
 	}
 }
