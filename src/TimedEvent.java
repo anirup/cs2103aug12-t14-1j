@@ -48,8 +48,8 @@ public class TimedEvent extends Event{
 	
 	public String composeContentToDisplay() {
 		String content = super.composeContentToDisplay();
-		content = content + SPLITTER + _eventReminder.getTime();
 		content = content + SPLITTER + _eventStartTime.getTime() + SPLITTER + _eventEndTime.getTime();
+		content = content + SPLITTER + _eventReminder.getTime();
 		return content;
 	}
 	

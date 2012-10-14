@@ -35,8 +35,8 @@ public class DeadlineEvent extends Event{
 	
 	public String composeContentToDisplay() {
 		String content = super.composeContentToDisplay();
-		content = content + SPLITTER + _eventReminder.getTime();
 		content = content + SPLITTER + _eventTime.getTime();
+		content = content + SPLITTER + _eventReminder.getTime();
 		return content;
 	}
 	
