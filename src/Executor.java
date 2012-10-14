@@ -15,15 +15,10 @@ public class Executor {
 	private static final String COMMAND_UNDO = "undo";
 	private static final String TIME_ZONE = "+8:00";
 	
-	private static Vector<Event> searchResults;
-	private static boolean searchState;
+	private static Vector<Event> searchResults = new Vector<Event>();;
+	private static boolean searchState = false;
 	private static String previousCommand = "Nothing";
-	
-	public Executor() {
-		searchState = false;
-		searchResults = new Vector<Event>();
-	}
-	
+		
 	private static boolean getSearchState() {
 		return searchState;
 	}
@@ -107,22 +102,27 @@ public class Executor {
 	}
 
 	public static void analyzeAndSearch(String[] parameterList) { // keywords // have to
-		Event current = ListOfEvent.getCurrentListOfEvent().getFirst();															// be there
-		while(current!=null) {											// but you// can OR hash tags
-			boolean isAdded = false;
-			String hashTemp ="" ;
-			for(int k = 0; k< current.getEventHashTag().length; k++) {
-				hashTemp +=(current.getEventHashTag()[k] + ".");
+		
+		searchResults.clear();
+		Vector<String> searchWords = new Vector<String>();
+		searchWords = Logic.getHashTags(parameterList);
+		String[] tempArr=(Logic.getKeyWords(parameterList)).split("\\s+");
+		searchWords.addAll(Arrays.asList(tempArr)); 
+		for(int i = 0; i <ListOfEvent.size(); i++ ) {
+			boolean isChecked = false;
+			String searchCheck = ".";
+			for(int j=0;j<ListOfEvent.get(j).getEventHashTag().length;j++) {
+				searchCheck+=ListOfEvent.get(j).getEventHashTag()[j];
+				searchCheck+=".";
 			}
-			for(int i = 1; i< parameterList.length;i++) {				
-				if(isAdded==false&&(current.getEventName().toLowerCase().contains(parameterList[i].toLowerCase())||hashTemp.toLowerCase().contains(parameterList[i].toLowerCase()))){
-					searchResults.add(current);
-					isAdded = true;
+			searchCheck+=ListOfEvent.get(i).getEventName();
+			for(int k=0;k<searchWords.size();k++){
+				if(searchCheck.contains(searchWords.get(k))&&isChecked==false){
+					searchResults.add(ListOfEvent.get(i));
 					break;
 				}				
-			}
+			}		
 		}
-																	
 		//Sort 
 
 	}
