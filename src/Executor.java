@@ -31,7 +31,7 @@ public class Executor {
 		searchState = true;
 	}
 	public static void analyze(String userInput) throws IOException {
-		
+		Logic.setUp();
 		String[] parameters = userInput.split("\\..");
 		String[] parameterList = {"-1","-1","-1","-1","-1","-1"};
 		for(int i=0;i<parameters.length;i++)
@@ -198,6 +198,30 @@ public class Executor {
 		for(int i = 0; i<ListOfEvent.size(); i++) {
 			str += ListOfEvent.get(i).composeContentToDisplay();
 			str += '\n';
+		}
+		return str;
+	}
+	public static String printFloatingDataBase() {
+		
+		String str = "";
+		for(int i = 0; i<ListOfEvent.size(); i++) {
+			if(ListOfEvent.get(i).getClass().getName().equals("FloatingEvent"))
+			{
+			str += ListOfEvent.get(i).composeContentToDisplay();
+			str += '\n';
+			}
+		}
+		return str;
+	}
+	public static String printPriorityDataBase() {
+		
+		String str = "";
+		for(int i = 0; i<ListOfEvent.size(); i++) {
+			if(ListOfEvent.get(i).getEventHashTag()[0].equalsIgnoreCase("high"))
+			{
+			str += ListOfEvent.get(i).composeContentToDisplay();
+			str += '\n';
+			}
 		}
 		return str;
 	}
