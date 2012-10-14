@@ -1,3 +1,5 @@
+import org.joda.time.DateTime;
+
 public class FloatingEvent extends Event{	
 	
 	public FloatingEvent() {
@@ -21,8 +23,28 @@ public class FloatingEvent extends Event{
 	}
 	
 	public Clock getEventTime() {
-		Clock eventTime = new Clock();
-		return eventTime;
+		return super.getEventTime();
+	}
+	
+	public boolean isClashedWith(Event anotherEvent) {
+		return false;
+	}
+	
+	public String composeContentToDisplay() {
+		String content = super.composeContentToDisplay();
+		return content;
+	}
+	
+	public boolean isBefore(Event anotherEvent) {
+		return true;
+	}
+	
+	public boolean isInDay(DateTime day) {
+		return false;
+	}
+	
+	public int getEventType() {
+		return FLOATING_TYPE;
 	}
 }
 

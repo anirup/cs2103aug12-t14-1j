@@ -7,7 +7,11 @@ public class CompareEventByTime implements Comparator<Event>{
 	public int compare(Event firstEvent, Event secondEvent) {
 		Clock timeOfFirstEvent = firstEvent.getEventTime();
 		Clock timeOfSecondEvent = secondEvent.getEventTime();
-		return timeOfFirstEvent.compareTo(timeOfSecondEvent);	
+		if (timeOfFirstEvent.isBefore(timeOfSecondEvent)) {
+			return -1;
+		} else {
+			return 1;
+		}
 	}
 
 }

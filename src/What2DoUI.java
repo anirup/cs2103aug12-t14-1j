@@ -1,15 +1,18 @@
+import java.io.IOException;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package what2do;
+
 
 /**
  *
  * @author SANDEEP
  */
 public class What2DoUI extends javax.swing.JFrame {
-
+	Executor obj = new Executor();
+	
     /**
      * Creates new form What2DoUI
      */
@@ -75,7 +78,13 @@ public class What2DoUI extends javax.swing.JFrame {
         });
         textField1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                textField1KeyTyped(evt);
+					try {
+						textField1KeyTyped(evt);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				
             }
         });
 
@@ -252,17 +261,17 @@ public class What2DoUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void textField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textField1KeyTyped
+    private void textField1KeyTyped(java.awt.event.KeyEvent evt) throws IOException {//GEN-FIRST:event_textField1KeyTyped
         jTabbedPane3.setMnemonicAt(0, evt.VK_1);
         jTabbedPane3.setMnemonicAt(1, evt.VK_2);
         jTabbedPane3.setMnemonicAt(2, evt.VK_3);
-        if (evt.getKeyChar()=='\n')
-        {   
+        if (evt.getKeyChar()=='\n'){   
             String data=textField1.getText();
             if (data.equals("exit")==true){
                 System.exit(0);
             }
-            jTextArea1.append(data+"\n");
+            Executor.analyze(data);
+            jTextArea1.setText(Executor.printDataBase());
             textField1.setText("");
                     
         }

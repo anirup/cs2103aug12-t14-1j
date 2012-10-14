@@ -23,6 +23,7 @@ public class TestClock {
 		
 		clockTestToString = "2010 May 05 23 59.." + dateFormat + "..";
 	}
+	
 	@Test
 	public void testToString() {
 		Clock clockTest = new Clock(dateInString, dateFormat);
@@ -30,6 +31,26 @@ public class TestClock {
 		assertEquals("test toString()", clockTestToString, clockTest.toString());
 	}
 
+	@Test 
+	public void testIsBefore() {
+		Clock first = new Clock("25/05/2007", "dd/MM/yyyy");
+		Clock second = new Clock("7:00 27/05/2007", "HH:mm dd/MM/yyyy");
+		assertEquals("test isBefore(Clock)", true, first.isBefore(second));
+		assertEquals("test isBefore(DateTime", true, first.isBefore(DateTime.now()));
+	}
+	
+	@Test
+	public void testIsInDay() {
+		Clock first = new Clock("07/07/2007", "dd/MM/yyyy");
+		Clock second = new Clock("7:00am 07/07/2007", "hh:mmaa dd/MM/yyyy");
+		Clock third = new Clock("10/07/2007", "dd/MM/yyyy");
+		DateTime date = new DateTime(2007, 07, 07, 0, 0);
+		assertEquals("test isInDay()", true, first.isInDay(date));
+		assertEquals("test isInDay()", false, third.isInDay(date));
+		assertEquals("test isInDay()", true, second.isInDay(date));
+	}
+	
+	@Test
 	public void testToDate() {
 		Clock clockTest = new Clock(dateInString, dateFormat);
 		
@@ -38,18 +59,5 @@ public class TestClock {
 		assertEquals("test ToDate()", dt, clockTest.toDate());
 	}
 	
-	public void testCompareTo() {
-		Clock clockTest = new Clock(dateInString, dateFormat);
-		Clock clockTest2 = new Clock(dateInString, dateFormat);
-		Clock clockTest3 = new Clock("2012 May 06 00 00", "yyyy MMM dd HH mm");
-		Clock clockTest4 = new Clock("2010 May 04 00 00", "yyyy MMM dd");
-		assertEquals("test compareTo()", -1, clockTest.compareTo(clockTest3));
-		assertEquals("test compareTo()", 0, clockTest.compareTo(clockTest2));
-		assertEquals("test compareTo()", 0, clockTest.compareTo(clockTest4));
-		
-		DateTime dt1 = new DateTime(2012, 5, 5, 0, 0, 0);
-		DateTime dt2 = new DateTime(2010, 5, 5, 0, 0, 0);
-		
-		assertEquals("test compareTo()", true, dt1.isBefore(dt2));
-	}
+	
 }

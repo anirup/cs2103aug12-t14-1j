@@ -53,12 +53,20 @@ public class PatternDateTime {
 	
 	public String removeFirst(String input) {
 		int firstSpace = input.indexOf(" ");
-		return input.substring(firstSpace, input.length()).trim();
+		if (firstSpace >= 0) {
+			return input.substring(firstSpace, input.length()).trim();		
+		} else {
+			return input;
+		}
 	}
 	
 	public String getFirst(String input) {
 		int firstSpace = input.indexOf(" ");
-		return input.substring(0, firstSpace);
+		if (firstSpace >= 0) {
+			return input.substring(0, firstSpace);			
+		} else {
+			return input;
+		}
 	}
 	
 	public int getDayOfWeek(String day) {

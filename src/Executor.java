@@ -4,7 +4,7 @@ import org.joda.time.Duration;
 import org.joda.time.DateTime;
 public class Executor {
 
-	private static final String FORMAT_DATE = "yyyy-MM-ddTHH:mmZ";
+	private static final String FORMAT_DATE = "yyyy-MM-dd'T'hh:mmZ";
 	private static final String COMMAND_ADD = "add";
 	private static final String COMMAND_DELETE = "delete";
 	private static final String COMMAND_UPDATE = "update";
@@ -150,17 +150,17 @@ public class Executor {
 		resultHashTags.add(0,priority);
 		String[] hashArray = new String[resultHashTags.size()];
 		resultHashTags.toArray(hashArray);
-		String startTimeDate=Logic.getStartTime(parameterList);
 		String endTimeDate=Logic.getEndTime(parameterList);
+		String startTimeDate=Logic.getStartTime(parameterList);
 		Event eventToAdd;
-		if(startTimeDate.equalsIgnoreCase(null)&&endTimeDate.equalsIgnoreCase(null))
+		if(startTimeDate.equals("")&& endTimeDate.equals(""))
 		{
 			//DateTime utc = new DateTime(System.currentTimeMillis(), DateTimeZone.);
-			eventToAdd = new FloatingEvent(id,keywords,hashArray,null,false);
+			eventToAdd = new FloatingEvent(id,keywords,hashArray,new Clock("",FORMAT_DATE),false);
 			ListOfEvent.add(eventToAdd);
 		}
 		
-		else if(startTimeDate.equalsIgnoreCase(null)&&!(endTimeDate.equalsIgnoreCase(null))) {
+		else if(startTimeDate.equalsIgnoreCase("")&&(!endTimeDate.equalsIgnoreCase(""))) {
 			
 			Clock time = new Clock(endTimeDate, FORMAT_DATE);
 			DateTime reminder = time.toDate().minusSeconds((int)reminderTime.getStandardSeconds());
@@ -186,11 +186,11 @@ public class Executor {
 		
 	}
 	
-	public String printDataBase() {
+	public static String printDataBase() {
 		
 		String str = "";
 		for(int i = 0; i<ListOfEvent.size(); i++) {
-			str += ListOfEvent.get(i).toString();
+			str += ListOfEvent.get(i).composeContentToDisplay();
 			str += '\n';
 		}
 		return str;

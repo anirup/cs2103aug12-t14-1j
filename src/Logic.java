@@ -138,7 +138,7 @@ public class Logic {
 	}
 
 	public static String getStartTime(String[] parameterList) {
-		String currentTime = null;
+		String currentTime = "";
 		for (int i = 0; i < 6; i++) {
 			if (fieldFound[i] == false && !parameterList[i].equals("-1")) {
 				currentTime="";
@@ -162,7 +162,7 @@ public class Logic {
 	}
 
 	public static String getEndTime(String[] parameterList) {
-		String endTime = null;
+		String endTime = "";
 		for (int i = 0; i < 6; i++) {
 			if (fieldFound[i] == false && !parameterList[i].equals("-1")) {
 				endTime="";
@@ -186,7 +186,18 @@ public class Logic {
 	}
 
 	public static String getEventID() {
-		return LocalTime.now().toString();
+		Vector<Integer> idDigits= new Vector<Integer>();
+		String eventId=LocalTime.now().toString();
+		Pattern p = Pattern.compile("\\d+");
+		Matcher matches = p.matcher(eventId.trim());
+		while (matches.find()) {
+			idDigits.add((int) Long.parseLong(matches.group()));
+		}
+		eventId="";
+		for(int i=0;i<idDigits.size();i++){
+			eventId+=idDigits.get(i);
+		}
+		return eventId;
 		
 		
 	}

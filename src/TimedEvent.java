@@ -1,3 +1,5 @@
+import org.joda.time.DateTime;
+
 public class TimedEvent extends Event{
 	private Clock _eventStartTime;
 	private Clock _eventEndTime;
@@ -31,7 +33,10 @@ public class TimedEvent extends Event{
 	public Clock getEventTime() {
 		return _eventStartTime;
 	}
-
+	public int getEventType() {
+		return TIMED_TYPE;
+	}
+	
 	public String toString() {
 		String eventContent = super.toString();
 		timedEventContent = new StringBuilder(eventContent);
@@ -39,6 +44,17 @@ public class TimedEvent extends Event{
 		
 		return timedEventContent.toString();
 		
+	}
+	
+	public String composeContentToDisplay() {
+		String content = super.composeContentToDisplay();
+		content = content + SPLITTER + _eventReminder.getTime();
+		content = content + SPLITTER + _eventStartTime.getTime() + SPLITTER + _eventEndTime.getTime();
+		return content;
+	}
+	
+	public boolean isBefore(Event anotherEvent) {
+		return super.isBefore(anotherEvent);
 	}
 	
 	public void parse(String[] contentToExtract) {
@@ -55,5 +71,28 @@ public class TimedEvent extends Event{
 		timedEventContent.append(contentToAppend);
 		
 		return;
+	}
+	
+	public boolean isInDay(DateTime day) {
+		return _eventStartTime.isInDay(day) || _eventEndTime.isInDay(day) || (_eventStartTime.isBefore(day) && !_eventEndTime.isBefore(day));
+	}
+	
+	public boolean isClashedWith(Event anotherEvent) {
+		if(anotherEvent.getEventType() == FLOATING_TYPE) {
+			return false;
+		} else if(anotherEvent.getEventType() == DEADLINE_TYPE) {
+			return false;
+		}
+		
+		Clock thisStartTime = this.getEventStartTime();
+		Clock thisEndTime = this.getEventEndTime();
+		Clock anotherStartTime = anotherEvent.getEventStartTime();
+		Clock anotherEndTime = anotherEvent.getEventEndTime();
+		
+		if((thisStartTime.isBefore(anotherEndTime)&&!thisStartTime.isBefore(anotherStartTime))||
+				(thisEndTime.isBefore(anotherEndTime)&&!thisEndTime.isBefore(anotherStartTime))) {
+			return true;
+		}
+		return false;
 	}
 }
