@@ -11,7 +11,14 @@ public class Logic {
 	private static final String Priority_Low = "LOW";
 	private static final String Priority_High = "HIGH";
 	private static boolean fieldFound[]={false,false,false,false,false,false};
-
+	
+	public static void setUp()
+	{
+		for(int i=0;i<6;i++)
+		{
+			fieldFound[i]=false;
+		}
+	}
 	public static String getKeyWords(String[] parameterList) {
 		fieldFound[1] = true;
 		if(parameterList[1].trim().contains("#"))
