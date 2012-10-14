@@ -172,6 +172,12 @@ public class Executor {
 			
 			Clock starting = new Clock(startTimeDate,FORMAT_DATE);
 			Clock ending = new Clock(endTimeDate,FORMAT_DATE);
+			if(ending.isBefore(starting))
+			{
+				Clock temp=ending;
+				ending=starting;
+				starting=temp;
+			}
 			DateTime reminder = ending.toDate().minusSeconds((int)reminderTime.getStandardSeconds());
 			String reminderString = reminder.getYear()+"-"+reminder.getMonthOfYear() + "-"+ reminder.getDayOfMonth()+"T"+reminder.getHourOfDay()+":"+reminder.getMinuteOfHour()+TIME_ZONE;
 			eventToAdd = new TimedEvent(id,keywords,hashArray,new Clock(reminderString,FORMAT_DATE),false,starting,ending);

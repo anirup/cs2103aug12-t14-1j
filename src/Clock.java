@@ -1,4 +1,5 @@
 import org.joda.time.DateTime;
+import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -7,17 +8,13 @@ public class Clock {
 	private String _dateFormat;
 	
 	public Clock() {
-		_time = "00:01 01/01/1970";
-		_dateFormat = "HH:mm dd/MM/yyyy";
+		_time = LocalTime.now().toString();
+		_dateFormat = "yyyy-MM-dd'T'hh:mmZ";
 	}
 	
 	public Clock(String time, String dateFormat) {
-		if(time.equalsIgnoreCase("")) {
-			_time = "00:01 01/01/1970";
-		} else {
-			_time = time;
-			_dateFormat = dateFormat;
-		}	
+		_time = time;
+		_dateFormat = dateFormat;
 	}
 	
 	public String getTime() {
@@ -65,4 +62,3 @@ public class Clock {
 		return thisTimeDate.isBefore(anotherLong);
 	}
 }
-
