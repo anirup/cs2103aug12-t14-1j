@@ -1,5 +1,6 @@
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -31,8 +32,6 @@ public class ListOfEvent {
 	public static void syncDataToDatabase() throws IOException {
 		DatabaseManager.syncToDatabase(listOfEventInString);
 	}
-	
-	
 	
 	public static int size() {
 		return listOfEvent.size();
@@ -209,5 +208,19 @@ public class ListOfEvent {
 			}
 		}
 		return;
+	}
+	
+	public static ArrayList<String> getListOfEventToDisplay() {
+		ListOfEvent.sortByTime();
+		ArrayList<String> listToDisplay = new ArrayList<String>();
+		Iterator<Event> iterator = listOfEvent.iterator();
+		while(iterator.hasNext()) {
+			Event currentEvent = iterator.next();
+			if(!currentEvent.isDone()) {
+				listToDisplay.add(currentEvent.composeContentToDisplay());
+			}
+		}
+		
+		return listToDisplay;
 	}
 }

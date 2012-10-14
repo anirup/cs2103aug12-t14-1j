@@ -13,6 +13,7 @@ public class TimeAnalyzer {
 	public static String getInput() {
 		return input;
 	}
+	
 	public static DateTime analyzeTime(String command) {
 		input = command;
 		prepareInputToAnalyze();
@@ -53,12 +54,26 @@ public class TimeAnalyzer {
 	}
 	
 	public static void correctTime() {
-		input = input.replaceAll("\\.", ":");
-		if (input.matches("^\\d\\d?((am)|(pm)).{0,}")) {
+		input = input.replaceFirst("\\.", ":");
+		Pattern pat = Pattern.compile("^(00?):?(00?) ?((am))?");
+		Matcher mat = pat.matcher(input);
+		if (mat.find()) {
+			int pos = mat.end();
+			input = input.substring(pos, input.length());
+			insertCharAt("23:59", 0);
+		}
+		if (input.matches("^\\d\\d?")) {
+			StringBuilder sb = new StringBuilder(input);
+			sb.append(":00");
+			input = sb.toString();
+		}
+		if (input.matches("^\\d\\d?\\,[0-9tn].{0,}")) {
+			input = input.replaceFirst(",", ":00,");
+		}
+		if (input.matches("^\\d\\d? ?((am)|(pm)).{0,}")) {
 			input = input.replaceFirst("(am)", ":00am");
 			input = input.replaceFirst("(pm)", ":00pm");
 		}
-		input = input.replaceFirst("\\.", ":");
 	}
 	
 	public static void toLowerCase() {
@@ -66,7 +81,7 @@ public class TimeAnalyzer {
 	}
 	
 	public static void removeExtraSpace() {
-		input = input.replaceAll(" {1,}", " ");
+		input = input.replaceAll(" {1,}", " ").trim();
 	}
 	
 	public static void removeSpace() {

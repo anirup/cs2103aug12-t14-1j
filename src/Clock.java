@@ -7,13 +7,17 @@ public class Clock {
 	private String _dateFormat;
 	
 	public Clock() {
-		_time = null;
-		_dateFormat = null;
+		_time = "00:01 01/01/1970";
+		_dateFormat = "HH:mm dd/MM/yyyy";
 	}
 	
 	public Clock(String time, String dateFormat) {
-		_time = time;
-		_dateFormat = dateFormat;
+		if(time.equalsIgnoreCase("")) {
+			_time = "00:01 01/01/1970";
+		} else {
+			_time = time;
+			_dateFormat = dateFormat;
+		}	
 	}
 	
 	public String getTime() {
@@ -33,11 +37,17 @@ public class Clock {
 		return date.toString();
 	}
 	
-	public int compareTo(Clock anotherTime) {
-		DateTime thisTimeDate = this.toDate();
-		DateTime anotherTimeDate = anotherTime.toDate();
-		
-		return thisTimeDate.compareTo(anotherTimeDate);
+	public boolean isInDay(DateTime day) {
+		DateTime thisDate = this.toDate();
+		if((thisDate.getDayOfYear() == day.getDayOfYear()) && (thisDate.getYearOfCentury() == thisDate.getYearOfCentury())) {
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isBefore(DateTime time) {
+		long timeLong = time.getMillis();
+		return this.toDate().isBefore(timeLong);
 	}
 	
 	public DateTime toDate() {
@@ -47,4 +57,12 @@ public class Clock {
 		
 		return date;
 	}
+
+	public boolean isBefore(Clock anotherTime) {
+		DateTime thisTimeDate = this.toDate();
+		DateTime anotherTimeDate = anotherTime.toDate();
+		long anotherLong  = anotherTimeDate.getMillis();
+		return thisTimeDate.isBefore(anotherLong);
+	}
 }
+

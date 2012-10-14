@@ -1,3 +1,5 @@
+import org.joda.time.DateTime;
+
 
 public class Event {
 	protected String _eventID;
@@ -20,7 +22,10 @@ public class Event {
 	protected static final int INDEX_FOR_EVENT_START_TIME_DATEFORMAT = 7;
 	protected static final int INDEX_FOR_EVENT_END_TIME = 8;
 	protected static final int INDEX_FOR_EVENT_END_TIME_DATEFORMAT = 9;
-	
+	public static final int FLOATING_TYPE = 1;
+	public static final int DEADLINE_TYPE = 2;
+	public static final int TIMED_TYPE = 3;
+
 	private static StringBuilder eventContent;
 
 	public Event() {
@@ -75,6 +80,23 @@ public class Event {
 		}
 	}
 	
+	public boolean isBefore(Event anotherEvent) {
+		if(anotherEvent.getEventType() == FLOATING_TYPE) {
+			return false;
+		} else if(this.getEventTime().isBefore(anotherEvent.getEventTime())) {
+			return true;
+		} 
+		return false;
+	}
+	
+	public boolean isClashedWith(Event anotherEvent) {
+		return false;
+	}
+	
+	public boolean isInDay(DateTime day) {
+		return false;
+	}
+	
 	public boolean searchInName(String keyWord) {
 		return false;
 	}
@@ -118,7 +140,15 @@ public class Event {
 	}
 	
 	public Clock getEventTime() {
-		return null;
+		return new Clock("00:01 01/01/1970", "HH:mm dd/MM/yyyy");
+	}
+	
+	public Clock getEventStartTime() {
+		return getEventTime();
+	}
+	
+	public Clock getEventEndTime() {
+		return getEventTime();
 	}
 	
 	public boolean isSameEvent(Event anotherEvent) {
@@ -133,8 +163,8 @@ public class Event {
 		appendEventID();
 		appendEventName();
 		appendEventHashTag();
-		appendIsDone();
 		appendEventReminder();		
+		appendIsDone();
 	}
 	
 	private void appendEventID() {
@@ -147,6 +177,10 @@ public class Event {
 		eventContent.append(content);
 	}
 
+	public int getEventType() {
+		return 0;
+	}
+	
 	private void appendEventHashTag() {
 		for (int position = 0; position < _eventHashTag.length; position++) {
 			String hashTagToAppend = _eventHashTag[position];
@@ -172,9 +206,16 @@ public class Event {
 		return content + splitter;
 	}
 
+	public String composeContentToDisplay() {
+		String content = _eventID + SPLITTER + _eventName + SPLITTER;
+		for(int i = 0; i < _eventHashTag.length; i++) {
+			content = content + "#" + _eventHashTag[i] + SPACE;
+		}
+		return content;
+	}
+	
 	public String toString() {
 		appendEventContent();
-		
 		return eventContent.toString();
 	}
 }
