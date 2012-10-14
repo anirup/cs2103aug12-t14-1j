@@ -32,7 +32,10 @@ public class Executor {
 	}
 	public static void analyze(String userInput) throws IOException {
 		
-		String[] parameterList = userInput.split("\\..");
+		String[] parameters = userInput.split("\\..");
+		String[] parameterList = {"-1","-1","-1","-1","-1","-1"};
+		for(int i=0;i<parameters.length;i++)
+			parameterList[i]=parameters[i];
 		String command = Logic.getCommand(parameterList);
 		if (command.equalsIgnoreCase(COMMAND_ADD)) {
 			ListOfArchive.add(new ActionArchiveAdd(analyzeAddInput(parameterList)));

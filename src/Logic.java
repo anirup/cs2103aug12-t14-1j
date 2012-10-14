@@ -10,7 +10,7 @@ public class Logic {
 	private static final String Priority_Normal = "NORMAL";
 	private static final String Priority_Low = "LOW";
 	private static final String Priority_High = "HIGH";
-	private static boolean fieldFound[]=new boolean[6];
+	private static boolean fieldFound[]={false,false,false,false,false,false};
 
 	public static String getKeyWords(String[] parameterList) {
 		fieldFound[1] = true;
@@ -57,9 +57,7 @@ public class Logic {
 					timeQuantity.add(Long.parseLong(matches.group()));
 				}
 				break;
-			} else {
-				fieldFound[4] = true;
-			}
+			} 
 		}
 		if (indexOfReminder != -1) {
 			for (int j = 0; j < timeQuantity.size() -1 ; j++) {
@@ -101,6 +99,8 @@ public class Logic {
 					miliseconds += timeQuantity.get(k) * 1000;
 				}
 			}
+		}else {
+			fieldFound[4] = true;
 		}
 
 		return (new Duration(miliseconds));
@@ -138,9 +138,10 @@ public class Logic {
 	}
 
 	public static String getStartTime(String[] parameterList) {
-		String currentTime = "";
+		String currentTime = null;
 		for (int i = 0; i < 6; i++) {
-			if (fieldFound[i] == false) {
+			if (fieldFound[i] == false && !parameterList[i].equals("-1")) {
+				currentTime="";
 				String[] dateAndTime = parameterList[i].trim().split(" ");
 				if (dateAndTime[0].contains(":")) {
 					currentTime += dateAndTime[1] + "T" + dateAndTime[0].trim()
@@ -161,9 +162,10 @@ public class Logic {
 	}
 
 	public static String getEndTime(String[] parameterList) {
-		String endTime = "";
+		String endTime = null;
 		for (int i = 0; i < 6; i++) {
-			if (fieldFound[i] == false) {
+			if (fieldFound[i] == false && !parameterList[i].equals("-1")) {
+				endTime="";
 				String[] dateAndTime = parameterList[i].trim().split(" ");
 				if (dateAndTime[0].contains(":")) {
 					endTime += dateAndTime[1] + "T" + dateAndTime[0].trim()
