@@ -6,68 +6,100 @@ import java.io.*;
 import org.joda.time.Duration;
 public class Executor {
 
+	private static Vector<Event> searchResults;
+	private static boolean searchState;
+	
+	public Executor() {
+		searchState = false;
+		searchResults = new Vector<Event>();
+	}
+	
+	private static boolean getSearchState() {
+		return searchState;
+	}
+	
+	private static void searchToFalse() {
+		searchState = false;
+	}
+	
+	private static void searchToTrue() {
+		searchState = true;
+	}
 	public static void analyze(String userInput) {
 		
-		String[] parameterList = userInput.split("..");
+		String[] parameterList = userInput.split("\\..");
 		String command = Logic.getCommand(parameterList);
 		if (command.equalsIgnoreCase("add")) {
 			analyzeAddInput(parameterList);
-			Logic.searchToFalse();
+			searchToFalse();
 		} else if (command.equalsIgnoreCase("delete")) {
-			if (Logic.getSearchState() == true) {
+			if (getSearchState() == true) {
 				int index = Logic.getInteger(parameterList);
-				ListOfUserLog.add(new DeleteLog(ListOfEvent.get(index)));
+				ListOfArchive.add(new ActionArchiveDelete(ListOfEvent.get(index)));
 				ListOfEvent.remove(index);
-				Logic.searchToFalse();
-			} else if (Logic.getSearchState() == false) {
-				analyzeAndSearch(parameterList);
-				Logic.searchToTrue();
+				searchToFalse();
+			} else if (getSearchState() == false) {
+				analyzeAndSearch(parameterList);				
+				searchToTrue();
 			}
 		} else if (command.equalsIgnoreCase("update")) {
-			if (Logic.getSearchState() == true) {
+			if (getSearchState() == true) {
 				int index = Logic.getInteger(parameterList);
 				updateEvent(index);
-				Logic.searchToFalse();
-			} else if (Logic.getSearchState() == false) {
+				searchToFalse();
+			} else if (getSearchState() == false) {
 				analyzeAndSearch(parameterList);
-				Logic.searchToTrue();
+				searchToTrue();
 			}
 		} else if (command.equalsIgnoreCase("search")) {
 			analyzeAndSearch(parameterList);
 		} else if (command.equalsIgnoreCase("done")) {
-			if (Logic.getSearchState() == true) {
+			if (getSearchState() == true) {
 				int index = Logic.getInteger(parameterList);
 				markDone(index);
-				Logic.searchToFalse();
-			} else if (Logic.getSearchState() == false) {
+				searchToFalse();
+			} else if (getSearchState() == false) {
 				analyzeAndSearch(parameterList);
-				Logic.searchToTrue();
+				searchToTrue();
 			}
 		} else if (command.equalsIgnoreCase("undone")) {
-			if (Logic.getSearchState() == true) {
+			if (getSearchState() == true) {
 				int index = Logic.getInteger(parameterList);
 				markNotDone(index);
-				Logic.searchToFalse();
-			} else if (Logic.getSearchState() == false) {
+				searchToFalse();
+			} else if (getSearchState() == false) {
 				analyzeAndSearch(parameterList);
-				Logic.searchToTrue();
+				searchToTrue();
 			}
 		} else if (command.equalsIgnoreCase("undo")) {
 			undoLast();
 		}
+		//save file , exit
 
 	}
 
 	public static void undoLast() {
-		ListOfUserLog.undo();
+		ListOfArchive.undo();
 	}
 
-	public static void analyzeAndSearch(String[] parameterList) { // keywords
-																	// have to
-																	// be there
-																	// but you
-																	// can OR
-																	// hash tags
+	public static void analyzeAndSearch(String[] parameterList) { // keywords // have to
+		Event current = ListOfEvent.getCurrentListOfEvent().getFirst();															// be there
+		while(current!=null) {											// but you// can OR hash tags
+			boolean isAdded = false;
+			String hashTemp ="." ;
+			for(int k = 0; k< current.getEventHashTag().length; k++) {
+				hashTemp +=(current.getEventHashTag()[k] + ".");
+			}
+			for(int i = 1; i< parameterList.length;i++) {				
+				if(isAdded==false&&(current.getEventName().toLowerCase().contains(parameterList[i].toLowerCase())||hashTemp.toLowerCase().contains(parameterList[i].toLowerCase()))){
+					searchResults.add(current);
+					isAdded = true;
+					break;
+				}				
+			}
+		}
+																	
+		//Sort 
 
 	}
 
@@ -87,12 +119,12 @@ public class Executor {
 		priority = Logic.getPriority(parameterList);
 		reminderTime = Logic.getReminderTime(parameterList);
 		Vector<String> resultHashTags = Logic.getHashTags(parameterList);
-		resultHashTags.add(priority);
+		resultHashTags.add(0,priority);
 		String startTimeDate=Logic.getStartTime(parameterList);
 		String endTimeDate=Logic.getEndTime(parameterList);
 		if(startTimeDate.equalsIgnoreCase(null)&&endTimeDate.equalsIgnoreCase(null))
 		{
-			
+			ListOfEvent.add(new FloatingEvent(id,keywords,resultHashTags.toString(),reminderTime,false));
 		}
 	}
 
