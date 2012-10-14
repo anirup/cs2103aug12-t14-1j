@@ -1,0 +1,122 @@
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
+
+public class PatternDateTime {
+	private Pattern _pattern;
+	private String _timeFormat;
+	
+	public PatternDateTime(Pattern pattern, String timeFormat) {
+		_pattern = pattern;
+		_timeFormat = timeFormat;
+	}
+
+	public boolean isMatches(String input) {
+		Matcher matcher = _pattern.matcher(input);
+		if(matcher.matches()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public DateTime getDateTime(String input) {
+			
+		DateTime newDateTime = null;
+		if(_timeFormat.contains("pattern")) {
+			newDateTime = getDateTimeSpecial(input);
+		} else {			
+			DateTimeFormatter dateFormat = DateTimeFormat.forPattern(_timeFormat);
+			newDateTime = dateFormat.parseDateTime(input);
+			if(newDateTime.getYearOfCentury() == 0) {
+				newDateTime.plusYears(DateTime.now().getYearOfCentury());
+			}
+		}
+		return newDateTime;
+	}
+	
+	public DateTime getTime(String input) {
+		DateTime dt;
+		if (input.contains("am")||input.contains("pm")) {
+			DateTimeFormatter timeFormat = DateTimeFormat.forPattern("hh:mmaa");
+			dt = timeFormat.parseDateTime(input);
+		} else {
+			DateTimeFormatter timeFormat = DateTimeFormat.forPattern("HH:mm");
+			dt = timeFormat.parseDateTime(input);
+		}
+		return dt;
+	}
+	
+	public String removeFirst(String input) {
+		int firstSpace = input.indexOf(" ");
+		return input.substring(firstSpace, input.length()).trim();
+	}
+	
+	public String getFirst(String input) {
+		int firstSpace = input.indexOf(" ");
+		return input.substring(0, firstSpace);
+	}
+	
+	public int getDayOfWeek(String day) {
+		if (day.contains("mon")) {
+			return 1;
+		} else if (day.contains("tue")) {
+			return 2;
+		} else if (day.contains("wed")) {
+			return 3;
+		} else if (day.contains("thu")) {
+			return 4;
+		} else if (day.contains("fri")) {
+			return 5;
+		} else if (day.contains("sat")) {
+			return 6;
+		} else if (day.contains("sun")) {
+			return 7;
+		} 
+		return 0;
+	}
+	
+	public DateTime getDate(String input) {
+		DateTime today = new DateTime();
+		if (input.contains("today")) {
+			return today.minus(today.getMillisOfDay());
+		}
+		if (input.contains("tomorrow")||input.contains("tmr")) {
+			today = today.minus(today.getMillisOfDay());
+			today = today.plusDays(1);
+			return today;
+		}
+		
+		int dayOfWeek = getDayOfWeek(input);
+		
+		String weekIndicator = getFirst(input);
+		
+		if(weekIndicator.equalsIgnoreCase("this")) {
+			today = today.minusDays(today.getDayOfWeek());
+			today = today.plusDays(dayOfWeek);
+		} else {
+			today = today.minusDays(today.getDayOfWeek());
+			today = today.plusDays(dayOfWeek + 7);
+		}
+		return today.minus(today.getMillisOfDay());
+	}
+	
+	public DateTime getDateTimeSpecial(String input) {
+		if(input.contains("this")||input.contains("next")||input.contains("today")||input.contains("tmr")||input.contains("tomorrow")) {
+			DateTime dt = getDate(removeFirst(input));
+			dt = dt.plus(getTime(getFirst(input)).getMillisOfDay());
+			return dt;
+		} else if(input.contains(":")) {
+			DateTime dt = new DateTime();
+			dt = dt.minusMillis(dt.getMillisOfDay());
+			dt = dt.plusMillis(getTime(input).getMillisOfDay());
+			return dt;
+		} else {
+			return getDate(input);
+		}
+	}
+}

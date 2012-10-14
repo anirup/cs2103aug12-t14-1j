@@ -9,14 +9,8 @@ import org.junit.Test;
 public class TestLogic {
 
 	String command;
-	String[] parameterList;
+	String[] parameterList= {"add","meeting#abcd#abcde","h","r-1hr2min","-1","-1"};
 
-	@Before
-	public void setUp() {
-		command = "add..meeting#abcd#abcde..2012-03-24 13:25..h..r-1hr2min";
-		parameterList = command.split("\\..");
-		Vector<String> a=new Vector<String>();
-	}
 
 	@Test
 	public void testGetID() {
@@ -25,6 +19,7 @@ public class TestLogic {
 	@Test
 	public void testGetTime() {
 		assertEquals("test getcommand", "add", Logic.getCommand(parameterList));
+
 	}
 
 	@Test
@@ -54,8 +49,12 @@ public class TestLogic {
 
 	@Test
 	public void testGet5() {
-		assertEquals("test getstarttime", "2012-03-24T13:25+08:00",
-				Logic.getStartTime(parameterList));
+		Logic.getKeyWords(parameterList);
+		Logic.getPriority(parameterList);
+		Logic.getReminderTime(parameterList);
+		Logic.getCommand(parameterList);
+		assertEquals("test getstarttime", null,
+				Logic.getEndTime(parameterList));
 	}
 
 	@Test
