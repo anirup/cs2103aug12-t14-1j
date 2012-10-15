@@ -27,8 +27,7 @@ class EventForSort implements Comparable<Object> {
 		if (this.priority() != ((EventForSort) o).priority())
 			return this.priority() - ((EventForSort) o).priority() ;
 		else
-			return (int) (this._dateTime.getMillis() - ((EventForSort) o)._dateTime
-					.getMillis());
+			return (int) (((EventForSort) o)._dateTime.getMillis() - this._dateTime.getMillis());
 	}
 
 	Integer index() {
@@ -47,6 +46,7 @@ class EventForSort implements Comparable<Object> {
 
 public class Executor {
 
+	private static final String PRIORITY_HIGH = "high";
 	private static final String STRING_NULL = "";
 	private static final String SHORTHAND_UPDATE = "u";
 	private static final String SHORTHAND_DELETE = "-";
@@ -289,7 +289,7 @@ public class Executor {
 		String str = STRING_NULL;
 		for (int i = 0; i < ListOfEvent.size(); i++) {
 			if (ListOfEvent.get(i).getEventHashTag()[0]
-					.equalsIgnoreCase("high")) {
+					.equalsIgnoreCase(PRIORITY_HIGH)) {
 				str += ListOfEvent.get(i).composeContentToDisplay();
 				str += '\n';
 			}
@@ -298,11 +298,11 @@ public class Executor {
 	}
 	
 	public static String printSearchResults() {
-		String temp = "";
-		for(int i = 0;i<searchResults.size();i++) {
-			temp+=searchResults.get(i).index();
+		String temp = STRING_NULL;
+		for(int i = 0; i<searchResults.size(); i++) {
+			temp +=searchResults.get(i).index();
 			temp += ". ";
-			temp += searchResults.get(i).event().toString();
+			temp += searchResults.get(i).event().composeContentToDisplay();
 			temp += "\n";
 		}
 		return temp;
