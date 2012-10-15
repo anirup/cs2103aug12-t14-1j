@@ -310,6 +310,7 @@ public class What2DoUI extends javax.swing.JFrame {
 		if (evt.getKeyChar() == '\n') {
 			String data = textField1.getText();
 			if (data.equals("exit") == true) {
+				ListOfEvent.syncDataToDatabase();
 				System.exit(0);
 			}
 			Executor.analyze(data);
@@ -376,8 +377,9 @@ public class What2DoUI extends javax.swing.JFrame {
 	/**
 	 * @param args
 	 *            the command line arguments
-	 */
-	public static void main(String args[]) {
+	 * @throws Exception 
+	 */ 
+	public static void main(String args[]) throws Exception {
 		/* Set the Nimbus look and feel */
 		// <editor-fold defaultstate="collapsed"
 		// desc=" Look and feel setting code (optional) ">
@@ -414,6 +416,7 @@ public class What2DoUI extends javax.swing.JFrame {
 		java.awt.EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				new What2DoUI().setVisible(true);
+				
 			}
 		});
 	}
