@@ -66,7 +66,7 @@ public class ListOfEvent {
 	
 	public static boolean remove(Event eventToBeDeleted) {
 		int indexOfEventToBeDeleted = indexOf(eventToBeDeleted);
-		listOfEventInString.remove(indexOfEventToBeDeleted);
+		//listOfEventInString.remove(indexOfEventToBeDeleted);
 		if (indexOfEventToBeDeleted != -1) {
 			remove(indexOfEventToBeDeleted);
 			return true;
