@@ -10,7 +10,6 @@ import java.io.IOException;
  * @author SANDEEP
  */
 public class What2DoUI extends javax.swing.JFrame {
-	Executor obj = new Executor();
 
 	/**
 	 * Creates new form What2DoUI
@@ -35,7 +34,6 @@ public class What2DoUI extends javax.swing.JFrame {
 		jTabbedPane2 = new javax.swing.JTabbedPane();
 		jPanel1 = new javax.swing.JPanel();
 		textField1 = new java.awt.TextField();
-		jButton2 = new javax.swing.JButton();
 		jScrollPane4 = new javax.swing.JScrollPane();
 		jTextPane2 = new javax.swing.JTextPane();
 		jTabbedPane3 = new javax.swing.JTabbedPane();
@@ -48,11 +46,12 @@ public class What2DoUI extends javax.swing.JFrame {
 		jPanel5 = new javax.swing.JPanel();
 		jScrollPane5 = new javax.swing.JScrollPane();
 		jTextArea3 = new javax.swing.JTextArea();
+		jPanel6 = new javax.swing.JPanel();
+		jScrollPane7 = new javax.swing.JScrollPane();
+		jTextArea4 = new javax.swing.JTextArea();
+		jLabel2 = new javax.swing.JLabel();
+		jLabel1 = new javax.swing.JLabel();
 		jPanel3 = new javax.swing.JPanel();
-		jFormattedTextField1 = new javax.swing.JFormattedTextField();
-		jScrollPane1 = new javax.swing.JScrollPane();
-		jTextPane1 = new javax.swing.JTextPane();
-		jButton1 = new javax.swing.JButton();
 
 		jTable1.setModel(new javax.swing.table.DefaultTableModel(
 				new Object[][] { { null, null, null, null },
@@ -78,24 +77,20 @@ public class What2DoUI extends javax.swing.JFrame {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-
-			}
-		});
-
-		jButton2.setText("Done");
-		jButton2.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				jButton2ActionPerformed(evt);
 			}
 		});
 
 		jTextPane2.setFont(new java.awt.Font("Tahoma", 2, 14)); // NOI18N
 		jTextPane2
-				.setText("FORMAT : [operation]...[key words]...[date and time]...[reminder y/n]...[reminder time]");
+				.setText("FORMAT : [command]..[keywords]..[start time]..[end time]..[priority]..[r-reminder time]");
 		jScrollPane4.setViewportView(jTextPane2);
+
+		jTabbedPane3.setBorder(new javax.swing.border.SoftBevelBorder(
+				javax.swing.border.BevelBorder.RAISED));
 
 		jTextArea1.setColumns(20);
 		jTextArea1.setRows(5);
+		jTextArea1.setBorder(new javax.swing.border.MatteBorder(null));
 		jScrollPane2.setViewportView(jTextArea1);
 
 		javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(
@@ -103,17 +98,18 @@ public class What2DoUI extends javax.swing.JFrame {
 		jPanel2.setLayout(jPanel2Layout);
 		jPanel2Layout.setHorizontalGroup(jPanel2Layout.createParallelGroup(
 				javax.swing.GroupLayout.Alignment.LEADING).addComponent(
-				jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1225,
+				jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 866,
 				Short.MAX_VALUE));
 		jPanel2Layout.setVerticalGroup(jPanel2Layout.createParallelGroup(
 				javax.swing.GroupLayout.Alignment.LEADING).addComponent(
-				jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 133,
+				jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 96,
 				Short.MAX_VALUE));
 
 		jTabbedPane3.addTab("Upcoming Events", jPanel2);
 
 		jTextArea2.setColumns(20);
 		jTextArea2.setRows(5);
+		jTextArea2.setBorder(new javax.swing.border.MatteBorder(null));
 		jScrollPane3.setViewportView(jTextArea2);
 
 		javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(
@@ -121,17 +117,18 @@ public class What2DoUI extends javax.swing.JFrame {
 		jPanel4.setLayout(jPanel4Layout);
 		jPanel4Layout.setHorizontalGroup(jPanel4Layout.createParallelGroup(
 				javax.swing.GroupLayout.Alignment.LEADING).addComponent(
-				jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 1225,
+				jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 866,
 				Short.MAX_VALUE));
 		jPanel4Layout.setVerticalGroup(jPanel4Layout.createParallelGroup(
 				javax.swing.GroupLayout.Alignment.LEADING).addComponent(
-				jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 133,
+				jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 96,
 				Short.MAX_VALUE));
 
 		jTabbedPane3.addTab("Priority Events", jPanel4);
 
 		jTextArea3.setColumns(20);
 		jTextArea3.setRows(5);
+		jTextArea3.setBorder(new javax.swing.border.MatteBorder(null));
 		jScrollPane5.setViewportView(jTextArea3);
 
 		javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(
@@ -139,14 +136,39 @@ public class What2DoUI extends javax.swing.JFrame {
 		jPanel5.setLayout(jPanel5Layout);
 		jPanel5Layout.setHorizontalGroup(jPanel5Layout.createParallelGroup(
 				javax.swing.GroupLayout.Alignment.LEADING).addComponent(
-				jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 1225,
+				jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 866,
 				Short.MAX_VALUE));
 		jPanel5Layout.setVerticalGroup(jPanel5Layout.createParallelGroup(
 				javax.swing.GroupLayout.Alignment.LEADING).addComponent(
-				jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 133,
+				jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 96,
 				Short.MAX_VALUE));
 
 		jTabbedPane3.addTab("Floating Events", jPanel5);
+
+		jTextArea4.setColumns(20);
+		jTextArea4.setRows(5);
+		jTextArea4.setBorder(new javax.swing.border.MatteBorder(null));
+		jScrollPane7.setViewportView(jTextArea4);
+
+		javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(
+				jPanel6);
+		jPanel6.setLayout(jPanel6Layout);
+		jPanel6Layout.setHorizontalGroup(jPanel6Layout.createParallelGroup(
+				javax.swing.GroupLayout.Alignment.LEADING).addComponent(
+				jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 866,
+				Short.MAX_VALUE));
+		jPanel6Layout.setVerticalGroup(jPanel6Layout.createParallelGroup(
+				javax.swing.GroupLayout.Alignment.LEADING).addComponent(
+				jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 96,
+				Short.MAX_VALUE));
+
+		jTabbedPane3.addTab("Search Results", jPanel6);
+
+		jLabel2.setIcon(new javax.swing.ImageIcon("src\\Logo3.png")); // NOI18N
+		jLabel2.setText("jLabel2");
+
+		jLabel1.setIcon(new javax.swing.ImageIcon("src\\Logo5.png")); // NOI18N
+		jLabel1.setText("jLabel1");
 
 		javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(
 				jPanel1);
@@ -158,43 +180,41 @@ public class What2DoUI extends javax.swing.JFrame {
 						.addGroup(
 								jPanel1Layout
 										.createSequentialGroup()
-										.addGap(0, 0, Short.MAX_VALUE)
-										.addComponent(
-												textField1,
-												javax.swing.GroupLayout.PREFERRED_SIZE,
-												1141,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(
-												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-										.addComponent(
-												jButton2,
-												javax.swing.GroupLayout.PREFERRED_SIZE,
-												73,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addGap(26, 26, 26))
-						.addGroup(
-								jPanel1Layout
-										.createSequentialGroup()
-										.addContainerGap()
+										.addContainerGap(28, Short.MAX_VALUE)
 										.addGroup(
 												jPanel1Layout
 														.createParallelGroup(
-																javax.swing.GroupLayout.Alignment.LEADING)
+																javax.swing.GroupLayout.Alignment.LEADING,
+																false)
+														.addComponent(
+																jTabbedPane3)
 														.addGroup(
 																jPanel1Layout
-																		.createSequentialGroup()
+																		.createParallelGroup(
+																				javax.swing.GroupLayout.Alignment.LEADING,
+																				false)
+																		.addGroup(
+																				jPanel1Layout
+																						.createSequentialGroup()
+																						.addComponent(
+																								jLabel2,
+																								javax.swing.GroupLayout.PREFERRED_SIZE,
+																								276,
+																								javax.swing.GroupLayout.PREFERRED_SIZE)
+																						.addPreferredGap(
+																								javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+																						.addComponent(
+																								jLabel1,
+																								javax.swing.GroupLayout.PREFERRED_SIZE,
+																								591,
+																								javax.swing.GroupLayout.PREFERRED_SIZE))
 																		.addComponent(
-																				jScrollPane4,
-																				javax.swing.GroupLayout.PREFERRED_SIZE,
-																				864,
-																				javax.swing.GroupLayout.PREFERRED_SIZE)
-																		.addGap(0,
-																				0,
-																				Short.MAX_VALUE))
-														.addComponent(
-																jTabbedPane3,
-																javax.swing.GroupLayout.Alignment.TRAILING))
-										.addContainerGap()));
+																				textField1,
+																				javax.swing.GroupLayout.DEFAULT_SIZE,
+																				javax.swing.GroupLayout.DEFAULT_SIZE,
+																				Short.MAX_VALUE)
+																		.addComponent(
+																				jScrollPane4)))));
 		jPanel1Layout
 				.setVerticalGroup(jPanel1Layout
 						.createParallelGroup(
@@ -206,16 +226,29 @@ public class What2DoUI extends javax.swing.JFrame {
 												jPanel1Layout
 														.createParallelGroup(
 																javax.swing.GroupLayout.Alignment.LEADING)
-														.addComponent(
-																textField1,
-																javax.swing.GroupLayout.PREFERRED_SIZE,
-																34,
-																javax.swing.GroupLayout.PREFERRED_SIZE)
-														.addComponent(
-																jButton2,
-																javax.swing.GroupLayout.PREFERRED_SIZE,
-																30,
-																javax.swing.GroupLayout.PREFERRED_SIZE))
+														.addGroup(
+																jPanel1Layout
+																		.createSequentialGroup()
+																		.addContainerGap()
+																		.addComponent(
+																				jLabel2,
+																				javax.swing.GroupLayout.PREFERRED_SIZE,
+																				128,
+																				javax.swing.GroupLayout.PREFERRED_SIZE))
+														.addGroup(
+																jPanel1Layout
+																		.createSequentialGroup()
+																		.addGap(22,
+																				22,
+																				22)
+																		.addComponent(
+																				jLabel1)))
+										.addGap(1, 1, 1)
+										.addComponent(
+												textField1,
+												javax.swing.GroupLayout.PREFERRED_SIZE,
+												34,
+												javax.swing.GroupLayout.PREFERRED_SIZE)
 										.addPreferredGap(
 												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 										.addComponent(
@@ -225,8 +258,7 @@ public class What2DoUI extends javax.swing.JFrame {
 												javax.swing.GroupLayout.PREFERRED_SIZE)
 										.addPreferredGap(
 												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-										.addComponent(jTabbedPane3)
-										.addContainerGap()));
+										.addComponent(jTabbedPane3)));
 
 		jPanel3.setBackground(new java.awt.Color(204, 204, 255));
 		jPanel3.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(
@@ -237,60 +269,16 @@ public class What2DoUI extends javax.swing.JFrame {
 		jPanel3.setLayout(new javax.swing.BoxLayout(jPanel3,
 				javax.swing.BoxLayout.LINE_AXIS));
 
-		jFormattedTextField1.setEditable(false);
-		jFormattedTextField1.setBackground(new java.awt.Color(204, 204, 255));
-		jFormattedTextField1.setForeground(new java.awt.Color(153, 0, 0));
-		jFormattedTextField1
-				.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-		jFormattedTextField1.setText("What2Do!");
-		jFormattedTextField1.setCaretColor(new java.awt.Color(153, 0, 0));
-		jFormattedTextField1.setCursor(new java.awt.Cursor(
-				java.awt.Cursor.TEXT_CURSOR));
-		jFormattedTextField1
-				.setDisabledTextColor(new java.awt.Color(255, 0, 0));
-		jFormattedTextField1
-				.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
-		jFormattedTextField1
-				.addActionListener(new java.awt.event.ActionListener() {
-					public void actionPerformed(java.awt.event.ActionEvent evt) {
-						jFormattedTextField1ActionPerformed(evt);
-					}
-				});
-		jPanel3.add(jFormattedTextField1);
-
-		jTextPane1.setEditable(false);
-		jTextPane1.setBackground(new java.awt.Color(255, 204, 204));
-		jTextPane1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-		jTextPane1.setForeground(new java.awt.Color(153, 0, 51));
-		jTextPane1
-				.setText("A one-stop application to help you manage and optimize your schedules!");
-		jScrollPane1.setViewportView(jTextPane1);
-
-		jPanel3.add(jScrollPane1);
-
-		jButton1.setText("Exit");
-		jButton1.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				jButton1ActionPerformed(evt);
-			}
-		});
-
 		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(
 				getContentPane());
 		getContentPane().setLayout(layout);
 		layout.setHorizontalGroup(layout
 				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE,
-						javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 				.addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE,
-						javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-				.addGroup(
-						javax.swing.GroupLayout.Alignment.TRAILING,
-						layout.createSequentialGroup()
-								.addContainerGap(
-										javax.swing.GroupLayout.DEFAULT_SIZE,
-										Short.MAX_VALUE).addComponent(jButton1)
-								.addGap(21, 21, 21)));
+						917, Short.MAX_VALUE)
+				.addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE,
+						javax.swing.GroupLayout.DEFAULT_SIZE,
+						javax.swing.GroupLayout.PREFERRED_SIZE));
 		layout.setVerticalGroup(layout
 				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 				.addGroup(
@@ -305,30 +293,14 @@ public class What2DoUI extends javax.swing.JFrame {
 										javax.swing.GroupLayout.PREFERRED_SIZE,
 										javax.swing.GroupLayout.DEFAULT_SIZE,
 										javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(
-										javax.swing.LayoutStyle.ComponentPlacement.RELATED,
+								.addContainerGap(
 										javax.swing.GroupLayout.DEFAULT_SIZE,
-										Short.MAX_VALUE).addComponent(jButton1)
-								.addContainerGap()));
+										Short.MAX_VALUE)));
 
 		jPanel3.getAccessibleContext().setAccessibleName("");
 
 		pack();
 	}// </editor-fold>//GEN-END:initComponents
-
-	private void jFormattedTextField1ActionPerformed(
-			java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jFormattedTextField1ActionPerformed
-		// TODO add your handling code here:
-	}// GEN-LAST:event_jFormattedTextField1ActionPerformed
-
-	private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton2ActionPerformed
-		// jTextArea1.setEditable(true);
-		String data = textField1.getText();
-		jTextArea1.append(data + "\n");
-		// jTextArea1.setCaretPosition(jTextArea1.getCaretPosition());
-		textField1.setText("");
-		// TODO add your handling code here:
-	}// GEN-LAST:event_jButton2ActionPerformed
 
 	private void textField1KeyTyped(java.awt.event.KeyEvent evt)
 			throws IOException {// GEN-FIRST:event_textField1KeyTyped
@@ -341,9 +313,19 @@ public class What2DoUI extends javax.swing.JFrame {
 				System.exit(0);
 			}
 			Executor.analyze(data);
-			jTextArea1.setText(Executor.printDataBase());
-			jTextArea2.setText(Executor.printPriorityDataBase());
-			jTextArea3.setText(Executor.printFloatingDataBase());
+			String upcomingEvents = Executor.printDataBase();
+			String priorityEvents = Executor.printPriorityDataBase();
+			String floatingEvents = Executor.printFloatingDataBase();
+			String searchResults = Executor.printSearchResults();
+			upcomingEvents = format(upcomingEvents);
+			priorityEvents = format(priorityEvents);
+			floatingEvents = format(floatingEvents);
+			searchResults = formatForSearch(searchResults);
+
+			jTextArea1.setText(upcomingEvents);
+			jTextArea2.setText(priorityEvents);
+			jTextArea3.setText(floatingEvents);
+			jTextArea4.setText(searchResults);
 			textField1.setText("");
 
 		}
@@ -354,13 +336,42 @@ public class What2DoUI extends javax.swing.JFrame {
 		 */
 	}// GEN-LAST:event_textField1KeyTyped
 
+	private String format(String text) {
+		String newText = "";
+		newText += "Event ID\tName\tAdditional Details\n";
+		for (int i = 0; i < text.length(); i++) {
+			if (text.charAt(i) == '.' && text.charAt(i + 1) == '.') {
+				newText += '\t';
+				i++;
+			} else {
+				newText += text.charAt(i);
+			}
+
+		}
+		// TODO Auto-generated method stub
+		return newText;
+	}
+	
+	private String formatForSearch(String text) {
+		String newText = "";
+		newText += "Index\tEvent ID\tName\tAdditional Details\n";
+		for (int i = 0; i < text.length(); i++) {
+			if (text.charAt(i) == '.' && text.charAt(i + 1) == '.') {
+				newText += '\t';
+				i++;
+			} else {
+				newText += text.charAt(i);
+			}
+
+		}
+		// TODO Auto-generated method stub
+		return newText;
+	}
+
+
 	private void textField1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_textField1ActionPerformed
 		// TODO add your handling code here:
 	}// GEN-LAST:event_textField1ActionPerformed
-
-	private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton1ActionPerformed
-		System.exit(0); // TODO add your handling code here:
-	}// GEN-LAST:event_jButton1ActionPerformed
 
 	/**
 	 * @param args
@@ -408,20 +419,20 @@ public class What2DoUI extends javax.swing.JFrame {
 	}
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
-	private javax.swing.JButton jButton1;
-	private javax.swing.JButton jButton2;
-	private javax.swing.JFormattedTextField jFormattedTextField1;
+	private javax.swing.JLabel jLabel1;
+	private javax.swing.JLabel jLabel2;
 	private javax.swing.JPanel jPanel1;
 	private javax.swing.JPanel jPanel2;
 	private javax.swing.JPanel jPanel3;
 	private javax.swing.JPanel jPanel4;
 	private javax.swing.JPanel jPanel5;
-	private javax.swing.JScrollPane jScrollPane1;
+	private javax.swing.JPanel jPanel6;
 	private javax.swing.JScrollPane jScrollPane2;
 	private javax.swing.JScrollPane jScrollPane3;
 	private javax.swing.JScrollPane jScrollPane4;
 	private javax.swing.JScrollPane jScrollPane5;
 	private javax.swing.JScrollPane jScrollPane6;
+	private javax.swing.JScrollPane jScrollPane7;
 	private javax.swing.JTabbedPane jTabbedPane1;
 	private javax.swing.JTabbedPane jTabbedPane2;
 	private javax.swing.JTabbedPane jTabbedPane3;
@@ -429,7 +440,7 @@ public class What2DoUI extends javax.swing.JFrame {
 	private javax.swing.JTextArea jTextArea1;
 	private javax.swing.JTextArea jTextArea2;
 	private javax.swing.JTextArea jTextArea3;
-	private javax.swing.JTextPane jTextPane1;
+	private javax.swing.JTextArea jTextArea4;
 	private javax.swing.JTextPane jTextPane2;
 	private java.awt.TextField textField1;
 	// End of variables declaration//GEN-END:variables

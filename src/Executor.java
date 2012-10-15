@@ -3,6 +3,7 @@ import java.util.*;
 import org.joda.time.Duration;
 import org.joda.time.DateTime;
 
+
 class EventForSort implements Comparable<Object> {
 
 	int _index;
@@ -26,8 +27,12 @@ class EventForSort implements Comparable<Object> {
 	public int compareTo(Object o) {
 		if (this.priority() != ((EventForSort) o).priority())
 			return this.priority() - ((EventForSort) o).priority() ;
-		else
-			return (int) (((EventForSort) o)._dateTime.getMillis() - this._dateTime.getMillis());
+		else if(this._dateTime.isBefore(((EventForSort) o)._dateTime))
+			return -1;
+		else if(this._dateTime.isAfter(((EventForSort) o)._dateTime))
+			return 1;
+		else return 0;
+			
 	}
 
 	Integer index() {
@@ -44,8 +49,11 @@ class EventForSort implements Comparable<Object> {
 
 }
 
+
 public class Executor {
 
+	private static final String PRIORITY_LOW = "Low";
+	private static final String PRIORITY_NORMAL = "Normal";
 	private static final String PRIORITY_HIGH = "high";
 	private static final String STRING_NULL = "";
 	private static final String SHORTHAND_UPDATE = "u";
@@ -84,6 +92,9 @@ public class Executor {
 
 		String[] parameters = userInput.split(INPUT_SPLITTER);
 		String[] parameterList = { "-1", "-1", "-1", "-1", "-1", "-1" };
+		Logic.setUp();
+		ListOfEvent.syncDataToDatabase();
+		Collections.sort(ListOfEvent.getCurrentListOfEvent(), sortByDate);
 		for (int i = 0; i < parameters.length; i++)
 			parameterList[i] = parameters[i];
 		String command = Logic.getCommand(parameterList);
@@ -95,7 +106,7 @@ public class Executor {
 			previousCommand = COMMAND_ADD;
 		} else if (command.equalsIgnoreCase(COMMAND_DELETE)
 				|| command.equalsIgnoreCase(SHORTHAND_DELETE)) {
-			if (getSearchState() == true && previousCommand == COMMAND_DELETE) {
+			if (getSearchState() == true && (previousCommand == COMMAND_DELETE||previousCommand == COMMAND_SEARCH)) {
 				int index = Logic.getInteger(parameterList);
 				ListOfArchive.add(new ActionArchiveDelete(ListOfEvent
 						.get(index)));
@@ -149,8 +160,6 @@ public class Executor {
 			undoLast();
 			previousCommand = COMMAND_UNDONE;
 		} else if (command.equalsIgnoreCase(COMMAND_EXIT)) {
-			DatabaseManager
-					.syncToDatabase(ListOfEvent.getListOfEventInString());
 			System.exit(0);
 		}
 		// save file , exit
@@ -170,18 +179,19 @@ public class Executor {
 		String[] tempArr = (Logic.getKeyWords(parameterList)).trim()
 				.split(EXPRESSION_WHITESPACE);
 		searchWords.addAll(Arrays.asList(tempArr));
-		for (int i = 0; i < ListOfEvent.size(); i++) {
+		int size = ListOfEvent.size();
+		for (int i = 0; i < size; i++) {
 			if(searchWords.isEmpty())
 				break;
 			boolean isChecked = false;
-			String searchCheck = ".";
-			for (int j = 0; j < ListOfEvent.get(j).getEventHashTag().length; j++) {
-				searchCheck += ListOfEvent.get(j).getEventHashTag()[j];
+			String searchCheck = STRING_NULL;
+			for (int j = 0; j < ListOfEvent.get(i).getEventHashTag().length; j++) {
+				searchCheck += ListOfEvent.get(i).getEventHashTag()[j];
 				searchCheck += ".";
 			}
 			searchCheck += ListOfEvent.get(i).getEventName();
 			for (int k = 0; k < searchWords.size(); k++) {
-				if (searchCheck.contains(searchWords.get(k))
+				if (searchCheck.toLowerCase().contains(searchWords.get(k).toLowerCase())
 						&& isChecked == false) {
 					searchResults.add(new EventForSort(i, ListOfEvent.get(i)));
 					break;
@@ -261,13 +271,51 @@ public class Executor {
 	public static void updateEvent(int index) {
 
 	}
+	
+	private static int returnPriorityValue(String p) {
+		if(p.equalsIgnoreCase(PRIORITY_HIGH))
+			return 0;
+		else if(p.equalsIgnoreCase(PRIORITY_NORMAL))
+			return 1;
+		else if(p.equalsIgnoreCase(PRIORITY_LOW))
+			return 2;
+		return 1;
+	}
+	
+	private static int getDateOrder(Event a, Event b) {
+		if(a.getEventEndTime().toDate().isBefore(b.getEventEndTime().toDate()))
+			return -1;
+		else if(a.getEventEndTime().toDate().isAfter(b.getEventEndTime().toDate()))
+			return 1;
+		else return 0;
+	}
+	
+	private static Comparator<Event> sortByPriority = new Comparator<Event>() {
+		public int compare(Event a, Event b){
+			if(!a.getEventHashTag()[0].equals(b.getEventHashTag()[0]))
+				return returnPriorityValue(a.getEventHashTag()[0])-returnPriorityValue(b.getEventHashTag()[0]);
+			else return getDateOrder(a, b);
+		}		
+	};
+	
+	private static Comparator<Event> sortByDate = new Comparator<Event>() {
+		public int compare(Event a, Event b){
+			if(!a.getEventEndTime().toString().equals(b.getEventEndTime().toString()))
+				return getDateOrder(a,b);
+			else return returnPriorityValue(a.getEventHashTag()[0])-returnPriorityValue(b.getEventHashTag()[0]); 					
+			
+		}
+	};
 
 	public static String printDataBase() {
 
 		String str = STRING_NULL;
+		Collections.sort(ListOfEvent.getCurrentListOfEvent(), sortByDate);
 		for (int i = 0; i < ListOfEvent.size(); i++) {
+			if (!ListOfEvent.get(i).getClass().getName().equals("FloatingEvent")){
 			str += ListOfEvent.get(i).composeContentToDisplay();
 			str += '\n';
+			}
 		}
 		return str;
 	}
@@ -275,6 +323,7 @@ public class Executor {
 	public static String printFloatingDataBase() {
 
 		String str = STRING_NULL;
+		Collections.sort(ListOfEvent.getCurrentListOfEvent(), sortByPriority);
 		for (int i = 0; i < ListOfEvent.size(); i++) {
 			if (ListOfEvent.get(i).getClass().getName().equals("FloatingEvent")) {
 				str += ListOfEvent.get(i).composeContentToDisplay();
@@ -287,9 +336,9 @@ public class Executor {
 	public static String printPriorityDataBase() {
 
 		String str = STRING_NULL;
+		Collections.sort(ListOfEvent.getCurrentListOfEvent(), sortByPriority);
 		for (int i = 0; i < ListOfEvent.size(); i++) {
-			if (ListOfEvent.get(i).getEventHashTag()[0]
-					.equalsIgnoreCase(PRIORITY_HIGH)) {
+			if (!ListOfEvent.get(i).getClass().getName().equals("FloatingEvent")) {
 				str += ListOfEvent.get(i).composeContentToDisplay();
 				str += '\n';
 			}
@@ -301,7 +350,7 @@ public class Executor {
 		String temp = STRING_NULL;
 		for(int i = 0; i<searchResults.size(); i++) {
 			temp +=searchResults.get(i).index();
-			temp += ". ";
+			temp += ".\t";
 			temp += searchResults.get(i).event().composeContentToDisplay();
 			temp += "\n";
 		}
