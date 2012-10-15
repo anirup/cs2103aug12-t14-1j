@@ -4,6 +4,12 @@ import org.joda.time.Duration;
 import org.joda.time.DateTime;
 public class Executor {
 
+	private static final String STRING_NULL = "";
+	private static final String SHORTHAND_UPDATE = "u";
+	private static final String SHORTHAND_DELETE = "-";
+	private static final String SHORTHAND_ADD = "+";
+	private static final String INPUT_SPLITTER = "\\..";
+	private static final String EXPRESSION_WHITESPACE = "\\s+";
 	private static final String FORMAT_DATE = "yyyy-MM-dd'T'hh:mmZ";
 	private static final String COMMAND_ADD = "add";
 	private static final String COMMAND_DELETE = "delete";
@@ -31,17 +37,17 @@ public class Executor {
 		searchState = true;
 	}
 	public static void analyze(String userInput) throws IOException {
-		Logic.setUp();
-		String[] parameters = userInput.split("\\..");
+		
+		String[] parameters = userInput.split(INPUT_SPLITTER);
 		String[] parameterList = {"-1","-1","-1","-1","-1","-1"};
 		for(int i=0;i<parameters.length;i++)
 			parameterList[i]=parameters[i];
 		String command = Logic.getCommand(parameterList);
-		if (command.equalsIgnoreCase(COMMAND_ADD)) {
+		if (command.equalsIgnoreCase(COMMAND_ADD)||command.equalsIgnoreCase(SHORTHAND_ADD)) {
 			ListOfArchive.add(new ActionArchiveAdd(analyzeAddInput(parameterList)));
 			searchToFalse();
 			previousCommand = COMMAND_ADD;
-		} else if (command.equalsIgnoreCase(COMMAND_DELETE)) {
+		} else if (command.equalsIgnoreCase(COMMAND_DELETE)||command.equalsIgnoreCase(SHORTHAND_DELETE)) {
 			if (getSearchState() == true && previousCommand == COMMAND_DELETE) {
 				int index = Logic.getInteger(parameterList);
 				ListOfArchive.add(new ActionArchiveDelete(ListOfEvent.get(index)));
@@ -53,9 +59,10 @@ public class Executor {
 				previousCommand = COMMAND_DELETE;
 				searchToTrue();
 			}
-		} else if (command.equalsIgnoreCase(COMMAND_UPDATE)) {
+		} else if (command.equalsIgnoreCase(COMMAND_UPDATE)||command.equalsIgnoreCase(SHORTHAND_UPDATE)) {
 			if (getSearchState() == true && previousCommand == COMMAND_UPDATE) {
 				int index = Logic.getInteger(parameterList);
+				ListOfArchive.add(new ActionArchiveUpdate(null, null));
 				updateEvent(index);
 				previousCommand = COMMAND_UPDATE;
 				searchToFalse();
@@ -100,6 +107,7 @@ public class Executor {
 
 	}
 
+
 	public static void undoLast() {
 		ListOfArchive.undo();
 	}
@@ -109,7 +117,7 @@ public class Executor {
 		searchResults.clear();
 		Vector<String> searchWords = new Vector<String>();
 		searchWords = Logic.getHashTags(parameterList);
-		String[] tempArr=(Logic.getKeyWords(parameterList)).split("\\s+");
+		String[] tempArr=(Logic.getKeyWords(parameterList)).split(EXPRESSION_WHITESPACE);
 		searchWords.addAll(Arrays.asList(tempArr)); 
 		for(int i = 0; i <ListOfEvent.size(); i++ ) {
 			boolean isChecked = false;
@@ -153,14 +161,14 @@ public class Executor {
 		String endTimeDate=Logic.getEndTime(parameterList);
 		String startTimeDate=Logic.getStartTime(parameterList);
 		Event eventToAdd;
-		if(startTimeDate.equals("")&& endTimeDate.equals(""))
+		if(startTimeDate.equals(STRING_NULL)&& endTimeDate.equals(STRING_NULL))
 		{
 			//DateTime utc = new DateTime(System.currentTimeMillis(), DateTimeZone.);
-			eventToAdd = new FloatingEvent(id,keywords,hashArray,new Clock("",FORMAT_DATE),false);
+			eventToAdd = new FloatingEvent(id,keywords,hashArray,new Clock(STRING_NULL,FORMAT_DATE),false);
 			ListOfEvent.add(eventToAdd);
 		}
 		
-		else if(startTimeDate.equalsIgnoreCase("")&&(!endTimeDate.equalsIgnoreCase(""))) {
+		else if(startTimeDate.equalsIgnoreCase(STRING_NULL)&&(!endTimeDate.equalsIgnoreCase(STRING_NULL))) {
 			
 			Clock time = new Clock(endTimeDate, FORMAT_DATE);
 			DateTime reminder = time.toDate().minusSeconds((int)reminderTime.getStandardSeconds());
@@ -194,7 +202,7 @@ public class Executor {
 	
 	public static String printDataBase() {
 		
-		String str = "";
+		String str = STRING_NULL;
 		for(int i = 0; i<ListOfEvent.size(); i++) {
 			str += ListOfEvent.get(i).composeContentToDisplay();
 			str += '\n';
@@ -203,7 +211,7 @@ public class Executor {
 	}
 	public static String printFloatingDataBase() {
 		
-		String str = "";
+		String str = STRING_NULL;
 		for(int i = 0; i<ListOfEvent.size(); i++) {
 			if(ListOfEvent.get(i).getClass().getName().equals("FloatingEvent"))
 			{
@@ -215,7 +223,7 @@ public class Executor {
 	}
 	public static String printPriorityDataBase() {
 		
-		String str = "";
+		String str = STRING_NULL;
 		for(int i = 0; i<ListOfEvent.size(); i++) {
 			if(ListOfEvent.get(i).getEventHashTag()[0].equalsIgnoreCase("high"))
 			{
