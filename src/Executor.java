@@ -227,8 +227,7 @@ public class Executor {
 				&& endTimeDate.equals(STRING_NULL)) {
 			// DateTime utc = new DateTime(System.currentTimeMillis(),
 			// DateTimeZone.);
-			eventToAdd = new FloatingEvent(id, keywords, hashArray, new Clock(
-					STRING_NULL, FORMAT_DATE), false);
+			eventToAdd = new FloatingEvent(id, keywords, hashArray, new Clock(), false);
 			ListOfEvent.add(eventToAdd);
 		}
 

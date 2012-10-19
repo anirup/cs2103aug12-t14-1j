@@ -310,6 +310,7 @@ public class What2DoUI extends javax.swing.JFrame {
 		if (evt.getKeyChar() == '\n') {
 			String data = textField1.getText();
 			if (data.equals("exit") == true) {
+				ListOfEvent.syncDataToDatabase();
 				System.exit(0);
 			}
 			Executor.analyze(data);
@@ -376,8 +377,9 @@ public class What2DoUI extends javax.swing.JFrame {
 	/**
 	 * @param args
 	 *            the command line arguments
+	 * @throws Exception 
 	 */
-	public static void main(String args[]) {
+	public static void main(String args[]) throws Exception {
 		/* Set the Nimbus look and feel */
 		// <editor-fold defaultstate="collapsed"
 		// desc=" Look and feel setting code (optional) ">
@@ -387,6 +389,7 @@ public class What2DoUI extends javax.swing.JFrame {
 		 * http://download.oracle.com/javase
 		 * /tutorial/uiswing/lookandfeel/plaf.html
 		 */
+		ListOfEvent.setUpDataFromDatabase();
 		try {
 			for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager
 					.getInstalledLookAndFeels()) {

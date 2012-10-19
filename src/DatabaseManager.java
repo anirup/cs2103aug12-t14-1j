@@ -62,6 +62,6 @@ public class DatabaseManager {
 	}
 	
 	private static void writeToDatabase(String line) throws IOException {
-		writer.write(line);
+		writer.write(line + "\n");
 	}
 }

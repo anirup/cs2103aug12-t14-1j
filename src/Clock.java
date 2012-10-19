@@ -8,7 +8,7 @@ public class Clock {
 	private String _dateFormat;
 	
 	public Clock() {
-		_time = LocalTime.now().toString();
+		_time = "1970-01-01T00:00+08:00";
 		_dateFormat = "yyyy-MM-dd'T'hh:mmZ";
 	}
 	
@@ -26,6 +26,10 @@ public class Clock {
 	}
 	
 	public String toString() {
+		if(_time.equalsIgnoreCase("1970-01-01T00:00+08:00")) {
+			return "";
+		}
+		
 		StringBuilder date = new StringBuilder();
 		
 		date.append(_time + "..");
