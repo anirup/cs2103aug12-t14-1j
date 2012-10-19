@@ -103,6 +103,7 @@ public class Executor {
 			ListOfArchive.add(new ActionArchiveAdd(
 					analyzeAddInput(parameterList)));
 			searchToFalse();
+			ListOfEvent.syncDataToDatabase();
 			previousCommand = COMMAND_ADD;
 		} else if (command.equalsIgnoreCase(COMMAND_DELETE)
 				|| command.equalsIgnoreCase(SHORTHAND_DELETE)) {
@@ -111,6 +112,7 @@ public class Executor {
 				ListOfArchive.add(new ActionArchiveDelete(ListOfEvent
 						.get(index)));
 				ListOfEvent.remove(index);
+				ListOfEvent.syncDataToDatabase();
 				previousCommand = COMMAND_DELETE;
 				searchToFalse();
 			} else if (getSearchState() == false) {
@@ -227,7 +229,8 @@ public class Executor {
 				&& endTimeDate.equals(STRING_NULL)) {
 			// DateTime utc = new DateTime(System.currentTimeMillis(),
 			// DateTimeZone.);
-			eventToAdd = new FloatingEvent(id, keywords, hashArray, new Clock(), false);
+			eventToAdd = new FloatingEvent(id, keywords, hashArray, new Clock(
+					STRING_NULL, FORMAT_DATE), false);
 			ListOfEvent.add(eventToAdd);
 		}
 
