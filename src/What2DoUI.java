@@ -378,7 +378,7 @@ public class What2DoUI extends javax.swing.JFrame {
 	 * @param args
 	 *            the command line arguments
 	 * @throws Exception 
-	 */
+	 */ 
 	public static void main(String args[]) throws Exception {
 		/* Set the Nimbus look and feel */
 		// <editor-fold defaultstate="collapsed"
@@ -389,7 +389,6 @@ public class What2DoUI extends javax.swing.JFrame {
 		 * http://download.oracle.com/javase
 		 * /tutorial/uiswing/lookandfeel/plaf.html
 		 */
-		ListOfEvent.setUpDataFromDatabase();
 		try {
 			for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager
 					.getInstalledLookAndFeels()) {
@@ -417,6 +416,7 @@ public class What2DoUI extends javax.swing.JFrame {
 		java.awt.EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				new What2DoUI().setVisible(true);
+				
 			}
 		});
 	}
