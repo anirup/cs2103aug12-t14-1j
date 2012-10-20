@@ -1,6 +1,7 @@
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.joda.time.Duration;
+import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import java.util.Vector;
 
@@ -149,7 +150,8 @@ public class Logic {
 		for (int i = 0; i < 6; i++) {
 			if (fieldFound[i] == false && !parameterList[i].equals("-1")) {
 				currentTime="";
-				String[] dateAndTime = parameterList[i].trim().split(" ");
+				return TimeAnalyzer.analyzeTime(parameterList[i]).toString();
+				/*String[] dateAndTime = parameterList[i].trim().split(" ");
 				if (dateAndTime[0].contains(":")) {
 					currentTime += dateAndTime[1] + "T" + dateAndTime[0].trim()
 							+ "+08:00";
@@ -160,7 +162,7 @@ public class Logic {
 							+ "+08:00";
 					fieldFound[i]=true;
 					break;
-				}
+				}*/
 				
 			}
 		}
@@ -173,7 +175,8 @@ public class Logic {
 		for (int i = 0; i < 6; i++) {
 			if (fieldFound[i] == false && !parameterList[i].equals("-1")) {
 				endTime="";
-				String[] dateAndTime = parameterList[i].trim().split(" ");
+				return TimeAnalyzer.analyzeTime(parameterList[i]).toString();
+				/*String[] dateAndTime = parameterList[i].trim().split(" ");
 				if (dateAndTime[0].contains(":")) {
 					endTime += dateAndTime[1] + "T" + dateAndTime[0].trim()
 							+ "+08:00";
@@ -184,7 +187,7 @@ public class Logic {
 							+ "+08:00";
 					fieldFound[i]=true;
 					break;
-				}
+				}*/
 				
 			}
 		}
@@ -194,7 +197,7 @@ public class Logic {
 
 	public static String getEventID() {
 		Vector<Integer> idDigits= new Vector<Integer>();
-		String eventId=LocalTime.now().toString();
+		String eventId=LocalDate.now().toString()+LocalTime.now().toString();
 		Pattern p = Pattern.compile("\\d+");
 		Matcher matches = p.matcher(eventId.trim());
 		while (matches.find()) {
