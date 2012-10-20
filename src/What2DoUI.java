@@ -310,7 +310,7 @@ public class What2DoUI extends javax.swing.JFrame {
 		if (evt.getKeyChar() == '\n') {
 			String data = textField1.getText();
 			if (data.equals("exit") == true) {
-				ListOfEvent.syncDataToDatabase();
+				Executor.syncDatabase();
 				System.exit(0);
 			}
 			Executor.analyze(data);
