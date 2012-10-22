@@ -31,7 +31,11 @@ public class ListOfEvent {
 	
 	public static void markDone(int position)
 	{
-		ListOfArchiveEvent.add(listOfEvent.remove(position));
+		ListOfEvent.get(position).markDone();
+	}
+	
+	public static void markUndone(int position) {
+		ListOfEvent.get(position).markUndone();
 	}
 	
 	public static void add(Event newEvent) {
@@ -176,4 +180,6 @@ public class ListOfEvent {
 		
 		return listToDisplay;
 	}
+
+
 }
