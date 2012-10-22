@@ -1,3 +1,4 @@
+
 import static org.junit.Assert.*;
 
 import java.util.Vector;
@@ -8,12 +9,16 @@ import org.junit.Test;
 
 public class TestLogic {
 
-	String command;
+	String command="add     abcd#high 5am today 6am today r-1min22h";
 	String[] parameterList= {"add","meeting#abcd#abcde","h","r-1hr2min","-1","-1"};
 
 
 	@Test
-	public void testGetID() {
+	public void testSplit() {
+		PatternLib.setUpPattern();
+
+		Vector<String> ab=Logic.splitInput(command);
+		System.out.println(ab.toString());
 	}
 
 	@Test

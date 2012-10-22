@@ -1,27 +1,39 @@
 import org.joda.time.DateTime;
 
-
 public class DeadlineEvent extends Event{
-	private Clock _eventTime;
-	
-	public static final String DEADLINE_EVENT_INDICATOR = "deadline";
-	
+	private DateTime _eventTime;
+	private DateTime _eventReminder;
+		
 	public DeadlineEvent() {
 		_eventTime = null;
 	}
 	
-	public DeadlineEvent(String eventID, String eventName, String[] hashTag, Clock reminder, boolean isDone, Clock time) {
+	public DeadlineEvent(String eventID, String eventName, 
+			String hashTag, DateTime reminder, boolean isDone, DateTime time) {
 		super(eventID, eventName, hashTag, reminder, isDone);
 		_eventTime = time;
 	}
 	
-	public DeadlineEvent(Event event, Clock time) {
-		super(event.getEventID(), event.getEventName(), event.getEventHashTag(), event.getEventReminder(), event.isDone());
+	public DeadlineEvent(Event event, DateTime time) {
+		super(event.getEventID(), event.getEventName(), event.getEventHashTag(), 
+				event.getEventReminder(), event.isDone());
 		_eventTime = time;
 	}
 	
-	public Clock getEventTime() {
+	public DateTime getEventTime() {
 		return _eventTime;
+	}
+	
+	public boolean searchInHashTag(String keyWord) {
+		return super.searchInHashTag(keyWord);
+	}
+	
+	public boolean seachInName(String keyWord) {
+		return super.seachInName(keyWord);
+	}
+	
+	public boolean searchInTime(DateTime time) {
+		return Clock.searchTime(time, _eventTime, _eventTime);
 	}
 	
 	public boolean isBefore(Event anotherEvent) {
@@ -30,39 +42,30 @@ public class DeadlineEvent extends Event{
 	
 	public void parse(String[] contentToExtract) {
 		super.parse(contentToExtract);
-		_eventTime = Event.extractTime(contentToExtract, Event.INDEX_FOR_EVENT_START_TIME, Event.INDEX_FOR_EVENT_START_TIME_DATEFORMAT);
+		_eventTime = Event.extractTime(contentToExtract, Event.INDEX_FOR_EVENT_START_TIME);
+		_eventReminder = Event.extractTime(contentToExtract, INDEX_FOR_EVENT_REMINDER_TIME);
 	}
 	
 	public String composeContentToDisplay() {
 		String content = super.composeContentToDisplay();
-		content = content + SPLITTER + _eventTime.getTime();
-		content = content + SPLITTER + _eventReminder.getTime();
+		content = content + SPLITTER + Clock.toString(_eventTime);
+		content = content + SPLITTER + Clock.toString(_eventReminder);
 		return content;
 	}
 	
 	public boolean isInDay(DateTime day) {
-		return _eventTime.isInDay(day);
+		return Clock.isInDay(day, _eventTime);
 	}
 	
 	public boolean isClashedWith(Event anotherEvent) {
 		return false;
 	}
 	
-	public int getEventType() {
-		return DEADLINE_TYPE;
-	}
-	
 	public String toString() {
-		StringBuilder eventContent = new StringBuilder();	
-		eventContent.append(super.toString());
-		appendEventTime(eventContent);
-		return eventContent.toString();
-	}
-	
-	private void appendEventTime(StringBuilder eventContent) {
-		String contentToAppend = _eventTime.toString();
-		eventContent.append(contentToAppend);
-		
-		return;
+		String eventContent = super.toString();
+		eventContent = eventContent + Clock.toString(_eventReminder) + SPLITTER;
+		eventContent = eventContent + Clock.toString(_eventTime) + SPLITTER; 
+		eventContent = eventContent + "invalid" + SPLITTER;
+		return eventContent;
 	}
 }

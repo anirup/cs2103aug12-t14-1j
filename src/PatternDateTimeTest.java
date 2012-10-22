@@ -42,7 +42,7 @@ public class PatternDateTimeTest {
 
 	@Test 
 	public void testGetDateTimeSpecial() {
-		DateTime dt = PatternLib.getDateTime("7:00am this mon");
+		DateTime dt = PatternLib.getDateTime("7:00am this mon",PatternLib.isMatchDateTime("7:00am this mon"));
 		assertEquals("test getDateTimeSpecial()", 7, dt.getHourOfDay());
 	}
 }
