@@ -24,12 +24,25 @@ public class PatternDateTime {
 		}
 	}
 	
-	public DateTime getDateTime(String input) {
-			
+	public int[] isFind(String input) {
+		Matcher matcher = _pattern.matcher(input);
+		int[] pos = {-1, -1};
+		if(matcher.find()) {
+			pos[0] = matcher.start();
+			pos[1] = matcher.end();
+			return pos;
+		} else {
+			return pos;
+		}
+	}
+	
+	public DateTime getDateTime(String input) {	
 		DateTime newDateTime = null;
 		if(_timeFormat.contains("pattern")) {
 			newDateTime = getDateTimeSpecial(input);
-		} else {			
+		} else if (_timeFormat.contains("r-")) {
+			newDateTime = getReminder(input);
+		} else {
 			DateTimeFormatter dateFormat = DateTimeFormat.forPattern(_timeFormat);
 			newDateTime = dateFormat.parseDateTime(input);
 			if(newDateTime.getYearOfCentury() == 0) {
@@ -37,6 +50,22 @@ public class PatternDateTime {
 			}
 		}
 		return newDateTime;
+	}
+	
+	public DateTime getReminder(String input) {
+		int number = StringOperation.extractFirstNumber(input); 
+		int minuteToMillis = 60 * 1000;
+		int hourToMillis = 60 * minuteToMillis;
+		int dayToMillis = 24 * hourToMillis;
+		if(input.contains("h")) {
+			number = number * hourToMillis;
+		} else if (input.contains("m")) {
+			number = number * minuteToMillis;
+		} else {
+			number = number * dayToMillis;
+		}
+		DateTime date = Clock.getBigBangTime();
+		return date.plusMillis(number);
 	}
 	
 	public DateTime getTime(String input) {

@@ -1,68 +1,68 @@
 import org.joda.time.DateTime;
-import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 public class Clock {
-	private String _time;
-	private String _dateFormat;
+	private static final String dateTimeFormat = "HH:mm dd/MM/yyyy";
 	
-	public Clock() {
-		_time = "1970-01-01T00:00+08:00";
-		_dateFormat = "yyyy-MM-dd'T'hh:mmZ";
+	public static DateTime getBigBangTime() {
+		return new DateTime(1970, 1, 1, 0, 0);
 	}
 	
-	public Clock(String time, String dateFormat) {
-		_time = time;
-		_dateFormat = dateFormat;
-	}
-	
-	public String getTime() {
-		return _time;
-	}
-	
-	public String getDateFormat() {
-		return _dateFormat;
-	}
-	
-	public String toString() {
-		if(_time.equalsIgnoreCase("1970-01-01T00:00+08:00")) {
-			return "";
+	public static DateTime parseTimeFromString(String date) {
+		if(date.equalsIgnoreCase("invalid")) {
+			return getBigBangTime();
 		}
-		
-		StringBuilder date = new StringBuilder();
-		
-		date.append(_time + "..");
-		date.append(_dateFormat + "..");
-		
-		return date.toString();
+		DateTimeFormatter dateFormat = DateTimeFormat.forPattern(dateTimeFormat);
+		return dateFormat.parseDateTime(date);
 	}
 	
-	public boolean isInDay(DateTime day) {
-		DateTime thisDate = this.toDate();
-		if((thisDate.getDayOfYear() == day.getDayOfYear()) && (thisDate.getYearOfCentury() == thisDate.getYearOfCentury())) {
+	public static String toString(DateTime time) {
+		DateTimeFormatter dateFormat = DateTimeFormat.forPattern(dateTimeFormat);
+		
+		return time.toString(dateFormat);
+	}
+	
+	public static DateTime changeToDate(DateTime fromDate, DateTime toDate) {
+		DateTime date = new DateTime(toDate.getYear(), toDate.getMonthOfYear(), toDate.getDayOfMonth(),
+				fromDate.getHourOfDay(), fromDate.getMinuteOfHour());
+		return date;
+	}
+	
+	public static boolean isInDay(DateTime time, DateTime day) {
+		if((time.getDayOfYear() == day.getDayOfYear()) && (time.getYearOfCentury() == time.getYearOfCentury())) {
 			return true;
 		}
 		return false;
 	}
 	
-	public boolean isBefore(DateTime time) {
-		long timeLong = time.getMillis();
-		return this.toDate().isBefore(timeLong);
+	public static boolean isBefore(DateTime time, DateTime anotherTime) {
+		long timeLong = anotherTime.getMillis();
+		return time.isBefore(timeLong);
 	}
 	
-	public DateTime toDate() {
-		DateTimeFormatter pattern = DateTimeFormat.forPattern(_dateFormat);
-		
-		DateTime date = pattern.parseDateTime(_time);
-		
-		return date;
+	public static boolean isClashed(DateTime firstStart, DateTime firstEnd, DateTime secondStart, DateTime secondEnd) {
+		if((isBefore(firstStart, secondEnd) && isBefore(secondStart, firstStart)) 
+				|| (isBefore(firstEnd, secondEnd) && isBefore(secondStart, firstEnd))
+				|| (isBefore(secondStart, firstEnd) && isBefore(firstStart, secondEnd))) {
+			return true;
+		} 
+		return false;
 	}
-
-	public boolean isBefore(Clock anotherTime) {
-		DateTime thisTimeDate = this.toDate();
-		DateTime anotherTimeDate = anotherTime.toDate();
-		long anotherLong  = anotherTimeDate.getMillis();
-		return thisTimeDate.isBefore(anotherLong);
+	
+	public static boolean searchTime(DateTime time, DateTime start, DateTime end) {
+		if(isInDay(time, start) || isInDay(time, end)) {
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean isInvalidTime(DateTime time) {
+		if(toString(time).equalsIgnoreCase("00:00 01/01/1970")) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
+

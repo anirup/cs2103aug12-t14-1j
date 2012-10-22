@@ -89,7 +89,7 @@ public class Executor {
 	}
 
 	public static void analyze(String userInput) throws IOException {
-
+		PatternLib.setUpPattern();
 		String[] parameters = userInput.split(INPUT_SPLITTER);
 		String[] parameterList = { "-1", "-1", "-1", "-1", "-1", "-1" };
 		Logic.setUp();
@@ -100,7 +100,7 @@ public class Executor {
 		String command = Logic.getCommand(parameterList);
 		if (command.equalsIgnoreCase(COMMAND_ADD)
 				|| command.equalsIgnoreCase(SHORTHAND_ADD)) {
-			ListOfArchive.add(new ActionArchiveAdd(
+			ListOfActionArchive.add(new ActionArchiveAdd(
 					analyzeAddInput(parameterList)));
 			searchToFalse();
 			ListOfEvent.syncDataToDatabase();
@@ -109,7 +109,7 @@ public class Executor {
 				|| command.equalsIgnoreCase(SHORTHAND_DELETE)) {
 			if (getSearchState() == true && (previousCommand == COMMAND_DELETE||previousCommand == COMMAND_SEARCH)) {
 				int index = Logic.getInteger(parameterList);
-				ListOfArchive.add(new ActionArchiveDelete(ListOfEvent
+				ListOfActionArchive.add(new ActionArchiveDelete(ListOfEvent
 						.get(index)));
 				ListOfEvent.remove(index);
 				ListOfEvent.syncDataToDatabase();
@@ -124,7 +124,7 @@ public class Executor {
 				|| command.equalsIgnoreCase(SHORTHAND_UPDATE)) {
 			if (getSearchState() == true && previousCommand == COMMAND_UPDATE) {
 				int index = Logic.getInteger(parameterList);
-				ListOfArchive.add(new ActionArchiveUpdate(null, null));
+				ListOfActionArchive.add(new ActionArchiveUpdate(null, null));
 				updateEvent(index);
 				previousCommand = COMMAND_UPDATE;
 				searchToFalse();
@@ -169,7 +169,7 @@ public class Executor {
 	}
 
 	public static void undoLast() {
-		ListOfArchive.undo();
+		ListOfActionArchive.undo();
 	}
 
 	public static void analyzeAndSearch(String[] parameterList) { // keywords //

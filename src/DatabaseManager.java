@@ -4,47 +4,41 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
 
 
 public class DatabaseManager {
-	private static final String fileName = "What2Do.txt";
-
+	private static String fileName;
 	private static BufferedReader reader;
 	private static File database;
 	private static BufferedWriter writer;
 	
-	public static void setUpDatabase() throws IOException {
+	public static ArrayList<String> setUpDatabase(String nameOfFile) throws IOException {
+		fileName = nameOfFile;
 		database = new File(fileName);
-		
 		if (!database.exists()) {
 			database.createNewFile();
 		}
-		
 		reader = new BufferedReader(new FileReader(fileName));
-		
-		return;
+		return retrieveDatabase();
 	}
 	
-	public static void syncToDatabase(LinkedList<String> currentListOfEvent) throws IOException {
-	
+	public static void syncToDatabase(ArrayList<String> currentListOfEvent, String nameOfFile) throws IOException {
+		fileName = nameOfFile;
 		setUpBufferedWriter();
-	
 		Iterator<String> iterator = currentListOfEvent.iterator();
-		
 		while(iterator.hasNext()) {
 			String content = iterator.next();
 			writeToDatabase(content);
 		}
-		
 		closeBufferedWriter();
 		
 		return;
 	}
 	
-	public static LinkedList<String> retrieveDatabase() throws IOException {
-		LinkedList<String> listOfEvent = new LinkedList<String>();
+	public static ArrayList<String> retrieveDatabase() throws IOException {
+		ArrayList<String> listOfEvent = new ArrayList<String>();
 		String currentLine;
 		while((currentLine = reader.readLine()) != null) {
 			listOfEvent.add(currentLine);

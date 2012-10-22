@@ -11,24 +11,21 @@ public class Logic {
 	private static final String Priority_Normal = "NORMAL";
 	private static final String Priority_Low = "LOW";
 	private static final String Priority_High = "HIGH";
-	private static boolean fieldFound[]={false,false,false,false,false,false};
-	
-	public static void setUp()
-	{
-		for(int i=0;i<6;i++)
-		{
-			fieldFound[i]=false;
+	private static boolean fieldFound[] = { false, false, false, false, false,
+			false };
+
+	public static void setUp() {
+		for (int i = 0; i < 6; i++) {
+			fieldFound[i] = false;
 		}
 	}
+
 	public static String getKeyWords(String[] parameterList) {
 		fieldFound[1] = true;
-		if(parameterList[1].trim().contains("#"))
-		{
-		return parameterList[1].trim().substring(0,
-				parameterList[1].indexOf(SPLIT_HASH)).trim();
-		}
-		else 
-		{
+		if (parameterList[1].trim().contains("#")) {
+			return parameterList[1].trim()
+					.substring(0, parameterList[1].indexOf(SPLIT_HASH)).trim();
+		} else {
 			return parameterList[1].trim();
 		}
 	}
@@ -65,10 +62,10 @@ public class Logic {
 					timeQuantity.add(Long.parseLong(matches.group()));
 				}
 				break;
-			} 
+			}
 		}
 		if (indexOfReminder != -1) {
-			for (int j = 0; j < timeQuantity.size() -1 ; j++) {
+			for (int j = 0; j < timeQuantity.size() - 1; j++) {
 				String firstLimitString = "" + timeQuantity.get(j);
 				String secondLimitString = "" + timeQuantity.get(j + 1);
 				int lastIndex = parameterList[indexOfReminder]
@@ -80,13 +77,13 @@ public class Logic {
 						firstIndex, lastIndex);
 				timeParameter.addElement(parameter.toLowerCase());
 			}
-			String firstLimitString = "" + timeQuantity.get(timeQuantity.size()-1);
-			int lastIndex = parameterList[indexOfReminder].length()-1;
+			String firstLimitString = ""
+					+ timeQuantity.get(timeQuantity.size() - 1);
+			int lastIndex = parameterList[indexOfReminder].length() - 1;
 			int firstIndex = firstLimitString.length()
-					+ parameterList[indexOfReminder]
-							.indexOf(firstLimitString);
+					+ parameterList[indexOfReminder].indexOf(firstLimitString);
 			String parameter = parameterList[indexOfReminder].substring(
-					firstIndex, lastIndex+1);
+					firstIndex, lastIndex + 1);
 			timeParameter.addElement(parameter.toLowerCase());
 			for (int k = 0; k < timeParameter.size(); k++) {
 				if (timeParameter.get(k).trim().startsWith("d")
@@ -107,7 +104,7 @@ public class Logic {
 					miliseconds += timeQuantity.get(k) * 1000;
 				}
 			}
-		}else {
+		} else {
 			fieldFound[4] = true;
 		}
 
@@ -119,8 +116,8 @@ public class Logic {
 		for (int i = 0; i < parameterList.length; i++) {
 			int startHashCode = parameterList[i].indexOf(SPLIT_HASH);
 			if (startHashCode > -1) {
-				String[] hashCodes = parameterList[i].trim().substring(startHashCode+1).trim()
-						.split(SPLIT_HASH);
+				String[] hashCodes = parameterList[i].trim()
+						.substring(startHashCode + 1).trim().split(SPLIT_HASH);
 				for (int j = 0; j < hashCodes.length; j++) {
 					listOfHashTags.add(hashCodes[j].trim());
 				}
@@ -149,21 +146,9 @@ public class Logic {
 		String currentTime = "";
 		for (int i = 0; i < 6; i++) {
 			if (fieldFound[i] == false && !parameterList[i].equals("-1")) {
-				currentTime="";
-				return TimeAnalyzer.analyzeTime(parameterList[i]).toString();
-				/*String[] dateAndTime = parameterList[i].trim().split(" ");
-				if (dateAndTime[0].contains(":")) {
-					currentTime += dateAndTime[1] + "T" + dateAndTime[0].trim()
-							+ "+08:00";
-					fieldFound[i]=true;
-					break;
-				} else if (dateAndTime[1].contains(":")) {
-					currentTime += dateAndTime[0] + "T" + dateAndTime[1].trim()
-							+ "+08:00";
-					fieldFound[i]=true;
-					break;
-				}*/
-				
+				currentTime = "";
+				return parameterList[i];
+
 			}
 		}
 
@@ -174,21 +159,8 @@ public class Logic {
 		String endTime = "";
 		for (int i = 0; i < 6; i++) {
 			if (fieldFound[i] == false && !parameterList[i].equals("-1")) {
-				endTime="";
-				return TimeAnalyzer.analyzeTime(parameterList[i]).toString();
-				/*String[] dateAndTime = parameterList[i].trim().split(" ");
-				if (dateAndTime[0].contains(":")) {
-					endTime += dateAndTime[1] + "T" + dateAndTime[0].trim()
-							+ "+08:00";
-					fieldFound[i]=true;
-					break;
-				} else if (dateAndTime[1].contains(":")) {
-					endTime += dateAndTime[0] + "T" + dateAndTime[1].trim()
-							+ "+08:00";
-					fieldFound[i]=true;
-					break;
-				}*/
-				
+				endTime = "";
+				return parameterList[i];
 			}
 		}
 
@@ -196,19 +168,107 @@ public class Logic {
 	}
 
 	public static String getEventID() {
-		Vector<Integer> idDigits= new Vector<Integer>();
-		String eventId=LocalDate.now().toString()+LocalTime.now().toString();
+		Vector<Integer> idDigits = new Vector<Integer>();
+		String eventId = LocalDate.now().toString()
+				+ LocalTime.now().toString();
 		Pattern p = Pattern.compile("\\d+");
 		Matcher matches = p.matcher(eventId.trim());
 		while (matches.find()) {
 			idDigits.add((int) Long.parseLong(matches.group()));
 		}
-		eventId="";
-		for(int i=0;i<idDigits.size();i++){
-			eventId+=idDigits.get(i);
+		eventId = "";
+		for (int i = 0; i < idDigits.size(); i++) {
+			eventId += idDigits.get(i);
 		}
 		return eventId;
-		
-		
+
+	}
+
+	public static Vector<String> splitInput(String command) {
+		Vector<String> parameterList = new Vector<String>();
+		command = StringOperation.removeExtraSpace(command);
+		command = command + " ";
+		parameterList.add(command.substring(0, command.indexOf(" ")));
+		command = command.replace(parameterList.get(0), "");
+		command = command.trim();
+		int originalLength = command.length() - 1;
+		for (int j = 0; j < originalLength; j++) {
+			String temp = command.substring(j, command.length());
+			String original = temp;
+			command = command.replace(temp, "");
+			temp = StringOperation.prepareInputToAnalyzeTime(temp);
+			if (PatternLib.isFindDateTime(temp)[1] == 0) {
+				int i;
+				String formatted = temp.substring(
+						PatternLib.isFindDateTime(temp)[1],
+						PatternLib.isFindDateTime(temp)[2]);
+				for (i = original.length(); i >= 0; i--) {
+					if (!StringOperation.prepareInputToAnalyzeTime(
+							original.substring(0, i)).contains(formatted)) {
+						break;
+					}
+				}
+				j += PatternLib.isFindDateTime(temp)[2];
+				parameterList.add(temp.substring(0, PatternLib.isFindDateTime(temp)[2]));
+				command+=temp.substring(0, PatternLib.isFindDateTime(temp)[2]);
+				if (i < original.length() - 1) {
+					command = command + original.substring(i + 1);
+				} else
+					command += "";
+			} 
+			else if(PatternLib.isFindReminderTime(original)[1] == 0)
+			{	
+				int a[]=PatternLib.isFindReminderTime(original);
+				command=command+original.substring(0, PatternLib.isFindReminderTime(original)[2]);
+				parameterList.add(original.substring(0, PatternLib.isFindReminderTime(original)[2]));
+				j+=a[2];
+				int i;
+				String formatted = original.substring(
+						PatternLib.isFindReminderTime(original)[1],
+						PatternLib.isFindReminderTime(original)[2]);
+				for (i = original.length(); i >= 0; i--) {
+					if (!original.substring(0, i).contains(formatted)) {
+						break;
+					}
+				}
+				if (i < original.length() - 1) {
+					command = command + original.substring(i + 1);
+				} else
+					command += "";
+			}
+			else {
+				command = command + original;
+			}
+		}
+		if (!command.trim().isEmpty()) {
+			parameterList.add(command.trim().substring(0,
+					getIndexOfNextComponent(command)));
+			command = command.replace(parameterList.lastElement(), "");
+		}
+		return parameterList;
+	}
+
+	private static int getIndexOfNextComponent(String input) {
+		int result1 = 0, result2 = 0;
+		for (int i = 0; i < input.length(); i++) {
+
+			if (input.toLowerCase().indexOf("r-") == i) {
+				result1 = i;
+				break;
+			}
+		}
+		for (int i = 0; i < input.length(); i++) {
+			int timeIndex[] = PatternLib.isFindDateTime(input.substring(
+					input.length() - 1 - i, input.length()));
+			if (timeIndex[1] == 0 && timeIndex[0]<19) {
+				result2 = input.length() - 1 - i;
+			}
+		}
+		if (result1 > result2) {
+			return result2;
+		} else if (result2 > result1) {
+			return result1;
+		} else
+			return input.length();
 	}
 }

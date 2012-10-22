@@ -1,98 +1,87 @@
 import org.joda.time.DateTime;
 
 public class TimedEvent extends Event{
-	private Clock _eventStartTime;
-	private Clock _eventEndTime;
-	private static StringBuilder timedEventContent;
+	private DateTime _eventStartTime;
+	private DateTime _eventEndTime;
+	private DateTime _eventReminder;
 	
 	public TimedEvent() {
 		super();
 		_eventStartTime = null;
 	}
 	
-	public TimedEvent(String eventID, String eventName, String[] hashTag, Clock reminder, boolean isDone, Clock startTime, Clock endTime) {
+	public TimedEvent(String eventID, String eventName, String hashTag, DateTime reminder, 
+			boolean isDone, DateTime startTime, DateTime endTime) {
 		super(eventID, eventName, hashTag, reminder, isDone);
 		_eventStartTime = startTime;	
 		_eventEndTime = endTime;
 	}
 	
-	public TimedEvent(Event event, Clock startTime, Clock endTime) {
-		super(event.getEventID(), event.getEventName(), event.getEventHashTag(), event.getEventReminder(), event.isDone());
+	public TimedEvent(Event event, DateTime startTime, DateTime endTime) {
+		super(event.getEventID(), event.getEventName(), event.getEventHashTag(),
+				event.getEventReminder(), event.isDone());
 		_eventStartTime = startTime;
 		_eventEndTime = endTime;
 	}
 	
-	public Clock getEventStartTime() {
+	public DateTime getEventStartTime() {
 		return _eventStartTime;
 	}
 	
-	public Clock getEventEndTime() {
+	public DateTime getEventEndTime() {
 		return _eventEndTime;
 	}
 
-	public Clock getEventTime() {
+	public DateTime getEventTime() {
 		return _eventStartTime;
 	}
-	public int getEventType() {
-		return TIMED_TYPE;
+	
+	public void parse(String[] contentToExtract) {
+		super.parse(contentToExtract);
+		_eventReminder = Event.extractTime(contentToExtract, INDEX_FOR_EVENT_REMINDER_TIME);
+		_eventStartTime = Event.extractTime(contentToExtract, INDEX_FOR_EVENT_START_TIME);
+		_eventEndTime = Event.extractTime(contentToExtract, INDEX_FOR_EVENT_END_TIME);	
 	}
 	
 	public String toString() {
 		String eventContent = super.toString();
-		timedEventContent = new StringBuilder(eventContent);
-		appendEventTime();
-		
-		return timedEventContent.toString();
-		
+		eventContent = eventContent + Clock.toString(_eventReminder) + SPLITTER;
+		eventContent = eventContent + Clock.toString(_eventStartTime) +SPLITTER;
+		eventContent = eventContent + Clock.toString(_eventEndTime) + SPLITTER;
+		return eventContent;
 	}
 	
 	public String composeContentToDisplay() {
 		String content = super.composeContentToDisplay();
-		content = content + SPLITTER + _eventStartTime.getTime() + SPLITTER + _eventEndTime.getTime();
-		content = content + SPLITTER + _eventReminder.getTime();
+		content = content + SPLITTER + Clock.toString(_eventStartTime) + 
+				SPLITTER + Clock.toString(_eventEndTime);
+		content = content + SPLITTER + Clock.toString(_eventReminder);
 		return content;
+	}
+	
+	public boolean searchInHashTag(String keyWord) {
+		return super.searchInHashTag(keyWord);
+	}
+	
+	public boolean seachInName(String keyWord) {
+		return super.seachInName(keyWord);
+	}
+	
+	public boolean searchInTime(DateTime time) {
+		return Clock.searchTime(time, _eventStartTime, _eventEndTime);
 	}
 	
 	public boolean isBefore(Event anotherEvent) {
 		return super.isBefore(anotherEvent);
 	}
 	
-	public void parse(String[] contentToExtract) {
-		super.parse(contentToExtract);
-		_eventStartTime = Event.extractTime(contentToExtract, INDEX_FOR_EVENT_START_TIME, INDEX_FOR_EVENT_START_TIME_DATEFORMAT);
-		_eventEndTime = Event.extractTime(contentToExtract, INDEX_FOR_EVENT_END_TIME, INDEX_FOR_EVENT_END_TIME_DATEFORMAT);	
-	}
-	
-	private void appendEventTime() {
-		String contentToAppend = _eventStartTime.toString();
-		timedEventContent.append(contentToAppend);
-		
-		contentToAppend = _eventEndTime.toString();
-		timedEventContent.append(contentToAppend);
-		
-		return;
-	}
-	
 	public boolean isInDay(DateTime day) {
-		return _eventStartTime.isInDay(day) || _eventEndTime.isInDay(day) || (_eventStartTime.isBefore(day) && !_eventEndTime.isBefore(day));
+		return Clock.isInDay(day, _eventStartTime) || Clock.isInDay(day, _eventEndTime) 
+				|| (Clock.isBefore(_eventStartTime, day) && Clock.isBefore(day, _eventEndTime));
 	}
 	
 	public boolean isClashedWith(Event anotherEvent) {
-		if(anotherEvent.getEventType() == FLOATING_TYPE) {
-			return false;
-		} else if(anotherEvent.getEventType() == DEADLINE_TYPE) {
-			return false;
-		}
-		
-		Clock thisStartTime = this.getEventStartTime();
-		Clock thisEndTime = this.getEventEndTime();
-		Clock anotherStartTime = anotherEvent.getEventStartTime();
-		Clock anotherEndTime = anotherEvent.getEventEndTime();
-		
-		if((thisStartTime.isBefore(anotherEndTime)&&!thisStartTime.isBefore(anotherStartTime))||
-				(thisEndTime.isBefore(anotherEndTime)&&!thisEndTime.isBefore(anotherStartTime))) {
-			return true;
-		}
-		return false;
+		return Clock.isClashed(_eventStartTime, _eventEndTime, 
+				anotherEvent.getEventStartTime(), anotherEvent.getEventEndTime());
 	}
 }
