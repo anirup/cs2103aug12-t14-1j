@@ -156,8 +156,8 @@ public class ListOfEvent {
 		Collections.sort(listOfEvent, cmp);
 	}
 
-	public static ArrayList<String> getListOfEventInDay(DateTime date) {
-		ArrayList<String> listToDisplay = new ArrayList<String>();
+	public static ArrayList<String[]> getListOfEventInDay(DateTime date) {
+		ArrayList<String[]> listToDisplay = new ArrayList<String[]>();
 		for(int index = 0; index < listOfEvent.size(); index++) {
 			Event currentEvent = listOfEvent.get(index);
 			if(currentEvent.isInDay(date)) {
@@ -167,9 +167,20 @@ public class ListOfEvent {
 		return listToDisplay;
 	}
 	
-	public static ArrayList<String> getListOfEventToDisplaySortedByTime() {
+	public static ArrayList<String[]> getListOfEventToDisplay(int eventType) {
+		ArrayList<String[]> listToDisplay = new ArrayList<String[]>();
+		for(int index = 0; index < listOfEvent.size(); index++) {
+			Event currentEvent = listOfEvent.get(index);
+			if(currentEvent.getEventType() == eventType) {
+				listToDisplay.add(currentEvent.composeContentToDisplay());
+			}
+		}
+		return listToDisplay;
+	}
+	
+	public static ArrayList<String[]> getListOfEventToDisplaySortedByTime() {
 		ListOfEvent.sortByTime();
-		ArrayList<String> listToDisplay = new ArrayList<String>();
+		ArrayList<String[]> listToDisplay = new ArrayList<String[]>();
 		Iterator<Event> iterator = listOfEvent.iterator();
 		while(iterator.hasNext()) {
 			Event currentEvent = iterator.next();
@@ -180,6 +191,4 @@ public class ListOfEvent {
 		
 		return listToDisplay;
 	}
-
-
 }

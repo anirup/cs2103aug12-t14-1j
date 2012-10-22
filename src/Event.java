@@ -140,9 +140,15 @@ public class Event {
 		return currentEventID.equalsIgnoreCase(anotherEventID);
 	}
 
-	public String composeContentToDisplay() {
-		String content = _eventName + SPLITTER;
-		content = content + _eventHashTag + SPLITTER;
+	public String[] composeContentToDisplay() {
+		String[] content = new String[7];
+		content[INDEX_FOR_EVENT_ID] = _eventID;
+		content[INDEX_FOR_EVENT_NAME] = _eventName;
+		content[INDEX_FOR_EVENT_HASHTAG] = _eventHashTag;
+		content[INDEX_FOR_EVENT_ISDONE] = StringOperation.booleanToString(_isDone);
+		content[INDEX_FOR_EVENT_REMINDER_TIME] = "";
+		content[INDEX_FOR_EVENT_START_TIME] = "";
+		content[INDEX_FOR_EVENT_END_TIME] = "";
 		return content;
 	}
 	

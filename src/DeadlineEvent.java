@@ -46,10 +46,10 @@ public class DeadlineEvent extends Event{
 		_eventReminder = Event.extractTime(contentToExtract, INDEX_FOR_EVENT_REMINDER_TIME);
 	}
 	
-	public String composeContentToDisplay() {
-		String content = super.composeContentToDisplay();
-		content = content + SPLITTER + Clock.toString(_eventTime);
-		content = content + SPLITTER + Clock.toString(_eventReminder);
+	public String[] composeContentToDisplay() {
+		String[] content = super.composeContentToDisplay();
+		content[INDEX_FOR_EVENT_START_TIME] =Clock.toString(_eventTime);
+		content[INDEX_FOR_EVENT_REMINDER_TIME] = content + SPLITTER + Clock.toString(_eventReminder);
 		return content;
 	}
 	
