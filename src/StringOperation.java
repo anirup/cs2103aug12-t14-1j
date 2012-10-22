@@ -198,4 +198,11 @@ public class StringOperation {
 		input = removeDateTimeSeparator(input);
 		return input;
 	}
+
+	public static String booleanToString(boolean _isDone) {
+		if(_isDone) {
+			return "true";
+		}
+		return "false";
+	}
 }

@@ -44,9 +44,8 @@ public class FloatingEvent extends Event{
 		return false;
 	}
 	
-	public String composeContentToDisplay() {
-		String content = super.composeContentToDisplay();
-		content = content + SPLITTER + Clock.toString(super.getEventReminder());
+	public String[] composeContentToDisplay() {
+		String[] content = super.composeContentToDisplay();
 		return content;
 	}
 	

@@ -51,11 +51,11 @@ public class TimedEvent extends Event{
 		return eventContent;
 	}
 	
-	public String composeContentToDisplay() {
-		String content = super.composeContentToDisplay();
-		content = content + SPLITTER + Clock.toString(_eventStartTime) + 
-				SPLITTER + Clock.toString(_eventEndTime);
-		content = content + SPLITTER + Clock.toString(_eventReminder);
+	public String[] composeContentToDisplay() {
+		String[] content = super.composeContentToDisplay();
+		content[INDEX_FOR_EVENT_START_TIME] = Clock.toString(_eventStartTime);
+		content[INDEX_FOR_EVENT_END_TIME] = Clock.toString(_eventEndTime);
+		content[INDEX_FOR_EVENT_REMINDER_TIME] = content + SPLITTER + Clock.toString(_eventReminder);
 		return content;
 	}
 	
