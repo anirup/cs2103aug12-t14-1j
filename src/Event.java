@@ -18,6 +18,10 @@ public class Event {
 	protected static final int INDEX_FOR_EVENT_REMINDER_TIME = 4;
 	protected static final int INDEX_FOR_EVENT_START_TIME = 5;
 	protected static final int INDEX_FOR_EVENT_END_TIME = 6;
+	
+	public static final int FLOATING_TYPE = 0;
+	public static final int DEADLINE_TYPE = 1;
+	public static final int TIMED_TYPE = 2;
 
 	public Event() {
 		_eventID = null;
@@ -53,6 +57,11 @@ public class Event {
 		} else {
 			_isDone = false;
 		}
+	}
+	
+	
+	public int getEventType() {
+		return FLOATING_TYPE;
 	}
 	
 	public boolean isBefore(Event anotherEvent) {

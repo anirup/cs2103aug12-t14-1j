@@ -40,6 +40,10 @@ public class FloatingEvent extends Event{
 		return false;
 	}
 	
+	public int getEventType() {
+		return FLOATING_TYPE;
+	}
+	
 	public boolean isClashedWith(Event anotherEvent) {
 		return false;
 	}
