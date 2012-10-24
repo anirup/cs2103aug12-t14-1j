@@ -66,7 +66,7 @@ public class EventStringHandler {
 	}
 	
 	private static boolean isDeadlineEvent(String[] eventContent) {
-		if(eventContent[END_TIME_FIELD].equalsIgnoreCase(INVALID_TIME)) {
+		if(eventContent[START_TIME_FIELD].equalsIgnoreCase(INVALID_TIME)) {
 			return true;
 		} 
 		return false;

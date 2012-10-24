@@ -270,7 +270,7 @@ public class Executor {
 		for (int i = 0; i < ListOfEvent.size(); i++) {
 			if (!ListOfEvent.get(i).getClass().getName()
 					.equals("FloatingEvent")) {
-				str += ListOfEvent.get(i).composeContentToDisplay();
+				str += ListOfEvent.get(i).composeContentToDisplayInString();
 				str += '\n';
 			}
 		}
@@ -283,7 +283,7 @@ public class Executor {
 		Collections.sort(ListOfEvent.getCurrentListOfEvent(), sortByPriority);
 		for (int i = 0; i < ListOfEvent.size(); i++) {
 			if (ListOfEvent.get(i).getClass().getName().equals("FloatingEvent")) {
-				str += ListOfEvent.get(i).composeContentToDisplay();
+				str += ListOfEvent.get(i).composeContentToDisplayInString();
 				str += '\n';
 			}
 		}
@@ -297,7 +297,7 @@ public class Executor {
 		for (int i = 0; i < ListOfEvent.size(); i++) {
 			if (!ListOfEvent.get(i).getClass().getName()
 					.equals("FloatingEvent")) {
-				str += ListOfEvent.get(i).composeContentToDisplay();
+				str += ListOfEvent.get(i).composeContentToDisplayInString();
 				str += '\n';
 			}
 		}
@@ -309,7 +309,7 @@ public class Executor {
 		for (int i = 0; i < searchResults.size(); i++) {
 			temp += searchResults.get(i).index();
 			temp += ".\t";
-			temp += searchResults.get(i).event().composeContentToDisplay();
+			temp += searchResults.get(i).event().composeContentToDisplayInString();
 			temp += "\n";
 		}
 		return temp;
@@ -322,34 +322,6 @@ public class Executor {
 	public static void syncDatabase() throws IOException {
 		ListOfEvent.syncDataToDatabase();
 	}
-	/*
-	 * public static String[] split(String command) { String[] parameterList={
-	 * "-1", "-1", "-1", "-1", "-1", "-1" };
-	 * parameterList[0]=command.substring(0,command.indexOf(" "));
-	 * parameterList[
-	 * 1]=getNextParameter(command.substring(command.indexOf(" ")).trim());
-	 * parameterList
-	 * [2]=getNextParameter(command.substring(command.indexOf(parameterList
-	 * [1])+parameterList[1].length()).trim());
-	 * parameterList[3]=getNextParameter
-	 * (command.substring(command.indexOf(parameterList
-	 * [2])+parameterList[2].length()).trim());
-	 * parameterList[4]=getNextParameter
-	 * (command.substring(command.indexOf(parameterList
-	 * [3])+parameterList[3].length()).trim());
-	 * parameterList[5]=command.substring
-	 * (command.indexOf(parameterList[4])+parameterList[4].length()).trim();
-	 * return parameterList; } private static String getNextParameter(String
-	 * subCommand) { String result="-1"; if(subCommand.charAt(0)=='@') {
-	 * subCommand=subCommand.substring(1); } else
-	 * if(subCommand.substring(0,2).equalsIgnoreCase("r-")) {
-	 * subCommand=subCommand.substring(2); } for(int
-	 * i=0;i<subCommand.length();i++) { if(subCommand.charAt(i)=='@') {
-	 * result=subCommand.substring(0, i); break; } else
-	 * if(subCommand.substring(i).toLowerCase().startsWith("r-")) {
-	 * result=subCommand.substring(0, i); break; } } if(result=="-1") {
-	 * result=subCommand; } return result; }
-	 */
 
 	private static String getEventPriority(Event a) {
 		return a.getEventHashTag().split("#")[0].trim();

@@ -20,6 +20,12 @@ public class FloatingEvent extends Event{
 		return content;
 	}
 	
+	public String composeContentToDisplayInString() {
+		String content = super.composeContentToDisplayInString();
+		return content;
+	}
+	
+	
 	public void parse(String eventContent) {
 		
 	}
