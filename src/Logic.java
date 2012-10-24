@@ -1,10 +1,8 @@
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import org.joda.time.LocalDate;
-import org.joda.time.LocalTime; 
+import org.joda.time.LocalTime;
 import java.util.Vector;
 
 public class Logic {
@@ -13,8 +11,6 @@ public class Logic {
 	private static final String Priority_Normal = "NORMAL";
 	private static final String Priority_Low = "LOW";
 	private static final String Priority_High = "HIGH";
-	private static final String SPLITTER = "..";
-	private static final String TIME_ZONE = "+8:00";
 	private static boolean fieldFound[] = { false, false, false, false, false,
 			false };
 
@@ -22,97 +18,6 @@ public class Logic {
 		for (int i = 0; i < 6; i++) {
 			fieldFound[i] = false;
 		}
-	}
-
-	public static Vector<String> splitInput(String command) {
-		Vector<String> parameterList = new Vector<String>();
-		command = StringOperation.removeExtraSpace(command);
-		command = command + " ";
-		parameterList.add(command.substring(0, command.indexOf(" ")));
-		command = command.replace(parameterList.get(0), "");
-		command = command.trim();
-		for (int j = 0; j < command.length(); j++) {
-			String temp = command.substring(j, command.length());
-			String original = temp;
-			command = command.replace(temp, "");
-			temp = StringOperation.prepareInputToAnalyzeTime(temp);
-			if (PatternLib.isFindDateTime(temp)[1] == 0) {
-				int i;
-				String formatted = temp.substring(
-						PatternLib.isFindDateTime(temp)[1],
-						PatternLib.isFindDateTime(temp)[2]);
-				for (i = original.length(); i >= 0; i--) {
-					if (!StringOperation.prepareInputToAnalyzeTime(
-							original.substring(0, i)).contains(formatted)) {
-						break;
-					}
-				}
-				j += PatternLib.isFindDateTime(temp)[2];
-				parameterList.add(temp.substring(0,
-						PatternLib.isFindDateTime(temp)[2]));
-				command += temp
-						.substring(0, PatternLib.isFindDateTime(temp)[2]);
-				if (i < original.length() - 1) {
-					command = command + original.substring(i + 1);
-				} else
-					command += "";
-			} else if (PatternLib.isFindReminderTime(original)[1] == 0) {
-				int a[] = PatternLib.isFindReminderTime(original);
-				command = command
-						+ original.substring(0,
-								PatternLib.isFindReminderTime(original)[2]);
-				parameterList.add(original.substring(0,
-						PatternLib.isFindReminderTime(original)[2]));
-				j += a[2];
-				int i;
-				String formatted = original.substring(
-						PatternLib.isFindReminderTime(original)[1],
-						PatternLib.isFindReminderTime(original)[2]);
-				for (i = original.length(); i >= 0; i--) {
-					if (!original.substring(0, i).contains(formatted)) {
-						break;
-					}
-				}
-				if (i < original.length() - 1) {
-					command = command + original.substring(i + 1);
-				} else
-					command += "";
-			} else {
-				command = command + original;
-			}
-		}
-		if (!command.trim().isEmpty()) {
-			parameterList.add(command.trim().substring(0,
-					getIndexOfNextComponent(command)));
-			command = command.replace(parameterList.lastElement(), "");
-		}
-		parameterList.add(1, parameterList.lastElement());
-		parameterList.remove(parameterList.size() - 1);
-		return Logic.trimAllParameters(parameterList);
-	}
-
-	private static int getIndexOfNextComponent(String input) {
-		int result1 = input.length(), result2 = input.length();
-		for (int i = 0; i < input.length(); i++) {
-
-			if (input.toLowerCase().indexOf("r-") == i) {
-				result1 = i;
-				break;
-			}
-		}
-		for (int i = 0; i < input.length(); i++) {
-			int timeIndex[] = PatternLib.isFindDateTime(input.substring(
-					input.length() - 1 - i, input.length()));
-			if (timeIndex[1] == 0 && timeIndex[0] < 19) {
-				result2 = input.length() - 1 - i;
-			}
-		}
-		if (result1 > result2) {
-			return result2;
-		} else if (result2 > result1) {
-			return result1;
-		} else
-			return input.length();
 	}
 
 	public static String getKeyWords(String[] parameterList) {
@@ -125,29 +30,20 @@ public class Logic {
 		}
 	}
 
-	public static void getPriority(Vector<String> hashTags) {
-		boolean found = false;
-		for (int i = 0; i < hashTags.size(); i++) {
-			if (hashTags.get(i).trim().equalsIgnoreCase("high")
-					|| hashTags.get(i).trim().equalsIgnoreCase("h")) {
-				hashTags.add(0, Priority_High);
-				hashTags.remove(i);
-				found = true;
-			} else if (hashTags.get(i).trim().equalsIgnoreCase("normal")
-					|| hashTags.get(i).trim().equalsIgnoreCase("n")) {
-				hashTags.add(0, Priority_Normal);
-				hashTags.remove(i);
-				found = true;
-			} else if (hashTags.get(i).trim().equalsIgnoreCase("low")
-					|| hashTags.get(i).trim().equalsIgnoreCase("l")) {
-				hashTags.add(0, Priority_Low);
-				hashTags.remove(i);
-				found = true;
+	public static String getPriority(String[] parameterList) {
+		for (int i = 0; i < parameterList.length; i++) {
+			if (parameterList[i].trim().equalsIgnoreCase(Priority_High)
+					|| parameterList[i].trim().equalsIgnoreCase("h")) {
+				fieldFound[i] = true;
+				return Priority_High;
+			} else if (parameterList[i].trim().equalsIgnoreCase(Priority_Low)
+					|| parameterList[i].trim().equalsIgnoreCase("l")) {
+				fieldFound[i] = true;
+				return Priority_Low;
 			}
 		}
-		if (found == false) {
-			hashTags.add(0, Priority_Normal);
-		}
+		fieldFound[5] = true;
+		return Priority_Normal;
 	}
 
 	public static Duration getReminderTime(String[] parameterList) {
@@ -229,16 +125,7 @@ public class Logic {
 			}
 
 		}
-		getPriority(listOfHashTags);
 		return listOfHashTags;
-	}
-
-	private static String getHashTagsString(Vector<String> hashList) {
-		String allHash = "";
-		for (int i = 0; i < hashList.size(); i++) {
-			allHash = allHash + "#" + hashList.get(i);
-		}
-		return allHash;
 	}
 
 	public static String getCommand(String[] parameterList) {
@@ -257,11 +144,11 @@ public class Logic {
 
 	public static String getStartTime(String[] parameterList) {
 		String currentTime = "";
-		for (int i = 2; i < 6; i++) {
+		for (int i = 0; i < 6; i++) {
 			if (fieldFound[i] == false && !parameterList[i].equals("-1")) {
 				currentTime = "";
-				fieldFound[i]=true;
 				return parameterList[i];
+
 			}
 		}
 
@@ -270,10 +157,9 @@ public class Logic {
 
 	public static String getEndTime(String[] parameterList) {
 		String endTime = "";
-		for (int i = 2; i < 6; i++) {
+		for (int i = 0; i < 6; i++) {
 			if (fieldFound[i] == false && !parameterList[i].equals("-1")) {
 				endTime = "";
-				fieldFound[i]=true;
 				return parameterList[i];
 			}
 		}
@@ -298,49 +184,91 @@ public class Logic {
 
 	}
 
-	public static String getEventString(String[] parameterList) {
-		String eventID=getEventID();
-		String eventName = getKeyWords(parameterList);
-		String eventHashTag = getHashTagsString(getHashTags(parameterList));
-		Duration eventReminder = getReminderTime(parameterList);
-		String endTime = getEndTime(parameterList);
-		String startTime = getStartTime(parameterList);
-		if (endTime == "") {
-			endTime = "invalid";
+	public static Vector<String> splitInput(String command) {
+		Vector<String> parameterList = new Vector<String>();
+		command = StringOperation.removeExtraSpace(command);
+		command = command + " ";
+		parameterList.add(command.substring(0, command.indexOf(" ")));
+		command = command.replace(parameterList.get(0), "");
+		command = command.trim();
+		int originalLength = command.length() - 1;
+		for (int j = 0; j < originalLength; j++) {
+			String temp = command.substring(j, command.length());
+			String original = temp;
+			command = command.replace(temp, "");
+			temp = StringOperation.prepareInputToAnalyzeTime(temp);
+			if (PatternLib.isFindDateTime(temp)[1] == 0) {
+				int i;
+				String formatted = temp.substring(
+						PatternLib.isFindDateTime(temp)[1],
+						PatternLib.isFindDateTime(temp)[2]);
+				for (i = original.length(); i >= 0; i--) {
+					if (!StringOperation.prepareInputToAnalyzeTime(
+							original.substring(0, i)).contains(formatted)) {
+						break;
+					}
+				}
+				j += PatternLib.isFindDateTime(temp)[2];
+				parameterList.add(temp.substring(0, PatternLib.isFindDateTime(temp)[2]));
+				command+=temp.substring(0, PatternLib.isFindDateTime(temp)[2]);
+				if (i < original.length() - 1) {
+					command = command + original.substring(i + 1);
+				} else
+					command += "";
+			} 
+			else if(PatternLib.isFindReminderTime(original)[1] == 0)
+			{	
+				int a[]=PatternLib.isFindReminderTime(original);
+				command=command+original.substring(0, PatternLib.isFindReminderTime(original)[2]);
+				parameterList.add(original.substring(0, PatternLib.isFindReminderTime(original)[2]));
+				j+=a[2];
+				int i;
+				String formatted = original.substring(
+						PatternLib.isFindReminderTime(original)[1],
+						PatternLib.isFindReminderTime(original)[2]);
+				for (i = original.length(); i >= 0; i--) {
+					if (!original.substring(0, i).contains(formatted)) {
+						break;
+					}
+				}
+				if (i < original.length() - 1) {
+					command = command + original.substring(i + 1);
+				} else
+					command += "";
+			}
+			else {
+				command = command + original;
+			}
 		}
-		if (startTime == "") {
-			startTime = "invalid";
-		}
-		DateTime start = PatternLib.getDateTime(startTime, PatternLib.isMatchDateTime(startTime));
-		DateTime end = PatternLib.getDateTime(endTime, PatternLib.isMatchDateTime(endTime));
-		if(startTime!="invalid")
-			startTime=Clock.toString(start);
-		if(endTime!="invalid")
-			endTime=Clock.toString(end);
-		String eventTime = startTime + SPLITTER + endTime;
-		String reminderString = null;
-		if (endTime != "invalid" && eventReminder.getMillis()!=0) {
-			DateTime reminder = end.minusSeconds((int) eventReminder
-					.getStandardSeconds());
-			reminderString = reminder.getHourOfDay()
-					+ ":" + reminder.getMinuteOfHour() + " " + reminder.getDayOfMonth() + "/"
-					+ reminder.getMonthOfYear() + "/"
-					+ reminder.getYear();
-		}
-		else 
-			reminderString="invalid";
-		String content = eventID + SPLITTER + eventName + SPLITTER + eventHashTag + SPLITTER
-				+ "false" + SPLITTER + reminderString + SPLITTER + eventTime
-				+ SPLITTER;
-		return content;
-	}
-	private static Vector<String> trimAllParameters(Vector<String> parameterList)
-	{
-		for(int i=0;i<parameterList.size();i++)
-		{
-			parameterList.add(i,parameterList.get(i).trim());
-			parameterList.remove(i+1);
+		if (!command.trim().isEmpty()) {
+			parameterList.add(command.trim().substring(0,
+					getIndexOfNextComponent(command)));
+			command = command.replace(parameterList.lastElement(), "");
 		}
 		return parameterList;
+	}
+
+	private static int getIndexOfNextComponent(String input) {
+		int result1 = 0, result2 = 0;
+		for (int i = 0; i < input.length(); i++) {
+
+			if (input.toLowerCase().indexOf("r-") == i) {
+				result1 = i;
+				break;
+			}
+		}
+		for (int i = 0; i < input.length(); i++) {
+			int timeIndex[] = PatternLib.isFindDateTime(input.substring(
+					input.length() - 1 - i, input.length()));
+			if (timeIndex[1] == 0 && timeIndex[0]<19) {
+				result2 = input.length() - 1 - i;
+			}
+		}
+		if (result1 > result2) {
+			return result2;
+		} else if (result2 > result1) {
+			return result1;
+		} else
+			return input.length();
 	}
 }
