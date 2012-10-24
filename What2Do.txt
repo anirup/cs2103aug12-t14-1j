@@ -1,1 +1,5 @@
 20121025022151693..abcd..#NORMAL..false..invalid..invalid..invalid..
+20121025022742237..jkl..#NORMAL..false..invalid..invalid..invalid..
+20121025022754701..abd..#NORMAL#igh..false..invalid..invalid..invalid..
+2012102502202743..abcd..#NORMAL..false..16:59 25/10/2012..18:00 25/10/2012..17:00 25/10/2012..
+20121025022810234..abdr..#NORMAL#igh..false..invalid..invalid..invalid..
