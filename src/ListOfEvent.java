@@ -10,6 +10,7 @@ import org.joda.time.DateTime;
 public class ListOfEvent {
 	private static ArrayList<Event> listOfEvent = new ArrayList<Event>();
 	private static final String fileName = "What2Do.txt";
+	private static final String displayFormat = "%1$d..%2$s";
 	
 	public static ArrayList<Event> getCurrentListOfEvent() {
 		return listOfEvent;
@@ -180,6 +181,17 @@ public class ListOfEvent {
 			if(!currentEvent.isDone()) {
 				listToDisplay.add(currentEvent.composeContentToDisplay());
 			}
+		}
+		return listToDisplay;
+	}
+	
+	public static ArrayList<String> getListOfEventToDisplayInString() {
+		ArrayList<String> listToDisplay = new ArrayList<String>();
+
+		for(int index = 0; index < listOfEvent.size(); index++) {
+			String contentToDisplay = listOfEvent.get(index).composeContentToDisplayInString();
+			contentToDisplay = String.format(displayFormat, index + 1, contentToDisplay);
+			listToDisplay.add(contentToDisplay);
 		}
 		return listToDisplay;
 	}
