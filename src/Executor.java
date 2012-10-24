@@ -54,7 +54,7 @@ public class Executor {
 		if (command.equalsIgnoreCase(COMMAND_ADD)
 				|| command.equalsIgnoreCase(SHORTHAND_ADD)) {
 			// ListOfActionArchive.add(new ActionArchiveAdd(
-			 analyzeAddInput(parameterList);
+			analyzeAddInput(parameterList);
 			searchToFalse();
 			ListOfEvent.syncDataToDatabase();
 			previousCommand = COMMAND_ADD;
