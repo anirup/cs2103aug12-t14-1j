@@ -43,6 +43,10 @@ public class TimedEvent extends Event{
 		_eventEndTime = Event.extractTime(contentToExtract, INDEX_FOR_EVENT_END_TIME);	
 	}
 	
+	public int getEventType() {
+		return TIMED_TYPE;
+	}
+	
 	public String toString() {
 		String eventContent = super.toString();
 		eventContent = eventContent + Clock.toString(_eventReminder) + SPLITTER;

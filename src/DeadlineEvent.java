@@ -32,6 +32,10 @@ public class DeadlineEvent extends Event{
 		return super.seachInName(keyWord);
 	}
 	
+	public int getEventType() {
+		return DEADLINE_TYPE;
+	}
+	
 	public boolean searchInTime(DateTime time) {
 		return Clock.searchTime(time, _eventTime, _eventTime);
 	}
