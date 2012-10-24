@@ -52,7 +52,10 @@ public class FloatingEvent extends Event{
 		String[] content = super.composeContentToDisplay();
 		return content;
 	}
-	
+	public String composeContentToDisplayInString() {
+		String content = super.composeContentToDisplayInString();
+		return content;
+	}	
 	public boolean isBefore(Event anotherEvent) {
 		return true;
 	}

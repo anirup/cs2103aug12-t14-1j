@@ -46,7 +46,7 @@ public class DeadlineEvent extends Event{
 	
 	public void parse(String[] contentToExtract) {
 		super.parse(contentToExtract);
-		_eventTime = Event.extractTime(contentToExtract, Event.INDEX_FOR_EVENT_START_TIME);
+		_eventTime = Event.extractTime(contentToExtract, Event.INDEX_FOR_EVENT_END_TIME);
 		_eventReminder = Event.extractTime(contentToExtract, INDEX_FOR_EVENT_REMINDER_TIME);
 	}
 	
@@ -54,6 +54,11 @@ public class DeadlineEvent extends Event{
 		String[] content = super.composeContentToDisplay();
 		content[INDEX_FOR_EVENT_START_TIME] =Clock.toString(_eventTime);
 		content[INDEX_FOR_EVENT_REMINDER_TIME] = content + SPLITTER + Clock.toString(_eventReminder);
+		return content;
+	}
+	public String composeContentToDisplayInString() {
+		String content = super.composeContentToDisplayInString();
+		content = content + SPLITTER + Clock.toString(_eventTime)+ SPLITTER + Clock.toString(_eventReminder);
 		return content;
 	}
 	
