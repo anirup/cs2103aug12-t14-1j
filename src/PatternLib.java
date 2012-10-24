@@ -49,9 +49,9 @@ public class PatternLib {
 	private static final String patternReminderHours = "r- ?((0?[0-9])|(1[0-9])|(2[0-4])) ?((hour[s]?)|(h)|(hr[s]))";
 	private static final String patternReminderDays = "r- ?(((0?[0-9])|([1-9][0-9])) ?((day[s]?)|(d)))";
 	private static final String patternReminderMinutesHoursDays = "r- ?(((0?[0-9])|([1-5][0-9])) ?((min[s]?)|(minute[s]?))) ?((0?[0-9])|(1[0-9])|(2[0-4])) ?((hour[s]?)|(h)|(hr[s]?)) ?(((0?[0-9])|([1-9][0-9])) ?((day[s]?)|(d)))";
-	private static final String patternReminderHoursDays = "r- ?((0?[0-9])|(1[0-9])|(2[0-4])) ?((hour[s]?)|(h)|(hr[s]?)) ?(((0?[0-9])|([1-9][0-9])) ?((day[s]?)|(d)))";
-	private static final String patternReminderMinutesDays = "r- ?(((0?[0-9])|([1-5][0-9])) ?((min[s]?)|(minute[s]?))) ?(((0?[0-9])|([1-9][0-9])) ?((day[s]?)|(d)))";
-	private static final String patternReminderMinutesHours = "r- ?(((0?[0-9])|([1-5][0-9])) ?((min[s]?)|(minute[s]?))) ?((0?[0-9])|(1[0-9])|(2[0-4])) ?((hour[s]?)|(h)|(hr[s]?))";
+	private static final String patternReminderHoursDays = "r-?((0?[0-9])|(1[0-9])|(2[0-4])) ?((hour[s]?)|(h)|(hr[s]?)) ?(((0?[0-9])|([1-9][0-9])) ?((day[s]?)|(d)))";
+	private static final String patternReminderMinutesDays = "r-?(((0?[0-9])|([1-5][0-9])) ?((min[s]?)|(minute[s]?))) ?(((0?[0-9])|([1-9][0-9])) ?((day[s]?)|(d)))";
+	private static final String patternReminderMinutesHours = "r-?(((0?[0-9])|([1-5][0-9])) ?((min[s]?)|(minute[s]?))) ?((0?[0-9])|(1[0-9])|(2[0-4])) ?((hour[s]?)|(h)|(hr[s]?))";
 	
 	public static void setUpPattern() {
 		

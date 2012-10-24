@@ -32,7 +32,7 @@ public class Logic {
 		command = command.replace(parameterList.get(0), "");
 		command = command.trim();
 		int originalLength = command.length() - 1;
-		for (int j = 0; j < originalLength; j++) {
+		for (int j = 0; j < command.length(); j++) {
 			String temp = command.substring(j, command.length());
 			String original = temp;
 			command = command.replace(temp, "");
@@ -93,7 +93,7 @@ public class Logic {
 	}
 
 	private static int getIndexOfNextComponent(String input) {
-		int result1 = 0, result2 = 0;
+		int result1 = input.length(), result2 = 0;
 		for (int i = 0; i < input.length(); i++) {
 
 			if (input.toLowerCase().indexOf("r-") == i) {
@@ -126,20 +126,33 @@ public class Logic {
 		}
 	}
 
-	public static String getPriority(String[] parameterList) {
-		for (int i = 0; i < parameterList.length; i++) {
-			if (parameterList[i].trim().equalsIgnoreCase(Priority_High)
-					|| parameterList[i].trim().equalsIgnoreCase("h")) {
-				fieldFound[i] = true;
-				return Priority_High;
-			} else if (parameterList[i].trim().equalsIgnoreCase(Priority_Low)
-					|| parameterList[i].trim().equalsIgnoreCase("l")) {
-				fieldFound[i] = true;
-				return Priority_Low;
+	public static void getPriority(Vector<String> hashTags) {
+		boolean found=false;
+		for(int i=0;i<hashTags.size();i++)
+		{
+			if(hashTags.get(i).trim().equalsIgnoreCase("high") || hashTags.get(i).trim().equalsIgnoreCase("h"))
+			{
+				hashTags.add(0, Priority_High);
+				hashTags.remove(i);
+				found=true;
+			}
+			else if(hashTags.get(i).trim().equalsIgnoreCase("normal") || hashTags.get(i).trim().equalsIgnoreCase("n"))
+			{
+				hashTags.add(0, Priority_Normal);
+				hashTags.remove(i);
+				found=true;
+			}
+			else if(hashTags.get(i).trim().equalsIgnoreCase("low") || hashTags.get(i).trim().equalsIgnoreCase("l"))
+			{
+				hashTags.add(0, Priority_Low);
+				hashTags.remove(i);
+				found=true;
 			}
 		}
-		fieldFound[5] = true;
-		return Priority_Normal;
+		if(found==false)
+		{
+			hashTags.add(0, Priority_Normal);
+		}
 	}
 
 	public static Duration getReminderTime(String[] parameterList) {
@@ -221,6 +234,7 @@ public class Logic {
 			}
 
 		}
+		getPriority(listOfHashTags);
 		return listOfHashTags;
 	}
 
