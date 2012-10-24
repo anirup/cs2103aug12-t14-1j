@@ -160,10 +160,6 @@ public class Event {
 		content[INDEX_FOR_EVENT_END_TIME] = "";
 		return content;
 	}
-	public String composeContentToDisplayInString() {
-		String content = _eventName + SPLITTER + _eventHashTag;
-		return content;
-	}
 	
 	public String toString() {
 		String content = _eventID + SPLITTER + _eventName + SPLITTER + _eventHashTag + SPLITTER + 
