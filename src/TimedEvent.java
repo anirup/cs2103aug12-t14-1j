@@ -43,6 +43,10 @@ public class TimedEvent extends Event{
 		_eventEndTime = Event.extractTime(contentToExtract, INDEX_FOR_EVENT_END_TIME);	
 	}
 	
+	public int getEventType() {
+		return TIMED_TYPE;
+	}
+	
 	public String toString() {
 		String eventContent = super.toString();
 		eventContent = eventContent + Clock.toString(_eventReminder) + SPLITTER;
@@ -58,13 +62,11 @@ public class TimedEvent extends Event{
 		content[INDEX_FOR_EVENT_REMINDER_TIME] = content + SPLITTER + Clock.toString(_eventReminder);
 		return content;
 	}
-	
 	public String composeContentToDisplayInString() {
 		String content = super.composeContentToDisplayInString();
 		content = content + SPLITTER + Clock.toString(_eventStartTime)+ SPLITTER + Clock.toString(_eventEndTime)+ SPLITTER + Clock.toString(_eventReminder);
 		return content;
 	}
-	
 	public boolean searchInHashTag(String keyWord) {
 		return super.searchInHashTag(keyWord);
 	}

@@ -20,12 +20,6 @@ public class FloatingEvent extends Event{
 		return content;
 	}
 	
-	public String composeContentToDisplayInString() {
-		String content = super.composeContentToDisplayInString();
-		return content;
-	}
-	
-	
 	public void parse(String eventContent) {
 		
 	}
@@ -46,6 +40,10 @@ public class FloatingEvent extends Event{
 		return false;
 	}
 	
+	public int getEventType() {
+		return FLOATING_TYPE;
+	}
+	
 	public boolean isClashedWith(Event anotherEvent) {
 		return false;
 	}
@@ -54,7 +52,10 @@ public class FloatingEvent extends Event{
 		String[] content = super.composeContentToDisplay();
 		return content;
 	}
-	
+	public String composeContentToDisplayInString() {
+		String content = super.composeContentToDisplayInString();
+		return content;
+	}	
 	public boolean isBefore(Event anotherEvent) {
 		return true;
 	}

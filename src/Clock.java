@@ -19,9 +19,7 @@ public class Clock {
 	
 	public static String toString(DateTime time) {
 		DateTimeFormatter dateFormat = DateTimeFormat.forPattern(dateTimeFormat);
-		if (time.toString(dateFormat).equalsIgnoreCase("00:00 01/01/1970")) {
-			return "";
-		}
+		
 		return time.toString(dateFormat);
 	}
 	

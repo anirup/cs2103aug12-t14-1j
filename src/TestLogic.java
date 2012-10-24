@@ -1,15 +1,11 @@
 
 import static org.junit.Assert.*;
-
 import java.util.Vector;
-
-import org.joda.time.Duration;
-import org.junit.Before;
 import org.junit.Test;
 
 public class TestLogic {
 
-	String command="add     abcd#high 5am today 6am today r-1min22h";
+	String command="delete 1";
 	String[] parameterList= {"add","meeting#abcd#abcde","h","r-1hr2min","-1","-1"};
 
 

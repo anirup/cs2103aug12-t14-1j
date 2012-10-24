@@ -167,7 +167,7 @@ public class ListOfEvent {
 		return listToDisplay;
 	}
 	
-/*	public static ArrayList<String[]> getListOfEventToDisplay(int eventType) {
+	public static ArrayList<String[]> getListOfEventToDisplay(int eventType) {
 		ArrayList<String[]> listToDisplay = new ArrayList<String[]>();
 		for(int index = 0; index < listOfEvent.size(); index++) {
 			Event currentEvent = listOfEvent.get(index);
@@ -176,7 +176,7 @@ public class ListOfEvent {
 			}
 		}
 		return listToDisplay;
-	}*/
+	}
 	
 	public static ArrayList<String[]> getListOfEventToDisplaySortedByTime() {
 		ListOfEvent.sortByTime();
