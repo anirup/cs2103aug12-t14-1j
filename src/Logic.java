@@ -8,7 +8,8 @@ import org.joda.time.LocalTime;
 import java.util.Vector;
 
 public class Logic {
-	
+	private static final String SHORTHAND_ADD = "+";
+	private static final String COMMAND_ADD = "add";
 	private static final String ELEMENT_EMPTY = "-1";
 	private static final String EXTRACT_NUMBERS_PATTERN = "\\d+";
 	private static final String STRING_FALSE = "false";
@@ -51,8 +52,11 @@ public class Logic {
 	public static Vector<String> splitInput(String userInput) {
 		Vector<String> parameterList = new Vector<String>();
 		userInput = extractCommandTypeAndUpdateInputString(userInput, parameterList);
+		if(parameterList.get(0).equals(COMMAND_ADD)||parameterList.get(0).equals(SHORTHAND_ADD))
+		{
 		userInput = extractTimeFieldsAndUpdateInputString(userInput,
 				parameterList);
+		}
 		extractKeywordsAlongWithHashTags(userInput, parameterList);
 		shiftKeywordsToSecondIndex(parameterList);
 		parameterList = trimAllParameters(parameterList);
@@ -66,12 +70,14 @@ public class Logic {
 
 	private static void extractKeywordsAlongWithHashTags(String userInput,
 			Vector<String> parameterList) {
-		if (!userInput.trim().isEmpty()) {
+		if (!userInput.trim().isEmpty()&& StringOperation.isInteger(userInput.trim())==-1) {
 			parameterList.add(userInput.trim().substring(0,
 					getIndexOfNextComponent(userInput)));
 			userInput = userInput.replace(parameterList.lastElement(),
 					EMPTY_STRING);
 		}
+		else
+			parameterList.add(userInput);
 	}
 
 	private static int getIndexOfNextComponent(String input) {
@@ -103,7 +109,7 @@ public class Logic {
 		for (int j = 0; j < userInput.length(); j++) {
 			String temp = userInput.substring(j, userInput.length());
 			String original = temp;
-			userInput = userInput.replace(temp, EMPTY_STRING);
+			userInput = userInput.substring(0,j);
 			temp = StringOperation.prepareInputToAnalyzeTime(temp);
 			if (PatternLib.isFindDateTime(temp)[1] == 0) {
 				int i;
