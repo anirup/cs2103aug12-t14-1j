@@ -1,4 +1,3 @@
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -110,31 +109,25 @@ public class ListOfEvent {
 	
 	public static ArrayList<Event> searchInHashTag(String keyWord) {
 		ArrayList<Event> result = new ArrayList<Event>();
-		
 		Iterator<Event> iterator = listOfEvent.iterator();
-		
 		while(iterator.hasNext()) {
 			Event currentEvent = iterator.next();
 			if (currentEvent.searchInHashTag(keyWord)) {
 				result.add(currentEvent);
 			}
 		}
-		
 		return result;
 	}
 	
 	public static ArrayList<Event> searchInTime(Clock keyWord) {
 		ArrayList<Event> result = new ArrayList<Event>();
-		
 		Iterator<Event> iterator = listOfEvent.iterator();
-		
 		while(iterator.hasNext()) {
 			Event currentEvent = iterator.next();
 			if (currentEvent.searchInTime(keyWord)) {
 				result.add(currentEvent);
 			}
 		}
-		
 		return result;
 	}
 	
@@ -188,7 +181,6 @@ public class ListOfEvent {
 				listToDisplay.add(currentEvent.composeContentToDisplay());
 			}
 		}
-		
 		return listToDisplay;
 	}
 }
