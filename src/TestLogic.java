@@ -4,7 +4,7 @@ import org.junit.Test;
 
 public class TestLogic {
 
-	String command="delete 2";
+	String command="search today#high";
 	String[] parameterList= {"add","meeting#abcd#abcde","h","r-1hr2min","-1","-1"};
 
 
