@@ -1,4 +1,4 @@
-import static org.junit.Assert.assertEquals;
+/*import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 
@@ -44,4 +44,4 @@ public class TestListOfEvent {
 		assertEquals("test size", 3, ListOfEvent.size());
 	}
 
-}
+}*/
