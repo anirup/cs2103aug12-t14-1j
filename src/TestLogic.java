@@ -9,7 +9,7 @@ import org.junit.Test;
 
 public class TestLogic {
 
-	String command="add abcd  5am today  6am today ";
+	String command="add     abcd#high 5am today 6am today r-1min22h";
 	String[] parameterList= {"add","meeting#abcd#abcde","h","r-1hr2min","-1","-1"};
 
 
@@ -46,7 +46,7 @@ public class TestLogic {
 				Logic.getHashTags(parameterList).get(1));
 	}
 
-	/*@Test
+/*	@Test
 	public void testGet3() {
 		assertEquals("test getpriority", "HIGH",
 				Logic.getPriority(parameterList));
