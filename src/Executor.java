@@ -270,7 +270,7 @@ public class Executor {
 		for (int i = 0; i < ListOfEvent.size(); i++) {
 			if (!ListOfEvent.get(i).getClass().getName()
 					.equals("FloatingEvent")) {
-				str += ListOfEvent.get(i).composeContentToDisplay();
+				str += ListOfEvent.get(i).composeContentToDisplayInString();
 				str += '\n';
 			}
 		}
@@ -283,7 +283,7 @@ public class Executor {
 		Collections.sort(ListOfEvent.getCurrentListOfEvent(), sortByPriority);
 		for (int i = 0; i < ListOfEvent.size(); i++) {
 			if (ListOfEvent.get(i).getClass().getName().equals("FloatingEvent")) {
-				str += ListOfEvent.get(i).composeContentToDisplay();
+				str += ListOfEvent.get(i).composeContentToDisplayInString();
 				str += '\n';
 			}
 		}
@@ -297,7 +297,7 @@ public class Executor {
 		for (int i = 0; i < ListOfEvent.size(); i++) {
 			if (!ListOfEvent.get(i).getClass().getName()
 					.equals("FloatingEvent")) {
-				str += ListOfEvent.get(i).composeContentToDisplay();
+				str += ListOfEvent.get(i).composeContentToDisplayInString();
 				str += '\n';
 			}
 		}
@@ -309,7 +309,7 @@ public class Executor {
 		for (int i = 0; i < searchResults.size(); i++) {
 			temp += searchResults.get(i).index();
 			temp += ".\t";
-			temp += searchResults.get(i).event().composeContentToDisplay();
+			temp += searchResults.get(i).event().composeContentToDisplayInString();
 			temp += "\n";
 		}
 		return temp;
