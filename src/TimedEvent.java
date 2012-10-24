@@ -59,6 +59,12 @@ public class TimedEvent extends Event{
 		return content;
 	}
 	
+	public String composeContentToDisplayInString() {
+		String content = super.composeContentToDisplayInString();
+		content = content + SPLITTER + Clock.toString(_eventStartTime)+ SPLITTER + Clock.toString(_eventEndTime)+ SPLITTER + Clock.toString(_eventReminder);
+		return content;
+	}
+	
 	public boolean searchInHashTag(String keyWord) {
 		return super.searchInHashTag(keyWord);
 	}
