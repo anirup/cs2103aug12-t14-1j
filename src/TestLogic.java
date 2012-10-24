@@ -46,7 +46,7 @@ public class TestLogic {
 				Logic.getHashTags(parameterList).get(1));
 	}
 
-	@Test
+/*	@Test
 	public void testGet3() {
 		assertEquals("test getpriority", "HIGH",
 				Logic.getPriority(parameterList));
@@ -68,5 +68,5 @@ public class TestLogic {
 		assertEquals("test getreminder", a,
 				Logic.getReminderTime(parameterList));
 	}
-
+*/
 }

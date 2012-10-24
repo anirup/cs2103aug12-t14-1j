@@ -1,55 +1,125 @@
 import static org.junit.Assert.assertEquals;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.LinkedList;
+
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 
+
 public class TestEvent {
-	CommandAnalyzerAdd cmd;
+	
+	Event floatingEvent;
+	Event timedEvent;
+	Event deadlineEvent;
+	Clock startTime = new Clock("10:00 20/7/2007", "HH:mm dd/MM/yyyy");
+	Clock endTime = new Clock("11:00 20/7/2007", "HH:mm dd/MM/yyyy");
+	Clock deadlineTime = new Clock("9:30 20/7/2007", "HH:mm dd/MM/yyyy");
+	Clock reminder = new Clock("9:00 20/7/2007", "HH:mm dd/MM/yyyy");
+	String nameFloating = "finish tutorial";
+	String nameDeadline = "finish assignment";
+	String nameTimed = "lecture";
+	String hashTagUnsplitted = "impt high ";
+	String[] hashTag = hashTagUnsplitted.split(" "); 
+	boolean isDone = false;
+	LinkedList<Event> testList = new LinkedList<Event>();
+	String floatingToString;
+	String deadlineToString;
+	String timedToString;
+	
 	@Before
 	public void setUp() {
-		PatternLib.setUpPattern();
-	}
-	
-	@Test 
-	public void testParse() {
-		cmd = new CommandAnalyzerAdd("add project #work #high r- 5 min 5pm 9Sep2010");
-		String newEvent = "01.." + cmd.getCommandContent();
-		assertEquals("get Command content",  "01..project..#work #high ..false.." +
-				"00:05 01/01/1970..17:00 09/09/2010..invalid..",
-				newEvent);
-		Event newDeadline = new DeadlineEvent();
-		newDeadline.parse(newEvent.split("\\.."));
-		assertEquals("test parse floating", "01..project..#work #high..false..00:05 01/01/1970..17:00 09/09/2010",
-				newDeadline.toString());
+		floatingEvent = new FloatingEvent("01", nameFloating, hashTag, reminder, false);
+		deadlineEvent = new DeadlineEvent("02", nameDeadline, hashTag, reminder, false, deadlineTime);
+		timedEvent = new TimedEvent("03", nameTimed, hashTag, reminder, false, startTime, endTime);
+		floatingToString = "01..finish tutorial..impt high ..9:00 20/7/2007..HH:mm dd/MM/yyyy..false..";
+		deadlineToString = "02..finish assignment..impt high ..9:00 20/7/2007..HH:mm dd/MM/yyyy..false..9:30 20/7/2007..HH:mm dd/MM/yyyy..";
+		timedToString =  "03..lecture..impt high ..9:00 20/7/2007..HH:mm dd/MM/yyyy..false..10:00 20/7/2007..HH:mm dd/MM/yyyy..11:00 20/7/2007..HH:mm dd/MM/yyyy..";
 		
 	}
 	
 	@Test
-	public void testParseFromString() {
-		cmd = new CommandAnalyzerAdd("add project r- 5 min 5am this mon #work #impt");
-		String event = cmd.getCommandContent();
-		
-		assertEquals("test parse()", "project..#work #impt..false..00:05 01/01/1970..05:00 15/10/2012..invalid..", event);
-		
-		event = "01" + ".." + event;
-		Event newEvent = EventStringHandler.getEventFromString(event);
-		assertEquals("test parse()", "01..project..#work #impt..false.." +
-				"00:05 01/01/1970..05:00 15/10/2012..invalid..", newEvent.toString());
-		
-		cmd = new CommandAnalyzerAdd("add project r- 5 min 5am to 7pm this mon #work #impt");
-		
-		event = "02.." + cmd.getCommandContent();
-		assertEquals("test parse()", "02..project..#work #impt..false.." +
-				"00:05 01/01/1970..05:00 15/10/2012..19:00 15/10/2012..", event);
-		newEvent = EventStringHandler.getEventFromString(event);
-		assertEquals("test parse()", "02..project..#work #impt..false.." +
-				"00:05 01/01/1970..05:00 15/10/2012..19:00 15/10/2012..", newEvent.toString());
-		
-		cmd = new CommandAnalyzerAdd("add project #work #impt");
-		event = "03.." + cmd.getCommandContent();
-		assertEquals("test parse()", "03..project..#work #impt..false..invalid..invalid..invalid..", event);
-		newEvent = EventStringHandler.getEventFromString(event);
-		assertEquals("test parse()", "03..project..#work #impt..false.." +
-				"invalid..invalid..invalid..", newEvent.toString());
+	public void testToString() {
+		assertEquals("test toString() floating", floatingToString, floatingEvent.toString());
+		assertEquals("test toString() deadline", deadlineToString, deadlineEvent.toString());
+		assertEquals("test toString() timed", timedToString, timedEvent.toString());
+
 	}
+	
+	@Test
+	public void testIsInDay() {
+		DateTime date = new DateTime(2007, 07, 20, 00, 00);
+		assertEquals("test isInDay1", false, floatingEvent.isInDay(date));
+		assertEquals("test isInDay2", true, deadlineEvent.isInDay(date));
+		assertEquals("test isInDay3", true, timedEvent.isInDay(date));
+		Clock newStartTime = new Clock("10:30 19/07/2007", "HH:mm dd/MM/yyyy");
+		Clock newEndTime = new Clock("11:30 21/07/2007", "HH:mm dd/MM/yyyy");
+		
+		Event newTimedEvent = new TimedEvent("04", "lecture 2", hashTag, reminder, false, newStartTime, newEndTime);
+		assertEquals("test isInDay4", true, newTimedEvent.isInDay(date));
+	}
+	
+	@Test
+	public void testSort() {
+		testList.add(timedEvent);
+		testList.add(floatingEvent);
+		testList.add(deadlineEvent);
+		Comparator<Event> comparator = new CompareEventByName();
+		Collections.sort(testList, comparator);
+		assertEquals("test sort Event by name1", deadlineToString, testList.get(0).toString());
+		assertEquals("test sort Event by name2", floatingToString, testList.get(1).toString());
+		assertEquals("test sort Event by name3", timedToString, testList.get(2).toString());
+		
+		comparator = new CompareEventByTime();
+		Collections.sort(testList, comparator);
+		assertEquals("test sort Event by time1", deadlineToString, testList.get(1).toString());
+		assertEquals("test sort Event by time2", floatingToString, testList.get(0).toString());
+		assertEquals("test sort Event by time3", timedToString, testList.get(2).toString());
+		
+		comparator = new CompareEventByID();
+		Collections.sort(testList, comparator);
+		assertEquals("test sort Event by ID1", deadlineToString, testList.get(1).toString());
+		assertEquals("test sort Event by ID2", floatingToString, testList.get(0).toString());
+		assertEquals("test sort Event by ID3", timedToString, testList.get(2).toString());
+	}
+
+	public void testSetUp() throws Exception {
+		ListOfEvent.setUpDataFromDatabase();
+		Iterator<Event> iter = testList.iterator();
+		while(iter.hasNext()) {
+			ListOfEvent.add(iter.next());
+		}
+		ListOfEvent.remove(0);
+		ListOfEvent.remove(3);
+		ListOfEvent.sortByID();
+		ListOfEvent.syncDataToDatabase();	
+	}
+	
+	@Test
+	public void testIsClashedWith() {
+		assertEquals("test isClashedWith()1", false, timedEvent.isClashedWith(floatingEvent));
+		assertEquals("test isClashedWith()2", false, timedEvent.isClashedWith(deadlineEvent));
+		Clock newStartTime = new Clock("10:30 20/07/2007", "HH:mm dd/MM/yyyy");
+		Clock newEndTime = new Clock("11:30 20/07/2007", "HH:mm dd/MM/yyyy");
+		
+		Event newTimedEvent = new TimedEvent("04", "lecture 2", hashTag, reminder, false, newStartTime, newEndTime);
+		assertEquals("test isClashedWith()3", true, timedEvent.isClashedWith(newTimedEvent));
+	}
+	
+	@Test
+	public void testComparator() {
+		Comparator<Event> comp = new CompareEventByTime();
+		assertEquals("test comparator", 1, comp.compare(timedEvent, deadlineEvent));
+		assertEquals("test comparator", 1, comp.compare(deadlineEvent, floatingEvent));
+	}
+	@Test 
+	public void testComposeContentToDisplay() {
+		assertEquals("test composeContentToDisplay()", "finish tutorial..#impt #high ..9:00 20/7/2007", floatingEvent.composeContentToDisplay());
+	}
+
+	
 }
 
