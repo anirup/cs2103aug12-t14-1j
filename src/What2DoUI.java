@@ -64,6 +64,8 @@ char lastEvent=' ';
         jScrollPane6.setViewportView(jTable1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        
+        jPanel1.setBackground(new java.awt.Color(241,235,194));
 
         textField1.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         textField1.setFont(new java.awt.Font("Monospaced", 0, 18)); // NOI18N
@@ -86,6 +88,7 @@ char lastEvent=' ';
             }
         });
 
+        jTextPane2.setEditable(false);
         jTextPane2.setFont(new java.awt.Font("Monospaced", 2, 14)); // NOI18N
         jTextPane2.setText("FORMAT : [operation - add (OR '+') OR delete (OR '-') OR search OR update OR undo OR done OR undone OR exit]");
         jScrollPane4.setViewportView(jTextPane2);
@@ -96,24 +99,28 @@ char lastEvent=' ';
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Logo5.png"))); // NOI18N
         jLabel1.setText("jLabel1");
 
+        jTextArea5.setEditable(false);
         jTextArea5.setColumns(20);
         jTextArea5.setRows(5);
         jTextArea5.setFont(new java.awt.Font("Monospaced", 0, 12));
         jTextArea5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Upcoming Events", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Monospaced", 1, 14), java.awt.Color.black)); // NOI18N
         jScrollPane1.setViewportView(jTextArea5);
 
+        jTextArea8.setEditable(false);
         jTextArea8.setColumns(20);
         jTextArea8.setRows(5);
         jTextArea8.setFont(new java.awt.Font("Monospaced", 0, 12));
         jTextArea8.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Floating Events", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Monospaced", 1, 14), java.awt.Color.black)); // NOI18N
         jScrollPane10.setViewportView(jTextArea8);
 
+        jTextArea6.setEditable(false);
         jTextArea6.setColumns(20);
         jTextArea6.setRows(5);
         jTextArea6.setFont(new java.awt.Font("Monospaced", 0, 12));
         jTextArea6.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Priority Events", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Monospaced", 1, 14), java.awt.Color.black)); // NOI18N
         jScrollPane8.setViewportView(jTextArea6);
 
+        jTextArea7.setEditable(false);
         jTextArea7.setColumns(20);
         jTextArea7.setRows(5);
         jTextArea7.setFont(new java.awt.Font("Monospaced", 0, 12));
@@ -191,9 +198,12 @@ char lastEvent=' ';
 
     private void textField1KeyTyped(java.awt.event.KeyEvent evt) throws IOException {//GEN-FIRST:event_textField1KeyTyped
        
-        /*if (textField1.getText().length()==1){
-            flag=0;
-        }*/
+        if (evt.getKeyChar()==8){
+        	if (textField1.getText().isEmpty()){
+        		flag=0;
+        		jTextPane2.setText("FORMAT : [operation - add (OR '+') OR delete (OR '-') OR search OR update OR undo OR done OR undone OR exit]");
+        	}
+        }
         if (flag==0 && ((evt.getKeyChar()=='a') || (evt.getKeyChar()=='+'))){
             flag=1;
             lastEvent=evt.getKeyChar();
