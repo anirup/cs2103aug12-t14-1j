@@ -47,7 +47,8 @@ public class Executor {
 		String[] parameterList = { "-1", "-1", "-1", "-1", "-1", "-1" };
 		Logic.setUp();
 		ListOfEvent.syncDataToDatabase();
-		Collections.sort(ListOfEvent.getCurrentListOfEvent(), sortByDate);
+		//Collections.sort(ListOfEvent.getCurrentListOfEvent(), sortByDate);
+		ListOfEvent.sortByTime();
 		for (int i = 0; i < parameters.size(); i++)
 			parameterList[i] = parameters.get(i);
 		String command = Logic.getCommand(parameterList);
@@ -63,9 +64,9 @@ public class Executor {
 			if (getSearchState() == true
 					&& (previousCommand == COMMAND_DELETE || previousCommand == COMMAND_SEARCH)) {
 				int index = Logic.getInteger(parameterList);
-				// ListOfActionArchive.add(new ActionArchiveDelete(ListOfEvent
-				// .get(index)));
-				ListOfEvent.remove(index);
+				 ListOfActionArchive.add(new ActionArchiveDelete(ListOfEvent
+				 .remove(index)));
+				//ListOfEvent.remove(index);
 				ListOfEvent.syncDataToDatabase();
 				previousCommand = COMMAND_DELETE;
 				searchToFalse();
@@ -90,6 +91,7 @@ public class Executor {
 		} else if (command.equalsIgnoreCase(COMMAND_SEARCH)) {
 			analyzeAndSearch(parameterList);
 			previousCommand = COMMAND_SEARCH;
+			searchToTrue();
 		} else if (command.equalsIgnoreCase(COMMAND_DONE)) {
 			if (getSearchState() == true && previousCommand == COMMAND_DONE) {
 				int index = Logic.getInteger(parameterList);
@@ -129,12 +131,22 @@ public class Executor {
 																	// have to
 
 		searchResults.clear();
+		Vector<String> searchWords = getSearchWords(parameterList);
+		commenceSearch(searchWords);		
+		Collections.sort(searchResults);
+	}
+
+	private static Vector<String> getSearchWords(String[] parameterList) {
 		Vector<String> searchWords = new Vector<String>();
 		searchWords = Logic.getHashTags(parameterList);
 		String[] tempArr = (Logic.getKeyWords(parameterList)).trim().split(
 				EXPRESSION_WHITESPACE);
 		searchWords.addAll(Arrays.asList(tempArr));
-		int size = ListOfEvent.size();
+		return searchWords;
+	}
+
+	private static void commenceSearch(Vector<String> searchWords) {
+		/*int size = ListOfEvent.size();
 		for (int i = 0; i < size; i++) {
 			if (searchWords.isEmpty())
 				break;
@@ -154,8 +166,8 @@ public class Executor {
 					break;
 				}
 			}
-		}
-		Collections.sort(searchResults);
+		}*/
+		searchResults.addAll(ListOfEvent.searchInNameAndHashTags(searchWords));
 	}
 
 	public static void markNotDone(int index) {
@@ -167,54 +179,11 @@ public class Executor {
 	}
 
 	public static boolean analyzeAddInput(String[] parameterList) {
-		/*
-		 * String priority, keywords, id; Duration reminderTime; id =
-		 * Logic.getEventID(); keywords = Logic.getKeyWords(parameterList);
-		 * priority = Logic.getPriority(parameterList); reminderTime =
-		 * Logic.getReminderTime(parameterList); Vector<String> resultHashTags =
-		 * Logic.getHashTags(parameterList); resultHashTags.add(0, priority);
-		 * String[] hashArray = new String[resultHashTags.size()];
-		 * resultHashTags.toArray(hashArray); String endTimeDate =
-		 * Logic.getEndTime(parameterList); String startTimeDate =
-		 * Logic.getStartTime(parameterList);
-		 */
+		
 		String eventToAdd = Logic.getEventString(parameterList);
 		ListOfEvent.add(eventToAdd);
 		return true;
-		// Event eventToAdd;
-		/*
-		 * if (startTimeDate.equals(STRING_NULL) &&
-		 * endTimeDate.equals(STRING_NULL)) { // DateTime utc = new
-		 * DateTime(System.currentTimeMillis(), // DateTimeZone.); eventToAdd =
-		 * new FloatingEvent(id, keywords, hashArray, new Clock(), false);
-		 * ListOfEvent.add(eventToAdd); }
-		 * 
-		 * else if (startTimeDate.equalsIgnoreCase(STRING_NULL) &&
-		 * (!endTimeDate.equalsIgnoreCase(STRING_NULL))) {
-		 * 
-		 * Clock time = new Clock(endTimeDate, FORMAT_DATE); DateTime reminder =
-		 * time.toDate().minusSeconds( (int) reminderTime.getStandardSeconds());
-		 * String reminderString = reminder.getYear() + "-" +
-		 * reminder.getMonthOfYear() + "-" + reminder.getDayOfMonth() + "T" +
-		 * reminder.getHourOfDay() + ":" + reminder.getMinuteOfHour() +
-		 * TIME_ZONE; eventToAdd = new DeadlineEvent(id, keywords, hashArray,
-		 * new Clock( reminderString, FORMAT_DATE), false, time);
-		 * ListOfEvent.add(eventToAdd); } else {
-		 * 
-		 * Clock starting = new Clock(startTimeDate, FORMAT_DATE); Clock ending
-		 * = new Clock(endTimeDate, FORMAT_DATE); if (ending.isBefore(starting))
-		 * { Clock temp = ending; ending = starting; starting = temp; } DateTime
-		 * reminder = ending.toDate().minusSeconds( (int)
-		 * reminderTime.getStandardSeconds()); String reminderString =
-		 * reminder.getYear() + "-" + reminder.getMonthOfYear() + "-" +
-		 * reminder.getDayOfMonth() + "T" + reminder.getHourOfDay() + ":" +
-		 * reminder.getMinuteOfHour() + TIME_ZONE; eventToAdd = new
-		 * TimedEvent(id, keywords, hashArray, new Clock( reminderString,
-		 * FORMAT_DATE), false, starting, ending); ListOfEvent.add(eventToAdd);
-		 * }
-		 * 
-		 * return eventToAdd;
-		 */
+		
 	}
 
 	public static void updateEvent(int index) {
@@ -266,7 +235,8 @@ public class Executor {
 	public static String printDataBase() {
 
 		String str = STRING_NULL;
-		Collections.sort(ListOfEvent.getCurrentListOfEvent(), sortByDate);
+		//Collections.sort(ListOfEvent.getCurrentListOfEvent(), sortByDate);
+		ListOfEvent.sortByTime();
 		for (int i = 0; i < ListOfEvent.size(); i++) {
 			if (!ListOfEvent.get(i).getClass().getName()
 					.equals("FloatingEvent")) {
@@ -281,6 +251,7 @@ public class Executor {
 
 		String str = STRING_NULL;
 		Collections.sort(ListOfEvent.getCurrentListOfEvent(), sortByPriority);
+		//ListOfEvent.sortByPriority();
 		for (int i = 0; i < ListOfEvent.size(); i++) {
 			if (ListOfEvent.get(i).getClass().getName().equals("FloatingEvent")) {
 				str += i+".." +ListOfEvent.get(i).composeContentToDisplayInString();
@@ -293,7 +264,8 @@ public class Executor {
 	public static String printPriorityDataBase() {
 
 		String str = STRING_NULL;
-		Collections.sort(ListOfEvent.getCurrentListOfEvent(), sortByPriority);
+		//Collections.sort(ListOfEvent.getCurrentListOfEvent(), sortByPriority);
+		ListOfEvent.sortByPriority();
 		for (int i = 0; i < ListOfEvent.size(); i++) {
 			if (!ListOfEvent.get(i).getClass().getName()
 					.equals("FloatingEvent")) {
@@ -322,36 +294,9 @@ public class Executor {
 	public static void syncDatabase() throws IOException {
 		ListOfEvent.syncDataToDatabase();
 	}
-	/*
-	 * public static String[] split(String command) { String[] parameterList={
-	 * "-1", "-1", "-1", "-1", "-1", "-1" };
-	 * parameterList[0]=command.substring(0,command.indexOf(" "));
-	 * parameterList[
-	 * 1]=getNextParameter(command.substring(command.indexOf(" ")).trim());
-	 * parameterList
-	 * [2]=getNextParameter(command.substring(command.indexOf(parameterList
-	 * [1])+parameterList[1].length()).trim());
-	 * parameterList[3]=getNextParameter
-	 * (command.substring(command.indexOf(parameterList
-	 * [2])+parameterList[2].length()).trim());
-	 * parameterList[4]=getNextParameter
-	 * (command.substring(command.indexOf(parameterList
-	 * [3])+parameterList[3].length()).trim());
-	 * parameterList[5]=command.substring
-	 * (command.indexOf(parameterList[4])+parameterList[4].length()).trim();
-	 * return parameterList; } private static String getNextParameter(String
-	 * subCommand) { String result="-1"; if(subCommand.charAt(0)=='@') {
-	 * subCommand=subCommand.substring(1); } else
-	 * if(subCommand.substring(0,2).equalsIgnoreCase("r-")) {
-	 * subCommand=subCommand.substring(2); } for(int
-	 * i=0;i<subCommand.length();i++) { if(subCommand.charAt(i)=='@') {
-	 * result=subCommand.substring(0, i); break; } else
-	 * if(subCommand.substring(i).toLowerCase().startsWith("r-")) {
-	 * result=subCommand.substring(0, i); break; } } if(result=="-1") {
-	 * result=subCommand; } return result; }
-	 */
+	
 
 	private static String getEventPriority(Event a) {
-		return a.getEventHashTag().split("#")[0].trim();
+		return a.getEventHashTag().split("#")[0].trim().toLowerCase();
 	}
 }
