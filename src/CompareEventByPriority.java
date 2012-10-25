@@ -16,7 +16,7 @@ public class CompareEventByPriority implements Comparator<Event>{
 	}
 	
 	private static String getEventPriority(Event a) {
-		return a.getEventHashTag().split("#")[0].trim().toLowerCase();
+		return a.getEventHashTag().split("#")[1].trim().toLowerCase();
 	}
 	
 	private static int returnPriorityValue(String p) {

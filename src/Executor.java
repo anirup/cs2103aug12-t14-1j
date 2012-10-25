@@ -297,6 +297,6 @@ public class Executor {
 	
 
 	private static String getEventPriority(Event a) {
-		return a.getEventHashTag().split("#")[0].trim().toLowerCase();
+		return a.getEventHashTag().split("#")[1].trim().toLowerCase();
 	}
 }
