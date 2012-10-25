@@ -5,6 +5,7 @@
 
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  *
@@ -65,7 +66,7 @@ char lastEvent=' ';
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         textField1.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-        textField1.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        textField1.setFont(new java.awt.Font("Monospaced", 0, 18)); // NOI18N
         textField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 textField1ActionPerformed(evt);
@@ -85,7 +86,7 @@ char lastEvent=' ';
             }
         });
 
-        jTextPane2.setFont(new java.awt.Font("Tahoma", 2, 14)); // NOI18N
+        jTextPane2.setFont(new java.awt.Font("Monospaced", 2, 14)); // NOI18N
         jTextPane2.setText("FORMAT : [operation - add (OR '+') OR delete (OR '-') OR search OR update OR undo OR done OR undone OR exit]");
         jScrollPane4.setViewportView(jTextPane2);
 
@@ -97,22 +98,26 @@ char lastEvent=' ';
 
         jTextArea5.setColumns(20);
         jTextArea5.setRows(5);
-        jTextArea5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Upcoming Events", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14), java.awt.Color.black)); // NOI18N
+        jTextArea5.setFont(new java.awt.Font("Monospaced", 0, 12));
+        jTextArea5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Upcoming Events", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Monospaced", 1, 14), java.awt.Color.black)); // NOI18N
         jScrollPane1.setViewportView(jTextArea5);
 
         jTextArea8.setColumns(20);
         jTextArea8.setRows(5);
-        jTextArea8.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Floating Events", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14), java.awt.Color.black)); // NOI18N
+        jTextArea8.setFont(new java.awt.Font("Monospaced", 0, 12));
+        jTextArea8.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Floating Events", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Monospaced", 1, 14), java.awt.Color.black)); // NOI18N
         jScrollPane10.setViewportView(jTextArea8);
 
         jTextArea6.setColumns(20);
         jTextArea6.setRows(5);
-        jTextArea6.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Priority Events", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14), java.awt.Color.black)); // NOI18N
+        jTextArea6.setFont(new java.awt.Font("Monospaced", 0, 12));
+        jTextArea6.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Priority Events", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Monospaced", 1, 14), java.awt.Color.black)); // NOI18N
         jScrollPane8.setViewportView(jTextArea6);
 
         jTextArea7.setColumns(20);
         jTextArea7.setRows(5);
-        jTextArea7.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Search Results", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14))); // NOI18N
+        jTextArea7.setFont(new java.awt.Font("Monospaced", 0, 12));
+        jTextArea7.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Search Results", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Monospaced" , 1, 14))); // NOI18N
         jScrollPane9.setViewportView(jTextArea7);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -245,15 +250,15 @@ char lastEvent=' ';
 			System.exit(0);
 		}
 		Executor.analyze(data);
-		String upcomingEvents = Executor.printDataBase();
+		ArrayList<String> upcomingEvents = ListOfEvent.getListOfEventToDisplayInString();
+		String upcomingEventsString= format(upcomingEvents, getMaximumLengths(upcomingEvents));
 		String priorityEvents = Executor.printPriorityDataBase();
 		String floatingEvents = Executor.printFloatingDataBase();
 		String searchResults = Executor.printSearchResults();
-		upcomingEvents=format(upcomingEvents);
 		priorityEvents=format(priorityEvents);
 		floatingEvents=format(floatingEvents);
 		searchResults=formatForSearch(searchResults);
-		jTextArea5.setText(upcomingEvents);
+		jTextArea5.setText(upcomingEventsString);
 		jTextArea6.setText(priorityEvents);
 		jTextArea8.setText(floatingEvents);
 		jTextArea7.setText(searchResults);
@@ -261,8 +266,39 @@ char lastEvent=' ';
                 
                 previousEntry=data;
 		}
+
     }//GEN-LAST:event_textField1KeyTyped
-    private String format(String text) {
+    private String format(ArrayList<String> upcomingEvents, int[] maximumLengths) {
+    	String result="";
+    	for(int i=0;i<upcomingEvents.size();i++)
+    	{
+    		String[] tempArray=upcomingEvents.get(i).split("\\..");
+    		String[] tempArray2={"","","","","",""};
+    		for(int j=0;j<tempArray.length;j++)
+    		{
+    			tempArray2[j]=tempArray[j];
+    		}
+    		result+=tempArray2[0]+getSpaces(maximumLengths[0]-tempArray2[0].length())+"  ";
+    		result+=tempArray2[1]+getSpaces(maximumLengths[1]-tempArray2[1].length())+"  ";
+    		result+=tempArray2[2]+getSpaces(maximumLengths[2]-tempArray2[2].length())+"  ";
+    		result+=tempArray2[3]+getSpaces(maximumLengths[3]-tempArray2[3].length())+"  ";
+    		result+=tempArray2[4]+getSpaces(maximumLengths[4]-tempArray2[4].length())+"  ";
+    		result+=tempArray2[5]+getSpaces(maximumLengths[5]-tempArray2[5].length())+"  ";
+    		result+="\n";
+    	}
+		return result;
+	}
+
+	private String getSpaces(int number) {
+		String spaces="";
+		for(int i=0;i<number;i++)
+		{
+			spaces+=" ";	
+		}
+		return spaces;
+	}
+
+	private String format(String text) {
 		String newText = "";
 		newText += "Index\t"+"      " + "Name\t"+"      " + "Additional Details\n";
 		for (int i = 0; i < text.length(); i++) {
@@ -292,6 +328,27 @@ char lastEvent=' ';
 		}
 		// TODO Auto-generated method stub
 		return newText;
+	}
+	private int[] getMaximumLengths(ArrayList<String> unformatted)
+	{
+		int[] lengths = new int[6];
+		lengths[0]=0;
+		lengths[1]=0;
+		lengths[2]=0;
+		lengths[3]=0;
+		lengths[4]=0;
+		lengths[5]=0;
+		for(int i=0;i<unformatted.size();i++)
+		{
+			String[] tempStorage=unformatted.get(i).split("\\..");
+			for(int k=0;k<tempStorage.length;k++)
+			{
+				if(tempStorage[k].length()>lengths[k])
+					lengths[k]=tempStorage[k].length();
+			}
+
+		}
+		return lengths;
 	}
    
 
