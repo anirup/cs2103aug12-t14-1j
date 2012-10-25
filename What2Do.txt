@@ -1,6 +1,4 @@
-2012102508323544..abcd..#NORMAL..false..invalid..invalid..invalid..
-2012102508326616..ubkijnbljn..#NORMAL..false..invalid..invalid..invalid..
-2012102508330412..ubihnbojolnk;m;m..#NORMAL..false..invalid..invalid..invalid..
-2012102508333232..hbijnjlnkln..#NORMAL..false..invalid..invalid..invalid..
-2012102508337234..hbihbnjbljbljbljbljb..#NORMAL..false..invalid..invalid..invalid..
-2012102508343635..ghbibibinjnlnlblvutctyxtsaste..#NORMAL..false..invalid..invalid..invalid..
+20121025124538643..re..#high..false..invalid..invalid..invalid..
+20121025124519644..ani..#NORMAL..false..invalid..invalid..invalid..
+20121025124529356..me..#low..false..invalid..invalid..invalid..
+20121025125612922..der..#high..false..16:59 25/10/2012..18:00 26/10/2012..17:00 25/10/2012..
