@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.Vector;
 
 import org.joda.time.DateTime;
 
@@ -11,6 +12,7 @@ public class ListOfEvent {
 	private static ArrayList<Event> listOfEvent = new ArrayList<Event>();
 	private static final String fileName = "What2Do.txt";
 	private static final String displayFormat = "%1$d..%2$s";
+	private static final String STRING_NULL = "";
 	
 	public static ArrayList<Event> getCurrentListOfEvent() {
 		return listOfEvent;
@@ -120,6 +122,33 @@ public class ListOfEvent {
 		return result;
 	}
 	
+	public static ArrayList<EventForSort> searchInNameAndHashTags(Vector<String> searchWords) {
+		
+		ArrayList<EventForSort> searchResults = new ArrayList<EventForSort>();
+		int size = ListOfEvent.size();
+		for (int i = 0; i < size; i++) {
+			if (searchWords.isEmpty())
+				break;
+			boolean isChecked = false;
+			String searchCheck = STRING_NULL;
+			String[] tags = ListOfEvent.get(i).getEventHashTag().split("#");
+			for (int j = 0; j < tags.length; j++) {
+				searchCheck += tags[j];
+				searchCheck += ".";
+			}
+			searchCheck += ListOfEvent.get(i).getEventName();
+			for (int k = 0; k < searchWords.size(); k++) {
+				if (searchCheck.toLowerCase().contains(
+						searchWords.get(k).toLowerCase())
+						&& isChecked == false) {
+					searchResults.add(new EventForSort(i, ListOfEvent.get(i)));
+					break;
+				}
+			}
+		}
+		return searchResults;
+	}
+	
 	public static ArrayList<Event> searchInTime(Clock keyWord) {
 		ArrayList<Event> result = new ArrayList<Event>();
 		Iterator<Event> iterator = listOfEvent.iterator();
@@ -133,20 +162,22 @@ public class ListOfEvent {
 	}
 	
 	public static void sortByName() {
-		Comparator<Event> cmp = new CompareEventByName();
-		
+		Comparator<Event> cmp = new CompareEventByName();		
 		Collections.sort(listOfEvent, cmp);
 	}
 	
 	public static void sortByID() {
-		Comparator<Event> cmp = new CompareEventByID();
-		
+		Comparator<Event> cmp = new CompareEventByID();		
 		Collections.sort(listOfEvent, cmp);
 	}
 	
 	public static void sortByTime() {
-		Comparator<Event> cmp = new CompareEventByTime();
-		
+		Comparator<Event> cmp = new CompareEventByTime();		
+		Collections.sort(listOfEvent, cmp);
+	}
+	
+	public static void sortByPriority() {
+		Comparator<Event> cmp = new CompareEventByPriority();		
 		Collections.sort(listOfEvent, cmp);
 	}
 
