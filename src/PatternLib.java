@@ -128,31 +128,31 @@ public class PatternLib {
 		pat.add(pattern);
 		
 		pattern = new PatternDateTime(Pattern.compile(patternReminderMinutesHoursDays), "r-");
-		pat.add(pattern);
+		//pat.add(pattern);
 		patReminder.add(pattern);
 		
 		pattern = new PatternDateTime(Pattern.compile(patternReminderHoursDays), "r-");
-		pat.add(pattern);
+		//pat.add(pattern);
 		patReminder.add(pattern);
 		
 		pattern = new PatternDateTime(Pattern.compile(patternReminderMinutesDays), "r-");
-		pat.add(pattern);
+		//pat.add(pattern);
 		patReminder.add(pattern);
 		
 		pattern = new PatternDateTime(Pattern.compile(patternReminderMinutesHours), "r-");
-		pat.add(pattern);
+	//	pat.add(pattern);
 		patReminder.add(pattern);
 		
 		pattern = new PatternDateTime(Pattern.compile(patternReminderHours), "r-");
-		pat.add(pattern);
+//		pat.add(pattern);
 		patReminder.add(pattern);
 		
 		pattern = new PatternDateTime(Pattern.compile(patternReminderDays), "r-");
-		pat.add(pattern);
+	//	pat.add(pattern);
 		patReminder.add(pattern);
 
 		pattern = new PatternDateTime(Pattern.compile(patternReminderMinutes), "r-");
-		pat.add(pattern);
+	//	pat.add(pattern);
 		patReminder.add(pattern);
 	}
 	
