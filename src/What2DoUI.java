@@ -259,7 +259,8 @@ char lastEvent=' ';
 		if (data.equals("exit") == true) {
 			System.exit(0);
 		}
-		Executor.analyze(data);
+		int index=Executor.analyze(data);
+		String message=ExceptionHandler.getException(index);
 		ArrayList<String> upcomingEvents = ListOfEvent.getListOfEventToDisplayInString();
 		String upcomingEventsString= format(upcomingEvents, getMaximumLengths(upcomingEvents));
 		String priorityEvents = Executor.printPriorityDataBase();
@@ -398,7 +399,7 @@ char lastEvent=' ';
             java.util.logging.Logger.getLogger(What2DoUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        ExceptionHandler.setUpList();
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override

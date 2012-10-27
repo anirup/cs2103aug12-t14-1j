@@ -40,17 +40,34 @@ public class Executor {
 		searchState = true;
 	}
 
-	public static void analyze(String userInput) throws IOException {
+	public static int analyze(String userInput) throws IOException {
 		PatternLib.setUpPattern();
+		Vector<String> parameters=new Vector<String>();
 		// String[] parameters = userInput.split(INPUT_SPLITTER);
-		Vector<String> parameters = Logic.splitInput(userInput);
+		try
+		{
+			parameters = Logic.splitInput(userInput);
+		}
+		catch(Exception e)
+		{
+			return 9;
+		}
 		String[] parameterList = { "-1", "-1", "-1", "-1", "-1", "-1" };
 		Logic.setUp();
+		try
+		{
 		ListOfEvent.syncDataToDatabase();
+		}
+		catch(Exception e)
+		{
+			return 10;
+		}
 		//Collections.sort(ListOfEvent.getCurrentListOfEvent(), sortByDate);
 		ListOfEvent.sortByTime();
 		for (int i = 0; i < parameters.size(); i++)
 			parameterList[i] = parameters.get(i);
+		try
+		{
 		String command = Logic.getCommand(parameterList);
 		if (command.equalsIgnoreCase(COMMAND_ADD)
 				|| command.equalsIgnoreCase(SHORTHAND_ADD)) {
@@ -59,6 +76,7 @@ public class Executor {
 			searchToFalse();
 			ListOfEvent.syncDataToDatabase();
 			previousCommand = COMMAND_ADD;
+			return 0;
 		} else if (command.equalsIgnoreCase(COMMAND_DELETE)
 				|| command.equalsIgnoreCase(SHORTHAND_DELETE)) {
 			if (getSearchState() == true
@@ -70,11 +88,12 @@ public class Executor {
 				ListOfEvent.syncDataToDatabase();
 				previousCommand = COMMAND_DELETE;
 				searchToFalse();
+				return 1;
 			} else if (getSearchState() == false) {
 				analyzeAndSearch(parameterList);
 				previousCommand = COMMAND_DELETE;
 				searchToTrue();
-			}
+			} 
 		} else if (command.equalsIgnoreCase(COMMAND_UPDATE)
 				|| command.equalsIgnoreCase(SHORTHAND_UPDATE)) {
 			if (getSearchState() == true && previousCommand == COMMAND_UPDATE) {
@@ -83,6 +102,7 @@ public class Executor {
 				updateEvent(index);
 				previousCommand = COMMAND_UPDATE;
 				searchToFalse();
+				return 2;
 			} else if (getSearchState() == false) {
 				analyzeAndSearch(parameterList);
 				previousCommand = COMMAND_UPDATE;
@@ -109,6 +129,7 @@ public class Executor {
 				markNotDone(index);
 				previousCommand = COMMAND_UNDONE;
 				searchToFalse();
+				return 4;
 			} else if (getSearchState() == false) {
 				analyzeAndSearch(parameterList);
 				previousCommand = COMMAND_UNDONE;
@@ -117,11 +138,20 @@ public class Executor {
 		} else if (command.equalsIgnoreCase(COMMAND_UNDO)) {
 			// undoLast();
 			previousCommand = COMMAND_UNDONE;
+			return 6;
 		} else if (command.equalsIgnoreCase(COMMAND_EXIT)) {
 			System.exit(0);
+			return 7;
+		}
+		else 
+			return 5;
+		}
+		catch(Exception e)
+		{
+			return 9;
 		}
 		// save file , exit
-
+		return 11;
 	}
 
 	/*
