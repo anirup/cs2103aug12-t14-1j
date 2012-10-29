@@ -1,1 +1,11 @@
-20121027194346508..jfn vloefnbvneponmbvpnpijr..#NORMAL..false..invalid..00:00 28/10/2012..00:00 28/10/2012..
+20121028162437777..a..#NORMAL..false..invalid..invalid..invalid..
+20121028162439609..b..#NORMAL..false..invalid..invalid..invalid..
+201210281624411..c..#NORMAL..false..invalid..invalid..invalid..
+20121028162442340..d..#NORMAL..false..invalid..invalid..invalid..
+2012102816259719..e..#NORMAL..false..invalid..invalid..invalid..
+2012102816262497..g..#NORMAL..false..invalid..invalid..invalid..
+2012102917375410..abcd..#NORMAL..false..invalid..invalid..invalid..
+20121029173947231..abcd..#NORMAL..false..16:59 29/10/2012..17:00 29/10/2012..invalid..
+20121028162558481..f..#NORMAL..false..invalid..17:00 28/10/2012..18:00 28/10/2012..
+20121029173848905..abcd..#NORMAL..false..17:59 29/10/2012..17:00 29/10/2012..18:00 29/10/2012..
+20121029182646613..abcd..#NORMAL..false..17:59 29/10/2012..17:00 29/10/2012..18:00 29/10/2012..

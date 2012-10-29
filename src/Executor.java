@@ -50,7 +50,10 @@ public class Executor {
 		}
 		catch(Exception e)
 		{
-			return 9;
+			if(Logic.getMessage()==0)
+				return 9;
+			else
+				return Logic.getMessage();
 		}
 		String[] parameterList = { "-1", "-1", "-1", "-1", "-1", "-1" };
 		Logic.setUp();
@@ -118,6 +121,7 @@ public class Executor {
 				markDone(index);
 				previousCommand = COMMAND_DONE;
 				searchToFalse();
+				return 4;
 			} else if (getSearchState() == false) {
 				analyzeAndSearch(parameterList);
 				previousCommand = COMMAND_DONE;
@@ -129,7 +133,7 @@ public class Executor {
 				markNotDone(index);
 				previousCommand = COMMAND_UNDONE;
 				searchToFalse();
-				return 4;
+				return 3;
 			} else if (getSearchState() == false) {
 				analyzeAndSearch(parameterList);
 				previousCommand = COMMAND_UNDONE;
