@@ -1,6 +1,5 @@
 import org.joda.time.DateTime;
 
-
 public class Event {
 	protected String _eventID;
 	protected String _eventName;
@@ -58,7 +57,6 @@ public class Event {
 			_isDone = false;
 		}
 	}
-	
 	
 	public int getEventType() {
 		return FLOATING_TYPE;
@@ -160,6 +158,7 @@ public class Event {
 		content[INDEX_FOR_EVENT_END_TIME] = "";
 		return content;
 	}
+	
 	public String composeContentToDisplayInString() {
 		String content = _eventName + SPLITTER + _eventHashTag;
 		return content;

@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-
 public class DatabaseManager {
 	private static String fileName;
 	private static BufferedReader reader;
@@ -57,5 +56,10 @@ public class DatabaseManager {
 	
 	private static void writeToDatabase(String line) throws IOException {
 		writer.write(line + "\n");
+	}
+
+	public static void formatDatabase() throws IOException {
+		setUpBufferedWriter();
+		closeBufferedWriter();
 	}
 }
