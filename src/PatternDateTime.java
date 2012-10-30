@@ -43,7 +43,7 @@ public class PatternDateTime {
 		} else if (_timeFormat.contains("r-")) {
 			newDateTime = getReminder(input);
 		} else {
-			DateTimeFormatter dateFormat = DateTimeFormat.forPattern(_timeFormat);
+			DateTimeFormatter dateFormat = DateTimeFormat.forPattern(_pattern.toString());
 			newDateTime = dateFormat.parseDateTime(input);
 			if(newDateTime.getYearOfCentury() == 0) {
 				newDateTime.plusYears(DateTime.now().getYearOfCentury());
@@ -145,7 +145,8 @@ public class PatternDateTime {
 	public DateTime getDateTimeSpecial(String input) {
 		if(input.contains("this")||input.contains("next")||input.contains("today")||input.contains("tmr")||input.contains("tomorrow")) {
 			DateTime dt = getDate(removeFirst(input));
-			dt = dt.plus(getTime(getFirst(input)).getMillisOfDay());
+			if(!getFirst(input).equals(input))
+				dt = dt.plus(getTime(getFirst(input)).getMillisOfDay());
 			return dt;
 		} else if(input.contains(":")) {
 			DateTime dt = new DateTime();

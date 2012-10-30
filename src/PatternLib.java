@@ -28,7 +28,7 @@ public class PatternLib {
 	private static final String timeSeparator = "[:\\.]";
 	private static final String dateInWeek = "((Mon)|(Monday)|(Tue)|(Tuesday)|(Wed)|(Wednesday)|(Thu)|(Thursday)|(Fri)|(Friday)|(Sat)|(Saturday)|(Sun)|(Sunday))";
 	private static final String weekIndicator = "((this)|(next))";
-	private static final String dateSpecial = "((today)|(tomorrow)|(tmr))";
+	private static final String patternDateSpecial = "((today)|(tomorrow)|(tmr))";
 	private static final String space = " ";
 	private static final String patternTime12InDay = "^(" + hour12 + "(" + timeSeparator + minute + ")" + "?" + space +  "?" + amOrPm + ")";
 	private static final String patternTime24InDay = "^(" + hour24 + "(" + timeSeparator + minute + ")" + "?" + ")";
@@ -63,12 +63,12 @@ public class PatternLib {
 		pattern = new PatternDateTime(Pattern.compile(patternTime24AndDateInWeek, flags), "patternTime24AndDateInWeek");
 		pat.add(pattern);
 		
-		String patternTime12AndDateSpecial = "(" + patternTime12InDay + space + dateSpecial + ")";
-		pattern = new PatternDateTime(Pattern.compile(patternTime12AndDateSpecial, flags), "patternTime12AndDateSpecial");
+		String patternTime12AndpatternDateSpecial = "(" + patternTime12InDay + space + patternDateSpecial + ")";
+		pattern = new PatternDateTime(Pattern.compile(patternTime12AndpatternDateSpecial, flags), "patternTime12AndpatternDateSpecial");
 		pat.add(pattern);
 		
-		String patternTime24AndDateSpecial = "(" + patternTime24InDay + space + dateSpecial + ")";
-		pattern = new PatternDateTime(Pattern.compile(patternTime24AndDateSpecial, flags), "patternTime24AndDateSpecial");
+		String patternTime24AndpatternDateSpecial = "(" + patternTime24InDay + space + patternDateSpecial + ")";
+		pattern = new PatternDateTime(Pattern.compile(patternTime24AndpatternDateSpecial, flags), "patternTime24AndpatternDateSpecial");
 		pat.add(pattern);
 		
 		String patternTime12AndDateIntNoYear = "(" + patternTime12InDay + space + patternDateWithoutYearInt + ")";
@@ -124,7 +124,7 @@ public class PatternLib {
 		pattern = new PatternDateTime(Pattern.compile(patternDateInWeek, flags), "patternDateInWeek");
 		pat.add(pattern);
 		
-		pattern = new PatternDateTime(Pattern.compile(dateSpecial, flags), "dateSpecial");
+		pattern = new PatternDateTime(Pattern.compile(patternDateSpecial, flags), "patternDateSpecial");
 		pat.add(pattern);
 		
 		pattern = new PatternDateTime(Pattern.compile(patternReminderMinutesHoursDays), "r-");
