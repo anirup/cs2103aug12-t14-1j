@@ -188,8 +188,6 @@ public class StringOperation {
 		return input;
 	}
 	
-	
-	
 	public static String prepareInputToAnalyzeTime(String input) {
 		input = addDateTimeSeparator(input);
 		input = removeSpace(input);

@@ -7,13 +7,16 @@ import java.util.Vector;
 
 import org.joda.time.DateTime;
 
-
 public class ListOfEvent {
 	private static ArrayList<Event> listOfEvent = new ArrayList<Event>();
 	private static final String fileName = "What2Do.txt";
 	private static final String displayFormat = "%1$d..%2$s";
 	private static final String STRING_NULL = "";
-	
+	private static final int END_TIME_FIELD = 6;
+	private static final int START_TIME_FIELD = 5;
+	private static final String INVALID_TIME = "invalid";
+	private static final int TIME_FIELD_START_INDEX = 4;
+	private static final int TIME_FIELD_END_INDEX = 6;
 	public static ArrayList<Event> getCurrentListOfEvent() {
 		return listOfEvent;
 	}
@@ -24,7 +27,9 @@ public class ListOfEvent {
 	}
 	
 	public static void syncDataToDatabase() throws IOException {
-		EventStringHandler.syncDataToDatabase(listOfEvent, fileName);
+		ArrayList<String> listOfEventInString = new ArrayList<String>();
+		listOfEventInString = getAllEventContent();
+		EventStringHandler.syncDataToDatabase(listOfEventInString, fileName);
 	}
 	
 	public static int size() {
@@ -45,7 +50,7 @@ public class ListOfEvent {
 	}
 	
 	public static void add(String eventInString) {
-		Event newEvent = EventStringHandler.getEventFromString(eventInString);
+		Event newEvent = getEventFromString(eventInString);
 		listOfEvent.add(newEvent);
 	}
 	
@@ -180,7 +185,116 @@ public class ListOfEvent {
 		Comparator<Event> cmp = new CompareEventByPriority();		
 		Collections.sort(listOfEvent, cmp);
 	}
+	
+	public static ArrayList<String> getListOfEventToDisplayInString() {
+		ArrayList<String> listToDisplay = new ArrayList<String>();
 
+		for(int index = 0; index < listOfEvent.size(); index++) {
+			String contentToDisplay = listOfEvent.get(index).composeContentToDisplayInString();
+			contentToDisplay = String.format(displayFormat, index + 1, contentToDisplay);
+			listToDisplay.add(contentToDisplay);
+		}
+		return listToDisplay;
+	}
+	
+	public static Event getEventFromString(String eventInString) {
+		String[] eventContent = eventInString.split("\\..");
+		if(!isValidString(eventContent)) {
+			return null;
+		}
+		if(isFloatingEvent(eventContent)) {
+			return getFloatingEvent(eventContent);
+		} else if(isDeadlineEvent(eventContent)) {
+			return getDeadlineEvent(eventContent);
+		} else {
+			return getTimedEvent(eventContent);
+		}
+	}
+	
+	private static boolean isValidString(String[] eventContent) {
+		if(eventContent.length != 7) {
+			return false;
+		} 
+		String isDone = eventContent[Event.INDEX_FOR_EVENT_ISDONE];
+		if(!isValidIsDone(isDone)) {
+			return false;
+		}
+		for(int timeFieldIndex = TIME_FIELD_START_INDEX; timeFieldIndex <= TIME_FIELD_END_INDEX; timeFieldIndex++) {
+			if(!isValidTime(eventContent[timeFieldIndex])) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	private static boolean isValidIsDone(String isDone) {
+		if(!isDone.equalsIgnoreCase("true") && !isDone.equalsIgnoreCase("false")) {
+			return false;
+		} 
+		return true;
+	}
+	
+	private static boolean isValidTime(String time) {
+		DateTime date = Clock.parseTimeFromString(time);
+		if(date.getYear() == 1970 && !time.equalsIgnoreCase(INVALID_TIME)) {
+			return false;
+		}
+		return true;
+	}
+	
+	private static ArrayList<String> getAllEventContent() {
+		ArrayList<String> listOfEventToString = new ArrayList<String>();
+		for(int index = 0; index < listOfEvent.size(); index++) {
+			listOfEventToString.add(listOfEvent.get(index).toString());
+		}
+		return listOfEventToString;
+	}
+	
+	private static boolean isFloatingEvent(String[] eventContent) {
+		if(eventContent[END_TIME_FIELD].equalsIgnoreCase(INVALID_TIME) && 
+				eventContent[START_TIME_FIELD].equalsIgnoreCase(INVALID_TIME)) {
+			return true;
+		}
+		return false;
+	}
+	
+	private static boolean isDeadlineEvent(String[] eventContent) {
+		if(eventContent[START_TIME_FIELD].equalsIgnoreCase(INVALID_TIME)) {
+			return true;
+		} 
+		return false;
+	}
+	
+	private static Event getFloatingEvent(String[] eventContent) {
+		Event newEvent = new FloatingEvent();
+		newEvent.parse(eventContent);
+		return newEvent;
+	}
+	
+	private static Event getDeadlineEvent(String[] eventContent) {
+		Event newEvent = new DeadlineEvent();
+		newEvent.parse(eventContent);
+		return newEvent;
+	}
+	
+	private static Event getTimedEvent(String[] eventContent) {
+		Event newEvent = new TimedEvent();
+		newEvent.parse(eventContent);
+		return newEvent;
+	}
+	
+	public static boolean checkEventID(ArrayList<Event> list) {
+		int listSize = list.size();
+		Event lastEvent = list.get(listSize- 1);
+		for(int index = 0; index < listSize - 1; index++) {
+			if(lastEvent.isSameEvent(list.get(index))) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	/*
 	public static ArrayList<String[]> getListOfEventInDay(DateTime date) {
 		ArrayList<String[]> listToDisplay = new ArrayList<String[]>();
 		for(int index = 0; index < listOfEvent.size(); index++) {
@@ -212,18 +326,7 @@ public class ListOfEvent {
 			if(!currentEvent.isDone()) {
 				listToDisplay.add(currentEvent.composeContentToDisplay());
 			}
-		}
+  		}
 		return listToDisplay;
-	}
-	
-	public static ArrayList<String> getListOfEventToDisplayInString() {
-		ArrayList<String> listToDisplay = new ArrayList<String>();
-
-		for(int index = 0; index < listOfEvent.size(); index++) {
-			String contentToDisplay = listOfEvent.get(index).composeContentToDisplayInString();
-			contentToDisplay = String.format(displayFormat, index + 1, contentToDisplay);
-			listToDisplay.add(contentToDisplay);
-		}
-		return listToDisplay;
-	}
+	}*/
 }

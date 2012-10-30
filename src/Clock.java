@@ -13,8 +13,12 @@ public class Clock {
 		if(date.equalsIgnoreCase("invalid")) {
 			return getBigBangTime();
 		}
-		DateTimeFormatter dateFormat = DateTimeFormat.forPattern(dateTimeFormat);
-		return dateFormat.parseDateTime(date);
+		try {
+			DateTimeFormatter dateFormat = DateTimeFormat.forPattern(dateTimeFormat);
+			return dateFormat.parseDateTime(date);
+		} catch (Exception e) {
+			return getBigBangTime();
+		}
 	}
 	
 	public static String toString(DateTime time) {

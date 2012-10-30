@@ -1,6 +1,1 @@
-20121030043839176..akmgpaemg..#NORMAL..false..invalid..invalid..invalid..
-20121030043849949..agnsrkgnrpsknh..#NORMAL..false..invalid..invalid..invalid..
-20121030044233528..abcd..#NORMAL..false..invalid..invalid..invalid..
-20121030044318881..abcde..#NORMAL..false..invalid..invalid..invalid..
-201210300731341..dtgjrykmyrm..#NORMAL..false..invalid..invalid..invalid..
-20121030073110555..a..#NORMAL..false..invalid..00:00 31/10/2012..invalid..
+2012103102332331..project..#NORMAL..false..invalid..invalid..invalid..

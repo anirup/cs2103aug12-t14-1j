@@ -21,6 +21,7 @@ public class ExceptionHandler {
 		listOfExceptions.add("Illegal Content Entered.Please Check Your START/END/REMINDER Field Formats.");
 		listOfExceptions.add("Illegal Content Entered.Please Check Your Keywords.");
 	}
+	
 	public static String getException(int index)
 	{
 		return listOfExceptions.get(index);
