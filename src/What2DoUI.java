@@ -207,30 +207,35 @@ char lastEvent=' ';
         if (flag==0 && ((evt.getKeyChar()=='a') || (evt.getKeyChar()=='+'))){
             flag=1;
             lastEvent=evt.getKeyChar();
+            
             jTextPane2.setText("[add] [Key words] [start time and date] [End time and date] [r-reminder time]");
         }
         if (flag ==0 && (evt.getKeyChar()=='-')){
             flag=1;
             lastEvent=evt.getKeyChar();
+            
             jTextPane2.setText("[delete] [index number]");
         }
         if(flag ==0 && evt.getKeyChar()=='d') {
-            lastEvent=evt.getKeyChar();
+        	lastEvent=evt.getKeyChar();
             jTextPane2.setText("[delete] [index number]");
         }
-        if (flag==0 && evt.getKeyChar()=='e' && lastEvent=='d'){
+        if (evt.getKeyChar()=='e' && lastEvent=='d'){
             flag=1;
             lastEvent=evt.getKeyChar();
+            
             jTextPane2.setText("[delete] [index number]");
         }
         else if (flag==0 && evt.getKeyChar()=='o' && lastEvent=='d'){
             flag=1;
             lastEvent=evt.getKeyChar();
+            
             jTextPane2.setText("[done] [index number]");
         }
         if (flag ==0 && evt.getKeyChar()=='s'){
             flag=1;
             lastEvent=evt.getKeyChar();
+            
             jTextPane2.setText("[search] [searchwords]");
         }
         if (flag==0 && evt.getKeyChar()=='u'){
@@ -240,6 +245,7 @@ char lastEvent=' ';
         if (flag==0 && evt.getKeyChar()=='e'){
             flag=1;
             lastEvent=evt.getKeyChar();
+            
             jTextPane2.setText("[exit]");
         }
         if (flag==0 && evt.getKeyChar()=='n' && lastEvent=='u'){
@@ -247,7 +253,7 @@ char lastEvent=' ';
             lastEvent=evt.getKeyChar();
             jTextPane2.setText("[undone] [index number]");
         }
-        else if (flag==0 && evt.getKeyChar()=='d' && lastEvent=='u'){
+        else if (flag==0 && evt.getKeyChar()=='p' && lastEvent=='u'){
             flag=1;
             lastEvent=evt.getKeyChar();
             jTextPane2.setText("[update] [index number]");

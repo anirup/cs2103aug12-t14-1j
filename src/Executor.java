@@ -42,6 +42,7 @@ public class Executor {
 
 	public static int analyze(String userInput) throws IOException {
 		PatternLib.setUpPattern();
+		Logic.setUp();
 		Vector<String> parameters=new Vector<String>();
 		// String[] parameters = userInput.split(INPUT_SPLITTER);
 		try
@@ -56,7 +57,6 @@ public class Executor {
 				return Logic.getMessage();
 		}
 		String[] parameterList = { "-1", "-1", "-1", "-1", "-1", "-1" };
-		Logic.setUp();
 		try
 		{
 		ListOfEvent.syncDataToDatabase();
