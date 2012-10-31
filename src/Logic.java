@@ -175,7 +175,7 @@ public class Logic {
 			int startFirst = timeIndexes.get(0) - timeIndexes.get(1);
 			int endSecond = timeIndexes.get(2);
 			int startSecond = timeIndexes.get(2) - timeIndexes.get(3);
-			if (userInput.substring(endFirst, startSecond + 1).contains(" to")) {
+			if (userInput.substring(endFirst-1, startSecond + 1).contains(" to")) {
 				int firstTimePattern = PatternLib.isMatchDateTime(userInput
 						.substring(startFirst, endFirst));
 				int secondTimePattern = PatternLib.isMatchDateTime(userInput
@@ -188,8 +188,10 @@ public class Logic {
 							userInput.substring(startSecond, endSecond),
 							secondTimePattern);
 					time1 = Clock.changeToDate(time1, time2);
-					parameterList.add(indexes.get(0), Clock.toString(time1));
+					parameterList.add(indexes.get(0), time1.toString());
 					parameterList.remove(indexes.get(0) + 1);
+					parameterList.add(indexes.get(1), time2.toString());
+					parameterList.remove(indexes.get(1) + 1);					
 				}
 			}
 	
@@ -258,11 +260,19 @@ public class Logic {
 		}
 		if (startTime == EMPTY_STRING) {
 			startTime = STRING_INVALID;
-		}
-		DateTime start = PatternLib.getDateTime(startTime,
+		}DateTime start,end;
+		if(!(startTime!=STRING_INVALID && endTime!=STRING_INVALID))
+		{
+		start = PatternLib.getDateTime(startTime,
 				PatternLib.isMatchDateTime(startTime));
-		DateTime end = PatternLib.getDateTime(endTime,
+		end = PatternLib.getDateTime(endTime,
 				PatternLib.isMatchDateTime(endTime));
+		}
+		else
+		{
+			start=DateTime.parse(startTime);
+			end=DateTime.parse(endTime);
+		}
 		if ((!startTime.equalsIgnoreCase(STRING_INVALID))
 				&& !(endTime.equalsIgnoreCase(STRING_INVALID))) {
 			if (Clock.isBefore(end, start)) {

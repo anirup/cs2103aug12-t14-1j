@@ -84,6 +84,9 @@ char lastEvent=' ';
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
             }
         });
@@ -196,7 +199,7 @@ char lastEvent=' ';
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void textField1KeyTyped(java.awt.event.KeyEvent evt) throws IOException {//GEN-FIRST:event_textField1KeyTyped
+    private void textField1KeyTyped(java.awt.event.KeyEvent evt) throws Exception {//GEN-FIRST:event_textField1KeyTyped
        
         if (evt.getKeyChar()==8){
         	if (textField1.getText().isEmpty()){
@@ -262,10 +265,6 @@ char lastEvent=' ';
         if (evt.getKeyChar() == '\n') {
                 flag=0;
 		String data = textField1.getText();
-		if (data.equals("exit") == true) {
-			Executor.syncDatabase();
-			System.exit(0);
-		}
 		int index=Executor.analyze(data);
 		String message=ExceptionHandler.getException(index);
 		ArrayList<String> upcomingEvents = ListOfEvent.getListOfEventToDisplayInString();
@@ -390,7 +389,13 @@ char lastEvent=' ';
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
+    	try{
     	Executor.loadDatabase();
+    	}
+    	catch(Exception e)
+    	{
+    		Executor.formatDatabase();
+    	}
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
