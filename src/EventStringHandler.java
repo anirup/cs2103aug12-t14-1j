@@ -41,7 +41,7 @@ public class EventStringHandler {
 		return;
 	}
 	
-	private static void formatDatabase() throws IOException {
+	public static void formatDatabase() throws IOException {
 		DatabaseManager.formatDatabase();
 		listOfEvent.clear();
 	}

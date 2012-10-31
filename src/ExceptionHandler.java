@@ -15,7 +15,7 @@ public class ExceptionHandler {
 		listOfExceptions.add("Saving Your Data and Exiting.");
 		listOfExceptions.add("Clash Exists with another Event - Add anyway ?");
 		listOfExceptions.add("Could not perform Action - Please Check the Command entered.");
-		listOfExceptions.add("Database corrupted - Formating Now,");
+		listOfExceptions.add("Database corrupted - Formating Now.");
 		listOfExceptions.add("Command performed Successfully.");
 		listOfExceptions.add("Illegal Command Entered.");
 		listOfExceptions.add("Illegal Content Entered.Please Check Your START/END/REMINDER Field Formats.");

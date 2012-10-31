@@ -31,6 +31,12 @@ public class ListOfEvent {
 		listOfEventInString = getAllEventContent();
 		EventStringHandler.syncDataToDatabase(listOfEventInString, fileName);
 	}
+	public static void formatDatabase() throws Exception {
+		EventStringHandler.formatDatabase();
+	}
+	public static void formatListOfEvent() throws Exception {
+		listOfEvent.clear();
+	}
 	
 	public static int size() {
 		return listOfEvent.size();
