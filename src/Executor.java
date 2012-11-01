@@ -2,7 +2,6 @@ import java.io.IOException;
 import java.util.*;
 
 public class Executor {
-
 	private static final String PRIORITY_LOW = "Low";
 	private static final String PRIORITY_NORMAL = "Normal";
 	private static final String PRIORITY_HIGH = "high";
@@ -22,7 +21,6 @@ public class Executor {
 	private static final String COMMAND_UNDONE = "undone";
 	private static final String COMMAND_UNDO = "undo";
 	// private static final String TIME_ZONE = "+8:00";
-
 	private static Vector<EventForSort> searchResults = new Vector<EventForSort>();
 	private static boolean searchState = false;
 	private static String previousCommand = "Nothing";
@@ -170,8 +168,7 @@ public class Executor {
 	 * public static void undoLast() { ListOfActionArchive.undo(); }
 	 */
 	public static void analyzeAndSearch(String[] parameterList) { // keywords //
-																	// have to
-
+	// have to
 		searchResults.clear();
 		Vector<String> searchWords = getSearchWords(parameterList);
 		commenceSearch(searchWords);
@@ -212,15 +209,12 @@ public class Executor {
 	}
 
 	public static boolean analyzeAddInput(String[] parameterList) {
-
 		String eventToAdd = Logic.getEventString(parameterList);
 		ListOfEvent.add(eventToAdd);
 		return true;
-
 	}
 
 	public static void updateEvent(int index) {
-
 	}
 
 	private static int returnPriorityValue(String p) {
@@ -251,7 +245,6 @@ public class Executor {
 				return getDateOrder(a, b);
 		}
 	};
-
 	private static Comparator<Event> sortByDate = new Comparator<Event>() {
 		public int compare(Event a, Event b) {
 			if (!a.getEventEndTime().toString()
@@ -260,68 +253,47 @@ public class Executor {
 			else
 				return returnPriorityValue(getEventPriority(a))
 						- returnPriorityValue(getEventPriority(b));
-
 		}
 	};
 
-	public static String printDataBase() {
-
-		String str = STRING_NULL;
+	public static ArrayList<String> printDataBase() {
+		ArrayList<String> str = new ArrayList<String>();
 		// Collections.sort(ListOfEvent.getCurrentListOfEvent(), sortByDate);
 		ListOfEvent.sortByTime();
 		for (int i = 0; i < ListOfEvent.size(); i++) {
 			if (!ListOfEvent.get(i).getClass().getName()
 					.equals("FloatingEvent")) {
-				str += i + ".."
-						+ ListOfEvent.get(i).composeContentToDisplayInString();
-				str += '\n';
+				str.add((i + 1) + ".."
+						+ ListOfEvent.get(i).composeContentToDisplayInString());
 			}
 		}
 		return str;
 	}
 
-	public static String printFloatingDataBase() {
-
-		String str = STRING_NULL;
+	public static ArrayList<String> printFloatingDataBase() {
+		ArrayList<String> str = new ArrayList<String>();
 		Collections.sort(ListOfEvent.getCurrentListOfEvent(), sortByPriority);
 		// ListOfEvent.sortByPriority();
 		for (int i = 0; i < ListOfEvent.size(); i++) {
 			if (ListOfEvent.get(i).getClass().getName().equals("FloatingEvent")) {
-				str += i + ".."
-						+ ListOfEvent.get(i).composeContentToDisplayInString();
-				str += '\n';
+				str.add((i + 1) + ".."
+						+ ListOfEvent.get(i).composeContentToDisplayInString());
 			}
 		}
 		return str;
 	}
 
-	public static String printPriorityDataBase() {
-
-		String str = STRING_NULL;
-		// Collections.sort(ListOfEvent.getCurrentListOfEvent(),
-		// sortByPriority);
-		ListOfEvent.sortByPriority();
-		for (int i = 0; i < ListOfEvent.size(); i++) {
-			if (!ListOfEvent.get(i).getClass().getName()
-					.equals("FloatingEvent")) {
-				str += i + ".."
-						+ ListOfEvent.get(i).composeContentToDisplayInString();
-				str += '\n';
-			}
-		}
-		return str;
-	}
-
-	public static String printSearchResults() {
+	public static ArrayList<String> printSearchResults() {
+		ArrayList<String> str = new ArrayList<String>();
 		String temp = STRING_NULL;
 		for (int i = 0; i < searchResults.size(); i++) {
-			temp += searchResults.get(i).index();
-			temp += ".\t";
+			temp = STRING_NULL;
+			temp += searchResults.get(i).index() + "..";
 			temp += searchResults.get(i).event()
 					.composeContentToDisplayInString();
-			temp += "\n";
+			str.add(temp);
 		}
-		return temp;
+		return str;
 	}
 
 	public static void loadDatabase() throws Exception {
@@ -335,7 +307,6 @@ public class Executor {
 	// public static void syncDatabase() throws IOException {
 	// ListOfEvent.syncDataToDatabase();
 	// }
-
 	private static String getEventPriority(Event a) {
 		return a.getEventHashTag().split("#")[1].trim().toLowerCase();
 	}
