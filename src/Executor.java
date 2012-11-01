@@ -34,11 +34,11 @@ public class Executor {
 		return searchState;
 	}
 
-	private static void searchToFalse() {
+	public static void searchToFalse() {
 		searchState = false;
 	}
 
-	private static void searchToTrue() {
+	public static void searchToTrue() {
 		searchState = true;
 	}
 
@@ -50,8 +50,6 @@ public class Executor {
 		
 		String[] parameterList = { "-1", "-1", "-1", "-1", "-1", "-1" };
 		Logic.setUp();
-		for (int i = 0; i < parameters.size(); i++)
-			parameterList[i] = parameters.get(i);
 		
 		//Check if user has just entered a positive integer parameter, returns -2 if not an integer, -1 if user entered 0
 		int userInputInteger = Logic.getInteger(parameterList)-1;
@@ -65,6 +63,8 @@ public class Executor {
 			else
 				return Logic.getMessage();
 		}	
+		for (int i = 0; i < parameters.size(); i++)
+			parameterList[i] = parameters.get(i);
 				
 		// Collections.sort(ListOfEvent.getCurrentListOfEvent(), sortByDate);
 		ListOfEvent.sortByTime();		
@@ -75,7 +75,6 @@ public class Executor {
 		if (command.equalsIgnoreCase(COMMAND_ADD)
 				|| command.equalsIgnoreCase(SHORTHAND_ADD)) {
 			 ListOfActionArchive.add(new ActionArchiveAdd(analyzeAddInput(parameterList)));
-				searchToFalse();
 				try {
 			//Saving to file after add
 					ListOfEvent.syncDataToDatabase();
@@ -122,23 +121,10 @@ public class Executor {
 				ListOfActionArchive.add(new ActionArchiveUpdate(eventEdit,analyzeAddInput(parameterList)));
 				ListOfEvent.update(searchResults.get(userInputInteger).index(),eventEdit);
 				previousCommand = COMMAND_UPDATE;
-			}
+			}				
 			
-				
-			/*if (getSearchState() == true && previousCommand == COMMAND_UPDATE) {				
-				// ListOfActionArchive.add(new ActionArchiveUpdate(null, null));
-				updateEvent(userInputInteger);
-				previousCommand = COMMAND_UPDATE;
-				searchToFalse();
-				return 2;
-			} else if (getSearchState() == false) {
-				analyzeAndSearch(parameterList);
-				previousCommand = COMMAND_UPDATE;
-				searchToTrue();						
-			}*/
 		} else if (command.equalsIgnoreCase(COMMAND_SEARCH)) {
-			analyzeAndSearch(parameterList);
-			previousCommand = COMMAND_SEARCH;
+			analyzeAndSearch(parameterList);			
 			searchToTrue();
 		} else if (command.equalsIgnoreCase(COMMAND_DONE)) {
 			if(userInputInteger > -1) {
@@ -273,63 +259,28 @@ public class Executor {
 		
 	public static ArrayList<String> printDataBase() {
 
-		//String str = STRING_NULL;
-		// Collections.sort(ListOfEvent.getCurrentListOfEvent(), sortByDate);
-		/*ListOfEvent.sortByTime();
-		for (int i = 0; i < ListOfEvent.size(); i++) {
-			if (!ListOfEvent.get(i).getClass().getName()
-					.equals("FloatingEvent")) {
-				str += i + ".."
-						+ ListOfEvent.get(i).composeContentToDisplayInString();
-				str += '\n';
-			}
-		}
-		return str;*/
 		ListOfEvent.sortByTime();
 		return ListOfEvent.getListOfEventToDisplayInString();
 	}
 
 	public static ArrayList<String> printFloatingDataBase() {
 
-		/*String str = STRING_NULL;
-		//Collections.sort(ListOfEvent.getCurrentListOfEvent(), sortByPriority);
-		// ListOfEvent.sortByPriority();
-		for (int i = 0; i < ListOfEvent.size(); i++) {
-			if (ListOfEvent.get(i).getClass().getName().equals("FloatingEvent")) {
-				str += i + ".."
-						+ ListOfEvent.get(i).composeContentToDisplayInString();
-				str += '\n';
-			}
-		}*/
-		//return str;
 		ListOfEvent.sortByTime();
 		return ListOfEvent.getListOfFloatingEventsInString(); 
 	}
 
-	public static String printPriorityDataBase() {
 
-		String str = STRING_NULL;		
-		ListOfEvent.sortByPriority();
-		for (int i = 0; i < ListOfEvent.size(); i++) {
-			if (!ListOfEvent.get(i).getClass().getName()
-					.equals("FloatingEvent")) {
-				str += i + ".."
-						+ ListOfEvent.get(i).composeContentToDisplayInString();
-				str += '\n';
-			}
-		}
-		return str;
-	}
-
-	public static String printSearchResults() {
-		String temp = STRING_NULL;
+	public static ArrayList<String> printSearchResults() {
+		ArrayList<String> out = new ArrayList<String>();
 		for (int i = 0; i < searchResults.size(); i++) {
+			String temp = STRING_NULL;
 			temp += i+1;
-			temp += ".\t";
+			temp += "..";
 			temp += searchResults.get(i).event().composeContentToDisplayInString();
-			temp += "\n";
+			out.add(temp);
+			
 		}
-		return temp;
+		return out;
 	}
 
 	public static void loadDatabase() throws Exception {
@@ -339,10 +290,6 @@ public class Executor {
 	public static void formatDatabase() throws Exception {
 		ListOfEvent.formatDatabase();
 	}
-
-	// public static void syncDatabase() throws IOException {
-	// ListOfEvent.syncDataToDatabase();
-	// }
 
 
 }
