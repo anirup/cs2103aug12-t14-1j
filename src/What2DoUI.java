@@ -45,7 +45,7 @@ public class What2DoUI extends javax.swing.JFrame {
 		jScrollPane5 = new javax.swing.JScrollPane();
 		jTextArea3 = new javax.swing.JTextArea();
 		jScrollPane2 = new javax.swing.JScrollPane();
-		jTextPane1 = new javax.swing.JTextPane();
+		jLabel3 = new javax.swing.JLabel();
 		jPanel3 = new javax.swing.JPanel();
 		jScrollPane1 = new javax.swing.JScrollPane();
 		jTextArea1 = new javax.swing.JTextArea();
@@ -99,6 +99,7 @@ public class What2DoUI extends javax.swing.JFrame {
 		jLabel1.setText("jLabel1");
 		jLabel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(
 				0, 0, 0), 5, true));
+		
 
 		jPanel2.setBackground(new java.awt.Color(240, 233, 194));
 
@@ -122,7 +123,7 @@ public class What2DoUI extends javax.swing.JFrame {
 				new java.awt.Font("Monospaced", 1, 14), java.awt.Color.black)); // NOI18N
 		jScrollPane5.setViewportView(jTextArea3);
 
-		jScrollPane2.setViewportView(jTextPane1);
+		jScrollPane2.setViewportView(jLabel3);
 
 		javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(
 				jPanel2);
@@ -185,6 +186,8 @@ public class What2DoUI extends javax.swing.JFrame {
 
 		jPanel3.setBackground(new java.awt.Color(240, 233, 194));
 		jPanel3.setVisible(false);
+		jLabel3.setOpaque(true);
+		jLabel3.setBackground(new java.awt.Color(240, 240, 240));
 
 		jTextArea1.setColumns(20);
 		jTextArea1.setRows(5);
@@ -401,8 +404,9 @@ public class What2DoUI extends javax.swing.JFrame {
 
 			int index = Executor.analyze(data);
 			String message = ExceptionHandler.getException(index);
-			jTextPane1.setText(message);
 			toUpdate=!(message.contains("Error"));
+			
+				
 			
 			ArrayList<String> upcomingEvents = Executor.printDataBase();
 			String upcomingEventsString = format(upcomingEvents,
@@ -414,9 +418,15 @@ public class What2DoUI extends javax.swing.JFrame {
 			String searchResultsString = format(searchResults,
 					getMaximumLengths(searchResults));
 			if (toUpdate){
+				jLabel3.setText("<html><p class=\"MsoNormal\"><b><span style=\"color: rgb(0, 176, 80)\"; >Success:Your command has been executed!</span></b></p></html>");
+				
 				jTextArea2.setText(upcomingEventsString);
 				jTextArea3.setText(floatingEventsString);
 				jTextArea1.setText(searchResultsString);
+			}
+			else{
+				jLabel3.setText("<html><p class=\"MsoNormal\"><b><span style=\"color: red; \">Oops! We were unable to act upon your command</span></b></p></html>");
+						
 			}
 			textField1.setText("");
 
@@ -599,7 +609,7 @@ public class What2DoUI extends javax.swing.JFrame {
 	private javax.swing.JTextArea jTextArea1;
 	private javax.swing.JTextArea jTextArea2;
 	private javax.swing.JTextArea jTextArea3;
-	private javax.swing.JTextPane jTextPane1;
+	private javax.swing.JLabel jLabel3;
 	private javax.swing.JTextPane jTextPane2;
 	private java.awt.TextField textField1;
 	// End of variables declaration
