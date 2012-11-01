@@ -14,6 +14,7 @@ public class What2DoUI extends javax.swing.JFrame {
 		initComponents();
 	}
 
+	String demo="daff";
 	char lastEvent = ' ';
 	String previousEntry = "";
 	int flag = 0;
@@ -61,7 +62,7 @@ public class What2DoUI extends javax.swing.JFrame {
 
 		jPanel1.setBackground(new java.awt.Color(241, 235, 194));
 
-		textField1.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+		textField1.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));ad
 		textField1.setFont(new java.awt.Font("Monospaced", 0, 18)); // NOI18N
 		textField1.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -343,24 +344,26 @@ public class What2DoUI extends javax.swing.JFrame {
 				&& ((evt.getKeyChar() == 'a') || (evt.getKeyChar() == '+'))) {
 			flag = 1;
 			lastEvent = evt.getKeyChar();
-			jLabel4.setText("[add] [Key words] [start time and date] [End time and date] [r-reminder time]");
+			jLabel4.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; \">[add] [Key words] [start time and date] [End time and date] [r-reminder time]</span></b><span style=\"font-family: Helvetica, sans-serif; \"></span><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(192, 80, 77); \"></span><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>");
 		}
 		if (flag == 0 && (evt.getKeyChar() == '-')) {
 			flag = 1;
 			lastEvent = evt.getKeyChar();
-
-			jLabel4.setText("[delete] [index number]");
+			jLabel4.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; \">[delete] [index number]</span></b><span style=\"font-family: Helvetica, sans-serif; \"></span><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(192, 80, 77); \"></span><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>");
+			
 		}
 		if (flag == 0 && evt.getKeyChar() == 'd') {
 			lastEvent = evt.getKeyChar();
-			jLabel4.setText("[delete] [index number]");
+			jLabel4.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; \">[delete] [index number]</span></b><span style=\"font-family: Helvetica, sans-serif; \"></span><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(192, 80, 77); \"></span><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>");
 		}
-		if (evt.getKeyChar() == 'e' && lastEvent == 'd') {
+		/*if (evt.getKeyChar() == 'e' && lastEvent == 'd') {
 			flag = 1;
 			lastEvent = evt.getKeyChar();
 
 			jLabel4.setText("[delete] [index number]");
-		} else if (flag == 0 && evt.getKeyChar() == 'o' && lastEvent == 'd') {
+			
+		} */
+		else if (flag == 0 && evt.getKeyChar() == 'o' && lastEvent == 'd') {
 			flag = 1;
 			lastEvent = evt.getKeyChar();
 
@@ -370,26 +373,29 @@ public class What2DoUI extends javax.swing.JFrame {
 			flag = 1;
 			lastEvent = evt.getKeyChar();
 
-			jLabel4.setText("[search] [searchwords]");
+			jLabel4.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; \">[search] [keywords]</span></b><span style=\"font-family: Helvetica, sans-serif; \"></span><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(192, 80, 77); \"></span><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>");
+
 		}
 		if (flag == 0 && evt.getKeyChar() == 'u') {
 			lastEvent = 'u';
-			jLabel4.setText("[update] [index number]");
+			jLabel4.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; \">[update] [index number]</span></b><span style=\"font-family: Helvetica, sans-serif; \"></span><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(192, 80, 77); \"></span><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>");
+
 		}
 		if (flag == 0 && evt.getKeyChar() == 'e') {
 			flag = 1;
 			lastEvent = evt.getKeyChar();
 
-			jLabel4.setText("[exit]");
+			jLabel4.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; \">[exit]</span></b><span style=\"font-family: Helvetica, sans-serif; \"></span><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(192, 80, 77); \"></span><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>");
 		}
 		if (flag == 0 && evt.getKeyChar() == 'n' && lastEvent == 'u') {
 			flag = 1;
 			lastEvent = evt.getKeyChar();
-			jLabel4.setText("[undone] [index number]");
+			jLabel4.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; \">[undo] [index number]</span></b><span style=\"font-family: Helvetica, sans-serif; \"></span><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(192, 80, 77); \"></span><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>");
+
 		} else if (flag == 0 && evt.getKeyChar() == 'p' && lastEvent == 'u') {
 			flag = 1;
 			lastEvent = evt.getKeyChar();
-			jLabel4.setText("[update] [index number]");
+			jLabel4.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; \">[update] %s [index number]</span></b><span style=\"font-family: Helvetica, sans-serif; \"></span><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(192, 80, 77); \"></span><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>");
 		}
 
 		if (evt.getKeyChar() == '\n') {
@@ -419,12 +425,12 @@ public class What2DoUI extends javax.swing.JFrame {
 			String searchResultsString = format(searchResults,
 					getMaximumLengths(searchResults));
 			if (toUpdate) {
-				jLabel3.setText("<html><p class=\"MsoNormal\"><b><span style=\"color: rgb(0, 176, 80)\"; >Success:Your command has been executed!</span></b></p></html>");
+				jLabel3.setText(String.format("<html><p class=\"MsoNormal\"><b><span style=\"color: rgb(0, 176, 80)\"; >%s</span></b></p></html>",message));
 				jTextArea2.setText(upcomingEventsString);
 				jTextArea3.setText(floatingEventsString);
 				jTextArea1.setText(searchResultsString);
 			} else {
-					jLabel3.setText("<html><p class=\"MsoNormal\"><b><span style=\"color: red; \">Oops! We were unable to act upon your command</span></b></p></html>");
+					jLabel3.setText(String.format("<html><p class=\"MsoNormal\"><b><span style=\"color: red; \">%s</span></b></p></html>", message));
 
 				
 			}
@@ -437,12 +443,12 @@ public class What2DoUI extends javax.swing.JFrame {
 
 	private String format(ArrayList<String> upcomingEvents, int[] maximumLengths) {
 		String result = "";
-		result += "ID" + getSpaces(maximumLengths[0] - 2) + "   "
-				+ "Event Name" + getSpaces(maximumLengths[1] - 10) + "   "
-				+ "Details" + getSpaces(maximumLengths[2] - 7) + "   "
-				+ "Start" + getSpaces(maximumLengths[3] - 5) + "   " + "End"
-				+ getSpaces(maximumLengths[4] - 3) + "   " + "Reminder"
-				+ getSpaces(maximumLengths[5] - 8) + "   " + "\n";
+		result += "ID" + getSpaces(maximumLengths[0] - 2) + "     "
+				+ "Event Name" + getSpaces(maximumLengths[1] - 10) + "     "
+				+ "Details" + getSpaces(maximumLengths[2] - 7) + "     "
+				+ "Start" + getSpaces(maximumLengths[3] - 5) + "     " + "End"
+				+ getSpaces(maximumLengths[4] - 3) + "     " + "Reminder"
+				+ getSpaces(maximumLengths[5] - 8) + "     " + "\n";
 		for (int i = 0; i < upcomingEvents.size(); i++) {
 			String[] tempArray = upcomingEvents.get(i).split("\\..");
 			String[] tempArray2 = { "", "", "", "", "", "" };
@@ -451,22 +457,22 @@ public class What2DoUI extends javax.swing.JFrame {
 			}
 			result += tempArray2[0]
 					+ getSpaces(maximumLengths[0] - tempArray2[0].length())
-					+ "   ";
+					+ "     ";
 			result += tempArray2[1]
 					+ getSpaces(maximumLengths[1] - tempArray2[1].length())
-					+ "   ";
+					+ "     ";
 			result += tempArray2[2]
 					+ getSpaces(maximumLengths[2] - tempArray2[2].length())
-					+ "   ";
+					+ "     ";
 			result += tempArray2[3]
 					+ getSpaces(maximumLengths[3] - tempArray2[3].length())
-					+ "   ";
+					+ "     ";
 			result += tempArray2[4]
 					+ getSpaces(maximumLengths[4] - tempArray2[4].length())
-					+ "   ";
+					+ "     ";
 			result += tempArray2[5]
 					+ getSpaces(maximumLengths[5] - tempArray2[5].length())
-					+ "   ";
+					+ "     ";
 			result += "\n";
 		}
 		return result;
