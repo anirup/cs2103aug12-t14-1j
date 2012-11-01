@@ -1,7 +1,9 @@
 import java.io.IOException;
 import java.util.*;
 
+
 public class Executor {
+
 	private static final String PRIORITY_LOW = "Low";
 	private static final String PRIORITY_NORMAL = "Normal";
 	private static final String PRIORITY_HIGH = "high";
@@ -21,7 +23,10 @@ public class Executor {
 	private static final String COMMAND_UNDONE = "undone";
 	private static final String COMMAND_UNDO = "undo";
 	// private static final String TIME_ZONE = "+8:00";
+
 	private static Vector<EventForSort> searchResults = new Vector<EventForSort>();
+	
+	private static int displaySplitIndex = 0;
 	private static boolean searchState = false;
 	private static String previousCommand = "Nothing";
 
@@ -42,33 +47,37 @@ public class Executor {
 		Logic.setUp();
 		Vector<String> parameters = new Vector<String>();
 		// String[] parameters = userInput.split(INPUT_SPLITTER);
-		try {
+		
+		String[] parameterList = { "-1", "-1", "-1", "-1", "-1", "-1" };
+		Logic.setUp();
+		for (int i = 0; i < parameters.size(); i++)
+			parameterList[i] = parameters.get(i);
+		
+		//Check if user has just entered a positive integer parameter, returns -2 if not an integer, -1 if user entered 0
+		int userInputInteger = Logic.getInteger(parameterList)-1;
+		
+		try
+		{
 			parameters = Logic.splitInput(userInput);
 		} catch (Exception e) {
 			if (Logic.getMessage() == 0)
 				return 9;
 			else
 				return Logic.getMessage();
-		}
-		String[] parameterList = { "-1", "-1", "-1", "-1", "-1", "-1" };
-		try {
-			ListOfEvent.syncDataToDatabase();
-		} catch (Exception e) {
-			ListOfEvent.formatListOfEvent();
-			return 10;
-		}
+		}	
+				
 		// Collections.sort(ListOfEvent.getCurrentListOfEvent(), sortByDate);
-		ListOfEvent.sortByTime();
-		for (int i = 0; i < parameters.size(); i++)
-			parameterList[i] = parameters.get(i);
-		try {
-			String command = Logic.getCommand(parameterList);
-			if (command.equalsIgnoreCase(COMMAND_ADD)
-					|| command.equalsIgnoreCase(SHORTHAND_ADD)) {
-				// ListOfActionArchive.add(new ActionArchiveAdd(
-				analyzeAddInput(parameterList);
+		ListOfEvent.sortByTime();		
+				
+		try
+		{
+		String command = Logic.getCommand(parameterList);
+		if (command.equalsIgnoreCase(COMMAND_ADD)
+				|| command.equalsIgnoreCase(SHORTHAND_ADD)) {
+			 ListOfActionArchive.add(new ActionArchiveAdd(analyzeAddInput(parameterList)));
 				searchToFalse();
 				try {
+			//Saving to file after add
 					ListOfEvent.syncDataToDatabase();
 				} catch (Exception e) {
 					ListOfEvent.formatListOfEvent();
@@ -78,100 +87,126 @@ public class Executor {
 				return 0;
 			} else if (command.equalsIgnoreCase(COMMAND_DELETE)
 					|| command.equalsIgnoreCase(SHORTHAND_DELETE)) {
-				if (getSearchState() == true
-						&& (previousCommand == COMMAND_DELETE || previousCommand == COMMAND_SEARCH)) {
-					int index = Logic.getInteger(parameterList);
-					ListOfActionArchive.add(new ActionArchiveDelete(ListOfEvent
-							.remove(index)));
-					// ListOfEvent.remove(index);
-					try {
-						ListOfEvent.syncDataToDatabase();
-					} catch (Exception e) {
-						ListOfEvent.formatListOfEvent();
-						return 10;
+				
+				assert(userInputInteger > -1);
+				if(userInputInteger > -1 ) {
+					if(searchState == true){
+						ListOfActionArchive.add(new ActionArchiveDelete(searchResults.get(userInputInteger).event()));
+						ListOfEvent.remove(searchResults.get(userInputInteger).index());
 					}
-					previousCommand = COMMAND_DELETE;
-					searchToFalse();
-					return 1;
-				} else if (getSearchState() == false) {
-					analyzeAndSearch(parameterList);
-					previousCommand = COMMAND_DELETE;
-					searchToTrue();
+					else {						
+						ListOfEvent.remove(userInputInteger);
+					}
 				}
-			} else if (command.equalsIgnoreCase(COMMAND_UPDATE)
-					|| command.equalsIgnoreCase(SHORTHAND_UPDATE)) {
-				if (getSearchState() == true
-						&& previousCommand == COMMAND_UPDATE) {
-					int index = Logic.getInteger(parameterList);
-					// ListOfActionArchive.add(new ActionArchiveUpdate(null,
-					// null));
-					updateEvent(index);
-					previousCommand = COMMAND_UPDATE;
-					searchToFalse();
-					return 2;
-				} else if (getSearchState() == false) {
-					analyzeAndSearch(parameterList);
-					previousCommand = COMMAND_UPDATE;
-					searchToTrue();
+				
+				return 1;
+			 
+			 
+		} else if (command.equalsIgnoreCase(COMMAND_UPDATE)
+				|| command.equalsIgnoreCase(SHORTHAND_UPDATE)) {
+			
+			Event eventEdit = null;
+			if(userInputInteger > 0 ){
+				if(searchState == true){					
+					eventEdit = searchResults.get(userInputInteger).event(); 
 				}
-			} else if (command.equalsIgnoreCase(COMMAND_SEARCH)) {
+				else {
+					eventEdit=ListOfEvent.get(userInputInteger); 
+				}
+				previousCommand = COMMAND_UPDATE;
+				getUpdateEventinString(userInputInteger); 
+				
+			} else {
+				assert(previousCommand.equals(COMMAND_UPDATE));
+				parameterList[0] = COMMAND_ADD;
+				ListOfActionArchive.add(new ActionArchiveUpdate(eventEdit,analyzeAddInput(parameterList)));
+				ListOfEvent.update(searchResults.get(userInputInteger).index(),eventEdit);
+				previousCommand = COMMAND_UPDATE;
+			}
+			
+				
+			/*if (getSearchState() == true && previousCommand == COMMAND_UPDATE) {				
+				// ListOfActionArchive.add(new ActionArchiveUpdate(null, null));
+				updateEvent(userInputInteger);
+				previousCommand = COMMAND_UPDATE;
+				searchToFalse();
+				return 2;
+			} else if (getSearchState() == false) {
 				analyzeAndSearch(parameterList);
-				previousCommand = COMMAND_SEARCH;
-				searchToTrue();
-			} else if (command.equalsIgnoreCase(COMMAND_DONE)) {
-				if (getSearchState() == true && previousCommand == COMMAND_DONE) {
-					int index = Logic.getInteger(parameterList);
-					markDone(index);
-					previousCommand = COMMAND_DONE;
-					searchToFalse();
+				previousCommand = COMMAND_UPDATE;
+				searchToTrue();						
+			}*/
+		} else if (command.equalsIgnoreCase(COMMAND_SEARCH)) {
+			analyzeAndSearch(parameterList);
+			previousCommand = COMMAND_SEARCH;
+			searchToTrue();
+		} else if (command.equalsIgnoreCase(COMMAND_DONE)) {
+			if(userInputInteger > -1) {
+				if (getSearchState() == true) {					
+					markDone(searchResults.get(userInputInteger).index());				
 					return 4;
 				} else if (getSearchState() == false) {
-					analyzeAndSearch(parameterList);
-					previousCommand = COMMAND_DONE;
-					searchToTrue();
+					markDone(userInputInteger);
 				}
-			} else if (command.equalsIgnoreCase(COMMAND_UNDONE)) {
-				if (getSearchState() == true
-						&& previousCommand == COMMAND_UNDONE) {
-					int index = Logic.getInteger(parameterList);
-					markNotDone(index);
-					previousCommand = COMMAND_UNDONE;
-					searchToFalse();
-					return 3;
+			}
+		} else if (command.equalsIgnoreCase(COMMAND_UNDONE)) {
+			if(userInputInteger > -1) {
+				if (getSearchState() == true) {					
+					markDone(searchResults.get(userInputInteger).index());				
+					return 4;
 				} else if (getSearchState() == false) {
-					analyzeAndSearch(parameterList);
-					previousCommand = COMMAND_UNDONE;
-					searchToTrue();
+					markDone(userInputInteger);
 				}
-			} else if (command.equalsIgnoreCase(COMMAND_UNDO)) {
-				// undoLast();
-				previousCommand = COMMAND_UNDONE;
-				return 6;
-			} else if (command.equalsIgnoreCase(COMMAND_EXIT)) {
-				try {
-					ListOfEvent.syncDataToDatabase();
-				} catch (Exception e) {
-					ListOfEvent.formatListOfEvent();
-					return 10;
-				}
-				System.exit(0);
-			} else
-				return 5;
-		} catch (Exception e) {
+			}
+			
+		} else if (command.equalsIgnoreCase(COMMAND_UNDO)) {
+			undoLast();
+			previousCommand = COMMAND_UNDONE;
+			return 6;
+		} else if (command.equalsIgnoreCase(COMMAND_EXIT)) {
+			System.exit(0);
+			return 7;
+		}
+		else 
+			return 5;
+		}
+		catch(Exception e)
+		{
 			return 9;
 		}
-		// save file , exit
+		
+		
+		try {				
+			//Save to file before each operation
+			ListOfEvent.syncDataToDatabase();
+		} catch (Exception e) {
+			ListOfEvent.formatListOfEvent();
+			return 10;
+		}
 		return 11;
+		
+		
 	}
 
-	/*
-	 * public static void undoLast() { ListOfActionArchive.undo(); }
-	 */
-	public static void analyzeAndSearch(String[] parameterList) { // keywords //
-	// have to
+	private static void undoLast() {
+		ListOfActionArchive.undo();		
+	}
+
+	private static String getUpdateEventinString(int index) {
+	String event = ListOfEvent.get(index).composeContentToDisplayInString();
+	String[] parameters = event.split("\\..");
+	String out = STRING_NULL;
+	for(int i = 0; i< parameters.length; i++) {
+		out+= (parameters + " ");		
+	}
+	return out;	
+	}
+
+	
+	public static void analyzeAndSearch(String[] parameterList){ 
 		searchResults.clear();
 		Vector<String> searchWords = getSearchWords(parameterList);
-		commenceSearch(searchWords);
+		commenceSearch(searchWords);		
 		Collections.sort(searchResults);
 	}
 
@@ -197,6 +232,27 @@ public class Executor {
 		 * searchResults.add(new EventForSort(i, ListOfEvent.get(i))); break; }
 		 * } }
 		 */
+		/*int size = ListOfEvent.size();
+		for (int i = 0; i < size; i++) {
+			if (searchWords.isEmpty())
+				break;
+			boolean isChecked = false;
+			String searchCheck = STRING_NULL;
+			String[] tags = ListOfEvent.get(i).getEventHashTag().split("#");
+			for (int j = 0; j < tags.length; j++) {
+				searchCheck += tags[j];
+				searchCheck += ".";
+			}
+			searchCheck += ListOfEvent.get(i).getEventName();
+			for (int k = 0; k < searchWords.size(); k++) {
+				if (searchCheck.toLowerCase().contains(
+						searchWords.get(k).toLowerCase())
+						&& isChecked == false) {
+					searchResults.add(new EventForSort(i, ListOfEvent.get(i)));
+					break;
+				}
+			}
+		}*/
 		searchResults.addAll(ListOfEvent.searchInNameAndHashTags(searchWords));
 	}
 
@@ -208,92 +264,72 @@ public class Executor {
 		ListOfEvent.markDone(index);
 	}
 
-	public static boolean analyzeAddInput(String[] parameterList) {
-		String eventToAdd = Logic.getEventString(parameterList);
-		ListOfEvent.add(eventToAdd);
-		return true;
+	public static Event analyzeAddInput(String[] parameterList) {
+
+		String eventToAdd = Logic.getEventString(parameterList);		
+		return ListOfEvent.add(eventToAdd);
+
 	}
-
-	public static void updateEvent(int index) {
-	}
-
-	private static int returnPriorityValue(String p) {
-		if (p.equalsIgnoreCase(PRIORITY_HIGH))
-			return 0;
-		else if (p.equalsIgnoreCase(PRIORITY_NORMAL))
-			return 1;
-		else if (p.equalsIgnoreCase(PRIORITY_LOW))
-			return 2;
-		return 1;
-	}
-
-	private static int getDateOrder(Event a, Event b) {
-		if (a.getEventEndTime().isBefore(b.getEventEndTime()))
-			return -1;
-		else if (a.getEventEndTime().isAfter(b.getEventEndTime()))
-			return 1;
-		else
-			return 0;
-	}
-
-	private static Comparator<Event> sortByPriority = new Comparator<Event>() {
-		public int compare(Event a, Event b) {
-			if (!getEventPriority(a).equals(getEventPriority(b)))
-				return returnPriorityValue(getEventPriority(a))
-						- returnPriorityValue(getEventPriority(b));
-			else
-				return getDateOrder(a, b);
-		}
-	};
-	private static Comparator<Event> sortByDate = new Comparator<Event>() {
-		public int compare(Event a, Event b) {
-			if (!a.getEventEndTime().toString()
-					.equals(b.getEventEndTime().toString()))
-				return getDateOrder(a, b);
-			else
-				return returnPriorityValue(getEventPriority(a))
-						- returnPriorityValue(getEventPriority(b));
-		}
-	};
-
+		
 	public static ArrayList<String> printDataBase() {
-		ArrayList<String> str = new ArrayList<String>();
+
+		//String str = STRING_NULL;
 		// Collections.sort(ListOfEvent.getCurrentListOfEvent(), sortByDate);
-		ListOfEvent.sortByTime();
+		/*ListOfEvent.sortByTime();
 		for (int i = 0; i < ListOfEvent.size(); i++) {
 			if (!ListOfEvent.get(i).getClass().getName()
 					.equals("FloatingEvent")) {
-				str.add((i + 1) + ".."
-						+ ListOfEvent.get(i).composeContentToDisplayInString());
+				str += i + ".."
+						+ ListOfEvent.get(i).composeContentToDisplayInString();
+				str += '\n';
 			}
 		}
-		return str;
+		return str;*/
+		ListOfEvent.sortByTime();
+		return ListOfEvent.getListOfEventToDisplayInString();
 	}
 
 	public static ArrayList<String> printFloatingDataBase() {
-		ArrayList<String> str = new ArrayList<String>();
-		Collections.sort(ListOfEvent.getCurrentListOfEvent(), sortByPriority);
+
+		/*String str = STRING_NULL;
+		//Collections.sort(ListOfEvent.getCurrentListOfEvent(), sortByPriority);
 		// ListOfEvent.sortByPriority();
 		for (int i = 0; i < ListOfEvent.size(); i++) {
 			if (ListOfEvent.get(i).getClass().getName().equals("FloatingEvent")) {
-				str.add((i + 1) + ".."
-						+ ListOfEvent.get(i).composeContentToDisplayInString());
+				str += i + ".."
+						+ ListOfEvent.get(i).composeContentToDisplayInString();
+				str += '\n';
+			}
+		}*/
+		//return str;
+		ListOfEvent.sortByTime();
+		return ListOfEvent.getListOfFloatingEventsInString(); 
+	}
+
+	public static String printPriorityDataBase() {
+
+		String str = STRING_NULL;		
+		ListOfEvent.sortByPriority();
+		for (int i = 0; i < ListOfEvent.size(); i++) {
+			if (!ListOfEvent.get(i).getClass().getName()
+					.equals("FloatingEvent")) {
+				str += i + ".."
+						+ ListOfEvent.get(i).composeContentToDisplayInString();
+				str += '\n';
 			}
 		}
 		return str;
 	}
 
-	public static ArrayList<String> printSearchResults() {
-		ArrayList<String> str = new ArrayList<String>();
+	public static String printSearchResults() {
 		String temp = STRING_NULL;
 		for (int i = 0; i < searchResults.size(); i++) {
-			temp = STRING_NULL;
-			temp += searchResults.get(i).index() + "..";
-			temp += searchResults.get(i).event()
-					.composeContentToDisplayInString();
-			str.add(temp);
+			temp += i+1;
+			temp += ".\t";
+			temp += searchResults.get(i).event().composeContentToDisplayInString();
+			temp += "\n";
 		}
-		return str;
+		return temp;
 	}
 
 	public static void loadDatabase() throws Exception {
@@ -307,7 +343,6 @@ public class Executor {
 	// public static void syncDatabase() throws IOException {
 	// ListOfEvent.syncDataToDatabase();
 	// }
-	private static String getEventPriority(Event a) {
-		return a.getEventHashTag().split("#")[1].trim().toLowerCase();
-	}
+
+
 }
