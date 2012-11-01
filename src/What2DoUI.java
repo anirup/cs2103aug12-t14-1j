@@ -62,7 +62,7 @@ public class What2DoUI extends javax.swing.JFrame {
 
 		jPanel1.setBackground(new java.awt.Color(241, 235, 194));
 
-		textField1.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));ad
+		textField1.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
 		textField1.setFont(new java.awt.Font("Monospaced", 0, 18)); // NOI18N
 		textField1.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
