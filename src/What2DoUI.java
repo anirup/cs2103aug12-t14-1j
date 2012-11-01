@@ -7,18 +7,17 @@ import java.util.ArrayList;
  */
 public class What2DoUI extends javax.swing.JFrame {
 
-	
-
 	/**
 	 * Creates new form What2DoUI
 	 */
 	public What2DoUI() {
 		initComponents();
 	}
+
 	char lastEvent = ' ';
 	String previousEntry = "";
 	int flag = 0;
-	boolean toUpdate=true;
+	boolean toUpdate = true;
 
 	/**
 	 * This method is called from within the constructor to initialize the form.
@@ -35,7 +34,7 @@ public class What2DoUI extends javax.swing.JFrame {
 		jPanel1 = new javax.swing.JPanel();
 		textField1 = new java.awt.TextField();
 		jScrollPane4 = new javax.swing.JScrollPane();
-		jTextPane2 = new javax.swing.JTextPane();
+		jLabel4 = new javax.swing.JLabel();
 		jLabel2 = new javax.swing.JLabel();
 		jLabel1 = new javax.swing.JLabel();
 		jLayeredPane1 = new javax.swing.JLayeredPane();
@@ -49,6 +48,7 @@ public class What2DoUI extends javax.swing.JFrame {
 		jPanel3 = new javax.swing.JPanel();
 		jScrollPane1 = new javax.swing.JScrollPane();
 		jTextArea1 = new javax.swing.JTextArea();
+		//jLabel3 = new javax.swing.JLabel();
 
 		jTable1.setModel(new javax.swing.table.DefaultTableModel(
 				new Object[][] { { null, null, null, null },
@@ -83,10 +83,9 @@ public class What2DoUI extends javax.swing.JFrame {
 			}
 		});
 
-		jTextPane2.setFont(new java.awt.Font("Monospaced", 2, 14)); // NOI18N
-		jTextPane2
-				.setText("FORMAT : [operation - add (OR '+') OR delete (OR '-') OR search OR update OR undo OR done OR undone OR exit]");
-		jScrollPane4.setViewportView(jTextPane2);
+		jLabel4.setFont(new java.awt.Font("Monospaced", 2, 14)); // NOI18N
+		jLabel4.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; \">Available operations are</span></b><span style=\"font-family: Helvetica, sans-serif; \">- </span><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(192, 80, 77); \">add (+)/delete(-)/search/update/undo/done/undone/exit</span><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>");
+		jScrollPane4.setViewportView(jLabel4);
 
 		jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource(
 				"/Logo3.png"))); // NOI18N
@@ -99,7 +98,6 @@ public class What2DoUI extends javax.swing.JFrame {
 		jLabel1.setText("jLabel1");
 		jLabel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(
 				0, 0, 0), 5, true));
-		
 
 		jPanel2.setBackground(new java.awt.Color(240, 233, 194));
 
@@ -128,8 +126,7 @@ public class What2DoUI extends javax.swing.JFrame {
 		javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(
 				jPanel2);
 		jPanel2.setLayout(jPanel2Layout);
-		jPanel2Layout
-				.setHorizontalGroup(jPanel2Layout
+		jPanel2Layout.setHorizontalGroup(jPanel2Layout
 						.createParallelGroup(
 								javax.swing.GroupLayout.Alignment.LEADING)
 						.addGroup(
@@ -186,9 +183,17 @@ public class What2DoUI extends javax.swing.JFrame {
 
 		jPanel3.setBackground(new java.awt.Color(240, 233, 194));
 		jPanel3.setVisible(false);
+		
 		jLabel3.setOpaque(true);
-		jLabel3.setBackground(new java.awt.Color(240, 240, 240));
+		jLabel3.setBackground(new java.awt.Color(255, 255, 255));
+		jLabel4.setOpaque(true);
+		jLabel4.setBackground(new java.awt.Color(255, 255, 255));
 
+		
+		jTextArea1.setEditable(false);
+		jTextArea2.setEditable(false);
+		jTextArea3.setEditable(false);
+		
 		jTextArea1.setColumns(20);
 		jTextArea1.setRows(5);
 		jTextArea1.setFont(new java.awt.Font("Monospaced", 1, 12));
@@ -331,63 +336,60 @@ public class What2DoUI extends javax.swing.JFrame {
 		if (evt.getKeyChar() == 8) {
 			if (textField1.getText().isEmpty()) {
 				flag = 0;
-				jTextPane2
-						.setText("FORMAT : [operation - add (OR '+') OR delete (OR '-') OR search OR update OR undo OR done OR undone OR exit]");
+				jLabel4.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; \">Available operations are</span></b><span style=\"font-family: Helvetica, sans-serif; \">- </span><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(192, 80, 77); \">add (+)/delete(-)/search/update/undo/done/undone/exit</span><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>");
 			}
 		}
 		if (flag == 0
 				&& ((evt.getKeyChar() == 'a') || (evt.getKeyChar() == '+'))) {
 			flag = 1;
 			lastEvent = evt.getKeyChar();
-
-			jTextPane2
-					.setText("[add] [Key words] [start time and date] [End time and date] [r-reminder time]");
+			jLabel4.setText("[add] [Key words] [start time and date] [End time and date] [r-reminder time]");
 		}
 		if (flag == 0 && (evt.getKeyChar() == '-')) {
 			flag = 1;
 			lastEvent = evt.getKeyChar();
 
-			jTextPane2.setText("[delete] [index number]");
+			jLabel4.setText("[delete] [index number]");
 		}
 		if (flag == 0 && evt.getKeyChar() == 'd') {
 			lastEvent = evt.getKeyChar();
-			jTextPane2.setText("[delete] [index number]");
+			jLabel4.setText("[delete] [index number]");
 		}
 		if (evt.getKeyChar() == 'e' && lastEvent == 'd') {
 			flag = 1;
 			lastEvent = evt.getKeyChar();
 
-			jTextPane2.setText("[delete] [index number]");
+			jLabel4.setText("[delete] [index number]");
 		} else if (flag == 0 && evt.getKeyChar() == 'o' && lastEvent == 'd') {
 			flag = 1;
 			lastEvent = evt.getKeyChar();
 
-			jTextPane2.setText("[done] [index number]");
+			jLabel4.setText("[done] [index number]");
 		}
 		if (flag == 0 && evt.getKeyChar() == 's') {
 			flag = 1;
 			lastEvent = evt.getKeyChar();
 
-			jTextPane2.setText("[search] [searchwords]");
+			jLabel4.setText("[search] [searchwords]");
 		}
 		if (flag == 0 && evt.getKeyChar() == 'u') {
 			lastEvent = 'u';
-			jTextPane2.setText("[update] [index number]");
+			jLabel4.setText("[update] [index number]");
 		}
 		if (flag == 0 && evt.getKeyChar() == 'e') {
 			flag = 1;
 			lastEvent = evt.getKeyChar();
 
-			jTextPane2.setText("[exit]");
+			jLabel4.setText("[exit]");
 		}
 		if (flag == 0 && evt.getKeyChar() == 'n' && lastEvent == 'u') {
 			flag = 1;
 			lastEvent = evt.getKeyChar();
-			jTextPane2.setText("[undone] [index number]");
+			jLabel4.setText("[undone] [index number]");
 		} else if (flag == 0 && evt.getKeyChar() == 'p' && lastEvent == 'u') {
 			flag = 1;
 			lastEvent = evt.getKeyChar();
-			jTextPane2.setText("[update] [index number]");
+			jLabel4.setText("[update] [index number]");
 		}
 
 		if (evt.getKeyChar() == '\n') {
@@ -404,10 +406,9 @@ public class What2DoUI extends javax.swing.JFrame {
 
 			int index = Executor.analyze(data);
 			String message = ExceptionHandler.getException(index);
-			toUpdate=!(message.contains("Error"));
-			
-				
-			
+			toUpdate = !(message.contains("Error"));
+			//jLabel3.setText(message);
+
 			ArrayList<String> upcomingEvents = Executor.printDataBase();
 			String upcomingEventsString = format(upcomingEvents,
 					getMaximumLengths(upcomingEvents));
@@ -417,16 +418,15 @@ public class What2DoUI extends javax.swing.JFrame {
 					getMaximumLengths(floatingEvents));
 			String searchResultsString = format(searchResults,
 					getMaximumLengths(searchResults));
-			if (toUpdate){
+			if (toUpdate) {
 				jLabel3.setText("<html><p class=\"MsoNormal\"><b><span style=\"color: rgb(0, 176, 80)\"; >Success:Your command has been executed!</span></b></p></html>");
-				
 				jTextArea2.setText(upcomingEventsString);
 				jTextArea3.setText(floatingEventsString);
 				jTextArea1.setText(searchResultsString);
-			}
-			else{
-				jLabel3.setText("<html><p class=\"MsoNormal\"><b><span style=\"color: red; \">Oops! We were unable to act upon your command</span></b></p></html>");
-						
+			} else {
+					jLabel3.setText("<html><p class=\"MsoNormal\"><b><span style=\"color: red; \">Oops! We were unable to act upon your command</span></b></p></html>");
+
+				
 			}
 			textField1.setText("");
 
@@ -437,7 +437,12 @@ public class What2DoUI extends javax.swing.JFrame {
 
 	private String format(ArrayList<String> upcomingEvents, int[] maximumLengths) {
 		String result = "";
-		result+="ID"+ getSpaces(maximumLengths[0]-2)+"   "+"Event Name"+ getSpaces(maximumLengths[1]-10)+"   "+"Details"+ getSpaces(maximumLengths[2]-7)+"   "+"Start"+ getSpaces(maximumLengths[3]-5)+"   "+"End"+ getSpaces(maximumLengths[4]-3)+"   "+"Reminder"+ getSpaces(maximumLengths[5]-8)+"   "+"\n";
+		result += "ID" + getSpaces(maximumLengths[0] - 2) + "   "
+				+ "Event Name" + getSpaces(maximumLengths[1] - 10) + "   "
+				+ "Details" + getSpaces(maximumLengths[2] - 7) + "   "
+				+ "Start" + getSpaces(maximumLengths[3] - 5) + "   " + "End"
+				+ getSpaces(maximumLengths[4] - 3) + "   " + "Reminder"
+				+ getSpaces(maximumLengths[5] - 8) + "   " + "\n";
 		for (int i = 0; i < upcomingEvents.size(); i++) {
 			String[] tempArray = upcomingEvents.get(i).split("\\..");
 			String[] tempArray2 = { "", "", "", "", "", "" };
@@ -527,7 +532,7 @@ public class What2DoUI extends javax.swing.JFrame {
 	}
 
 	private void textField1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_textField1ActionPerformed
-	// TODO add your handling code here:
+		// TODO add your handling code here:
 	}// GEN-LAST:event_textField1ActionPerformed
 
 	private void textField1KeyPressed(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_textField1KeyPressed
@@ -535,7 +540,7 @@ public class What2DoUI extends javax.swing.JFrame {
 			textField1.setText(previousEntry);
 		}
 		if (evt.getKeyCode() == 39) {
-			jTextPane2
+			jLabel4
 					.setText("FORMAT : [operation] [key words] [date and time] [r-reminder time]");
 		}// TODO add your handling code here: // TODO add your handling code
 			// here:
@@ -610,7 +615,7 @@ public class What2DoUI extends javax.swing.JFrame {
 	private javax.swing.JTextArea jTextArea2;
 	private javax.swing.JTextArea jTextArea3;
 	private javax.swing.JLabel jLabel3;
-	private javax.swing.JTextPane jTextPane2;
+	private javax.swing.JLabel jLabel4;
 	private java.awt.TextField textField1;
 	// End of variables declaration
 }
