@@ -17,6 +17,12 @@ public class ListOfEvent {
 	private static final String INVALID_TIME = "invalid";
 	private static final int TIME_FIELD_START_INDEX = 4;
 	private static final int TIME_FIELD_END_INDEX = 6;
+	
+	public static final int FLOATING_TYPE = 0;
+	public static final int DEADLINE_TYPE = 1;
+	public static final int TIMED_TYPE = 2;
+	
+	
 	public static ArrayList<Event> getCurrentListOfEvent() {
 		return listOfEvent;
 	}
@@ -55,9 +61,10 @@ public class ListOfEvent {
 		listOfEvent.add(newEvent);
 	}
 	
-	public static void add(String eventInString) {
+	public static Event add(String eventInString) {
 		Event newEvent = getEventFromString(eventInString);
 		listOfEvent.add(newEvent);
+		return newEvent;
 	}
 	
 	public static Event get(int position) {
@@ -152,7 +159,7 @@ public class ListOfEvent {
 				if (searchCheck.toLowerCase().contains(
 						searchWords.get(k).toLowerCase())
 						&& isChecked == false) {
-					searchResults.add(new EventForSort(i, ListOfEvent.get(i)));
+					searchResults.add(new EventForSort(i,ListOfEvent.get(i)));
 					break;
 				}
 			}
@@ -193,15 +200,29 @@ public class ListOfEvent {
 	}
 	
 	public static ArrayList<String> getListOfEventToDisplayInString() {
+		
 		ArrayList<String> listToDisplay = new ArrayList<String>();
-
 		for(int index = 0; index < listOfEvent.size(); index++) {
 			String contentToDisplay = listOfEvent.get(index).composeContentToDisplayInString();
 			contentToDisplay = String.format(displayFormat, index + 1, contentToDisplay);
-			listToDisplay.add(contentToDisplay);
+			if(listOfEvent.get(index).getEventType()!= FLOATING_TYPE )
+				listToDisplay.add(contentToDisplay);
 		}
 		return listToDisplay;
 	}
+	
+	public static ArrayList<String> getListOfFloatingEventsInString() {		
+		
+		ArrayList<String> listToDisplay = new ArrayList<String>();
+		for(int index = 0; index < listOfEvent.size(); index++) {	
+			String contentToDisplay = listOfEvent.get(index).composeContentToDisplayInString();
+			contentToDisplay = String.format(displayFormat, index + 1, contentToDisplay);
+			if(listOfEvent.get(index).getEventType()== FLOATING_TYPE )
+				listToDisplay.add(contentToDisplay);
+		}
+		return listToDisplay; 
+	}	
+	
 	
 	public static Event getEventFromString(String eventInString) {
 		String[] eventContent = eventInString.split("\\..");
