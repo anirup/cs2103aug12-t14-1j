@@ -1,4 +1,4 @@
-/*import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 
@@ -21,7 +21,7 @@ public class TestListOfEvent {
 	
 	@Test
 	public void test() {
-		
+		/*
 		String newEvent = cmd.getCommandContent();
 		newEvent = "01.." + newEvent;
 		assertEquals("test getContent", "01..project..#high #impt..false..invalid..invalid..invalid..", newEvent);
@@ -39,6 +39,7 @@ public class TestListOfEvent {
 		ListOfEvent.add(event);
 		ListOfEvent.sortByTime();
 		assertEquals("test size", 3, ListOfEvent.size());
+		*/
 	}
 
-}*/
+}

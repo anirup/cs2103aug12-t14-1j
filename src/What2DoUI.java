@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 public class What2DoUI extends javax.swing.JFrame {
 
-	char lastEvent = ' ';
+	
 
 	/**
 	 * Creates new form What2DoUI
@@ -15,9 +15,10 @@ public class What2DoUI extends javax.swing.JFrame {
 	public What2DoUI() {
 		initComponents();
 	}
-
+	char lastEvent = ' ';
 	String previousEntry = "";
 	int flag = 0;
+	boolean toUpdate=true;
 
 	/**
 	 * This method is called from within the constructor to initialize the form.
@@ -102,6 +103,7 @@ public class What2DoUI extends javax.swing.JFrame {
 		jPanel2.setBackground(new java.awt.Color(240, 233, 194));
 
 		jTextArea2.setColumns(20);
+		jTextArea2.setFont(new java.awt.Font("Monospaced", 1, 12));
 		jTextArea2.setRows(5);
 		jTextArea2.setBorder(javax.swing.BorderFactory.createTitledBorder(null,
 				"Upcoming Events",
@@ -111,6 +113,7 @@ public class What2DoUI extends javax.swing.JFrame {
 		jScrollPane3.setViewportView(jTextArea2);
 
 		jTextArea3.setColumns(20);
+		jTextArea3.setFont(new java.awt.Font("Monospaced", 1, 12));
 		jTextArea3.setRows(5);
 		jTextArea3.setBorder(javax.swing.BorderFactory.createTitledBorder(null,
 				"Floating Events",
@@ -185,6 +188,7 @@ public class What2DoUI extends javax.swing.JFrame {
 
 		jTextArea1.setColumns(20);
 		jTextArea1.setRows(5);
+		jTextArea1.setFont(new java.awt.Font("Monospaced", 1, 12));
 		jTextArea1.setBorder(javax.swing.BorderFactory.createTitledBorder(null,
 				"Search Results",
 				javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
@@ -397,20 +401,23 @@ public class What2DoUI extends javax.swing.JFrame {
 
 			int index = Executor.analyze(data);
 			String message = ExceptionHandler.getException(index);
-			ArrayList<String> upcomingEvents = ListOfEvent
-					.getListOfEventToDisplayInString();
+			jTextPane1.setText(message);
+			toUpdate=!(message.contains("Error"));
+			
+			ArrayList<String> upcomingEvents = Executor.printDataBase();
 			String upcomingEventsString = format(upcomingEvents,
 					getMaximumLengths(upcomingEvents));
-			String priorityEvents = Executor.printPriorityDataBase();
-			String floatingEvents = Executor.printFloatingDataBase();
-			String searchResults = Executor.printSearchResults();
-			priorityEvents = format(priorityEvents);
-			floatingEvents = format(floatingEvents);
-			searchResults = formatForSearch(searchResults);
-			jTextArea2.setText(upcomingEventsString);
-			// jTextArea6.setText(priorityEvents);
-			jTextArea3.setText(floatingEvents);
-			jTextArea1.setText(searchResults);
+			ArrayList<String> floatingEvents = Executor.printFloatingDataBase();
+			ArrayList<String> searchResults = Executor.printSearchResults();
+			String floatingEventsString = format(floatingEvents,
+					getMaximumLengths(floatingEvents));
+			String searchResultsString = format(searchResults,
+					getMaximumLengths(searchResults));
+			if (toUpdate){
+				jTextArea2.setText(upcomingEventsString);
+				jTextArea3.setText(floatingEventsString);
+				jTextArea1.setText(searchResultsString);
+			}
 			textField1.setText("");
 
 			previousEntry = data;
@@ -420,6 +427,7 @@ public class What2DoUI extends javax.swing.JFrame {
 
 	private String format(ArrayList<String> upcomingEvents, int[] maximumLengths) {
 		String result = "";
+		result+="ID"+ getSpaces(maximumLengths[0]-2)+"   "+"Event Name"+ getSpaces(maximumLengths[1]-10)+"   "+"Details"+ getSpaces(maximumLengths[2]-7)+"   "+"Start"+ getSpaces(maximumLengths[3]-5)+"   "+"End"+ getSpaces(maximumLengths[4]-3)+"   "+"Reminder"+ getSpaces(maximumLengths[5]-8)+"   "+"\n";
 		for (int i = 0; i < upcomingEvents.size(); i++) {
 			String[] tempArray = upcomingEvents.get(i).split("\\..");
 			String[] tempArray2 = { "", "", "", "", "", "" };
@@ -428,22 +436,22 @@ public class What2DoUI extends javax.swing.JFrame {
 			}
 			result += tempArray2[0]
 					+ getSpaces(maximumLengths[0] - tempArray2[0].length())
-					+ " ";
+					+ "   ";
 			result += tempArray2[1]
 					+ getSpaces(maximumLengths[1] - tempArray2[1].length())
-					+ " ";
+					+ "   ";
 			result += tempArray2[2]
 					+ getSpaces(maximumLengths[2] - tempArray2[2].length())
-					+ " ";
+					+ "   ";
 			result += tempArray2[3]
 					+ getSpaces(maximumLengths[3] - tempArray2[3].length())
-					+ " ";
+					+ "   ";
 			result += tempArray2[4]
 					+ getSpaces(maximumLengths[4] - tempArray2[4].length())
-					+ " ";
+					+ "   ";
 			result += tempArray2[5]
 					+ getSpaces(maximumLengths[5] - tempArray2[5].length())
-					+ " ";
+					+ "   ";
 			result += "\n";
 		}
 		return result;
@@ -491,12 +499,12 @@ public class What2DoUI extends javax.swing.JFrame {
 
 	private int[] getMaximumLengths(ArrayList<String> unformatted) {
 		int[] lengths = new int[6];
-		lengths[0] = 0;
-		lengths[1] = 0;
-		lengths[2] = 0;
-		lengths[3] = 0;
-		lengths[4] = 0;
-		lengths[5] = 0;
+		lengths[0] = 2;
+		lengths[1] = 10;
+		lengths[2] = 7;
+		lengths[3] = 5;
+		lengths[4] = 3;
+		lengths[5] = 8;
 		for (int i = 0; i < unformatted.size(); i++) {
 			String[] tempStorage = unformatted.get(i).split("\\..");
 			for (int k = 0; k < tempStorage.length; k++) {
