@@ -128,27 +128,32 @@ public class ListOfEvent {
 		return remove(index, listOfEvent);
 	}
 	
-	public static Event updateSearch(int position, Event eventToUpdate) {
+	public static ArrayList<Event> updateSearch(int position, Event eventToUpdate) {
+		ArrayList<Event> update = new ArrayList<Event>();
 		Event removedEvent = searchResults.remove(position);
 		searchResults.add(position, eventToUpdate);
 		update(removedEvent, eventToUpdate);
-		return removedEvent;
+		update.add(removedEvent);
+		update.add(eventToUpdate);
+		return update;
 	}
 	
-	public static Event updateList(int position, Event eventToUpdate) {
+	public static ArrayList<Event> updateList(int position, Event eventToUpdate) {
+		ArrayList<Event> update = new ArrayList<Event>();
 		Event removedEvent = listOfEvent.remove(position);
 		listOfEvent.add(position, eventToUpdate);
-		return removedEvent;
+		update(removedEvent, eventToUpdate);
+		update.add(removedEvent);
+		update.add(eventToUpdate);
+		return update;
 	}
 	
 	public static boolean update(Event eventToReplace, Event eventToBeReplaced) {
 		int indexOfEventToBeReplaced = indexOf(eventToBeReplaced);
-	
 		if (indexOfEventToBeReplaced != -1) {
 			updateList(indexOfEventToBeReplaced, eventToReplace);
 			return true;
 		}
-		
 		return false;
 	}
 	
