@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 
-public class ListOfAlarm {
+public class ListOfAlarm implements ListOfEventObserver {
 
 	private static CopyOnWriteArrayList<AlarmType> alarmList = new CopyOnWriteArrayList<AlarmType>();
 	private static AlarmSound sound = new AlarmSound();
@@ -14,8 +14,12 @@ public class ListOfAlarm {
 		Collections.copy(alarmList, newList);		
 	}
 	
-	public static void add(AlarmType alarm){
-		alarmList.add(alarm);
+	//public static void add(AlarmType alarm){
+		//alarmList.add(alarm);
+	//}
+	
+	public void updateListOfEvent() {
+		setListOfAlarm(ListOfEvent.setUpListOfReminder());
 	}
 	
 	public static void runAlarm() {
