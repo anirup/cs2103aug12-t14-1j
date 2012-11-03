@@ -63,8 +63,8 @@ public class Event {
 		_eventHashTag = contentToExtract[INDEX_FOR_EVENT_HASHTAG];
 		_isDone = extractEventIsDone(contentToExtract[INDEX_FOR_EVENT_ISDONE]);
 		_eventReminder = Clock.parseTimeFromString(contentToExtract[INDEX_FOR_EVENT_REMINDER_TIME]);
-		_eventReminder = Clock.parseTimeFromString(contentToExtract[INDEX_FOR_EVENT_START_TIME]);
-		_eventReminder = Clock.parseTimeFromString(contentToExtract[INDEX_FOR_EVENT_END_TIME]);
+		_eventStartTime = Clock.parseTimeFromString(contentToExtract[INDEX_FOR_EVENT_START_TIME]);
+		_eventEndTime = Clock.parseTimeFromString(contentToExtract[INDEX_FOR_EVENT_END_TIME]);
 		_timeCompleted = Clock.parseTimeFromString(contentToExtract[INDEX_FOR_COMPLETED_TIME]);
 		return;
 	}
