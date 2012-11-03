@@ -17,6 +17,7 @@ public class ListOfEvent {
 	private static final int INDEX_OF_REMINDER_TIME = 5;
 	private static final int INDEX_OF_PRIORITY = 2;
 	private static final int INDEX_OF_COMPLETED_TIME = 8;
+	private static int currentNumberOfFloatingEvent = 0;
 	private static ArrayList<String> feedback = new ArrayList<String>();
 	private static final String STRING_NULL = "";
 	
@@ -238,8 +239,9 @@ public class ListOfEvent {
 		for(int index = 0; index < list.size(); index++) {
 			Event currentEvent = listOfEvent.get(index);
 			if(currentEvent.getEventType() != Event.FLOATING_TYPE) {
-				String contentToDisplay = listOfEvent.get(index).composeContentToDisplayInString();
-				contentToDisplay = String.format(displayFormat, index + 1, contentToDisplay);
+				String contentToDisplay = currentEvent.composeContentToDisplayInString();
+				contentToDisplay = String.format(displayFormat, 
+						currentNumberOfFloatingEvent + index + 1, contentToDisplay);
 				listToDisplay.add(contentToDisplay);
 			}
 		}
@@ -248,10 +250,11 @@ public class ListOfEvent {
 	
 	private static ArrayList<String> floatingToDisplay() {
 		ArrayList<String> listToDisplay = new ArrayList<String>();
-
+		currentNumberOfFloatingEvent = 0;
 		for(int index = 0; index < listOfEvent.size(); index++) {
 			Event currentEvent = listOfEvent.get(index);
 			if(currentEvent.getEventType() == Event.FLOATING_TYPE) {
+				currentNumberOfFloatingEvent++;
 				String contentToDisplay = listOfEvent.get(index).composeContentToDisplayInString();
 				contentToDisplay = String.format(displayFormat, index + 1, contentToDisplay);
 				listToDisplay.add(contentToDisplay);
@@ -268,6 +271,14 @@ public class ListOfEvent {
 		Event newEvent = new Event();
 		newEvent.parse(eventContent);
 		return newEvent;
+	}
+	
+	public static boolean isObsleteEvent(Event event) {
+		DateTime completedTime = event.getTimeCompleted();
+		if(Clock.isBefore(completedTime, DateTime.now().minusMonths(1)) && !Clock.isBigBangTime(completedTime)) {
+			return true;
+		}
+		return false;
 	}
 	
 	private static boolean isValidString(String[] eventContent) {
@@ -340,7 +351,5 @@ public class ListOfEvent {
 		listOfEvent.clear();
 		searchResults.clear();
 		setUpDataFromDatabase();
-	} 
-
-	
+	} 	
 }

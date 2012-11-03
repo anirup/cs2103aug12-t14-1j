@@ -256,10 +256,10 @@ public class Executor implements ListOfEventObserver {
 	}
 
 	public void updateListOfEvent() {
-		currentListOfUpcomingEventToDisplay = ListOfEvent
-				.getListOfEventToDisplayInString();
 		currentListOfFloatingEventToDisplay = ListOfEvent
 				.getListOfFloatingEventToDisplayInString();
+		currentListOfUpcomingEventToDisplay = ListOfEvent
+				.getListOfEventToDisplayInString();
 		searchResults = ListOfEvent.getSearchResultsToDisplayInString();
 	}
 
