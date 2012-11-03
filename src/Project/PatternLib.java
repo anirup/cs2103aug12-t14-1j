@@ -47,13 +47,13 @@ public class PatternLib {
 								date29 + dateSeparator + "?" + month29String + dateSeparator + "?" + leapYearInt + ")|(" + 
 								date30 + dateSeparator + "?" + month30String + dateSeparator + "?" + yearInt + ")|(" + 
 								date31 +  dateSeparator + "?" + month31Int + dateSeparator + "?" + yearInt + "))";
-	private static final String patternReminderMinutes = "r- ?(((0?[0-9])|([1-5][0-9])) ?((min[s]?)|(minute[s]?)))";
-	private static final String patternReminderHours = "r- ?((0?[0-9])|(1[0-9])|(2[0-4])) ?((hour[s]?)|(h)|(hr[s]))";
-	private static final String patternReminderDays = "r- ?(((0?[0-9])|([1-9][0-9])) ?((day[s]?)|(d)))";
-	private static final String patternReminderMinutesHoursDays = "r- ?(((0?[0-9])|([1-5][0-9])) ?((min[s]?)|(minute[s]?))) ?((0?[0-9])|(1[0-9])|(2[0-4])) ?((hour[s]?)|(h)|(hr[s]?)) ?(((0?[0-9])|([1-9][0-9])) ?((day[s]?)|(d)))";
-	private static final String patternReminderHoursDays = "r- ?((0?[0-9])|(1[0-9])|(2[0-4])) ?((hour[s]?)|(h)|(hr[s]?)) ?(((0?[0-9])|([1-9][0-9])) ?((day[s]?)|(d)))";
-	private static final String patternReminderMinutesDays = "r- ?(((0?[0-9])|([1-5][0-9])) ?((min[s]?)|(minute[s]?))) ?(((0?[0-9])|([1-9][0-9])) ?((day[s]?)|(d)))";
-	private static final String patternReminderMinutesHours = "r- ?(((0?[0-9])|([1-5][0-9])) ?((min[s]?)|(minute[s]?))) ?((0?[0-9])|(1[0-9])|(2[0-4])) ?((hour[s]?)|(h)|(hr[s]?))";
+	private static final String patternReminderMinutes = "r ?- ?(((0?[0-9])|([1-5][0-9])) ?((min[s]?)|(minute[s]?)))";
+	private static final String patternReminderHours = "r ?- ?((0?[0-9])|(1[0-9])|(2[0-4])) ?((hour[s]?)|(h)|(hr[s]))";
+	private static final String patternReminderDays = "r ?- ?(((0?[0-9])|([1-9][0-9])) ?((day[s]?)|(d)))";
+	private static final String patternReminderMinutesHoursDays = "r ?- ?(((0?[0-9])|([1-5][0-9])) ?((min[s]?)|(minute[s]?))) ?((0?[0-9])|(1[0-9])|(2[0-4])) ?((hour[s]?)|(h)|(hr[s]?)) ?(((0?[0-9])|([1-9][0-9])) ?((day[s]?)|(d)))";
+	private static final String patternReminderHoursDays = "r ?- ?((0?[0-9])|(1[0-9])|(2[0-4])) ?((hour[s]?)|(h)|(hr[s]?)) ?(((0?[0-9])|([1-9][0-9])) ?((day[s]?)|(d)))";
+	private static final String patternReminderMinutesDays = "r ?- ?(((0?[0-9])|([1-5][0-9])) ?((min[s]?)|(minute[s]?))) ?(((0?[0-9])|([1-9][0-9])) ?((day[s]?)|(d)))";
+	private static final String patternReminderMinutesHours = "r ?- ?(((0?[0-9])|([1-5][0-9])) ?((min[s]?)|(minute[s]?))) ?((0?[0-9])|(1[0-9])|(2[0-4])) ?((hour[s]?)|(h)|(hr[s]?))";
 	
 	public static void setUpPattern() {
 		
@@ -73,6 +73,21 @@ public class PatternLib {
 		pattern = new PatternDateTime(Pattern.compile(patternTime24AndpatternDateSpecial, flags), "patternTime24AndpatternDateSpecial");
 		pat.add(pattern);
 		
+		String patternTime12AndDateIntWithYear = "(" + patternTime12InDay + space + patternDateWithYearInt + ")";
+		pattern = new PatternDateTime(Pattern.compile(patternTime12AndDateIntWithYear, flags), "HH:mmaa dd/MM/yy");
+		pat.add(pattern);
+		
+		String patternTime24AndDateIntWithYear = "(" + patternTime24InDay + space + patternDateWithYearInt + ")";
+		pattern = new PatternDateTime(Pattern.compile(patternTime24AndDateIntWithYear, flags), "HH:mm dd/MM/yy");
+		pat.add(pattern);
+		
+		String patternTime12AndDateStringWithYear = "(" + patternTime12InDay + space + patternDateWithYearString + ")";
+		pattern = new PatternDateTime(Pattern.compile(patternTime12AndDateStringWithYear, flags), "HH:mmaa dd/MMM/yy");
+		pat.add(pattern);
+		
+		String patternTime24AndDateStringWithYear = "(" + patternTime24InDay + space + patternDateWithYearString + ")";
+		pattern = new PatternDateTime(Pattern.compile(patternTime24AndDateStringWithYear, flags), "HH:mm dd/MMM/yy");
+		
 		String patternTime12AndDateIntNoYear = "(" + patternTime12InDay + space + patternDateWithoutYearInt + ")";
 		pattern = new PatternDateTime(Pattern.compile(patternTime12AndDateIntNoYear, flags), "HH:mmaa dd/MM");
 		pat.add(pattern);
@@ -89,20 +104,7 @@ public class PatternLib {
 		pattern = new PatternDateTime(Pattern.compile(patternTime24AndDateStringNoYear, flags), "HH:mm dd/MMM");
 		pat.add(pattern);
 		
-		String patternTime12AndDateIntWithYear = "(" + patternTime12InDay + space + patternDateWithYearInt + ")";
-		pattern = new PatternDateTime(Pattern.compile(patternTime12AndDateIntWithYear, flags), "HH:mmaa dd/MM/yy");
-		pat.add(pattern);
-		
-		String patternTime24AndDateIntWithYear = "(" + patternTime24InDay + space + patternDateWithYearInt + ")";
-		pattern = new PatternDateTime(Pattern.compile(patternTime24AndDateIntWithYear, flags), "HH:mm dd/MM/yy");
-		pat.add(pattern);
-		
-		String patternTime12AndDateStringWithYear = "(" + patternTime12InDay + space + patternDateWithYearString + ")";
-		pattern = new PatternDateTime(Pattern.compile(patternTime12AndDateStringWithYear, flags), "HH:mmaa dd/MMM/yy");
-		pat.add(pattern);
-		
-		String patternTime24AndDateStringWithYear = "(" + patternTime24InDay + space + patternDateWithYearString + ")";
-		pattern = new PatternDateTime(Pattern.compile(patternTime24AndDateStringWithYear, flags), "HH:mm dd/MMM/yy");
+	
 		pat.add(pattern);
 
 		pattern = new PatternDateTime(Pattern.compile(patternDateWithoutYearInt, flags), "dd/MM");

@@ -340,9 +340,9 @@ public class Logic {
 		String priority = listOfHashTags.get(0);
 		listOfHashTags.remove(0);
 		String eventHashTag = getHashTagsString(listOfHashTags);
-		Duration eventReminder = getReminderTime(parameterList);
 		String endTime = getEndTime(parameterList);
 		String startTime = getStartTime(parameterList);
+		Duration eventReminder = getReminderTime(parameterList);
 		if (endTime == EMPTY_STRING) {
 			endTime = STRING_INVALID;
 		}
@@ -412,19 +412,19 @@ public class Logic {
 				hashTags.remove(i);
 				hashTags.add(0, Priority_High);
 				found = true;
-				break;
+				return;
 			} else if (hashTags.get(i).trim().equalsIgnoreCase("normal")
 					|| hashTags.get(i).trim().equalsIgnoreCase("n")) {
 				hashTags.remove(i);
 				hashTags.add(0, Priority_Normal);
 				found = true;
-				break;
+				return;
 			} else if (hashTags.get(i).trim().equalsIgnoreCase("low")
 					|| hashTags.get(i).trim().equalsIgnoreCase("l")) {
 				hashTags.remove(i);
 				hashTags.add(0, Priority_Low);
 				found = true;
-				break;
+				return;
 			}
 		}
 		if (found == false) {

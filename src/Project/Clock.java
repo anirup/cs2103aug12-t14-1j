@@ -13,7 +13,7 @@ public class Clock {
 	}
 	
 	public static boolean isBigBangTime(DateTime time) {
-		if(toString(time).equalsIgnoreCase("00:00 01/01/1970")) {
+		if(toString(time).equalsIgnoreCase("invalid")) {
 			return true;
 		}
 		return false;

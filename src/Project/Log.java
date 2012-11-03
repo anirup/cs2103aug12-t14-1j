@@ -1,14 +1,15 @@
 package Project;
-
-import java.io.IOException;
 import java.util.logging.*;
+
+import org.joda.time.DateTime;
 
 public class Log {
 	private static final Logger messageLogger=Logger.getLogger("Log");
 	private static FileHandler fh=null;
 	public static void setup() throws Exception
 	{
-		fh = new FileHandler("Message Log", true);	
+		String fileName="MessageLog -" + Clock.toString(DateTime.now()).replace(":", "").replace("/", "");
+		fh = new FileHandler(fileName, true);	
 	}
 	public static void toLog(int Level,String message) throws Exception
 	{

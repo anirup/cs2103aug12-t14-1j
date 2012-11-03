@@ -19,7 +19,12 @@ public class ListOfAlarm implements ListOfEventObserver {
 		return _instance;
 	}
 	public static void setListOfAlarm(ArrayList<AlarmType> newList) {
-		Collections.copy(alarmList, newList);		
+		//Collections.copy(alarmList, newList);
+		alarmList.clear();
+		for(int i=0;i<newList.size();i++)
+		{
+			alarmList.add(newList.get(i));
+		}
 	}
 	
 	//public static void add(AlarmType alarm){
