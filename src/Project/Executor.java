@@ -9,6 +9,15 @@ public class Executor implements ListOfEventObserver {
 	private static ArrayList<String> currentListOfFloatingEventToDisplay = new ArrayList<String>();
 	private static ArrayList<String> searchResults = new ArrayList<String>();
 
+	private static Executor _instance = new Executor();
+	
+	private Executor() {
+		
+	}
+	
+	public static Executor getInstance() {
+		return _instance;
+	}
 	private static final String PRIORITY_LOW = "Low";
 	private static final String PRIORITY_NORMAL = "Normal";
 	private static final String PRIORITY_HIGH = "high";
@@ -85,7 +94,6 @@ public class Executor implements ListOfEventObserver {
 				try {
 					// Saving to file after add
 					ListOfEvent.syncDataToDatabase();
-				} catch (IOException e) {
 				} catch (Exception e) {
 					// ListOfEvent.formatListOfEvent();
 					Log.toLog(2, ExceptionHandler.getException(10));
@@ -93,6 +101,7 @@ public class Executor implements ListOfEventObserver {
 				}
 				previousCommand = COMMAND_ADD;
 				Log.toLog(0, ExceptionHandler.getException(0));
+				ListOfEvent.notifyObservers();
 				return 0;
 			} else if (command.equalsIgnoreCase(COMMAND_DELETE)
 					|| command.equalsIgnoreCase(SHORTHAND_DELETE)) {
@@ -107,6 +116,7 @@ public class Executor implements ListOfEventObserver {
 					}
 				}
 				Log.toLog(0, ExceptionHandler.getException(1));
+				ListOfEvent.notifyObservers();
 				return 1;
 
 			} else if (command.equalsIgnoreCase(COMMAND_UPDATE)
@@ -131,6 +141,7 @@ public class Executor implements ListOfEventObserver {
 					// ListOfEvent.update(searchResults.get(userInputInteger).index(),eventEdit);
 					previousCommand = COMMAND_UPDATE;
 					Log.toLog(0, ExceptionHandler.getException(2));
+					ListOfEvent.notifyObservers();
 					return 2;
 				}
 
@@ -142,6 +153,7 @@ public class Executor implements ListOfEventObserver {
 					if (getSearchState() == true) {
 						ListOfEvent.markDoneSearch(userInputInteger);
 						Log.toLog(0, ExceptionHandler.getException(3));
+						ListOfEvent.notifyObservers();
 						return 3;
 					} else if (getSearchState() == false) {
 						ListOfEvent.markDoneList(userInputInteger);
@@ -152,6 +164,7 @@ public class Executor implements ListOfEventObserver {
 					if (getSearchState() == true) {
 						ListOfEvent.markUndoneSearch(userInputInteger);
 						Log.toLog(0, ExceptionHandler.getException(4));
+						ListOfEvent.notifyObservers();
 						return 4;
 					} else if (getSearchState() == false) {
 						ListOfEvent.markUndoneList(userInputInteger);
@@ -162,6 +175,7 @@ public class Executor implements ListOfEventObserver {
 				undoLast();
 				previousCommand = COMMAND_UNDONE;
 				Log.toLog(0, ExceptionHandler.getException(6));
+				ListOfEvent.notifyObservers();
 				return 6;
 			} else if (command.equalsIgnoreCase(COMMAND_EXIT)) {
 				Log.toLog(0, ExceptionHandler.getException(7));
@@ -221,30 +235,6 @@ public class Executor implements ListOfEventObserver {
 	}
 
 	private static void commenceSearch(Vector<String> searchWords) {
-		/*
-		 * int size = ListOfEvent.size(); for (int i = 0; i < size; i++) { if
-		 * (searchWords.isEmpty()) break; boolean isChecked = false; String
-		 * searchCheck = STRING_NULL; String[] tags =
-		 * ListOfEvent.get(i).getEventHashTag().split("#"); for (int j = 0; j <
-		 * tags.length; j++) { searchCheck += tags[j]; searchCheck += "."; }
-		 * searchCheck += ListOfEvent.get(i).getEventName(); for (int k = 0; k <
-		 * searchWords.size(); k++) { if (searchCheck.toLowerCase().contains(
-		 * searchWords.get(k).toLowerCase()) && isChecked == false) {
-		 * searchResults.add(new EventForSort(i, ListOfEvent.get(i))); break; }
-		 * } }
-		 */
-		/*
-		 * int size = ListOfEvent.size(); for (int i = 0; i < size; i++) { if
-		 * (searchWords.isEmpty()) break; boolean isChecked = false; String
-		 * searchCheck = STRING_NULL; String[] tags =
-		 * ListOfEvent.get(i).getEventHashTag().split("#"); for (int j = 0; j <
-		 * tags.length; j++) { searchCheck += tags[j]; searchCheck += "."; }
-		 * searchCheck += ListOfEvent.get(i).getEventName(); for (int k = 0; k <
-		 * searchWords.size(); k++) { if (searchCheck.toLowerCase().contains(
-		 * searchWords.get(k).toLowerCase()) && isChecked == false) {
-		 * searchResults.add(new EventForSort(i, ListOfEvent.get(i))); break; }
-		 * } }
-		 */
 		ListOfEvent.searchInNameAndHashTags(searchWords);
 	}
 

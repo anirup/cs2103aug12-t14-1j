@@ -32,6 +32,8 @@ public class ListOfEvent {
 	}
 	
 	public static void setUpDataFromDatabase() throws Exception {
+		addObserver(Executor.getInstance());
+		addObserver(ListOfAlarm.getInstance());
 		EventStringHandler.setUpDataFromDatabase(fileName);
 		listOfEvent = EventStringHandler.getCurrentListOfEvent();
 		notifyObservers();
@@ -81,9 +83,12 @@ public class ListOfEvent {
 	
 	public static Event add(String eventInString) {
 		Event newEvent = getEventFromString(eventInString);
+		if(newEvent!=null)
+		{
 		isClashedWithExistingEvents(newEvent);
 		isBeforeCurrentTime(newEvent);
 		listOfEvent.add(newEvent);
+		}
 		return newEvent;
 	}
 	

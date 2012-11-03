@@ -15,7 +15,7 @@ public class What2DoUI extends javax.swing.JFrame {
 	public What2DoUI() {
 		initComponents();
 	}
-
+	int updateFlag=0;
 	String demo="daff";
 	char lastEvent = ' ';
 	String previousEntry = "";
@@ -435,6 +435,14 @@ public class What2DoUI extends javax.swing.JFrame {
                 jPanel4.setVisible(false);
                 jPanel2.setVisible(true);
             }
+            if (data.contains("update")){
+            	updateFlag+=1;
+            	updateFlag=updateFlag%3;
+            	if (updateFlag==1){
+            	//call anirup's function-textField1.setText("");
+            	}
+
+            	}
 			int index = Executor.analyze(data);
 			String message = ExceptionHandler.getException(index);
 			toUpdate = !(message.contains("Error"));
@@ -462,6 +470,7 @@ public class What2DoUI extends javax.swing.JFrame {
 			textField1.setText("");
 
 			previousEntry = data;
+			
 		}
 
 	}// GEN-LAST:event_textField1KeyTyped
@@ -470,13 +479,14 @@ public class What2DoUI extends javax.swing.JFrame {
 		String result = "";
 		result += "ID" + getSpaces(maximumLengths[0] - 2) + "     "
 				+ "Event Name" + getSpaces(maximumLengths[1] - 10) + "     "
-				+ "Details" + getSpaces(maximumLengths[2] - 7) + "     "
-				+ "Start" + getSpaces(maximumLengths[3] - 5) + "     " + "End"
-				+ getSpaces(maximumLengths[4] - 3) + "     " + "Reminder"
-				+ getSpaces(maximumLengths[5] - 8) + "     " + "\n";
+				+ "Priority" + getSpaces(maximumLengths[2] - 8) + "    "
+				+ "Details" + getSpaces(maximumLengths[3] - 7) + "     "
+				+ "Start" + getSpaces(maximumLengths[4] - 5) + "     " + "End"
+				+ getSpaces(maximumLengths[5] - 3) + "     " + "Reminder"
+				+ getSpaces(maximumLengths[6] - 8) + "     " + "\n";
 		for (int i = 0; i < upcomingEvents.size(); i++) {
 			String[] tempArray = upcomingEvents.get(i).split("\\..");
-			String[] tempArray2 = { "", "", "", "", "", "" };
+			String[] tempArray2 = { "", "", "", "", "", "","" };
 			for (int j = 0; j < tempArray.length; j++) {
 				tempArray2[j] = tempArray[j];
 			}
@@ -491,12 +501,15 @@ public class What2DoUI extends javax.swing.JFrame {
 					+ "     ";
 			result += tempArray2[3]
 					+ getSpaces(maximumLengths[3] - tempArray2[3].length())
-					+ "     ";
+					+ "      ";
 			result += tempArray2[4]
 					+ getSpaces(maximumLengths[4] - tempArray2[4].length())
 					+ "     ";
 			result += tempArray2[5]
 					+ getSpaces(maximumLengths[5] - tempArray2[5].length())
+					+ "     ";
+			result += tempArray2[6]
+					+ getSpaces(maximumLengths[6] - tempArray2[6].length())
 					+ "     ";
 			result += "\n";
 		}
@@ -544,13 +557,14 @@ public class What2DoUI extends javax.swing.JFrame {
 	}
 
 	private int[] getMaximumLengths(ArrayList<String> unformatted) {
-		int[] lengths = new int[6];
+		int[] lengths = new int[7];
 		lengths[0] = 2;
 		lengths[1] = 10;
 		lengths[2] = 7;
-		lengths[3] = 5;
-		lengths[4] = 3;
-		lengths[5] = 8;
+		lengths[3] = 8;
+		lengths[4] = 5;
+		lengths[5] = 3;
+		lengths[6] = 8;
 		for (int i = 0; i < unformatted.size(); i++) {
 			String[] tempStorage = unformatted.get(i).split("\\..");
 			for (int k = 0; k < tempStorage.length; k++) {
@@ -561,6 +575,7 @@ public class What2DoUI extends javax.swing.JFrame {
 		}
 		return lengths;
 	}
+
 
 	private void textField1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_textField1ActionPerformed
 		// TODO add your handling code here:

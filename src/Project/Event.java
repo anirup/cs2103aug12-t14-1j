@@ -176,10 +176,9 @@ public class Event {
 		String content = _eventName;
 		content= content + SPLITTER + _eventPriority;
 		content= content + SPLITTER + _eventHashTag;
-		content= content + SPLITTER + Boolean.toString(_isDone);
-		content= content + SPLITTER + Clock.toStringToDisplay(_eventReminder);
 		content= content + SPLITTER + Clock.toStringToDisplay(_eventStartTime);
 		content= content + SPLITTER + Clock.toStringToDisplay(_eventEndTime);
+		content= content + SPLITTER + Clock.toStringToDisplay(_eventReminder);
 		return content;
 	}
 	

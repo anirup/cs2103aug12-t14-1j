@@ -9,7 +9,15 @@ public class ListOfAlarm implements ListOfEventObserver {
 
 	private static CopyOnWriteArrayList<AlarmType> alarmList = new CopyOnWriteArrayList<AlarmType>();
 	private static AlarmSound sound = new AlarmSound();
+	private static ListOfAlarm _instance = new ListOfAlarm();
 	
+	private ListOfAlarm() {
+		
+	}
+	
+	public static ListOfAlarm getInstance() {
+		return _instance;
+	}
 	public static void setListOfAlarm(ArrayList<AlarmType> newList) {
 		Collections.copy(alarmList, newList);		
 	}

@@ -12,6 +12,7 @@ import java.util.Vector;
 public class Logic {
 	private static final String SHORTHAND_ADD = "+";
 	private static final String COMMAND_ADD = "add";
+	private static final String COMMAND_SEARCH = "search";
 	private static final String ELEMENT_EMPTY = "-1";
 	private static final String EXTRACT_NUMBERS_PATTERN = "\\d+";
 	private static final String STRING_FALSE = "false";
@@ -45,20 +46,28 @@ public class Logic {
 	private static boolean fieldFound[] = { false, false, false, false, false,
 			false };
 	private static int message = 0;
+	private static Vector<String> additionalComments;
 
 	public static void setUp() {
 		for (int i = 0; i < 6; i++) {
 			fieldFound[i] = false;
 		}
-		message=0;
+		message = 0;
+		additionalComments = new Vector<String>();
+		additionalComments.clear();
 	}
 
 	public static int getMessage() {
 		return message;
 	}
 
+	public static Vector<String> getAdditionalComments() {
+		return additionalComments;
+	}
+
 	public static Vector<String> splitInput(String userInput) {
-		boolean[] reminderFound={false};
+		int[] reminderFound = { 0 };
+		int[] timeCount = { 0 };
 		Vector<String> parameterList = new Vector<String>();
 		Vector<Integer> timeIndexes = new Vector<Integer>();
 		try {
@@ -68,30 +77,95 @@ public class Logic {
 			message = 12;
 			return parameterList;
 		}
-		try {
-			if (parameterList.get(0).equals(COMMAND_ADD)
-					|| parameterList.get(0).equals(SHORTHAND_ADD)) {
-				userInput = extractTimeFieldsAndUpdateInputString(reminderFound,userInput,
-						parameterList, timeIndexes);
+		if (parameterList.get(0).equals(COMMAND_ADD)
+				|| parameterList.get(0).equals(SHORTHAND_ADD)
+				|| parameterList.get(0).equals(COMMAND_SEARCH)) {
+			try {
+
+				userInput = extractTimeFieldsAndUpdateInputString(
+						reminderFound, userInput, parameterList, timeIndexes,
+						timeCount);
+			} catch (Exception e) {
+				message = 13;
+				return parameterList;
 			}
-		} catch (Exception e) {
-			message = 13;
-			return parameterList;
-		}
-		try {
+			try {
+				extractKeywordsAlongWithHashTags(userInput, parameterList);
+			} catch (Exception e) {
+				message = 14;
+				return parameterList;
+			}
+			try {
+				shiftKeywordsToSecondIndex(parameterList);
+			} catch (Exception e) {
+				message = 16;
+				return parameterList;
+			}
+			try {
+				processEndStartTime(userInput, parameterList, timeIndexes);
+			} catch (Exception e) {
+				message = 13;
+				return parameterList;
+			}
+		} else {
 			extractKeywordsAlongWithHashTags(userInput, parameterList);
-		} catch (Exception e) {
-			message = 14;
-			return parameterList;
 		}
-		shiftKeywordsToSecondIndex(parameterList);
-		processEndStartTime(userInput, parameterList, timeIndexes);
 		parameterList = trimAllParameters(parameterList);
+		String[] convertedArray = new String[parameterList.size()];
+		Vector<String> checkHashTags = getHashTags(parameterList
+				.toArray(convertedArray));
+		checkMultiplePriorities(checkHashTags);
+		parameterList = trimAllParameters(parameterList);
+		setOtherAdditionalComments(reminderFound, timeCount);
 		return parameterList;
 	}
 
+	private static void checkMultiplePriorities(Vector<String> checkHashTags) {
+		int count = 0;
+		for (int j = 0; j < checkHashTags.size(); j++) {
+			if ((checkHashTags.get(j).equalsIgnoreCase(Priority_High))
+					|| (checkHashTags.get(j).equalsIgnoreCase(Priority_Low))
+					|| (checkHashTags.get(j).equalsIgnoreCase(Priority_Normal))) {
+				count++;
+				if (count > 1) {
+					additionalComments
+							.add("More than 1 Type of Priorities Detected - Taking the first one.");
+				}
+			}
+		}
+
+	}
+
+	private static void setOtherAdditionalComments(int[] reminderFound,
+			int[] timeCount) {
+		if (timeCount[0] == 0) {
+			additionalComments
+					.add("No Time Parameters Found - If You Did Enter Time Parameters - Please check Supported Time formats.");
+		} else if (timeCount[0] == 1) {
+			additionalComments
+					.add("1 Time Parameter Found - It was taken as Start Time");
+		} else if (timeCount[0] == 2) {
+			additionalComments
+					.add("2 Time Parameters Found - Taken as Start and End Time");
+		} else if (timeCount[0] > 2) {
+			additionalComments
+					.add("More than 2 Time Parameters Found - Please check Supported Time Formats.");
+		}
+		if (reminderFound[0] == 0) {
+			additionalComments.add("No Reminder Set");
+		} else if (reminderFound[0] == 1) {
+			additionalComments.add("Reminder Set");
+		} else if (reminderFound[0] > 1) {
+			additionalComments
+					.add("More than 1 Reminder Found - Reminder Set as the first one");
+		}
+		if (reminderFound[0] > 0 && timeCount[0] == 0) {
+			additionalComments.add("No Reminder Time for Floating Type Events");
+		}
+	}
+
 	private static String extractCommandTypeAndUpdateInputString(
-			String command, Vector<String> parameterList) {
+			String command, Vector<String> parameterList) throws Exception {
 		command = StringOperation.removeExtraSpace(command);
 		command = command + STRING_SPACE;
 		parameterList.add(command.substring(0, command.indexOf(STRING_SPACE)));
@@ -100,9 +174,10 @@ public class Logic {
 		return command;
 	}
 
-	private static String extractTimeFieldsAndUpdateInputString(boolean[] reminderFound,
-			String userInput, Vector<String> parameterList,
-			Vector<Integer> timeIndexes) {
+	private static String extractTimeFieldsAndUpdateInputString(
+			int[] reminderFound, String userInput,
+			Vector<String> parameterList, Vector<Integer> timeIndexes,
+			int[] timeCount) throws Exception {
 		for (int j = 0; j < userInput.length(); j++) {
 			String temp = userInput.substring(j, userInput.length());
 			String original = temp;
@@ -110,49 +185,55 @@ public class Logic {
 			temp = StringOperation.prepareInputToAnalyzeTime(temp);
 			if (PatternLib.isFindDateTime(temp)[1] == 0) {
 				int i;
-				int indexStart = PatternLib.isFindDateTime(temp)[1];
-				int indexEnd = PatternLib.isFindDateTime(temp)[2];
-				String formatted = temp.substring(indexStart, indexEnd);
-				for (i = original.length(); i >= 0; i--) {
-					if (!StringOperation.prepareInputToAnalyzeTime(
-							original.substring(0, i)).contains(formatted)) {
-						break;
+
+				if (timeCount[0] < 2) {
+					int indexStart = PatternLib.isFindDateTime(temp)[1];
+					int indexEnd = PatternLib.isFindDateTime(temp)[2];
+					String formatted = temp.substring(indexStart, indexEnd);
+					for (i = original.length(); i >= 0; i--) {
+						if (!StringOperation.prepareInputToAnalyzeTime(
+								original.substring(0, i)).contains(formatted)) {
+							break;
+						}
 					}
+					j += PatternLib.isFindDateTime(temp)[2];
+					parameterList.add(temp.substring(0, indexEnd));
+					userInput += temp.substring(0, indexEnd);
+					timeIndexes.add(j);
+					timeIndexes.add(indexEnd);
+					if (i < original.length() - 1) {
+						userInput = userInput + original.substring(i + 1);
+					} else
+						userInput += EMPTY_STRING;
 				}
-				j += PatternLib.isFindDateTime(temp)[2];
-				parameterList.add(temp.substring(0, indexEnd));
-				userInput += temp.substring(0, indexEnd);
-				timeIndexes.add(j);
-				timeIndexes.add(indexEnd);
-				if (i < original.length() - 1) {
-					userInput = userInput + original.substring(i + 1);
-				} else
-					userInput += EMPTY_STRING;
+				timeCount[0]++;
 			} else if (PatternLib.isFindReminderTime(original)[1] == 0) {
-				int a[] = PatternLib.isFindReminderTime(original);
-				userInput = userInput
-						+ original.substring(0,
-								PatternLib.isFindReminderTime(original)[2]);
-				if(reminderFound[0]==false)
-				{
-				parameterList.add(original.substring(0,
-						PatternLib.isFindReminderTime(original)[2]));
-				reminderFound[0]=true;
-				}
-				j += a[2];
-				int i;
-				String formatted = original.substring(
-						PatternLib.isFindReminderTime(original)[1],
-						PatternLib.isFindReminderTime(original)[2]);
-				for (i = original.length(); i >= 0; i--) {
-					if (!original.substring(0, i).contains(formatted)) {
-						break;
+				if (reminderFound[0] < 1) {
+					int a[] = PatternLib.isFindReminderTime(original);
+					userInput = userInput
+							+ original.substring(0,
+									PatternLib.isFindReminderTime(original)[2]);
+					if (reminderFound[0] == 0) {
+						parameterList.add(original.substring(0,
+								PatternLib.isFindReminderTime(original)[2]));
+
 					}
+					j += a[2];
+					int i;
+					String formatted = original.substring(
+							PatternLib.isFindReminderTime(original)[1],
+							PatternLib.isFindReminderTime(original)[2]);
+					for (i = original.length(); i >= 0; i--) {
+						if (!original.substring(0, i).contains(formatted)) {
+							break;
+						}
+					}
+					if (i < original.length() - 1) {
+						userInput = userInput + original.substring(i + 1);
+					} else
+						userInput += EMPTY_STRING;
 				}
-				if (i < original.length() - 1) {
-					userInput = userInput + original.substring(i + 1);
-				} else
-					userInput += EMPTY_STRING;
+				reminderFound[0]++;
 			} else {
 				userInput = userInput + original;
 			}
@@ -161,7 +242,8 @@ public class Logic {
 	}
 
 	private static void processEndStartTime(String userInput,
-			Vector<String> parameterList, Vector<Integer> timeIndexes) {
+			Vector<String> parameterList, Vector<Integer> timeIndexes)
+			throws Exception {
 		Vector<String> timeFields = new Vector<String>();
 		Vector<Integer> indexes = new Vector<Integer>();
 		if (parameterList.size() > 3) {
@@ -177,28 +259,29 @@ public class Logic {
 			int startFirst = timeIndexes.get(0) - timeIndexes.get(1);
 			int endSecond = timeIndexes.get(2);
 			int startSecond = timeIndexes.get(2) - timeIndexes.get(3);
-			if (userInput.substring(endFirst-1, startSecond + 1).contains(" to")) {
-				int firstTimePattern = PatternLib.isMatchDateTime(userInput
-						.substring(startFirst, endFirst));
-				int secondTimePattern = PatternLib.isMatchDateTime(userInput
-						.substring(startSecond, endSecond));
-				if (firstTimePattern < 15 && firstTimePattern > 12) {
-					DateTime time1 = PatternLib.getDateTime(
-							userInput.substring(startFirst, endFirst),
+			int firstTimePattern = PatternLib.isMatchDateTime(userInput
+					.substring(startFirst, endFirst));
+			int secondTimePattern = PatternLib.isMatchDateTime(userInput
+					.substring(startSecond, endSecond));
+			DateTime time1 = PatternLib
+					.getDateTime(userInput.substring(startFirst, endFirst),
 							firstTimePattern);
-					DateTime time2 = PatternLib.getDateTime(
-							userInput.substring(startSecond, endSecond),
-							secondTimePattern);
+			DateTime time2 = PatternLib.getDateTime(
+					userInput.substring(startSecond, endSecond),
+					secondTimePattern);
+			if (userInput.substring(endFirst - 1, startSecond + 1).contains(
+					" to")) {
+				if (firstTimePattern < 15 && firstTimePattern > 12) {
 					time1 = Clock.changeToDate(time1, time2);
-					parameterList.add(indexes.get(0), time1.toString());
-					parameterList.remove(indexes.get(0) + 1);
-					parameterList.add(indexes.get(1), time2.toString());
-					parameterList.remove(indexes.get(1) + 1);					
 				}
+				parameterList.add(indexes.get(0), time1.toString());
+				parameterList.remove(indexes.get(0) + 1);
+				parameterList.add(indexes.get(1), time2.toString());
+				parameterList.remove(indexes.get(1) + 1);
 			}
-	
+
 		}
-	
+
 	}
 
 	private static void extractKeywordsAlongWithHashTags(String userInput,
@@ -253,7 +336,10 @@ public class Logic {
 	public static String getEventString(String[] parameterList) {
 		String eventID = getEventID();
 		String eventName = getKeyWords(parameterList);
-		String eventHashTag = getHashTagsString(getAllHashTags(parameterList));
+		Vector<String> listOfHashTags = getAllHashTags(parameterList);
+		String priority = listOfHashTags.get(0);
+		listOfHashTags.remove(0);
+		String eventHashTag = getHashTagsString(listOfHashTags);
 		Duration eventReminder = getReminderTime(parameterList);
 		String endTime = getEndTime(parameterList);
 		String startTime = getStartTime(parameterList);
@@ -262,18 +348,16 @@ public class Logic {
 		}
 		if (startTime == EMPTY_STRING) {
 			startTime = STRING_INVALID;
-		}DateTime start,end;
-		if(!(startTime!=STRING_INVALID && endTime!=STRING_INVALID))
-		{
-		start = PatternLib.getDateTime(startTime,
-				PatternLib.isMatchDateTime(startTime));
-		end = PatternLib.getDateTime(endTime,
-				PatternLib.isMatchDateTime(endTime));
 		}
-		else
-		{
-			start=DateTime.parse(startTime);
-			end=DateTime.parse(endTime);
+		DateTime start, end;
+		if (!(startTime != STRING_INVALID && endTime != STRING_INVALID)) {
+			start = PatternLib.getDateTime(startTime,
+					PatternLib.isMatchDateTime(startTime));
+			end = PatternLib.getDateTime(endTime,
+					PatternLib.isMatchDateTime(endTime));
+		} else {
+			start = DateTime.parse(startTime);
+			end = DateTime.parse(endTime);
 		}
 		if ((!startTime.equalsIgnoreCase(STRING_INVALID))
 				&& !(endTime.equalsIgnoreCase(STRING_INVALID))) {
@@ -303,9 +387,9 @@ public class Logic {
 		} else {
 			reminderString = STRING_INVALID;
 		}
-		String content = eventID + SPLITTER + eventName + SPLITTER
-				+ eventHashTag + SPLITTER + STRING_FALSE + SPLITTER
-				+ reminderString + SPLITTER + eventTime + SPLITTER;
+		String content = eventID + SPLITTER + eventName + SPLITTER + priority
+				+ SPLITTER + eventHashTag + SPLITTER + STRING_FALSE + SPLITTER
+				+ reminderString + SPLITTER + eventTime + SPLITTER + STRING_INVALID;
 		return content;
 	}
 
@@ -324,21 +408,23 @@ public class Logic {
 		boolean found = false;
 		for (int i = 0; i < hashTags.size(); i++) {
 			if (hashTags.get(i).trim().equalsIgnoreCase("high")
-					|| hashTags.get(i).trim()
-							.equalsIgnoreCase(REMINDER_HOUR_SHORTHAND2)) {
-				hashTags.add(0, Priority_High);
+					|| hashTags.get(i).trim().equalsIgnoreCase("h")) {
 				hashTags.remove(i);
+				hashTags.add(0, Priority_High);
 				found = true;
+				break;
 			} else if (hashTags.get(i).trim().equalsIgnoreCase("normal")
 					|| hashTags.get(i).trim().equalsIgnoreCase("n")) {
-				hashTags.add(0, Priority_Normal);
 				hashTags.remove(i);
+				hashTags.add(0, Priority_Normal);
 				found = true;
+				break;
 			} else if (hashTags.get(i).trim().equalsIgnoreCase("low")
 					|| hashTags.get(i).trim().equalsIgnoreCase("l")) {
-				hashTags.add(0, Priority_Low);
 				hashTags.remove(i);
+				hashTags.add(0, Priority_Low);
 				found = true;
+				break;
 			}
 		}
 		if (found == false) {
@@ -433,7 +519,14 @@ public class Logic {
 						.substring(startHashCode + 1).trim()
 						.split(SPLITTER_HASH);
 				for (int j = 0; j < hashCodes.length; j++) {
-					listOfHashTags.add(hashCodes[j].trim());
+					if (hashCodes[j].trim().isEmpty()
+							|| hashCodes[j].trim().equalsIgnoreCase(
+									EMPTY_STRING)) {
+						additionalComments
+								.add("Empty Hash Tag Detected - It was Ignored.");
+					} else {
+						listOfHashTags.add(hashCodes[j].trim());
+					}
 				}
 				break;
 			}
@@ -441,12 +534,13 @@ public class Logic {
 		}
 		return listOfHashTags;
 	}
-	private static Vector<String> getAllHashTags(String[] parameterList)
-	{
+
+	private static Vector<String> getAllHashTags(String[] parameterList) {
 		Vector<String> listOfHashTags = getHashTags(parameterList);
 		getPriority(listOfHashTags);
 		return listOfHashTags;
 	}
+
 	private static String getHashTagsString(Vector<String> hashList) {
 		String allHash = EMPTY_STRING;
 		for (int i = 0; i < hashList.size(); i++) {
@@ -511,5 +605,33 @@ public class Logic {
 		} catch (NumberFormatException e) {
 			return -1;
 		}
+	}
+
+	public static String getReminderInFromat(String endTime, String reminder) {
+		String formattedReminder = EMPTY_STRING;
+		if (!endTime.equalsIgnoreCase(EMPTY_STRING)
+				&& !reminder.equalsIgnoreCase(EMPTY_STRING)) {
+			formattedReminder += "r-";
+			DateTime end = Clock.parseTimeFromString(endTime);
+			DateTime reminderTime = Clock.parseTimeFromString(reminder);
+			Long milli = (end.getMillis() - reminderTime.getMillis());
+			int day = (int) (milli % MILLISECONDS_IN_DAY);
+			milli = (Long) (milli - (day * MILLISECONDS_IN_DAY));
+			int hour = (int) (milli % MILLISECONDS_IN_HOUR);
+			milli = (Long) (milli - (day * MILLISECONDS_IN_HOUR));
+			int minutes = (int) (milli % MILLISECONDS_IN_MINUTE);
+			milli = (Long) (milli - (day * MILLISECONDS_IN_MINUTE));
+			int seconds = (int) (milli / 1000.0);
+			if (day != 0) {
+				formattedReminder += day + "day";
+			} else if (hour != 0) {
+				formattedReminder += hour + "hr";
+			} else if (minutes != 0) {
+				formattedReminder += minutes + "min";
+			} else if (seconds != 0) {
+				formattedReminder += seconds + "sec";
+			}
+		}
+		return formattedReminder;
 	}
 }
