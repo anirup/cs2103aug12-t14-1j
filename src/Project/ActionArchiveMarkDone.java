@@ -9,7 +9,6 @@ public class ActionArchiveMarkDone {
 	}
 	
 	public void rollBack() {
-		int position = ListOfEvent.indexOf(_eventMarkedDone);
-		ListOfEvent.markUndone(position);
+		ListOfEvent.markUndoneList(_eventMarkedDone);
 	}
 }

@@ -19,17 +19,14 @@ public class StringOperation {
 		if (firstSpace >= 0) {
 			return input.substring(0, firstSpace);
 		}
-		return "";
+		return input;
 	}
 	
-	
-	public static String getFirst(String input) {
-		int firstSpace = input.indexOf(" ");
-		if (firstSpace >= 0) {
-			return input.substring(0, firstSpace);			
-		} else {
-			return input;
-		}
+	public static boolean isValidIsDone(String isDone) {
+		if(!isDone.equalsIgnoreCase("true") && !isDone.equalsIgnoreCase("false")) {
+			return false;
+		} 
+		return true;
 	}
 	
 	public static int extractFirstNumber(String input) {
@@ -59,7 +56,6 @@ public class StringOperation {
 	}
 	
 	public static String prepareStringToAnalyze(String input) {
-		input = toLowerCase(input);
 		input = removeExtraSpace(input);
 		input = removeFirstWord(input);
 		return input.trim();
@@ -191,6 +187,7 @@ public class StringOperation {
 	}
 	
 	public static String prepareInputToAnalyzeTime(String input) {
+		input = toLowerCase(input);
 		input = addDateTimeSeparator(input);
 		input = removeSpace(input);
 		input = correctTime(input);
@@ -204,5 +201,18 @@ public class StringOperation {
 			return "true";
 		}
 		return "false";
+	}
+	
+	public static String crossOutSubString(String subString, String string) {
+		int index = string.indexOf(subString);
+		if(index < 0) {
+			return null;
+		}
+		int lengthOfSubString = subString.length();
+		string = concat(string,subString);
+		for(int i = 0; i < lengthOfSubString; i++) {
+			string = insertCharAt(string, "=", index);
+		}
+		return string;
 	}
 }
