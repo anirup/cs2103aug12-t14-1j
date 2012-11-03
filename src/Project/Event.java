@@ -1,12 +1,16 @@
 package Project;
-
 import org.joda.time.DateTime;
 
 public class Event {
-	protected String _eventID;
-	protected String _eventName;
-	protected String _eventHashTag;
-	protected boolean _isDone;
+	private String _eventID;
+	private String _eventName;
+	private String _eventPriority;
+	private String _eventHashTag;
+	private DateTime _eventReminder;
+	private DateTime _eventStartTime;
+	private DateTime _eventEndTime;
+	private DateTime _timeCompleted;
+	private boolean _isDone;
 	
 	public static final String SPLITTER = "..";
 	protected final String NEW_LINE = "\n";
@@ -14,11 +18,13 @@ public class Event {
 	
 	protected static final int INDEX_FOR_EVENT_ID = 0;
 	protected static final int INDEX_FOR_EVENT_NAME = 1;
-	protected static final int INDEX_FOR_EVENT_HASHTAG = 2;
-	protected static final int INDEX_FOR_EVENT_ISDONE = 3;
-	protected static final int INDEX_FOR_EVENT_REMINDER_TIME = 4;
-	protected static final int INDEX_FOR_EVENT_START_TIME = 5;
-	protected static final int INDEX_FOR_EVENT_END_TIME = 6;
+	protected static final int INDEX_FOR_EVENT_PRIORITY = 2;
+	protected static final int INDEX_FOR_EVENT_HASHTAG = 3;
+	protected static final int INDEX_FOR_EVENT_ISDONE = 4;
+	protected static final int INDEX_FOR_EVENT_REMINDER_TIME = 5;
+	protected static final int INDEX_FOR_EVENT_START_TIME = 6;
+	protected static final int INDEX_FOR_EVENT_END_TIME = 7;
+	protected static final int INDEX_FOR_COMPLETED_TIME = 8;
 	
 	public static final int FLOATING_TYPE = 0;
 	public static final int DEADLINE_TYPE = 1;
@@ -29,46 +35,63 @@ public class Event {
 		_eventName = null;
 		_eventHashTag = null;
 		_isDone = false;
+		_eventReminder = Clock.getBigBangTime();
+		_eventStartTime = Clock.getBigBangTime();
+		_eventEndTime = Clock.getBigBangTime();
+		_eventPriority = null;
+		_timeCompleted = Clock.getBigBangTime();;
 	}
 	
-	public Event(String eventID, String eventName, String eventHashTag, DateTime eventReminder, boolean isDone) {
+	public Event(String eventID, String eventName, String eventPriority, String eventHashTag,  boolean isDone,
+			DateTime eventReminder, DateTime eventStartTime, DateTime eventEndTime) {
 		_eventID = eventID;
 		_eventName = eventName;
+		_eventPriority = eventPriority;
 		_eventHashTag = eventHashTag;
 		_isDone = isDone;
+		_eventReminder = eventReminder;
+		_eventStartTime = eventStartTime;
+		_eventEndTime = eventEndTime;
 		return;
 	}
 	
 	public void parse(String[] contentToExtract) {		
+		assert contentToExtract.length == 9;
 		_eventID = contentToExtract[INDEX_FOR_EVENT_ID];
 		_eventName = contentToExtract[INDEX_FOR_EVENT_NAME];
+		_eventPriority = contentToExtract[INDEX_FOR_EVENT_PRIORITY];
 		_eventHashTag = contentToExtract[INDEX_FOR_EVENT_HASHTAG];
-		extractEventIsDone(contentToExtract);
+		_isDone = extractEventIsDone(contentToExtract[INDEX_FOR_EVENT_ISDONE]);
+		_eventReminder = Clock.parseTimeFromString(contentToExtract[INDEX_FOR_EVENT_REMINDER_TIME]);
+		_eventReminder = Clock.parseTimeFromString(contentToExtract[INDEX_FOR_EVENT_START_TIME]);
+		_eventReminder = Clock.parseTimeFromString(contentToExtract[INDEX_FOR_EVENT_END_TIME]);
+		_timeCompleted = Clock.parseTimeFromString(contentToExtract[INDEX_FOR_COMPLETED_TIME]);
 		return;
-	}
-
-	protected static DateTime extractTime(String[] contentToExtract, int indexTime) {
-		return Clock.parseTimeFromString(contentToExtract[indexTime]);
-	}
-	
-	private void extractEventIsDone(String[] contentToExtract) {
-		String isDone = contentToExtract[INDEX_FOR_EVENT_ISDONE];
-		if (isDone.trim().equalsIgnoreCase("true")) {
-			_isDone = true;
-		} else {
-			_isDone = false;
-		}
 	}
 	
 	public int getEventType() {
-		return FLOATING_TYPE;
+		if(Clock.isBigBangTime(_eventStartTime) && Clock.isBigBangTime(_eventEndTime)) {
+			return FLOATING_TYPE;
+		} else if(Clock.isBigBangTime(_eventEndTime)) {
+			return DEADLINE_TYPE;
+		} 
+		return TIMED_TYPE;
 	}
 	
 	public boolean isBefore(Event anotherEvent) {
-		return Clock.isBefore(this.getEventTime(), anotherEvent.getEventTime());
+		return Clock.isBefore(this.getEventStartTime(), anotherEvent.getEventStartTime());
 	}
 	
 	public boolean isClashedWith(Event anotherEvent) {
+		DateTime firstStart = this._eventStartTime;
+		DateTime firstEnd = this._eventEndTime;
+		DateTime secondStart = anotherEvent._eventStartTime;
+		DateTime secondEnd = anotherEvent._eventEndTime;
+		if((Clock.isBefore(firstStart, secondEnd) && Clock.isBefore(secondStart, firstStart)) 
+				|| (Clock.isBefore(firstEnd, secondEnd) && Clock.isBefore(secondStart, firstEnd))
+				|| (Clock.isBefore(secondStart, firstEnd) && Clock.isBefore(firstStart, secondEnd))) {
+			return true;
+		} 
 		return false;
 	}
 	
@@ -95,9 +118,12 @@ public class Event {
 		return _eventName.contains(keyWord);
 	}
 	
+	public String getPriority() {
+		return _eventPriority;
+	}
 	
-	public boolean searchInTime(Clock keyWord) {
-		return false;
+	public DateTime getTimeCompleted() {
+		return _timeCompleted;
 	}
 	
 	public String getEventID() {
@@ -105,11 +131,13 @@ public class Event {
 	}
 	
 	public void markDone() {
+		_timeCompleted = DateTime.now();
 		_isDone = true;
 		return;
 	}
 	
 	public void markUndone(){
+		_timeCompleted = Clock.getBigBangTime();
 		_isDone = false;
 		return;
 	}
@@ -123,52 +151,51 @@ public class Event {
 	}
 	
 	public DateTime getEventReminder() {
-		return Clock.getBigBangTime();
+		return _eventReminder;
 	}
 	
 	public boolean isDone() {
 		return _isDone;
 	}
 	
-	public DateTime getEventTime() {
-		return Clock.getBigBangTime();
-	}
-	
 	public DateTime getEventStartTime() {
-		return getEventTime();
+		return _eventStartTime;
 	}
 	
 	public DateTime getEventEndTime() {
-		return getEventTime();
+		return _eventEndTime;
 	}
 	
 	public boolean isSameEvent(Event anotherEvent) {
 		String currentEventID = this.getEventID();
 		String anotherEventID = anotherEvent.getEventID();
-		
 		return currentEventID.equalsIgnoreCase(anotherEventID);
 	}
 
-	public String[] composeContentToDisplay() {
-		String[] content = new String[7];
-		content[INDEX_FOR_EVENT_ID] = _eventID;
-		content[INDEX_FOR_EVENT_NAME] = _eventName;
-		content[INDEX_FOR_EVENT_HASHTAG] = _eventHashTag;
-		content[INDEX_FOR_EVENT_ISDONE] = StringOperation.booleanToString(_isDone);
-		content[INDEX_FOR_EVENT_REMINDER_TIME] = "";
-		content[INDEX_FOR_EVENT_START_TIME] = "";
-		content[INDEX_FOR_EVENT_END_TIME] = "";
-		return content;
-	}
-	
 	public String composeContentToDisplayInString() {
-		String content = _eventName + SPLITTER + _eventHashTag;
+		String content = _eventName;
+		content= content + SPLITTER + _eventPriority;
+		content= content + SPLITTER + _eventHashTag;
+		content= content + SPLITTER + Boolean.toString(_isDone);
+		content= content + SPLITTER + Clock.toStringToDisplay(_eventReminder);
+		content= content + SPLITTER + Clock.toStringToDisplay(_eventStartTime);
+		content= content + SPLITTER + Clock.toStringToDisplay(_eventEndTime);
 		return content;
 	}
 	
 	public String toString() {
-		String content = _eventID + SPLITTER + _eventName + SPLITTER + _eventHashTag + SPLITTER + 
-				 Boolean.toString(_isDone) + SPLITTER;
+		String content = _eventID + SPLITTER + _eventName + SPLITTER + _eventPriority + SPLITTER + 
+				_eventHashTag + SPLITTER + Boolean.toString(_isDone) + SPLITTER + Clock.toString(_eventReminder) +  
+				 SPLITTER + Clock.toString(_eventStartTime)  + SPLITTER + Clock.toString(_eventEndTime)
+				 + SPLITTER + Clock.toString(_timeCompleted);
 		return content;
+	}
+	
+	private boolean extractEventIsDone(String isDone) {
+		if (isDone.trim().equalsIgnoreCase("true")) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
