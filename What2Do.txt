@@ -13,7 +13,11 @@
 2012111144522739..fhvb..#NORMAL..false..17:29 02/11/2012..17:30 02/11/2012..invalid..
 2012111144550130..fhvb..#NORMAL..false..17:29 02/11/2012..17:30 02/11/2012..invalid..
 2012111144556937..fhvb..#NORMAL..false..invalid..17:30 02/11/2012..invalid..
+2012111151056614..abcd..#NORMAL..false..invalid..invalid..invalid..
+20121131396949..sandeep..#NORMAL..false..invalid..invalid..invalid..
+201211313952832..pqrst..#NORMAL..false..invalid..invalid..invalid..
+2012113132219716..sandeep..#NORMAL..false..invalid..invalid..invalid..
+2012113145050649..sandeep..#NORMAL..false..invalid..invalid..invalid..
 2012111145115761..abiqefncjwebv..#high..false..14:29 01/11/2012..14:00 01/11/2012..14:30 01/11/2012..
 2012111144144681..abcd..#NORMAL..false..17:59 02/11/2012..17:00 02/11/2012..18:00 02/11/2012..
 2012111144314339..abcd..#NORMAL..false..17:59 02/11/2012..17:00 02/11/2012..18:00 02/11/2012..
-2012111151056614..abcd..#NORMAL..false..invalid..invalid..invalid..

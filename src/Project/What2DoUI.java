@@ -44,14 +44,19 @@ public class What2DoUI extends javax.swing.JFrame {
 		jPanel2 = new javax.swing.JPanel();
 		jScrollPane3 = new javax.swing.JScrollPane();
 		jTextArea2 = new javax.swing.JTextArea();
-		jScrollPane5 = new javax.swing.JScrollPane();
-		jTextArea3 = new javax.swing.JTextArea();
+		
 		jScrollPane2 = new javax.swing.JScrollPane();
 		jLabel3 = new javax.swing.JLabel();
 		jPanel3 = new javax.swing.JPanel();
 		jScrollPane1 = new javax.swing.JScrollPane();
 		jTextArea1 = new javax.swing.JTextArea();
-		//jLabel3 = new javax.swing.JLabel();
+		
+		
+		jPanel4 = new javax.swing.JPanel();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        jTextArea4 = new javax.swing.JTextArea();
+
+        //jLabel3 = new javax.swing.JLabel();
 
 		jTable1.setModel(new javax.swing.table.DefaultTableModel(
 				new Object[][] { { null, null, null, null },
@@ -114,7 +119,7 @@ public class What2DoUI extends javax.swing.JFrame {
 				new java.awt.Font("Monospaced", 1, 14), java.awt.Color.black)); // NOI18N
 		jScrollPane3.setViewportView(jTextArea2);
 
-		jTextArea3.setColumns(20);
+		/*jTextArea3.setColumns(20);
 		jTextArea3.setFont(new java.awt.Font("Monospaced", 1, 12));
 		jTextArea3.setRows(5);
 		jTextArea3.setBorder(javax.swing.BorderFactory.createTitledBorder(null,
@@ -122,7 +127,7 @@ public class What2DoUI extends javax.swing.JFrame {
 				javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
 				javax.swing.border.TitledBorder.DEFAULT_POSITION,
 				new java.awt.Font("Monospaced", 1, 14), java.awt.Color.black)); // NOI18N
-		jScrollPane5.setViewportView(jTextArea3);
+		jScrollPane5.setViewportView(jTextArea3);*/
 
 		jScrollPane2.setViewportView(jLabel3);
 
@@ -136,20 +141,7 @@ public class What2DoUI extends javax.swing.JFrame {
 								jPanel2Layout
 										.createSequentialGroup()
 										.addContainerGap()
-										.addGroup(
-												jPanel2Layout
-														.createParallelGroup(
-																javax.swing.GroupLayout.Alignment.LEADING)
-														.addComponent(
-																jScrollPane5,
-																javax.swing.GroupLayout.DEFAULT_SIZE,
-																880,
-																Short.MAX_VALUE)
-														.addComponent(
-																jScrollPane3,
-																javax.swing.GroupLayout.DEFAULT_SIZE,
-																880,
-																Short.MAX_VALUE)))
+										.addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 880, Short.MAX_VALUE))
 						.addComponent(jScrollPane2,
 								javax.swing.GroupLayout.Alignment.TRAILING));
 		jPanel2Layout
@@ -167,18 +159,7 @@ public class What2DoUI extends javax.swing.JFrame {
 										.addPreferredGap(
 												javax.swing.LayoutStyle.ComponentPlacement.RELATED,
 												17, Short.MAX_VALUE)
-										.addComponent(
-												jScrollPane3,
-												javax.swing.GroupLayout.PREFERRED_SIZE,
-												142,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(
-												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-										.addComponent(
-												jScrollPane5,
-												javax.swing.GroupLayout.PREFERRED_SIZE,
-												141,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
+										.addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
 										.addContainerGap()));
 
 		jPanel2.setBounds(0, 0, 890, 340);
@@ -195,7 +176,7 @@ public class What2DoUI extends javax.swing.JFrame {
 		
 		jTextArea1.setEditable(false);
 		jTextArea2.setEditable(false);
-		jTextArea3.setEditable(false);
+		jTextArea4.setEditable(false);
 		
 		jTextArea1.setColumns(20);
 		jTextArea1.setRows(5);
@@ -229,6 +210,37 @@ public class What2DoUI extends javax.swing.JFrame {
 
 		jPanel3.setBounds(0, 0, 883, 331);
 		jLayeredPane1.add(jPanel3, javax.swing.JLayeredPane.DEFAULT_LAYER);
+		
+
+ jPanel4.setBackground(new java.awt.Color(240, 232, 194));
+
+        jTextArea4.setEditable(false);
+        jTextArea4.setColumns(20);
+        jTextArea4.setRows(5);
+        jTextArea4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Floating Events", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14), java.awt.Color.black)); // NOI18N
+        jScrollPane7.setViewportView(jTextArea4);
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 883, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 313, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jPanel4.setBounds(0, 0, 903, 335);
+        jLayeredPane1.add(jPanel4, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+ 
 
 		javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(
 				jPanel1);
@@ -415,7 +427,14 @@ public class What2DoUI extends javax.swing.JFrame {
 				jPanel3.setVisible(false);
 				jPanel2.setVisible(true);
 			}
-
+			if (data.contains("floating")){
+                jPanel2.setVisible(false);
+                jPanel4.setVisible(true);
+            }
+            if (data.contains("upcoming")){
+                jPanel4.setVisible(false);
+                jPanel2.setVisible(true);
+            }
 			int index = Executor.analyze(data);
 			String message = ExceptionHandler.getException(index);
 			toUpdate = !(message.contains("Error"));
@@ -433,7 +452,7 @@ public class What2DoUI extends javax.swing.JFrame {
 			if (toUpdate) {
 				jLabel3.setText(String.format("<html><p class=\"MsoNormal\"><b><span style=\"color: rgb(0, 176, 80)\"; >%s</span></b></p></html>",message));
 				jTextArea2.setText(upcomingEventsString);
-				jTextArea3.setText(floatingEventsString);
+				//jTextArea4.setText(floatingEventsString);
 				jTextArea1.setText(searchResultsString);
 			} else {
 					jLabel3.setText(String.format("<html><p class=\"MsoNormal\"><b><span style=\"color: red; \">%s</span></b></p></html>", message));
@@ -622,18 +641,19 @@ public class What2DoUI extends javax.swing.JFrame {
 	private javax.swing.JPanel jPanel1;
 	private javax.swing.JPanel jPanel2;
 	private javax.swing.JPanel jPanel3;
+	private javax.swing.JPanel jPanel4;
 	private javax.swing.JScrollPane jScrollPane1;
 	private javax.swing.JScrollPane jScrollPane2;
 	private javax.swing.JScrollPane jScrollPane3;
 	private javax.swing.JScrollPane jScrollPane4;
-	private javax.swing.JScrollPane jScrollPane5;
+	private javax.swing.JScrollPane jScrollPane7;
 	private javax.swing.JScrollPane jScrollPane6;
 	private javax.swing.JTabbedPane jTabbedPane1;
 	private javax.swing.JTabbedPane jTabbedPane2;
 	private javax.swing.JTable jTable1;
 	private javax.swing.JTextArea jTextArea1;
 	private javax.swing.JTextArea jTextArea2;
-	private javax.swing.JTextArea jTextArea3;
+	private javax.swing.JTextArea jTextArea4;
 	private javax.swing.JLabel jLabel3;
 	private javax.swing.JLabel jLabel4;
 	private java.awt.TextField textField1;
