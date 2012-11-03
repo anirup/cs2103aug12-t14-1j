@@ -184,6 +184,8 @@ public class Executor implements ListOfEventObserver {
 			Log.toLog(2, ExceptionHandler.getException(10));
 			return 10;
 		}
+		
+		ListOfEvent.notifyObservers();
 		return 11;
 
 	}
@@ -277,6 +279,10 @@ public class Executor implements ListOfEventObserver {
 
 	public static void loadDatabase() throws Exception {
 		ListOfEvent.setUpDataFromDatabase();
+	}
+	
+	public static void formatDatabase() throws Exception {
+		ListOfEvent.formatListOfEvent();
 	}
 
 }
