@@ -54,6 +54,17 @@ public class ListOfEvent {
 		markDoneList(index);
 	}
 	
+	public static void markUndoneSearch(int position)
+	{
+		searchResults.get(position).markUndone();
+		int index = indexOf(searchResults.get(position));
+		markUndoneList(index);
+	}
+	
+	public static void markUndoneList(int position) {
+		listOfEvent.get(position).markUndone();
+	}
+	
 	public static void markDoneList(int position) {
 		listOfEvent.get(position).markDone();
 	}
@@ -201,6 +212,10 @@ public class ListOfEvent {
 		return reminderList;
 	}
 	
+	public static void sortList() {
+		listOfEvent = sort(listOfEvent);
+	}
+	
 	public static ArrayList<Event> sort(ArrayList<Event> list) {
 		Comparator<Event> cmp = new CompareEventByTime();		
 		Collections.sort(list, cmp);
@@ -211,9 +226,26 @@ public class ListOfEvent {
 		ArrayList<String> listToDisplay = new ArrayList<String>();
 
 		for(int index = 0; index < list.size(); index++) {
-			String contentToDisplay = list.get(index).composeContentToDisplayInString();
-			contentToDisplay = String.format(displayFormat, index + 1, contentToDisplay);
-			listToDisplay.add(contentToDisplay);
+			Event currentEvent = listOfEvent.get(index);
+			if(currentEvent.getEventType() != Event.FLOATING_TYPE) {
+				String contentToDisplay = listOfEvent.get(index).composeContentToDisplayInString();
+				contentToDisplay = String.format(displayFormat, index + 1, contentToDisplay);
+				listToDisplay.add(contentToDisplay);
+			}
+		}
+		return listToDisplay;
+	}
+	
+	private static ArrayList<String> floatingToDisplay() {
+		ArrayList<String> listToDisplay = new ArrayList<String>();
+
+		for(int index = 0; index < listOfEvent.size(); index++) {
+			Event currentEvent = listOfEvent.get(index);
+			if(currentEvent.getEventType() == Event.FLOATING_TYPE) {
+				String contentToDisplay = listOfEvent.get(index).composeContentToDisplayInString();
+				contentToDisplay = String.format(displayFormat, index + 1, contentToDisplay);
+				listToDisplay.add(contentToDisplay);
+			}
 		}
 		return listToDisplay;
 	}
@@ -287,9 +319,18 @@ public class ListOfEvent {
 	
 	public static ArrayList<String> getListOfEventToDisplayInString() {
 		listOfEvent = sort(listOfEvent);
-		ArrayList<String> listOfEventToDisplay = toDisplay(listOfEvent);
-		return listOfEventToDisplay;
+		return toDisplay(listOfEvent);
 	}
+	
+	public static ArrayList<String> getListOfFloatingEventToDisplayInString() {
+		return floatingToDisplay();
+	}
+	
+	public static void formatListOfEvent() throws Exception {
+		listOfEvent.clear();
+		searchResults.clear();
+		setUpDataFromDatabase();
+	} 
 
 	
 }
