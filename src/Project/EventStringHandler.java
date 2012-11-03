@@ -29,7 +29,7 @@ public class EventStringHandler {
 		while(iterator.hasNext()) {
 			String currentLine = iterator.next();
 			Event newEvent = ListOfEvent.getEventFromString(currentLine);
-			if(newEvent != null) {
+			if(newEvent != null && !ListOfEvent.isObsleteEvent(newEvent)) {
 				listOfEvent.add(newEvent);
 				if(!ListOfEvent.checkEventID(getCurrentListOfEvent())) {
 					formatDatabase();
