@@ -339,10 +339,11 @@ public class Logic {
 		Vector<String> listOfHashTags = getAllHashTags(parameterList);
 		String priority = listOfHashTags.get(0);
 		listOfHashTags.remove(0);
+		Duration eventReminder = getReminderTime(parameterList);
 		String eventHashTag = getHashTagsString(listOfHashTags);
 		String endTime = getEndTime(parameterList);
 		String startTime = getStartTime(parameterList);
-		Duration eventReminder = getReminderTime(parameterList);
+
 		if (endTime == EMPTY_STRING) {
 			endTime = STRING_INVALID;
 		}

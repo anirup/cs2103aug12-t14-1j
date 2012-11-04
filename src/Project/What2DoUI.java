@@ -460,7 +460,7 @@ public class What2DoUI extends javax.swing.JFrame {
 			if (toUpdate) {
 				jLabel3.setText(String.format("<html><p class=\"MsoNormal\"><b><span style=\"color: rgb(0, 176, 80)\"; >%s</span></b></p></html>",message));
 				jTextArea2.setText(upcomingEventsString);
-				//jTextArea4.setText(floatingEventsString);
+				jTextArea4.setText(floatingEventsString);
 				jTextArea1.setText(searchResultsString);
 			} else {
 					jLabel3.setText(String.format("<html><p class=\"MsoNormal\"><b><span style=\"color: red; \">%s</span></b></p></html>", message));
@@ -498,16 +498,16 @@ public class What2DoUI extends javax.swing.JFrame {
 					+ "     ";
 			result += tempArray2[2]
 					+ getSpaces(maximumLengths[2] - tempArray2[2].length())
-					+ "     ";
+					+ "      ";
 			result += tempArray2[3]
 					+ getSpaces(maximumLengths[3] - tempArray2[3].length())
-					+ "      ";
+					+ "    ";
 			result += tempArray2[4]
 					+ getSpaces(maximumLengths[4] - tempArray2[4].length())
-					+ "     ";
+					+ "    ";
 			result += tempArray2[5]
 					+ getSpaces(maximumLengths[5] - tempArray2[5].length())
-					+ "     ";
+					+ "    ";
 			result += tempArray2[6]
 					+ getSpaces(maximumLengths[6] - tempArray2[6].length())
 					+ "     ";

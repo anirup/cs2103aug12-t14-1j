@@ -11,9 +11,9 @@ public class PatternLib {
 	private static final int flags = Pattern.CASE_INSENSITIVE; //| Pattern.COMMENTS;
 	
 	private static final String date29 = "((0?[0-9])|([12][0-9]))";
-	private static final String date28 = "((0?[0-9])|(1[0-9])|(2[0-8]))";
- 	private static final String date30 = "((0?[0-9])|([12][0-9])|(30))";
-	private static final String date31 = "((0?[0-9])|([12][0-9])|(3[01]))";
+	private static final String date28 = "((2[0-8])|(1[0-9])|(0?[0-9]))";
+ 	private static final String date30 = "((30)|([12][0-9])|(0?[0-9]))";
+	private static final String date31 = "((3[01])|([12][0-9])|(0?[0-9]))";
 	private static final String month30Int = "((0?[469])|(11))";
 	private static final String month31Int = "((0?[13578])|(1[02]))";
 	private static final String month29Int = "(0?2)";
@@ -22,18 +22,18 @@ public class PatternLib {
 	private static final String month29String = "((feb)|(february))";
 	private static final String yearInt = "((20)?[0-9][0-9])";
 	private static final String leapYearInt = "((20)?(([02468][048])|([13579][26])))";
-	private static final String dateSeparator = "[\\/-]";
-	private static final String hour12 = "((0?[0-9])|(1[0-2]))";
-	private static final String hour24 = "((0?[0-9])|(1[0-9])|(2[0-3]))";
-	private static final String minute = "((0?[0-9])|([1-5][0-9]))";
+	private static final String dateSeparator = "[\\/-:.]";
+	private static final String hour12 = "((1[0-2])|(0?[0-9]))";
+	private static final String hour24 = "((2[0-3])|(1[0-9])|(0?[0-9]))";
+	private static final String minute = "(([1-5][0-9])|(0?[0-9]))";
 	private static final String amOrPm = "((am)|(pm))";
 	private static final String timeSeparator = "[:\\.]";
 	private static final String dateInWeek = "((Mon)|(Monday)|(Tue)|(Tuesday)|(Wed)|(Wednesday)|(Thu)|(Thursday)|(Fri)|(Friday)|(Sat)|(Saturday)|(Sun)|(Sunday))";
 	private static final String weekIndicator = "((this)|(next))";
-	private static final String patternDateSpecial = "((today)|(tomorrow)|(tmr))";
+	private static final String patternDateSpecial = "((today)|(tomorrow)|(tmr)|(tom))";
 	private static final String space = " ";
-	private static final String patternTime12InDay = "^(" + hour12 + "(" + timeSeparator + minute + ")" + "?" + space +  "?" + amOrPm + ")";
-	private static final String patternTime24InDay = "^(" + hour24 + "(" + timeSeparator + minute + ")" + "?" + ")";
+	private static final String patternTime12InDay = "^(" + hour12 + "(" + timeSeparator + "?" + minute + ")" + "?" + space +  "?" + amOrPm + ")";
+	private static final String patternTime24InDay = "^(" + hour24 + "(" + timeSeparator + "?" + minute + ")" + "?" + ")";
 	private static final String patternDateInWeek = "(" + weekIndicator + space + dateInWeek +  ")";
 	private static final String patternDateWithoutYearInt = "((" + date29 + dateSeparator + month29Int + ")|(" + 
 								date30 + dateSeparator + month30Int + ")|(" + date31 +  dateSeparator + month31Int + "))"; 
@@ -87,6 +87,7 @@ public class PatternLib {
 		
 		String patternTime24AndDateStringWithYear = "(" + patternTime24InDay + space + patternDateWithYearString + ")";
 		pattern = new PatternDateTime(Pattern.compile(patternTime24AndDateStringWithYear, flags), "HH:mm dd/MMM/yy");
+		pat.add(pattern);
 		
 		String patternTime12AndDateIntNoYear = "(" + patternTime12InDay + space + patternDateWithoutYearInt + ")";
 		pattern = new PatternDateTime(Pattern.compile(patternTime12AndDateIntNoYear, flags), "HH:mmaa dd/MM");
@@ -104,8 +105,6 @@ public class PatternLib {
 		pattern = new PatternDateTime(Pattern.compile(patternTime24AndDateStringNoYear, flags), "HH:mm dd/MMM");
 		pat.add(pattern);
 		
-	
-		pat.add(pattern);
 
 		pattern = new PatternDateTime(Pattern.compile(patternDateWithoutYearInt, flags), "dd/MM");
 		pat.add(pattern);

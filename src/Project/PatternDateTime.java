@@ -45,7 +45,7 @@ public class PatternDateTime {
 		} else if (_timeFormat.contains("r-")) {
 			newDateTime = getReminder(input);
 		} else {
-			DateTimeFormatter dateFormat = DateTimeFormat.forPattern(_pattern.toString());
+			DateTimeFormatter dateFormat = DateTimeFormat.forPattern(_timeFormat);
 			newDateTime = dateFormat.parseDateTime(input);
 			if(newDateTime.getYearOfCentury() == 0) {
 				newDateTime.plusYears(DateTime.now().getYearOfCentury());
