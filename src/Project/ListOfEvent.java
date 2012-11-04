@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Vector;
-
 import org.joda.time.DateTime;
 
 public class ListOfEvent {
@@ -14,12 +13,14 @@ public class ListOfEvent {
 	private static ArrayList<ListOfEventObserver> listOfObserver= new ArrayList<ListOfEventObserver>();
 	private static final String fileName = "What2Do.txt";
 	private static final String displayFormat = "%1$d..%2$s";
-	private static final int INDEX_OF_REMINDER_TIME = 5;
 	private static final int INDEX_OF_PRIORITY = 2;
+	private static final int INDEX_OF_EVENT_ISDONE = 4;
+	private static final int INDEX_OF_REMINDER_TIME = 5;
 	private static final int INDEX_OF_COMPLETED_TIME = 8;
 	private static int currentNumberOfFloatingEvent = 0;
 	private static ArrayList<String> feedback = new ArrayList<String>();
 	private static final String STRING_NULL = "";
+
 	
 	public static void addObserver(ListOfEventObserver observer) {
 		listOfObserver.add(observer);
@@ -35,15 +36,14 @@ public class ListOfEvent {
 	public static void setUpDataFromDatabase() throws Exception {
 		addObserver(Executor.getInstance());
 		addObserver(ListOfAlarm.getInstance());
-		EventStringHandler.setUpDataFromDatabase(fileName);
-		listOfEvent = EventStringHandler.getCurrentListOfEvent();
+		DatabaseManager.setUpDataFromDatabase(fileName);
 		notifyObservers();
 	}
 	
 	public static void syncDataToDatabase() throws IOException {
 		ArrayList<String> listOfEventInString = new ArrayList<String>();
-		listOfEventInString = toDatabase();
-		EventStringHandler.syncDataToDatabase(listOfEventInString, fileName);
+		listOfEventInString = getContentToSyncToDatabase();
+		DatabaseManager.syncDataToDatabase(listOfEventInString, fileName);
 	}
 	
 	public static int size() {
@@ -84,11 +84,10 @@ public class ListOfEvent {
 	
 	public static Event add(String eventInString) {
 		Event newEvent = getEventFromString(eventInString);
-		if(newEvent!=null)
-		{
-		isClashedWithExistingEvents(newEvent);
-		isBeforeCurrentTime(newEvent);
-		listOfEvent.add(newEvent);
+		if(newEvent != null) {
+			isClashedWithExistingEvents(newEvent);
+			isBeforeCurrentTime(newEvent);
+			listOfEvent.add(newEvent);
 		}
 		return newEvent;
 	}
@@ -186,35 +185,35 @@ public class ListOfEvent {
 			}
 		}
 	}
-	/*
-	public static void searchInNameAndHashTag(ArrayList<String> searchWords) {
-		searchResults = new ArrayList<Event>();
-		int numberOfSearchWords = searchWords.size();
-		for(int indexOfSearchWord = 0; indexOfSearchWord < numberOfSearchWords; indexOfSearchWord++) {
-			String currentSearchWord = searchWords.get(indexOfSearchWord);
-			searchForAWordInNameAndHashTag(currentSearchWord);
-		}
-		return;
-	}
 	
-	private static void searchForAWordInNameAndHashTag(String searchWord) {
-		int currentNumberOfEvents = listOfEvent.size();
-		for(int indexEvent = 0; indexEvent < currentNumberOfEvents; indexEvent++) {
-			Event currentEvent = listOfEvent.get(indexEvent);
-			if(currentEvent.seachInName(searchWord) 
-					|| currentEvent.searchInHashTag(searchWord)) {
-				searchResults.add(currentEvent);
-			}
-		}
-		return;
-	}
-	*/
+//	public static void searchInNameAndHashTag(ArrayList<String> searchWords) {
+//		searchResults = new ArrayList<Event>();
+//		int numberOfSearchWords = searchWords.size();
+//		for(int indexOfSearchWord = 0; indexOfSearchWord < numberOfSearchWords; indexOfSearchWord++) {
+//			String currentSearchWord = searchWords.get(indexOfSearchWord);
+//			searchForAWordInNameAndHashTag(currentSearchWord);
+//		}
+//		return;
+//	}
+//	
+//	private static void searchForAWordInNameAndHashTag(String searchWord) {
+//		int currentNumberOfEvents = listOfEvent.size();
+//		for(int indexEvent = 0; indexEvent < currentNumberOfEvents; indexEvent++) {
+//			Event currentEvent = listOfEvent.get(indexEvent);
+//			if(currentEvent.seachInName(searchWord) 
+//					|| currentEvent.searchInHashTag(searchWord)) {
+//				searchResults.add(currentEvent);
+//			}
+//		}
+//		return;
+//	}
+
 	public static ArrayList<AlarmType> setUpListOfReminder() {
 		ArrayList<AlarmType> reminderList = new ArrayList<AlarmType>();
 		for(int index = 0; index < listOfEvent.size(); index++) {
 			Event currentEvent = listOfEvent.get(index);
 			DateTime eventReminder = currentEvent.getEventReminder();
-			if(!Clock.isBigBangTime(eventReminder) && currentEvent.getEventType() != Event.FLOATING_TYPE 
+			if(!Clock.isSameTime(Clock.getBigBangTime(), eventReminder) 
 					&& !currentEvent.isDone()) {
 				AlarmType newAlarm = new AlarmType(currentEvent.getEventName(), eventReminder);
 				reminderList.add(newAlarm);
@@ -270,12 +269,36 @@ public class ListOfEvent {
 		}
 		Event newEvent = new Event();
 		newEvent.parse(eventContent);
+		if(!isValidNewEvent(newEvent)) {
+			return null;
+		}
 		return newEvent;
 	}
 	
-	public static boolean isObsleteEvent(Event event) {
+	private static boolean isValidNewEvent(Event newEvent) {
+		if(isObsoleteEvent(newEvent) || !isValidEventTime(newEvent) || !checkEventID(newEvent)) {
+			return false;
+		}
+		return true;
+	}
+	
+	private static boolean isValidEventTime(Event newEvent) {
+		DateTime reminder = newEvent.getEventReminder();
+		DateTime start = newEvent.getEventStartTime();
+		DateTime end = newEvent.getEventEndTime();
+		if(!Clock.isBigBangTime(reminder) && Clock.isBigBangTime(start)) {
+			return false;
+		} else if(!Clock.isBigBangTime(end) && Clock.isBigBangTime(start))  {
+			return false;
+		} else if(Clock.isBefore(end, start)) {
+			return false;
+		}
+		return true;
+	}
+
+	private static boolean isObsoleteEvent(Event event) {
 		DateTime completedTime = event.getTimeCompleted();
-		if(Clock.isBefore(completedTime, DateTime.now().minusMinutes(1)) && !Clock.isBigBangTime(completedTime)) {
+		if(Clock.isBefore(completedTime, DateTime.now().minusMonths(1)) && !Clock.isBigBangTime(completedTime)) {
 			return true;
 		}
 		return false;
@@ -285,7 +308,7 @@ public class ListOfEvent {
 		if(eventContent.length != 9) {
 			return false;
 		} 
-		String isDone = eventContent[Event.INDEX_FOR_EVENT_ISDONE];
+		String isDone = eventContent[INDEX_OF_EVENT_ISDONE];
 		if(!StringOperation.isValidIsDone(isDone)) {
 			return false;
 		}
@@ -302,7 +325,8 @@ public class ListOfEvent {
 		return true;
 	}
 	
-	private static ArrayList<String> toDatabase() {
+	
+	private static ArrayList<String> getContentToSyncToDatabase() {
 		ArrayList<String> listOfEventToString = new ArrayList<String>();
 		for(int index = 0; index < listOfEvent.size(); index++) {
 			listOfEventToString.add(listOfEvent.get(index).toString());
@@ -320,11 +344,9 @@ public class ListOfEvent {
 		return -1;
 	}
 	
-	public static boolean checkEventID(ArrayList<Event> list) {
-		int listSize = list.size();
-		Event lastEvent = list.get(listSize- 1);
-		for(int index = 0; index < listSize - 1; index++) {
-			if(lastEvent.isSameEvent(list.get(index))) {
+	public static boolean checkEventID(Event newEvent) {
+		for(int index = 0; index < listOfEvent.size(); index++) {
+			if(newEvent.isSameEvent(listOfEvent.get(index))) {
 				return false;
 			}
 		}
