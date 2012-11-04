@@ -2,6 +2,9 @@ package Project;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Vector;
+
+import javax.swing.JLabel;
 
 /**
  * 
@@ -15,13 +18,17 @@ public class What2DoUI extends javax.swing.JFrame {
 	public What2DoUI() {
 		initComponents();
 	}
-	int updateFlag=0;
+	
+	//html1=setUp();
+	String html1="<html><table class=\"MsoTableGrid\" border=\"1\" cellspacing=\"0\" cellpadding=\"0\" style=\"border-collapse: collapse; border: none; \"><tbody><tr><td width=\"308\" valign=\"top\" style=\"width: 231.05pt; border: 1pt solid windowtext; padding: 0cm 5.4pt; \"><p class=\"MsoNormal\" style=\"margin-bottom: 0.0001pt; line-height: normal; \">&nbsp;</p></td><td width=\"308\" valign=\"top\" style=\"width: 231.05pt; border-style: solid solid solid none; border-top-color: windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; padding: 0cm 5.4pt; \"><p class=\"MsoNormal\" style=\"margin-bottom: 0.0001pt; line-height: normal; \">&nbsp;</p></td></tr><tr><td width=\"308\" valign=\"top\" style=\"width: 231.05pt; border-style: none solid solid; border-right-color: windowtext; border-bottom-color: windowtext; border-left-color: windowtext; border-right-width: 1pt; border-bottom-width: 1pt; border-left-width: 1pt; padding: 0cm 5.4pt; \"><p class=\"MsoNormal\" style=\"margin-bottom: 0.0001pt; line-height: normal; \">&nbsp;</p></td><td width=\"308\" valign=\"top\" style=\"width: 231.05pt; border-style: none solid solid none; border-bottom-color: windowtext; border-bottom-width: 1pt; border-right-color: windowtext; border-right-width: 1pt; padding: 0cm 5.4pt; \"><p class=\"MsoNormal\" style=\"margin-bottom: 0.0001pt; line-height: normal; \">&nbsp;</p></td> </tr></tbody></table><p class=\"MsoNormal\">&nbsp;</p></html>";
 	String demo="daff";
 	char lastEvent = ' ';
-	String previousEntry = "";
 	int flag = 0;
 	boolean toUpdate = true;
-
+	Vector<String> previousEntry = new Vector<String>();
+	int previousIndex=0;
+	int updateFlag=0;
+	
 	/**
 	 * This method is called from within the constructor to initialize the form.
 	 * WARNING: Do NOT modify this code. The content of this method is always
@@ -43,19 +50,20 @@ public class What2DoUI extends javax.swing.JFrame {
 		jLayeredPane1 = new javax.swing.JLayeredPane();
 		jPanel2 = new javax.swing.JPanel();
 		jScrollPane3 = new javax.swing.JScrollPane();
-		jTextArea2 = new javax.swing.JTextArea();
+		jTextArea2 = new javax.swing.JLabel();
 		
 		jScrollPane2 = new javax.swing.JScrollPane();
 		jLabel3 = new javax.swing.JLabel();
 		jPanel3 = new javax.swing.JPanel();
 		jScrollPane1 = new javax.swing.JScrollPane();
-		jTextArea1 = new javax.swing.JTextArea();
+		jTextArea1 = new javax.swing.JLabel();
 		
 		
 		jPanel4 = new javax.swing.JPanel();
         jScrollPane7 = new javax.swing.JScrollPane();
-        jTextArea4 = new javax.swing.JTextArea();
-
+        jTextArea4 = new javax.swing.JLabel();
+        jTextArea4.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
+		
         //jLabel3 = new javax.swing.JLabel();
 
 		jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -109,9 +117,9 @@ public class What2DoUI extends javax.swing.JFrame {
 
 		jPanel2.setBackground(new java.awt.Color(240, 233, 194));
 
-		jTextArea2.setColumns(20);
+		//jTextArea2.setColumns(20);
 		jTextArea2.setFont(new java.awt.Font("Monospaced", 1, 12));
-		jTextArea2.setRows(5);
+		//jTextArea2.setRows(5);
 		jTextArea2.setBorder(javax.swing.BorderFactory.createTitledBorder(null,
 				"Upcoming Events",
 				javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
@@ -165,6 +173,29 @@ public class What2DoUI extends javax.swing.JFrame {
 		jPanel2.setBounds(0, 0, 890, 340);
 		jLayeredPane1.add(jPanel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
+		jTextArea1.setOpaque(true);
+		jTextArea1.setBackground(new java.awt.Color(255, 255, 255));
+
+		
+		jTextArea2.setOpaque(true);
+		jTextArea2.setBackground(new java.awt.Color(255, 255, 255));
+
+
+		jTextArea4.setOpaque(true);
+		jTextArea4.setBackground(new java.awt.Color(255, 255, 255));
+		
+
+	    jTextArea1.setHorizontalAlignment(JLabel.LEFT);
+	    jTextArea1.setVerticalAlignment(JLabel.TOP);
+		
+		
+		jTextArea2.setHorizontalAlignment(JLabel.LEFT);
+	    jTextArea2.setVerticalAlignment(JLabel.TOP);
+		
+
+	    jTextArea4.setHorizontalAlignment(JLabel.LEFT);
+	    jTextArea4.setVerticalAlignment(JLabel.TOP);
+		
 		jPanel3.setBackground(new java.awt.Color(240, 233, 194));
 		jPanel3.setVisible(false);
 		
@@ -172,15 +203,18 @@ public class What2DoUI extends javax.swing.JFrame {
 		jLabel3.setBackground(new java.awt.Color(255, 255, 255));
 		jLabel4.setOpaque(true);
 		jLabel4.setBackground(new java.awt.Color(255, 255, 255));
+		jPanel4.setVisible(false);
 
 		
-		jTextArea1.setEditable(false);
-		jTextArea2.setEditable(false);
-		jTextArea4.setEditable(false);
+		//jTextArea1.setEditable(false);
+		//jTextArea2.setEditable(false);
+		//jTextArea4.setEditable(false);
 		
+		/*
 		jTextArea1.setColumns(20);
 		jTextArea1.setRows(5);
 		jTextArea1.setFont(new java.awt.Font("Monospaced", 1, 12));
+		*/
 		jTextArea1.setBorder(javax.swing.BorderFactory.createTitledBorder(null,
 				"Search Results",
 				javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
@@ -214,10 +248,11 @@ public class What2DoUI extends javax.swing.JFrame {
 
  jPanel4.setBackground(new java.awt.Color(240, 232, 194));
 
-        jTextArea4.setEditable(false);
+        /*jTextArea4.setEditable(false);
         jTextArea4.setColumns(20);
         jTextArea4.setRows(5);
-        jTextArea4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Floating Events", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14), java.awt.Color.black)); // NOI18N
+        */
+ 		jTextArea4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Floating Events", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14), java.awt.Color.black)); // NOI18N
         jScrollPane7.setViewportView(jTextArea4);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -345,8 +380,7 @@ public class What2DoUI extends javax.swing.JFrame {
 		pack();
 	}// </editor-fold>
 
-	private void textField1KeyTyped(java.awt.event.KeyEvent evt)
-			throws Exception {// GEN-FIRST:event_textField1KeyTyped
+	private void textField1KeyTyped(java.awt.event.KeyEvent evt) throws Exception {// GEN-FIRST:event_textField1KeyTyped
 
 		if (evt.getKeyChar() == 8) {
 			if (textField1.getText().isEmpty()) {
@@ -421,72 +455,151 @@ public class What2DoUI extends javax.swing.JFrame {
 			String data = textField1.getText();
 			if (data.contains("search")) {
 				jPanel2.setVisible(false);
+				jPanel4.setVisible(false);
 				jPanel3.setVisible(true);
 			}
 			if (data.contains("back")) {
 				jPanel3.setVisible(false);
+				jPanel4.setVisible(false);
 				jPanel2.setVisible(true);
 			}
 			if (data.contains("floating")){
                 jPanel2.setVisible(false);
+                jPanel3.setVisible(false);
                 jPanel4.setVisible(true);
             }
             if (data.contains("upcoming")){
                 jPanel4.setVisible(false);
+                jPanel3.setVisible(false);
                 jPanel2.setVisible(true);
             }
             if (data.contains("update")){
             	updateFlag+=1;
             	updateFlag=updateFlag%3;
             	if (updateFlag==1){
-            	//call anirup's function-textField1.setText("");
+            		//call anirup's function-textField1.setText("");
             	}
-
-            	}
+            		
+            }
 			int index = Executor.analyze(data);
 			String message = ExceptionHandler.getException(index);
 			toUpdate = !(message.contains("Error"));
-			//jLabel3.setText(message);
 
 			ArrayList<String> upcomingEvents = Executor.printDataBase();
-			String upcomingEventsString = format(upcomingEvents,
-					getMaximumLengths(upcomingEvents));
 			ArrayList<String> floatingEvents = Executor.printFloatingDataBase();
 			ArrayList<String> searchResults = Executor.printSearchResults();
-			String floatingEventsString = format(floatingEvents,
-					getMaximumLengths(floatingEvents));
-			String searchResultsString = format(searchResults,
-					getMaximumLengths(searchResults));
+			
+			//index, name, hash-tags, start time end time, reminder
+			
+			/*
+			String upcomingEventsString = format(upcomingEvents,getMaximumLengths(upcomingEvents));
+			String floatingEventsString = format(floatingEvents, getMaximumLengths(floatingEvents));
+			String searchResultsString = format(searchResults,getMaximumLengths(searchResults));
+			*/
+			
+			ArrayList<ArrayList<String>> demoUpcomingEvents=new ArrayList<ArrayList<String>>();
+			ArrayList<ArrayList<String>> demoFloatingEvents=new ArrayList<ArrayList<String>>();
+			ArrayList<ArrayList<String>> demoSearch=new ArrayList<ArrayList<String>>();
+			for (int i=0; i<100; i++){
+				ArrayList<String> temp =new ArrayList<String>();
+				for (int j=0; j<10; j++){
+					temp.add("");
+				}
+				demoUpcomingEvents.add(temp);
+			}
+			for (int i=0; i<100; i++){
+				ArrayList<String> temp =new ArrayList<String>();
+				for (int j=0; j<10; j++){
+					temp.add("");
+				}
+				demoFloatingEvents.add(temp);
+			}
+			for (int i=0; i<100; i++){
+				ArrayList<String> temp =new ArrayList<String>();
+				for (int j=0; j<10; j++){
+					temp.add("");
+				}
+				demoSearch.add(temp);
+			}
+			
+			formatForUpcoming(demoUpcomingEvents, upcomingEvents);
+			formatForUpcoming(demoSearch, searchResults);
+			formatForFloating(demoFloatingEvents, floatingEvents);
+
+			String html2="<html><p class=\"MsoNormal\"><b>ID &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Events Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(192, 80, 77); \">Details</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(31, 73, 125); \">Start</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(31, 73, 125); \">End</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(152, 72, 7); \">Reminder</span></b></p>";
+			String html3="<html><p class=\"MsoNormal\"><b>ID &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Events Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(192, 80, 77); \">Details</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(31, 73, 125); \">Start</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(31, 73, 125); \">End</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(152, 72, 7); \">Reminder</span></b></p>";
+			String html4="<html><p class=\"MsoNormal\"><b>ID &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Events Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(192, 80, 77); \">Details</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(31, 73, 125); \">Start</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(31, 73, 125); \">End</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(152, 72, 7); \">Reminder</span></b></p>";
+
+
 			if (toUpdate) {
-				jLabel3.setText(String.format("<html><p class=\"MsoNormal\"><b><span style=\"color: rgb(0, 176, 80)\"; >%s</span></b></p></html>",message));
-				jTextArea2.setText(upcomingEventsString);
-				jTextArea4.setText(floatingEventsString);
-				jTextArea1.setText(searchResultsString);
-			} else {
-					jLabel3.setText(String.format("<html><p class=\"MsoNormal\"><b><span style=\"color: red; \">%s</span></b></p></html>", message));
+				
+				for (int i=0; i<upcomingEvents.size(); i++){
+					html2+=String.format("<br><p class=\"MsoNormal\"><b>%s &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; %s&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(192, 80, 77); \">%s</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(31, 73, 125); \">%s</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(31, 73, 125); \">%s</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(152, 72, 7); \">%s</span></b></p>", demoUpcomingEvents.get(i+1).get(0), demoUpcomingEvents.get(i+1).get(1), demoUpcomingEvents.get(i+1).get(2), demoUpcomingEvents.get(i+1).get(3), demoUpcomingEvents.get(i+1).get(4), demoUpcomingEvents.get(i+1).get(5));					
+				}
+				for (int i=0; i<floatingEvents.size(); i++){
+					html3+=String.format("<br><p class=\"MsoNormal\"><b>%s &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; %s&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(192, 80, 77); \">%s</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(31, 73, 125); \">%s</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(31, 73, 125); \">%s</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(152, 72, 7); \">%s</span></b></p>", demoFloatingEvents.get(i+1).get(0), demoFloatingEvents.get(i+1).get(1), demoFloatingEvents.get(i+1).get(2), demoFloatingEvents.get(i+1).get(3), demoFloatingEvents.get(i+1).get(4), demoFloatingEvents.get(i+1).get(5));					
+				}
+				for (int i=0; i<floatingEvents.size(); i++){
+					html4+=String.format("<br><p class=\"MsoNormal\"><b>%s &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; %s&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(192, 80, 77); \">%s</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(31, 73, 125); \">%s</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(31, 73, 125); \">%s</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(152, 72, 7); \">%s</span></b></p>", demoSearch.get(i+1).get(0), demoSearch.get(i+1).get(1), demoSearch.get(i+1).get(2), demoSearch.get(i+1).get(3), demoSearch.get(i+1).get(4), demoSearch.get(i+1).get(5));					
+				}
 
 				
+				html2+="</html>";
+				html3+="</html>";
+				html4+="</html>";
+				jTextArea2.setText(html2);
+				jTextArea4.setText(html3);
+				jTextArea1.setText(html4);
+				jLabel3.setText(String.format("<html><p class=\"MsoNormal\"><b><span style=\"color: rgb(0, 176, 80)\"; >%s</span></b></p></html>",message));
+			} 
+			else {
+					jLabel3.setText(String.format("<html><p class=\"MsoNormal\"><b><span style=\"color: red; \">%s</span></b></p></html>", message));
 			}
 			textField1.setText("");
-
-			previousEntry = data;
-			
+			previousEntry.add(data);
+			previousIndex=previousEntry.size()-1;
 		}
 
-	}// GEN-LAST:event_textField1KeyTyped
-
+	}
+	private void formatForUpcoming(ArrayList<ArrayList<String>> demo, ArrayList<String> events) {
+		demo.get(0).set(0, "ID");
+		demo.get(0).set(1, "Event Name");
+		demo.get(0).set(2, "Details");
+		demo.get(0).set(3, "Start");
+		demo.get(0).set(4, "End");
+		demo.get(0).set(5, "Reminder");
+		
+		for (int i = 0; i < events.size(); i++) {
+			String[] tempArray = events.get(i).split("\\..");
+			for (int j = 0; j < tempArray.length; j++) {
+				demo.get(i+1).set(j, tempArray[j]);
+			}
+		}
+	}
+	private void formatForFloating(ArrayList<ArrayList<String>> demo, ArrayList<String> events) {
+		demo.get(0).set(0, "ID");
+		demo.get(0).set(1, "Event Name");
+		demo.get(0).set(2, "Details");
+		
+		for (int i = 0; i < events.size(); i++) {
+			String[] tempArray = events.get(i).split("\\..");
+			for (int j = 0; j < tempArray.length; j++) {
+				demo.get(i+1).set(j, tempArray[j]);
+			}
+		}
+	}
+	
 	private String format(ArrayList<String> upcomingEvents, int[] maximumLengths) {
 		String result = "";
 		result += "ID" + getSpaces(maximumLengths[0] - 2) + "     "
 				+ "Event Name" + getSpaces(maximumLengths[1] - 10) + "     "
-				+ "Priority" + getSpaces(maximumLengths[2] - 8) + "    "
-				+ "Details" + getSpaces(maximumLengths[3] - 7) + "     "
-				+ "Start" + getSpaces(maximumLengths[4] - 5) + "     " + "End"
-				+ getSpaces(maximumLengths[5] - 3) + "     " + "Reminder"
-				+ getSpaces(maximumLengths[6] - 8) + "     " + "\n";
+				+ "Details" + getSpaces(maximumLengths[2] - 7) + "     "
+				+ "Start" + getSpaces(maximumLengths[3] - 5) + "     " + "End"
+				+ getSpaces(maximumLengths[4] - 3) + "     " + "Reminder"
+				+ getSpaces(maximumLengths[5] - 8) + "     " + "\n";
 		for (int i = 0; i < upcomingEvents.size(); i++) {
 			String[] tempArray = upcomingEvents.get(i).split("\\..");
-			String[] tempArray2 = { "", "", "", "", "", "","" };
+			String[] tempArray2 = { "", "", "", "", "", "" };
 			for (int j = 0; j < tempArray.length; j++) {
 				tempArray2[j] = tempArray[j];
 			}
@@ -498,18 +611,15 @@ public class What2DoUI extends javax.swing.JFrame {
 					+ "     ";
 			result += tempArray2[2]
 					+ getSpaces(maximumLengths[2] - tempArray2[2].length())
-					+ "      ";
+					+ "     ";
 			result += tempArray2[3]
 					+ getSpaces(maximumLengths[3] - tempArray2[3].length())
-					+ "    ";
+					+ "     ";
 			result += tempArray2[4]
 					+ getSpaces(maximumLengths[4] - tempArray2[4].length())
-					+ "    ";
+					+ "     ";
 			result += tempArray2[5]
 					+ getSpaces(maximumLengths[5] - tempArray2[5].length())
-					+ "    ";
-			result += tempArray2[6]
-					+ getSpaces(maximumLengths[6] - tempArray2[6].length())
 					+ "     ";
 			result += "\n";
 		}
@@ -524,47 +634,16 @@ public class What2DoUI extends javax.swing.JFrame {
 		return spaces;
 	}
 
-	private String format(String text) {
-		String newText = "";
-		newText += "Index\t" + " " + "Name\t" + " " + "Additional Details\n";
-		for (int i = 0; i < text.length(); i++) {
-			if (text.charAt(i) == '.' && text.charAt(i + 1) == '.') {
-				newText += '\t';
-				i++;
-			} else {
-				newText += text.charAt(i);
-			}
 
-		}
-		// TODO Auto-generated method stub
-		return newText;
-	}
-
-	private String formatForSearch(String text) {
-		String newText = "";
-		newText += "Index\t" + " " + "Name\t" + " " + "Additional Details\n";
-		for (int i = 0; i < text.length(); i++) {
-			if (text.charAt(i) == '.' && text.charAt(i + 1) == '.') {
-				newText += '\t';
-				i++;
-			} else {
-				newText += text.charAt(i);
-			}
-
-		}
-		// TODO Auto-generated method stub
-		return newText;
-	}
 
 	private int[] getMaximumLengths(ArrayList<String> unformatted) {
-		int[] lengths = new int[7];
+		int[] lengths = new int[6];
 		lengths[0] = 2;
 		lengths[1] = 10;
 		lengths[2] = 7;
-		lengths[3] = 8;
-		lengths[4] = 5;
-		lengths[5] = 3;
-		lengths[6] = 8;
+		lengths[3] = 5;
+		lengths[4] = 3;
+		lengths[5] = 8;
 		for (int i = 0; i < unformatted.size(); i++) {
 			String[] tempStorage = unformatted.get(i).split("\\..");
 			for (int k = 0; k < tempStorage.length; k++) {
@@ -576,22 +655,20 @@ public class What2DoUI extends javax.swing.JFrame {
 		return lengths;
 	}
 
-
 	private void textField1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_textField1ActionPerformed
 		// TODO add your handling code here:
 	}// GEN-LAST:event_textField1ActionPerformed
 
 	private void textField1KeyPressed(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_textField1KeyPressed
-		if (evt.getKeyCode() == 38) {
-			textField1.setText(previousEntry);
-		}
-		if (evt.getKeyCode() == 39) {
-			jLabel4
-					.setText("FORMAT : [operation] [key words] [date and time] [r-reminder time]");
-		}// TODO add your handling code here: // TODO add your handling code
-			// here:
-	}// GEN-LAST:event_textField1KeyPressed
-
+		if (evt.getKeyCode() == 38 && previousIndex>=0 && !previousEntry.isEmpty()) {
+			textField1.setText(previousEntry.get(previousIndex));
+			previousIndex--;
+			}
+		if (evt.getKeyCode() == 40 && previousIndex!=previousEntry.size()-1) {
+			textField1.setText(previousEntry.get(++previousIndex));
+			}
+	}
+	
 	/**
 	 * @param args
 	 *            the command line arguments
@@ -666,9 +743,9 @@ public class What2DoUI extends javax.swing.JFrame {
 	private javax.swing.JTabbedPane jTabbedPane1;
 	private javax.swing.JTabbedPane jTabbedPane2;
 	private javax.swing.JTable jTable1;
-	private javax.swing.JTextArea jTextArea1;
-	private javax.swing.JTextArea jTextArea2;
-	private javax.swing.JTextArea jTextArea4;
+	private javax.swing.JLabel jTextArea1;
+	private javax.swing.JLabel jTextArea2;
+	private javax.swing.JLabel jTextArea4;
 	private javax.swing.JLabel jLabel3;
 	private javax.swing.JLabel jLabel4;
 	private java.awt.TextField textField1;
