@@ -1,67 +1,33 @@
 package Project;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 public class DatabaseManager {
+	private static ArrayList<String> listOfEventInString = new ArrayList<String>();
 	private static String fileName;
-	private static BufferedReader reader;
-	private static File database;
-	private static BufferedWriter writer;
-	
-	public static ArrayList<String> setUpDatabase(String nameOfFile) throws IOException {
+
+	public static void setUpDataFromDatabase(String nameOfFile) throws Exception {
 		fileName = nameOfFile;
-		database = new File(fileName);
-		if (!database.exists()) {
-			database.createNewFile();
-		}
-		reader = new BufferedReader(new FileReader(fileName));
-		return retrieveDatabase();
+		listOfEventInString = FileIO.setUpDatabase(fileName);
+		setUpListOfEventFromString();
 	}
 	
-	public static void syncToDatabase(ArrayList<String> currentListOfEvent, String nameOfFile) throws IOException {
+	public static void syncDataToDatabase(ArrayList<String> listOfEventInString, String nameOfFile) throws IOException {
 		fileName = nameOfFile;
-		setUpBufferedWriter();
-		Iterator<String> iterator = currentListOfEvent.iterator();
+		FileIO.syncToDatabase(listOfEventInString, fileName);
+	}
+	
+	private static void setUpListOfEventFromString() throws IOException {
+		Iterator<String> iterator = listOfEventInString.iterator();
 		while(iterator.hasNext()) {
-			String content = iterator.next();
-			writeToDatabase(content);
+			String currentLine = iterator.next();
+			Event newEvent = ListOfEvent.add(currentLine);
 		}
-		closeBufferedWriter();
-		
 		return;
 	}
 	
-	public static ArrayList<String> retrieveDatabase() throws IOException {
-		ArrayList<String> listOfEvent = new ArrayList<String>();
-		String currentLine;
-		while((currentLine = reader.readLine()) != null) {
-			listOfEvent.add(currentLine);
-		}
-		
-		return listOfEvent;
+	private static void formatDatabase() throws IOException {
+		FileIO.formatDatabase();
 	}
-	
-	private static void closeBufferedWriter() throws IOException {
-		writer.close();
-	}
-
-	private static void setUpBufferedWriter() throws IOException {
-		writer = new BufferedWriter(new FileWriter(fileName));
-	}
-	
-	private static void writeToDatabase(String line) throws IOException {
-		writer.write(line + "\n");
-	}
-
-	public static void formatDatabase() throws IOException {
-		setUpBufferedWriter();
-		closeBufferedWriter();
-	}
-}
+} 
