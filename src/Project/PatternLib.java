@@ -65,11 +65,11 @@ public class PatternLib {
 		pattern = new PatternDateTime(Pattern.compile(patternTime24AndDateInWeek, flags), "patternTime24AndDateInWeek");
 		pat.add(pattern);
 		
-		String patternTime12AndpatternDateSpecial = "(" + patternTime12InDay + space + patternDateSpecial + ")";
+		String patternTime12AndpatternDateSpecial = "(" + patternTime12InDay + space +"?"+ patternDateSpecial + ")";
 		pattern = new PatternDateTime(Pattern.compile(patternTime12AndpatternDateSpecial, flags), "patternTime12AndpatternDateSpecial");
 		pat.add(pattern);
 		
-		String patternTime24AndpatternDateSpecial = "(" + patternTime24InDay + space + patternDateSpecial + ")";
+		String patternTime24AndpatternDateSpecial = "(" + patternTime24InDay + space +"?"+ patternDateSpecial + ")";
 		pattern = new PatternDateTime(Pattern.compile(patternTime24AndpatternDateSpecial, flags), "patternTime24AndpatternDateSpecial");
 		pat.add(pattern);
 		
