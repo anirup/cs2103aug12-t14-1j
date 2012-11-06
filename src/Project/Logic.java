@@ -341,8 +341,9 @@ public class Logic {
 		listOfHashTags.remove(0);
 		Duration eventReminder = getReminderTime(parameterList);
 		String eventHashTag = getHashTagsString(listOfHashTags);
-		String endTime = getEndTime(parameterList);
 		String startTime = getStartTime(parameterList);
+		String endTime = getEndTime(parameterList);
+
 
 		if (endTime == EMPTY_STRING) {
 			endTime = STRING_INVALID;
