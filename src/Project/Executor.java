@@ -17,17 +17,12 @@ public class Executor implements ListOfEventObserver {
 	
 	public static Executor getInstance() {
 		return _instance;
-	}
-	private static final String PRIORITY_LOW = "Low";
-	private static final String PRIORITY_NORMAL = "Normal";
-	private static final String PRIORITY_HIGH = "high";
+	}	
 	private static final String STRING_NULL = "";
 	private static final String SHORTHAND_UPDATE = "u";
 	private static final String SHORTHAND_DELETE = "-";
-	private static final String SHORTHAND_ADD = "+";
-	// private static final String INPUT_SPLITTER = "\\..";
+	private static final String SHORTHAND_ADD = "+";	
 	private static final String EXPRESSION_WHITESPACE = "\\s+";
-	// private static final String FORMAT_DATE = "yyyy-MM-dd'T'hh:mmZ";
 	private static final String COMMAND_ADD = "add";
 	private static final String COMMAND_DELETE = "delete";
 	private static final String COMMAND_UPDATE = "update";
@@ -36,12 +31,7 @@ public class Executor implements ListOfEventObserver {
 	private static final String COMMAND_EXIT = "exit";
 	private static final String COMMAND_UNDONE = "undone";
 	private static final String COMMAND_UNDO = "undo";
-	// private static final String TIME_ZONE = "+8:00";
-
-	// private static Vector<EventForSort> searchResults = new
-	// Vector<EventForSort>();
-
-	private static int displaySplitIndex = 0;
+	
 	private static boolean searchState = false;
 	private static String previousCommand = "Nothing";
 
@@ -61,11 +51,9 @@ public class Executor implements ListOfEventObserver {
 		PatternLib.setUpPattern();
 		Logic.setUp();
 		Vector<String> parameters = new Vector<String>();
-		// String[] parameters = userInput.split(INPUT_SPLITTER);
-
+		
 		String[] parameterList = { "-1", "-1", "-1", "-1", "-1", "-1" };
 		Logic.setUp();
-
 		// Check if user has just entered a positive integer parameter, returns
 		// -2 if not an integer, -1 if user entered 0
 		int userInputInteger = Logic.getInteger(parameterList) - 1;
@@ -81,8 +69,7 @@ public class Executor implements ListOfEventObserver {
 		}
 		for (int i = 0; i < parameters.size(); i++)
 			parameterList[i] = parameters.get(i);
-
-		// Collections.sort(ListOfEvent.getCurrentListOfEvent(), sortByDate);
+		
 		ListOfEvent.sortList();
 
 		try {
@@ -123,7 +110,7 @@ public class Executor implements ListOfEventObserver {
 					|| command.equalsIgnoreCase(SHORTHAND_UPDATE)) {
 
 				Event eventEdit = null;
-				if (userInputInteger > 0) {
+				if (userInputInteger > -1) {
 					if (searchState == true) {
 						// eventEdit =
 						// searchResults.get(userInputInteger).event();

@@ -1,14 +1,13 @@
 package Project;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Iterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 
 public class ListOfAlarm implements ListOfEventObserver {
 
 	private static CopyOnWriteArrayList<AlarmType> alarmList = new CopyOnWriteArrayList<AlarmType>();
-	private static AlarmSound sound = new AlarmSound();
 	private static ListOfAlarm _instance = new ListOfAlarm();
 	
 	private ListOfAlarm() {
@@ -36,11 +35,19 @@ public class ListOfAlarm implements ListOfEventObserver {
 	}
 	
 	public static void runAlarm() {
-		if(!alarmList.isEmpty())
-			for(int i = 0 ; i < alarmList.size(); i++) {
-				if(alarmList.get(i).isAlarmTime())
-					sound.play();
+		if(!alarmList.isEmpty()) {
+			Iterator<AlarmType> it = alarmList.iterator(); 
+			while(it.hasNext()) {
+				AlarmType alarmElement = it.next();
+				if(alarmElement.isAlarmTime()){
+					DialogRun d = new DialogRun(alarmElement.getEventName());
+					new Thread(d).start();
+					it.remove();
+					break;
+				}
+					
 			}
+		}
 	}
 	
 }
