@@ -355,11 +355,25 @@ public class ListOfEvent {
 
 	public static ArrayList<String> getSearchResultsToDisplayInString() {
 		searchResults = sort(searchResults);
-		ArrayList<String> searchResultsToDisplay = toDisplay(searchResults);
+		ArrayList<String> searchResultsToDisplay = toDisplaySearchResults(searchResults);
 		
 		return searchResultsToDisplay;
 	}
 	
+	private static ArrayList<String> toDisplaySearchResults(
+			ArrayList<Event> list) {
+		ArrayList<String> listToDisplay = new ArrayList<String>();
+
+		for(int index = 0; index < list.size(); index++) {
+			Event currentEvent = listOfEvent.get(index);
+				String contentToDisplay = currentEvent.composeContentToDisplayInString();
+				contentToDisplay = String.format(displayFormat, 
+						currentNumberOfFloatingEvent + index + 1, contentToDisplay);
+				listToDisplay.add(contentToDisplay);
+			}
+		return listToDisplay;
+	}
+
 	public static ArrayList<String> getListOfEventToDisplayInString() {
 		listOfEvent = sort(listOfEvent);
 		return toDisplay(listOfEvent);
