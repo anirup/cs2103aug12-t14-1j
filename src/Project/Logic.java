@@ -185,8 +185,6 @@ public class Logic {
 			temp = StringOperation.prepareInputToAnalyzeTime(temp);
 			if (PatternLib.isFindDateTime(temp)[1] == 0) {
 				int i;
-
-				if (timeCount[0] < 2) {
 					int indexStart = PatternLib.isFindDateTime(temp)[1];
 					int indexEnd = PatternLib.isFindDateTime(temp)[2];
 					String formatted = temp.substring(indexStart, indexEnd);
@@ -205,8 +203,9 @@ public class Logic {
 						userInput = userInput + original.substring(i + 1);
 					} else
 						userInput += EMPTY_STRING;
-				}
 				timeCount[0]++;
+				if(timeCount[0]>2)
+					parameterList.remove(1);
 			} else if (PatternLib.isFindReminderTime(original)[1] == 0) {
 				if (reminderFound[0] < 1) {
 					int a[] = PatternLib.isFindReminderTime(original);
@@ -274,11 +273,11 @@ public class Logic {
 				if (firstTimePattern < 15 && firstTimePattern > 12) {
 					time1 = Clock.changeToDate(time1, time2);
 				}
+			}
 				parameterList.add(indexes.get(0), time1.toString());
 				parameterList.remove(indexes.get(0) + 1);
 				parameterList.add(indexes.get(1), time2.toString());
 				parameterList.remove(indexes.get(1) + 1);
-			}
 
 		}
 
@@ -341,10 +340,8 @@ public class Logic {
 		listOfHashTags.remove(0);
 		Duration eventReminder = getReminderTime(parameterList);
 		String eventHashTag = getHashTagsString(listOfHashTags);
-		String startTime = getStartTime(parameterList);
-		String endTime = getEndTime(parameterList);
-
-
+		String startTime=getTime(parameterList);
+		String endTime=getTime(parameterList);
 		if (endTime == EMPTY_STRING) {
 			endTime = STRING_INVALID;
 		}
@@ -406,7 +403,7 @@ public class Logic {
 		}
 	}
 
-	public static void getPriority(Vector<String> hashTags) {
+	private static void getPriority(Vector<String> hashTags) {
 		boolean found = false;
 		for (int i = 0; i < hashTags.size(); i++) {
 			if (hashTags.get(i).trim().equalsIgnoreCase("high")
@@ -434,7 +431,7 @@ public class Logic {
 		}
 	}
 
-	public static Duration getReminderTime(String[] parameterList) {
+	private static Duration getReminderTime(String[] parameterList) {
 		long miliseconds = 0;
 		int indexOfReminder = -1;
 		Vector<Long> timeQuantity = new Vector<Long>();
@@ -556,21 +553,7 @@ public class Logic {
 		return parameterList[0];
 	}
 
-	public static String getStartTime(String[] parameterList) {
-		String currentTime = EMPTY_STRING;
-		for (int i = 2; i < 6; i++) {
-			if (fieldFound[i] == false
-					&& !parameterList[i].equals(ELEMENT_EMPTY)) {
-				currentTime = EMPTY_STRING;
-				fieldFound[i] = true;
-				return parameterList[i];
-			}
-		}
-
-		return currentTime;
-	}
-
-	public static String getEndTime(String[] parameterList) {
+	private static String getTime(String[] parameterList) {
 		String endTime = EMPTY_STRING;
 		for (int i = 2; i < 6; i++) {
 			if (fieldFound[i] == false
@@ -584,7 +567,7 @@ public class Logic {
 		return endTime;
 	}
 
-	public static String getEventID() {
+	private static String getEventID() {
 		Vector<Integer> idDigits = new Vector<Integer>();
 		String eventId = LocalDate.now().toString()
 				+ LocalTime.now().toString();
