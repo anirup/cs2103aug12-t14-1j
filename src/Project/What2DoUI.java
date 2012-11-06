@@ -548,13 +548,15 @@ public class What2DoUI extends javax.swing.JFrame {
 				for (int i=0; i<upcomingEvents.size(); i++){
 //				html2+=String.format("<br><p class=\"MsoNormal\"><b>%s<span style=\"color: rgb(192, 80, 77); \">%s</span><span style=\"color: rgb(31, 73, 125); \">%s</span><span style=\"color: rgb(31, 73, 125); \">%s</span><span style=\"color: rgb(152, 72, 7); \">%s</span><span style=\"color: rgb(31, 73, 125); \">%s</span></b></p>", demoUpcomingEvents.get(i+1).get(0), demoUpcomingEvents.get(i+1).get(1), demoUpcomingEvents.get(i+1).get(2), demoUpcomingEvents.get(i+1).get(3), demoUpcomingEvents.get(i+1).get(4), demoUpcomingEvents.get(i+1).get(5), demoUpcomingEvents.get(i+1).get(6));					
 //				html2+=String.format("<br><p class=\"MsoNormal\"><b>%s <span style=\"color: rgb(192, 80, 77); \">%s</span><span style=\"color: rgb(31, 73, 125); \">%s</span><span style=\"color: rgb(31, 73, 125); \">%s</span><span style=\"color: rgb(152, 72, 7); \">%s</span></b></p>", formattedDisplay.get(i+1).get(0), formattedDisplay.get(i+1).get(1), formattedDisplay.get(i+1).get(2), formattedDisplay.get(i+1).get(3), formattedDisplay.get(i+1).get(4), formattedDisplay.get(i+1).get(5));						
-				html2+=String.format("<br><p class=\"MsoNormal\"><b>%s&nbsp;<span style=\"color: rgb(0, 32, 96); \">%s</span>&nbsp;<span style=\"color: red; \">%s</span> &nbsp;<span style=\"color: rgb(155, 187, 89); \">%s</span> &nbsp;<span style=\"color: rgb(75, 172, 198); \">%s</span>&nbsp; <span style=\"color: rgb(79, 129, 189); \">%s</span>&nbsp; <span style=\"color: rgb(228, 108, 10); \">%s</span></span></b></p>", demoUpcomingEvents.get(i+1).get(0), demoUpcomingEvents.get(i+1).get(1), demoUpcomingEvents.get(i+1).get(2), demoUpcomingEvents.get(i+1).get(3), demoUpcomingEvents.get(i+1).get(4), demoUpcomingEvents.get(i+1).get(5), demoUpcomingEvents.get(i+1).get(6));
+				
+//				html2+=String.format("<br><p class=\"MsoNormal\"><b>%s&nbsp;<span style=\"color: rgb(0, 32, 96); \">%s</span>&nbsp;<span style=\"color: red; \">%s</span> &nbsp;<span style=\"color: rgb(155, 187, 89); \">%s</span> &nbsp;<span style=\"color: rgb(75, 172, 198); \">%s</span>&nbsp; <span style=\"color: rgb(79, 129, 189); \">%s</span>&nbsp; <span style=\"color: rgb(228, 108, 10); \">%s</span></span></b></p>", demoUpcomingEvents.get(i+1).get(0), demoUpcomingEvents.get(i+1).get(1), demoUpcomingEvents.get(i+1).get(2), demoUpcomingEvents.get(i+1).get(3), demoUpcomingEvents.get(i+1).get(4), demoUpcomingEvents.get(i+1).get(5), demoUpcomingEvents.get(i+1).get(6));
+				html2+=String.format("<br><p class=\"MsoNormal\"><b>%s&nbsp;<span style=\"color: rgb(0, 32, 96); \">%s</span>&nbsp;<span style=\"color: red; \">%s</span> &nbsp;<span style=\"color: rgb(155, 187, 89); \">%s</span> &nbsp;<span style=\"color: rgb(75, 172, 198); \">%s</span>&nbsp; <span style=\"color: rgb(79, 129, 189); \">%s</span>&nbsp; <span style=\"color: rgb(228, 108, 10); \">%s</span></span></b></p>", formattedDisplay.get(i+1).get(0), formattedDisplay.get(i+1).get(1), formattedDisplay.get(i+1).get(2), formattedDisplay.get(i+1).get(3), formattedDisplay.get(i+1).get(4), formattedDisplay.get(i+1).get(5), formattedDisplay.get(i+1).get(6));
 				}
 				for (int i=0; i<floatingEvents.size(); i++){
 					html3+=String.format("<br><p class=\"MsoNormal\"><b>%s &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; %s&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(192, 80, 77); \">%s</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(31, 73, 125); \">%s</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(31, 73, 125); \">%s</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(152, 72, 7); \">%s</span></b></p>", demoFloatingEvents.get(i+1).get(0), demoFloatingEvents.get(i+1).get(1), demoFloatingEvents.get(i+1).get(2), demoFloatingEvents.get(i+1).get(3), demoFloatingEvents.get(i+1).get(4), demoFloatingEvents.get(i+1).get(5));					
 				}
 				for (int i=0; i<floatingEvents.size(); i++){
-					html4+=String.format("<br><p class=\"MsoNormal\"><b>%s &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; %s&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(192, 80, 77); \">%s</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(31, 73, 125); \">%s</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(31, 73, 125); \">%s</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(152, 72, 7); \">%s</span></b></p>", demoSearch.get(i+1).get(0), demoSearch.get(i+1).get(1), demoSearch.get(i+1).get(2), demoSearch.get(i+1).get(3), demoSearch.get(i+1).get(4), demoSearch.get(i+1).get(5));					
+					html4+=String.format("<br><p class=\"MsoNormal\"><b>%s &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; %s&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(192, 80, 77); \">%s</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(31, 73, 125); \">%s</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(31, 73, 125); \">%s</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(152, 72, 7); \">%s</span></b></p>", demoSearch.get(i+1).get(0), demoSearch.get(i+1).get(1), demoSearch.get(i+1).get(2), demoSearch.get(i+1).get(3), demoSearch.get(i+1).get(4), demoSearch.get(i+1).get(6));					
 				}
 
 				
@@ -658,14 +660,14 @@ public class What2DoUI extends javax.swing.JFrame {
 		formattedDisplay.get(0).set(0, "ID" + getSpaces(maximumLengths[0] - 2) + "     ");
 		formattedDisplay.get(0).set(1, "Event Name" + getSpaces(maximumLengths[1] - 10) + "     ");
 		formattedDisplay.get(0).set(2, "Details" + getSpaces(maximumLengths[2] - 7) + "     ");
-		formattedDisplay.get(0).set(3, "Start" + getSpaces(maximumLengths[3] - 5) + "     " + "End");
-		formattedDisplay.get(0).set(4, getSpaces(maximumLengths[4] - 3) + "     " + "Reminder");
-		formattedDisplay.get(0).set(5, "ID" + getSpaces(maximumLengths[0] - 2) + "     ");
+		formattedDisplay.get(0).set(3, "Start" + getSpaces(maximumLengths[3] - 5) + "     " );
+		formattedDisplay.get(0).set(4, "End"+ getSpaces(maximumLengths[4] - 3) + "     " );
+		formattedDisplay.get(0).set(5, "Reminder"+ getSpaces(maximumLengths[5] - 8) + "     " );
 		
 				
 		for (int i = 0; i < events.size(); i++) {
 			String[] tempArray = events.get(i).split("\\..");
-			String[] tempArray2 = { "", "", "", "", "", "" };
+			String[] tempArray2 = { "", "", "", "", "", "", ""};
 			for (int j = 0; j < tempArray.length; j++) {
 				tempArray2[j] = tempArray[j];
 			}
@@ -675,6 +677,7 @@ public class What2DoUI extends javax.swing.JFrame {
 			formattedDisplay.get(i+1).set(3, tempArray2[3] + getSpaces(maximumLengths[3] - tempArray2[3].length())+ "     ");
 			formattedDisplay.get(i+1).set(4, tempArray2[4] + getSpaces(maximumLengths[4] - tempArray2[4].length())+ "     ");
 			formattedDisplay.get(i+1).set(5, tempArray2[5] + getSpaces(maximumLengths[5] - tempArray2[5].length())+ "     ");
+			formattedDisplay.get(i+1).set(6, tempArray2[6] + getSpaces(maximumLengths[6] - tempArray2[6].length())+ "     ");
 		}
 	}
 
@@ -689,13 +692,14 @@ public class What2DoUI extends javax.swing.JFrame {
 
 
 	private int[] getMaximumLengths(ArrayList<String> unformatted) {
-		int[] lengths = new int[6];
+		int[] lengths = new int[7];
 		lengths[0] = 2;
 		lengths[1] = 10;
 		lengths[2] = 7;
 		lengths[3] = 5;
 		lengths[4] = 3;
 		lengths[5] = 8;
+		lengths[6] = 0;
 		for (int i = 0; i < unformatted.size(); i++) {
 			String[] tempStorage = unformatted.get(i).split("\\..");
 			for (int k = 0; k < tempStorage.length; k++) {
