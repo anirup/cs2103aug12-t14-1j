@@ -290,7 +290,7 @@ public class ListOfEvent {
 			return false;
 		} else if(!Clock.isBigBangTime(end) && Clock.isBigBangTime(start))  {
 			return false;
-		} else if(Clock.isBefore(end, start)) {
+		} else if(Clock.isBefore(end, start) && !Clock.isBigBangTime(end)) {
 			return false;
 		}
 		return true;

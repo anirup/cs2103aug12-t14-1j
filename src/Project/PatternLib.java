@@ -27,7 +27,7 @@ public class PatternLib {
 	private static final String hour24 = "((2[0-3])|(1[0-9])|(0?[0-9]))";
 	private static final String minute = "(([1-5][0-9])|(0?[0-9]))";
 	private static final String amOrPm = "((am)|(pm))";
-	private static final String timeSeparator = "[:\\.]";
+	private static final String timeSeparator = "[:\\.-]";
 	private static final String dateInWeek = "((Mon)|(Monday)|(Tue)|(Tuesday)|(Wed)|(Wednesday)|(Thu)|(Thursday)|(Fri)|(Friday)|(Sat)|(Saturday)|(Sun)|(Sunday))";
 	private static final String weekIndicator = "((this)|(next))";
 	private static final String patternDateSpecial = "((today)|(tomorrow)|(tmr)|(tom))";
