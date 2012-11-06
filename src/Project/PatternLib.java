@@ -33,7 +33,7 @@ public class PatternLib {
 	private static final String patternDateSpecial = "((today)|(tomorrow)|(tmr)|(tom))";
 	private static final String space = " ";
 	private static final String patternTime12InDay = "^(" + hour12 + "(" + timeSeparator + "?" + minute + ")" + "?" + space +  "?" + amOrPm + ")";
-	private static final String patternTime24InDay = "^(" + hour24 + "(" + timeSeparator + "?" + minute + ")" + "?" + ")";
+	private static final String patternTime24InDay = "^(" + hour24 + "(" + timeSeparator + "?" + minute + ")" + ")";
 	private static final String patternDateInWeek = "(" + weekIndicator + space + dateInWeek +  ")";
 	private static final String patternDateWithoutYearInt = "((" + date29 + dateSeparator + month29Int + ")|(" + 
 								date30 + dateSeparator + month30Int + ")|(" + date31 +  dateSeparator + month31Int + "))"; 
