@@ -223,7 +223,7 @@ public class Executor implements ListOfEventObserver {
 		searchResults.clear();
 		Vector<String> searchWords = getSearchWords(parameterList);
 		commenceSearch(searchWords);
-		Collections.sort(searchResults);
+		ListOfEvent.notifyObservers();
 	}
 
 	private static Vector<String> getSearchWords(String[] parameterList) {
@@ -257,6 +257,7 @@ public class Executor implements ListOfEventObserver {
 	}
 
 	public void updateListOfEvent() {
+		ListOfEvent.sortList();
 		currentListOfFloatingEventToDisplay = ListOfEvent
 				.getListOfFloatingEventToDisplayInString();
 		currentListOfUpcomingEventToDisplay = ListOfEvent

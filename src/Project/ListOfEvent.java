@@ -163,6 +163,7 @@ public class ListOfEvent {
 	}
 	
 	public static void searchInNameAndHashTags(Vector<String> searchWords) {	
+		ListOfEvent.sortList();
 		int size = ListOfEvent.size();
 		for (int i = 0; i < size; i++) {
 			if (searchWords.isEmpty())
@@ -234,15 +235,24 @@ public class ListOfEvent {
 	
 	private static ArrayList<String> toDisplay(ArrayList<Event> list) {
 		ArrayList<String> listToDisplay = new ArrayList<String>();
-
 		for(int index = 0; index < list.size(); index++) {
-			Event currentEvent = listOfEvent.get(index);
+			Event currentEvent = list.get(index);
 			if(currentEvent.getEventType() != Event.FLOATING_TYPE) {
 				String contentToDisplay = currentEvent.composeContentToDisplayInString();
-				contentToDisplay = String.format(displayFormat, 
-						currentNumberOfFloatingEvent + index + 1, contentToDisplay);
+				contentToDisplay = String.format(displayFormat, index + 1, contentToDisplay);
 				listToDisplay.add(contentToDisplay);
 			}
+		}
+		return listToDisplay;
+	}
+	
+	private static ArrayList<String> allEventsToDisplay(ArrayList<Event> list) {
+		ArrayList<String> listToDisplay = new ArrayList<String>();
+		for(int index = 0; index < list.size(); index++) {
+			Event currentEvent = list.get(index);
+			String contentToDisplay = currentEvent.composeContentToDisplayInString();
+			contentToDisplay = String.format(displayFormat, index + 1, contentToDisplay);
+			listToDisplay.add(contentToDisplay);
 		}
 		return listToDisplay;
 	}
@@ -254,7 +264,7 @@ public class ListOfEvent {
 			Event currentEvent = listOfEvent.get(index);
 			if(currentEvent.getEventType() == Event.FLOATING_TYPE) {
 				currentNumberOfFloatingEvent++;
-				String contentToDisplay = listOfEvent.get(index).composeContentToDisplayInString();
+				String contentToDisplay = currentEvent.composeContentToDisplayInString();
 				contentToDisplay = String.format(displayFormat, index + 1, contentToDisplay);
 				listToDisplay.add(contentToDisplay);
 			}
@@ -355,25 +365,10 @@ public class ListOfEvent {
 
 	public static ArrayList<String> getSearchResultsToDisplayInString() {
 		searchResults = sort(searchResults);
-		ArrayList<String> searchResultsToDisplay = toDisplaySearchResults(searchResults);
-		
+		ArrayList<String> searchResultsToDisplay = allEventsToDisplay(searchResults);		
 		return searchResultsToDisplay;
 	}
 	
-	private static ArrayList<String> toDisplaySearchResults(
-			ArrayList<Event> list) {
-		ArrayList<String> listToDisplay = new ArrayList<String>();
-
-		for(int index = 0; index < list.size(); index++) {
-			Event currentEvent = listOfEvent.get(index);
-				String contentToDisplay = currentEvent.composeContentToDisplayInString();
-				contentToDisplay = String.format(displayFormat, 
-						currentNumberOfFloatingEvent + index + 1, contentToDisplay);
-				listToDisplay.add(contentToDisplay);
-			}
-		return listToDisplay;
-	}
-
 	public static ArrayList<String> getListOfEventToDisplayInString() {
 		listOfEvent = sort(listOfEvent);
 		return toDisplay(listOfEvent);
