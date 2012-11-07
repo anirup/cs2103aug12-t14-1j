@@ -801,6 +801,8 @@ public class What2DoUI extends javax.swing.JFrame {
 		try
 		{
 		Executor.loadDatabase();
+		AlarmThread newAlarm = new AlarmThread();
+		new Thread(newAlarm).start();
 		}
 		catch(Exception e)
 		{

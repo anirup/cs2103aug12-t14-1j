@@ -16,9 +16,9 @@ public class CompareEventByTime implements Comparator<Event>{
 	}
 	
 	private static int getDateOrder(Event a, Event b) {
-		if (a.getEventEndTime().isBefore(b.getEventEndTime()))
+		if (a.getEventStartTime().isBefore(b.getEventStartTime()))
 			return -1;
-		else if (a.getEventEndTime().isAfter(b.getEventEndTime()))
+		else if (a.getEventStartTime().isAfter(b.getEventStartTime()))
 			return 1;
 		else
 			return 0;
