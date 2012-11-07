@@ -239,8 +239,8 @@ public class ListOfEvent {
 			Event currentEvent = listOfEvent.get(index);
 			if(currentEvent.getEventType() != Event.FLOATING_TYPE) {
 				String contentToDisplay = currentEvent.composeContentToDisplayInString();
-				contentToDisplay = String.format(displayFormat, 
-						currentNumberOfFloatingEvent + index + 1, contentToDisplay);
+				contentToDisplay = String.format(displayFormat, index + 1, contentToDisplay);
+						//currentNumberOfFloatingEvent + 
 				listToDisplay.add(contentToDisplay);
 			}
 		}
