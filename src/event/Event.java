@@ -3,11 +3,10 @@ import global.Clock;
 
 import org.joda.time.DateTime;
 
-
 public class Event {
 	private String _eventID;
 	private String _eventName;
-	private String _eventPriority;
+	private PRIORITY_TYPE _eventPriority;
 	private String _eventHashTag;
 	private DateTime _eventReminder;
 	private DateTime _eventStartTime;
@@ -23,7 +22,7 @@ public class Event {
 	protected static final int INDEX_FOR_EVENT_NAME = 1;
 	protected static final int INDEX_FOR_EVENT_PRIORITY = 2;
 	protected static final int INDEX_FOR_EVENT_HASHTAG = 3;
-	protected static final int INDEX_FOR_EVENT_ISDONE = 4;
+	protected static final int INDEX_OF_EVENT_ISDONE = 4;
 	protected static final int INDEX_FOR_EVENT_REMINDER_TIME = 5;
 	protected static final int INDEX_FOR_EVENT_START_TIME = 6;
 	protected static final int INDEX_FOR_EVENT_END_TIME = 7;
@@ -33,6 +32,10 @@ public class Event {
 	public static final int DEADLINE_TYPE = 1;
 	public static final int TIMED_TYPE = 2;
 
+	public enum PRIORITY_TYPE {
+		HIGH, NORMAL, LOW, INVALID;
+	}
+	
 	public Event() {
 		_eventID = null;
 		_eventName = null;
@@ -45,31 +48,41 @@ public class Event {
 		_timeCompleted = Clock.getBigBangTime();;
 	}
 	
-	public Event(String eventID, String eventName, String eventPriority, String eventHashTag,  boolean isDone,
-			DateTime eventReminder, DateTime eventStartTime, DateTime eventEndTime) {
+	public Event(String eventID, String name, PRIORITY_TYPE priority, String hashTag, DateTime reminder, DateTime start, DateTime end) {
 		_eventID = eventID;
-		_eventName = eventName;
-		_eventPriority = eventPriority;
-		_eventHashTag = eventHashTag;
-		_isDone = isDone;
-		_eventReminder = eventReminder;
-		_eventStartTime = eventStartTime;
-		_eventEndTime = eventEndTime;
-		return;
+		_eventName = name;
+		_eventPriority = priority;
+		_eventHashTag = hashTag;
+		_isDone = false;
+		_eventReminder = reminder;
+		_eventStartTime = start;
+		_eventEndTime = end;
+		_timeCompleted = Clock.getBigBangTime();;
 	}
-	
+
 	public void parse(String[] contentToExtract) {		
 		assert contentToExtract.length == 9;
 		_eventID = contentToExtract[INDEX_FOR_EVENT_ID];
 		_eventName = contentToExtract[INDEX_FOR_EVENT_NAME];
-		_eventPriority = contentToExtract[INDEX_FOR_EVENT_PRIORITY];
+		_eventPriority = extractEventPriority(contentToExtract[INDEX_FOR_EVENT_PRIORITY]);
 		_eventHashTag = contentToExtract[INDEX_FOR_EVENT_HASHTAG];
-		_isDone = extractEventIsDone(contentToExtract[INDEX_FOR_EVENT_ISDONE]);
+		_isDone = extractEventIsDone(contentToExtract[INDEX_OF_EVENT_ISDONE]);
 		_eventReminder = Clock.parseTimeFromString(contentToExtract[INDEX_FOR_EVENT_REMINDER_TIME]);
 		_eventStartTime = Clock.parseTimeFromString(contentToExtract[INDEX_FOR_EVENT_START_TIME]);
 		_eventEndTime = Clock.parseTimeFromString(contentToExtract[INDEX_FOR_EVENT_END_TIME]);
 		_timeCompleted = Clock.parseTimeFromString(contentToExtract[INDEX_FOR_COMPLETED_TIME]);
 		return;
+	}
+	
+	private PRIORITY_TYPE extractEventPriority(String priority) {
+		if(priority.trim().equalsIgnoreCase("high")) {
+			return PRIORITY_TYPE.HIGH;
+		} else if(priority.trim().equalsIgnoreCase("normal")) {
+			return PRIORITY_TYPE.NORMAL;
+		} else if(priority.trim().equalsIgnoreCase("low")) {
+			return PRIORITY_TYPE.LOW;
+		}
+		return PRIORITY_TYPE.INVALID;
 	}
 	
 	public int getEventType() {
@@ -121,7 +134,7 @@ public class Event {
 		return _eventName.contains(keyWord);
 	}
 	
-	public String getPriority() {
+	public PRIORITY_TYPE getPriority() {
 		return _eventPriority;
 	}
 	
@@ -133,8 +146,25 @@ public class Event {
 		return _eventID;
 	}
 	
+	private String getPriorityInString() {
+		switch(_eventPriority) {
+		case HIGH:
+			return "HIGH";
+		case NORMAL:
+			return "NORMAL";
+		case LOW:
+			return "LOW";
+		default:
+			return "NORMAL";
+		}
+	}
+	
 	public void markDone() {
-		_timeCompleted = DateTime.now();
+		if(Clock.isBefore(_eventEndTime, DateTime.now()) && Clock.isBigBangTime(_eventEndTime)) {
+			_timeCompleted = _eventEndTime;
+		} else {
+			_timeCompleted = DateTime.now();
+		}
 		_isDone = true;
 		return;
 	}
@@ -177,16 +207,35 @@ public class Event {
 
 	public String composeContentToDisplayInString() {
 		String content = _eventName;
-		content= content + SPLITTER + _eventPriority;
+		content= content + SPLITTER + getPriorityInString();
 		content= content + SPLITTER + _eventHashTag;
+		content= content + SPLITTER + Boolean.toString(_isDone);
+		content= content + SPLITTER + reminderToStringToDisplay();
 		content= content + SPLITTER + Clock.toStringToDisplay(_eventStartTime);
 		content= content + SPLITTER + Clock.toStringToDisplay(_eventEndTime);
-		content= content + SPLITTER + Clock.toStringToDisplay(_eventReminder);
 		return content;
 	}
 	
+	private String reminderToStringToDisplay() {
+		if(this.getEventType() == 0) {
+			return "";
+		}
+		DateTime date = _eventStartTime.minus(_eventReminder.getMillis());
+		long dateInMillis = date.getMillis(); 
+		long minutes = 60*1000;
+		long hour = 60*minutes;
+		long day = 60*hour;
+		if(dateInMillis/day > 0) {
+			return Long.toString(dateInMillis/day) + " days";
+		} else if(dateInMillis/hour > 0) {
+			return Long.toString(dateInMillis/hour) + " hours";
+		} else {
+			return Long.toString(dateInMillis/minutes) + " mins";
+		}
+	}
+	
 	public String toString() {
-		String content = _eventID + SPLITTER + _eventName + SPLITTER + _eventPriority + SPLITTER + 
+		String content = _eventID + SPLITTER + _eventName + SPLITTER + getPriorityInString() + SPLITTER + 
 				_eventHashTag + SPLITTER + Boolean.toString(_isDone) + SPLITTER + Clock.toString(_eventReminder) +  
 				 SPLITTER + Clock.toString(_eventStartTime)  + SPLITTER + Clock.toString(_eventEndTime)
 				 + SPLITTER + Clock.toString(_timeCompleted);

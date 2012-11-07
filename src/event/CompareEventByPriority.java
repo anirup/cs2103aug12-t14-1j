@@ -1,30 +1,23 @@
 package event;
-
 import java.util.Comparator;
-
+import event.Event;
 
 public class CompareEventByPriority implements Comparator<Event>{
-
-	private static final String PRIORITY_LOW = "Low";
-	private static final String PRIORITY_NORMAL = "Normal";
-	private static final String PRIORITY_HIGH = "high";
 	
 	public int compare(Event firstEvent, Event secondEvent) {
-		int firstEventPriority = returnPriorityValue(firstEvent);
-		int secondEventPriority = returnPriorityValue(secondEvent);
-		return firstEventPriority - secondEventPriority;
+		int firstPriority = getPriorityInInt(firstEvent);
+		int secondPriority = getPriorityInInt(secondEvent);
+		return firstPriority - secondPriority;
 	}
 	
-	private static int returnPriorityValue(Event event) {
-		String p = event.getPriority();
-		if (p.equalsIgnoreCase(PRIORITY_HIGH))
+	private static int getPriorityInInt(Event event) {
+		Event.PRIORITY_TYPE priority = event.getPriority();
+		if (priority == Event.PRIORITY_TYPE.HIGH)
 			return 0;
-		else if (p.equalsIgnoreCase(PRIORITY_NORMAL))
+		else if (priority == Event.PRIORITY_TYPE.NORMAL)
 			return 1;
-		else if (p.equalsIgnoreCase(PRIORITY_LOW))
+		else if (priority == Event.PRIORITY_TYPE.LOW)
 			return 2;
 		return 1;
 	}
-
-
 }
