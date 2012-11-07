@@ -4,10 +4,12 @@ package Test;
 import static org.junit.Assert.*;
 
 import java.util.Vector;
+
+import logAndException.Logic;
+import logic.PatternLib;
+
 import org.junit.Test;
 
-import Project.Logic;
-import Project.PatternLib;
 
 public class TestLogic {
 

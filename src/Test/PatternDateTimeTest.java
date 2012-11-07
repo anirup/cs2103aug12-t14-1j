@@ -4,12 +4,13 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.regex.Pattern;
 
+import logic.PatternDateTime;
+import logic.PatternLib;
+
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 
-import Project.PatternDateTime;
-import Project.PatternLib;
 
 
 public class PatternDateTimeTest {

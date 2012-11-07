@@ -2,13 +2,13 @@ package Test;
 
 
 import static org.junit.Assert.assertEquals;
+import global.Clock;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.junit.Before;
 import org.junit.Test;
 
-import Project.Clock;
 
 
 public class TestClock {
