@@ -142,6 +142,7 @@ public class Executor implements ListOfEventObserver {
 
 			} else if (command.equalsIgnoreCase(COMMAND_SEARCH)) {
 				analyzeAndSearch(parameterList);
+				ListOfEvent.notifyObservers();
 				searchToTrue();
 			} else if (command.equalsIgnoreCase(COMMAND_DONE)) {
 				if (userInputInteger > -1) {
