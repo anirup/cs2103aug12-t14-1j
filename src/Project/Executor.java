@@ -58,8 +58,7 @@ public class Executor implements ListOfEventObserver {
 		Logic.setUp();
 		// Check if user has just entered a positive integer parameter, returns
 		// -2 if not an integer, -1 if user entered 0
-		int userInputInteger = Logic.getInteger(parameterList) - 1;
-
+		
 		try {
 			parameters = Logic.splitInput(userInput);
 		} catch (Exception e) {
@@ -73,7 +72,8 @@ public class Executor implements ListOfEventObserver {
 			parameterList[i] = parameters.get(i);
 
 		ListOfEvent.sortList();
-
+		int userInputInteger = Logic.getInteger(parameterList) - 1;
+		
 		try {
 			String command = Logic.getCommand(parameterList);
 			if (command.equalsIgnoreCase(COMMAND_ADD)

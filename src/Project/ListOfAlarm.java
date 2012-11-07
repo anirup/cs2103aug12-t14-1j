@@ -42,7 +42,7 @@ public class ListOfAlarm implements ListOfEventObserver {
 				if(alarmElement.isAlarmTime()){
 					DialogRun d = new DialogRun(alarmElement.getEventName());
 					new Thread(d).start();
-					it.remove();
+					//it.remove();
 					break;
 				}
 					
