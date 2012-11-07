@@ -13,7 +13,11 @@ public class Event {
 	private DateTime _eventEndTime;
 	private DateTime _timeCompleted;
 	private boolean _isDone;
-	
+	private static final String EMPTY_STRING = "";
+	private static final int MILLISECONDS_IN_SECOND = 1000;
+	private static final int MILLISECONDS_IN_MINUTE = 60000;
+	private static final int MILLISECONDS_IN_HOUR = 3600000;
+	private static final int MILLISECONDS_IN_DAY = 86400000;
 	public static final String SPLITTER = "..";
 	protected final String NEW_LINE = "\n";
 	public static final String SPACE = " ";
@@ -210,14 +214,14 @@ public class Event {
 		content= content + SPLITTER + getPriorityInString();
 		content= content + SPLITTER + _eventHashTag;
 		content= content + SPLITTER + Boolean.toString(_isDone);
-		content= content + SPLITTER + reminderToStringToDisplay();
 		content= content + SPLITTER + Clock.toStringToDisplay(_eventStartTime);
 		content= content + SPLITTER + Clock.toStringToDisplay(_eventEndTime);
+		content= content + SPLITTER + reminderToStringToDisplay();
 		return content;
 	}
 	
 	private String reminderToStringToDisplay() {
-		if(this.getEventType() == 0) {
+		if(Clock.isBigBangTime(_eventReminder)) {
 			return "";
 		}
 		DateTime date = _eventStartTime.minus(_eventReminder.getMillis());
@@ -225,13 +229,15 @@ public class Event {
 		long minutes = 60*1000;
 		long hour = 60*minutes;
 		long day = 60*hour;
+		String reminderTime="";
 		if(dateInMillis/day > 0) {
-			return Long.toString(dateInMillis/day) + " days";
-		} else if(dateInMillis/hour > 0) {
-			return Long.toString(dateInMillis/hour) + " hours";
-		} else {
-			return Long.toString(dateInMillis/minutes) + " mins";
+			reminderTime+=Long.toString(dateInMillis/day) + " days";
+		}else if(dateInMillis/hour > 0) {
+			reminderTime+= Long.toString(dateInMillis/hour) + " hours";
+		}else if(dateInMillis/minutes >0) {
+			reminderTime+=Long.toString(dateInMillis/minutes) + " minutes";
 		}
+		return ("r-"+reminderTime);
 	}
 	
 	public String toString() {

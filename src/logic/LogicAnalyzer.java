@@ -10,7 +10,7 @@ import org.joda.time.Duration;
 
 public class LogicAnalyzer {
 	private static final String ELEMENT_EMPTY = "-1";
-	private static final String EXTRACT_NUMBERS_PATTERN = "\\d+";
+	private static final String EXTRACT_NUMBERS_PATTERN = "[0-9]{1,}";
 	private static final String STRING_FALSE = "false";
 	private static final String STRING_INVALID = "invalid";
 	private static final String STRING_SPACE = " ";
@@ -88,8 +88,8 @@ public class LogicAnalyzer {
 
 		String eventTime = startTime + SPLITTER + endTime;
 		String reminderString = null;
-		if (endTime != STRING_INVALID && eventReminder.getMillis() != 0) {
-			DateTime reminder = end.minusSeconds((int) eventReminder
+		if (startTime != STRING_INVALID && eventReminder.getMillis() != 0) {
+			DateTime reminder = start.minusSeconds((int) eventReminder
 					.getStandardSeconds());
 			reminderString = reminder.getHourOfDay() + SPLITTER_TIME
 					+ reminder.getMinuteOfHour() + STRING_SPACE
@@ -150,75 +150,51 @@ public class LogicAnalyzer {
 		Vector<Long> timeQuantity = new Vector<Long>();
 		Vector<String> timeParameter = new Vector<String>();
 		for (int i = 0; i < parameterList.length; i++) {
-			if (parameterList[i].trim().startsWith("r-")
-					|| parameterList[i].trim().startsWith("R-")) {
+			if (parameterList[i].trim().contains("r-")
+					|| parameterList[i].trim().contains("R-")) {
 				fieldFound[i] = true;
 				indexOfReminder = i;
 				Pattern p = Pattern.compile(EXTRACT_NUMBERS_PATTERN);
 				Matcher matches = p.matcher(parameterList[i].trim());
 				while (matches.find()) {
-					timeQuantity.add(Long.parseLong(matches.group()));
+					timeQuantity.add((Long.parseLong(matches.group())));
 				}
 				break;
 			}
 		}
 		if (indexOfReminder != -1) {
-			for (int j = 0; j < timeQuantity.size() - 1; j++) {
-				String firstLimitString = EMPTY_STRING + timeQuantity.get(j);
-				String secondLimitString = EMPTY_STRING
-						+ timeQuantity.get(j + 1);
-				int lastIndex = parameterList[indexOfReminder]
-						.indexOf(secondLimitString);
-				int firstIndex = firstLimitString.length()
-						+ parameterList[indexOfReminder]
-								.indexOf(firstLimitString);
-				String parameter = parameterList[indexOfReminder].substring(
-						firstIndex, lastIndex);
-				timeParameter.addElement(parameter.toLowerCase());
-			}
-			String firstLimitString = EMPTY_STRING
-					+ timeQuantity.get(timeQuantity.size() - 1);
-			int lastIndex = parameterList[indexOfReminder].length() - 1;
-			int firstIndex = firstLimitString.length()
-					+ parameterList[indexOfReminder].indexOf(firstLimitString);
-			String parameter = parameterList[indexOfReminder].substring(
-					firstIndex, lastIndex + 1);
-			timeParameter.addElement(parameter.toLowerCase());
-			for (int k = 0; k < timeParameter.size(); k++) {
-				if (timeParameter.get(k).trim()
-						.startsWith(REMINDER_DAY_SHORTHAND2)
-						|| timeParameter.get(k).trim()
-								.startsWith(REMINDER_DAY_SHORTHAND1)
-						|| timeParameter.get(k).trim()
-								.startsWith(REMINDER_DAYS)) {
-					miliseconds += timeQuantity.get(k) * MILLISECONDS_IN_DAY;
-				} else if (timeParameter.get(k).trim()
-						.startsWith(REMINDER_HOUR_SHORTHAND2)
-						|| timeParameter.get(k).trim()
-								.startsWith(REMINDER_HOUR_SHORTHAND1)
-						|| timeParameter.get(k).trim()
-								.startsWith(REMINDER_HOUR)) {
-					miliseconds += timeQuantity.get(k) * MILLISECONDS_IN_HOUR;
-				} else if (timeParameter.get(k).trim()
-						.startsWith(REMINDER_MINUTE_SHORTHAND2)
-						|| timeParameter.get(k).trim()
-								.startsWith(REMINDER_MINUTE_SHORTHAND1)
-						|| timeParameter.get(k).trim()
-								.startsWith(REMINDER_MINUTE)) {
-					miliseconds += timeQuantity.get(k) * MILLISECONDS_IN_MINUTE;
-				} else if (timeParameter.get(k).trim()
-						.startsWith(REMINDER_SECOND_SHORTHAND2)
-						|| timeParameter.get(k).trim()
-								.startsWith(REMINDER_SECOND_SHORTHAND1)
-						|| timeParameter.get(k).trim()
-								.startsWith(REMINDER_SECOND)) {
-					miliseconds += timeQuantity.get(k) * MILLISECONDS_IN_SECOND;
+				if (parameterList[indexOfReminder].trim()
+						.contains(REMINDER_DAY_SHORTHAND2)
+						|| parameterList[indexOfReminder].trim()
+								.contains(REMINDER_DAY_SHORTHAND1)
+						|| parameterList[indexOfReminder].trim()
+								.contains(REMINDER_DAYS)) {
+					miliseconds += timeQuantity.get(0) * MILLISECONDS_IN_DAY;
+				} else if (parameterList[indexOfReminder].trim()
+						.contains(REMINDER_HOUR_SHORTHAND2)
+						|| parameterList[indexOfReminder].trim()
+								.contains(REMINDER_HOUR_SHORTHAND1)
+						|| parameterList[indexOfReminder].trim()
+								.contains(REMINDER_HOUR)) {
+					miliseconds += timeQuantity.get(0) * MILLISECONDS_IN_HOUR;
+				} else if (parameterList[indexOfReminder].trim()
+						.contains(REMINDER_MINUTE_SHORTHAND2)
+						|| parameterList[indexOfReminder].trim()
+								.contains(REMINDER_MINUTE_SHORTHAND1)
+						|| parameterList[indexOfReminder].trim()
+								.contains(REMINDER_MINUTE)) {
+					miliseconds += timeQuantity.get(0) * MILLISECONDS_IN_MINUTE;
+				} else if (parameterList[indexOfReminder].trim()
+						.contains(REMINDER_SECOND_SHORTHAND2)
+						|| parameterList[indexOfReminder].trim()
+								.contains(REMINDER_SECOND_SHORTHAND1)
+						|| parameterList[indexOfReminder].trim()
+								.contains(REMINDER_SECOND)) {
+					miliseconds += timeQuantity.get(0) * MILLISECONDS_IN_SECOND;
 				}
-			}
 		} else {
 			fieldFound[4] = true;
 		}
-
 		return (new Duration(miliseconds));
 	}
 
@@ -291,33 +267,5 @@ public class LogicAnalyzer {
 		} catch (NumberFormatException e) {
 			return -1;
 		}
-	}
-
-	public static String getReminderInFromat(String endTime, String reminder) {
-		String formattedReminder = EMPTY_STRING;
-		if (!endTime.equalsIgnoreCase(EMPTY_STRING)
-				&& !reminder.equalsIgnoreCase(EMPTY_STRING)) {
-			formattedReminder += "r-";
-			DateTime end = Clock.parseTimeFromString(endTime);
-			DateTime reminderTime = Clock.parseTimeFromString(reminder);
-			Long milli = (end.getMillis() - reminderTime.getMillis());
-			int day = (int) (milli / MILLISECONDS_IN_DAY);
-			milli = (Long) (milli - (day * MILLISECONDS_IN_DAY));
-			int hour = (int) (milli / MILLISECONDS_IN_HOUR);
-			milli = (Long) (milli - (day * MILLISECONDS_IN_HOUR));
-			int minutes = (int) (milli / MILLISECONDS_IN_MINUTE);
-			milli = (Long) (milli - (day * MILLISECONDS_IN_MINUTE));
-			int seconds = (int) (milli / 1000.0);
-			if (day != 0) {
-				formattedReminder += day + "day";
-			} else if (hour != 0) {
-				formattedReminder += hour + "hr";
-			} else if (minutes != 0) {
-				formattedReminder += minutes + "min";
-			} else if (seconds != 0) {
-				formattedReminder += seconds + "sec";
-			}
-		}
-		return formattedReminder;
 	}
 }

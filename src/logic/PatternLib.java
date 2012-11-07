@@ -50,13 +50,9 @@ public class PatternLib {
 								date29 + dateSeparator + "?" + month29String + dateSeparator + "?" + leapYearInt + ")|(" + 
 								date30 + dateSeparator + "?" + month30String + dateSeparator + "?" + yearInt + ")|(" + 
 								date31 +  dateSeparator + "?" + month31Int + dateSeparator + "?" + yearInt + "))";
-	private static final String patternReminderMinutes = "r ?- ?(((0?[0-9])|([1-5][0-9])) ?((min[s]?)|(minute[s]?)))";
-	private static final String patternReminderHours = "r ?- ?((0?[0-9])|(1[0-9])|(2[0-4])) ?((hour[s]?)|(h)|(hr[s]))";
-	private static final String patternReminderDays = "r ?- ?(((0?[0-9])|([1-9][0-9])) ?((day[s]?)|(d)))";
-	private static final String patternReminderMinutesHoursDays = "r ?- ?(((0?[0-9])|([1-5][0-9])) ?((min[s]?)|(minute[s]?))) ?((0?[0-9])|(1[0-9])|(2[0-4])) ?((hour[s]?)|(h)|(hr[s]?)) ?(((0?[0-9])|([1-9][0-9])) ?((day[s]?)|(d)))";
-	private static final String patternReminderHoursDays = "r ?- ?((0?[0-9])|(1[0-9])|(2[0-4])) ?((hour[s]?)|(h)|(hr[s]?)) ?(((0?[0-9])|([1-9][0-9])) ?((day[s]?)|(d)))";
-	private static final String patternReminderMinutesDays = "r ?- ?(((0?[0-9])|([1-5][0-9])) ?((min[s]?)|(minute[s]?))) ?(((0?[0-9])|([1-9][0-9])) ?((day[s]?)|(d)))";
-	private static final String patternReminderMinutesHours = "r ?- ?(((0?[0-9])|([1-5][0-9])) ?((min[s]?)|(minute[s]?))) ?((0?[0-9])|(1[0-9])|(2[0-4])) ?((hour[s]?)|(h)|(hr[s]?))";
+	private static final String patternReminderMinutes = "r ?- ?([0-9]{1,} ?((minute[s]?)|(min[s]?)))";
+	private static final String patternReminderHours = "r ?- ?([0-9]{1,} ?((hour[s]?)|(h)|(hr[s])))";
+	private static final String patternReminderDays = "r ?- ?([0-9]{1,} ?((day[s]?)|(d)))";
 	
 	public static void setUpPattern() {
 		
@@ -132,32 +128,13 @@ public class PatternLib {
 		pattern = new PatternDateTime(Pattern.compile(patternDateSpecial, flags), "patternDateSpecial");
 		pat.add(pattern);
 		
-		pattern = new PatternDateTime(Pattern.compile(patternReminderMinutesHoursDays), "r-");
-		//pat.add(pattern);
-		patReminder.add(pattern);
-		
-		pattern = new PatternDateTime(Pattern.compile(patternReminderHoursDays), "r-");
-		//pat.add(pattern);
-		patReminder.add(pattern);
-		
-		pattern = new PatternDateTime(Pattern.compile(patternReminderMinutesDays), "r-");
-		//pat.add(pattern);
-		patReminder.add(pattern);
-		
-		pattern = new PatternDateTime(Pattern.compile(patternReminderMinutesHours), "r-");
-	//	pat.add(pattern);
-		patReminder.add(pattern);
-		
 		pattern = new PatternDateTime(Pattern.compile(patternReminderHours), "r-");
-//		pat.add(pattern);
 		patReminder.add(pattern);
 		
 		pattern = new PatternDateTime(Pattern.compile(patternReminderDays), "r-");
-	//	pat.add(pattern);
 		patReminder.add(pattern);
 
 		pattern = new PatternDateTime(Pattern.compile(patternReminderMinutes), "r-");
-	//	pat.add(pattern);
 		patReminder.add(pattern);
 	}
 	
