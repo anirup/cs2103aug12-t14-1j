@@ -33,7 +33,7 @@ public class PatternLib {
 	private static final String patternDateSpecial = "((today)|(tomorrow)|(tmr)|(tom))";
 	private static final String space = " ";
 	private static final String patternTime12InDay = "^(" + hour12 + "(" + timeSeparator + "?" + minute + ")" + "?" + space +  "?" + amOrPm + ")";
-	private static final String patternTime24InDay = "^(" + hour24 + "(" + timeSeparator + "?" + minute + ")" + "?" + ")";
+	private static final String patternTime24InDay = "^(" + hour24 + "(" + timeSeparator + "?" + minute + ")" + ")";
 	private static final String patternDateInWeek = "(" + weekIndicator + space + dateInWeek +  ")";
 	private static final String patternDateWithoutYearInt = "((" + date29 + dateSeparator + month29Int + ")|(" + 
 								date30 + dateSeparator + month30Int + ")|(" + date31 +  dateSeparator + month31Int + "))"; 
@@ -65,11 +65,11 @@ public class PatternLib {
 		pattern = new PatternDateTime(Pattern.compile(patternTime24AndDateInWeek, flags), "patternTime24AndDateInWeek");
 		pat.add(pattern);
 		
-		String patternTime12AndpatternDateSpecial = "(" + patternTime12InDay + space + patternDateSpecial + ")";
+		String patternTime12AndpatternDateSpecial = "(" + patternTime12InDay + space +"?"+ patternDateSpecial + ")";
 		pattern = new PatternDateTime(Pattern.compile(patternTime12AndpatternDateSpecial, flags), "patternTime12AndpatternDateSpecial");
 		pat.add(pattern);
 		
-		String patternTime24AndpatternDateSpecial = "(" + patternTime24InDay + space + patternDateSpecial + ")";
+		String patternTime24AndpatternDateSpecial = "(" + patternTime24InDay + space +"?"+ patternDateSpecial + ")";
 		pattern = new PatternDateTime(Pattern.compile(patternTime24AndpatternDateSpecial, flags), "patternTime24AndpatternDateSpecial");
 		pat.add(pattern);
 		
