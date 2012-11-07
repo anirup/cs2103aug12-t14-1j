@@ -1,15 +1,11 @@
 package logic;
 
 import global.Clock;
-
 import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
-import org.joda.time.LocalDate;
-import org.joda.time.LocalTime;
 
 
 public class LogicAnalyzer {
@@ -238,9 +234,6 @@ public class LogicAnalyzer {
 					if (hashCodes[j].trim().isEmpty()
 							|| hashCodes[j].trim().equalsIgnoreCase(
 									EMPTY_STRING)) {
-						LogicSplitter.additionalComments
-								.add("Empty Hash Tag Detected - It was Ignored.");
-					} else {
 						listOfHashTags.add(hashCodes[j].trim());
 					}
 				}
@@ -285,19 +278,10 @@ public class LogicAnalyzer {
 	}
 
 	private static String getEventID() {
-		Vector<Integer> idDigits = new Vector<Integer>();
-		String eventId = LocalDate.now().toString()
-				+ LocalTime.now().toString();
-		Pattern p = Pattern.compile(EXTRACT_NUMBERS_PATTERN);
-		Matcher matches = p.matcher(eventId.trim());
-		while (matches.find()) {
-			idDigits.add((int) Long.parseLong(matches.group()));
-		}
-		eventId = EMPTY_STRING;
-		for (int i = 0; i < idDigits.size(); i++) {
-			eventId += idDigits.get(i);
-		}
+		long id=System.currentTimeMillis();
+		String eventId=""+id;
 		return eventId;
+		
 
 	}
 
