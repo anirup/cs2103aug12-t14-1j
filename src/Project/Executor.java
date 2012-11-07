@@ -256,6 +256,7 @@ public class Executor implements ListOfEventObserver {
 	}
 
 	public void updateListOfEvent() {
+		ListOfEvent.sortList();
 		currentListOfFloatingEventToDisplay = ListOfEvent
 				.getListOfFloatingEventToDisplayInString();
 		currentListOfUpcomingEventToDisplay = ListOfEvent
