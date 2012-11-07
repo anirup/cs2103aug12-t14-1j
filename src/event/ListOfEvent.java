@@ -1,20 +1,18 @@
 package event;
 
+import fileIO.DatabaseManager;
+import global.Clock;
+import global.StringOperation;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Vector;
+
 import org.joda.time.DateTime;
 
-import executor.Executor;
-import fileIO.DatabaseManager;
-import global.Clock;
-import global.StringOperation;
-
 import alarm.AlarmType;
-import alarm.ListOfAlarm;
-
 
 public class ListOfEvent {
 	private static ArrayList<Event> listOfEvent = new ArrayList<Event>();
@@ -26,6 +24,7 @@ public class ListOfEvent {
 	private static final int INDEX_OF_EVENT_ISDONE = 4;
 	private static final int INDEX_OF_REMINDER_TIME = 5;
 	private static final int INDEX_OF_COMPLETED_TIME = 8;
+	private static int currentNumberOfFloatingEvent = 0;
 	private static ArrayList<String> feedback = new ArrayList<String>();
 	private static final String STRING_NULL = "";
 
@@ -42,8 +41,6 @@ public class ListOfEvent {
 	}
 	
 	public static void setUpDataFromDatabase() throws Exception {
-		addObserver(Executor.getInstance());
-		addObserver(ListOfAlarm.getInstance());
 		DatabaseManager.setUpDataFromDatabase(fileName);
 		notifyObservers();
 	}
@@ -52,6 +49,15 @@ public class ListOfEvent {
 		ArrayList<String> listOfEventInString = new ArrayList<String>();
 		listOfEventInString = getContentToSyncToDatabase();
 		DatabaseManager.syncDataToDatabase(listOfEventInString, fileName);
+	}
+	
+	public void clearFeedback() {
+		feedback.clear();
+		return;
+	}
+	
+	public static ArrayList<String> getFeedback() {
+		return feedback;
 	}
 	
 	public static int size() {
@@ -104,17 +110,17 @@ public class ListOfEvent {
 		for(int index = 0; index < listOfEvent.size(); index++) {
 			Event currentEvent = listOfEvent.get(index);
 			if(currentEvent.isClashedWith(newEvent)) {
-				feedback.add("clashed");
+				feedback.add("The new Event is Clashed with exixting Events. Do you want to add?");
 				return;
 			}
 		}
 	}
-	
+
 	private static void isBeforeCurrentTime(Event newEvent) {
 		if(newEvent.getEventType() == Event.FLOATING_TYPE) {
 			return;
 		} else if (newEvent.getEventEndTime().isBeforeNow()) {
-			feedback.add("past");
+			feedback.add("The new Event has already passed. Do you want to add?");
 			return;
 		}
 	}
@@ -141,38 +147,43 @@ public class ListOfEvent {
 		return remove(index, listOfEvent);
 	}
 	
-	public static ArrayList<Event> updateSearch(int position, Event eventToUpdate) {
+	public static ArrayList<Event> updateSearch(int position, String eventToUpdate) {
+		assert position <= searchResults.size();
 		ArrayList<Event> update = new ArrayList<Event>();
 		Event removedEvent = searchResults.remove(position);
-		searchResults.add(position, eventToUpdate);
-		update(removedEvent, eventToUpdate);
-		update.add(removedEvent);
-		update.add(eventToUpdate);
-		return update;
+		Event updatedEvent = getEventFromString(eventToUpdate);
+		if(updatedEvent != null) {
+			searchResults.add(updatedEvent);
+			update(removedEvent, updatedEvent);
+			update.add(removedEvent);
+			update.add(updatedEvent);			
+			return update;
+		}
+		return null;
 	}
 	
-	public static ArrayList<Event> updateList(int position, Event eventToUpdate) {
+	public static ArrayList<Event> updateList(int position, String eventToUpdate) {
 		ArrayList<Event> update = new ArrayList<Event>();
 		Event removedEvent = listOfEvent.remove(position);
-		listOfEvent.add(position, eventToUpdate);
-		update(removedEvent, eventToUpdate);
+		Event updatedEvent = getEventFromString(eventToUpdate);
+		listOfEvent.add(updatedEvent);
+		update(removedEvent, updatedEvent);
 		update.add(removedEvent);
-		update.add(eventToUpdate);
+		update.add(updatedEvent);
 		return update;
 	}
 	
 	public static boolean update(Event eventToReplace, Event eventToBeReplaced) {
 		int indexOfEventToBeReplaced = indexOf(eventToBeReplaced);
 		if (indexOfEventToBeReplaced != -1) {
-			updateList(indexOfEventToBeReplaced, eventToReplace);
+			listOfEvent.remove(indexOfEventToBeReplaced);
+			listOfEvent.add(indexOfEventToBeReplaced, eventToReplace);
 			return true;
 		}
 		return false;
 	}
 	
 	public static void searchInNameAndHashTags(Vector<String> searchWords) {	
-		ListOfEvent.sortList();
-		searchResults.clear();
 		int size = ListOfEvent.size();
 		for (int i = 0; i < size; i++) {
 			if (searchWords.isEmpty())
@@ -224,7 +235,7 @@ public class ListOfEvent {
 			Event currentEvent = listOfEvent.get(index);
 			DateTime eventReminder = currentEvent.getEventReminder();
 			if(!Clock.isSameTime(Clock.getBigBangTime(), eventReminder) 
-					&& !currentEvent.isDone()) {
+					&& !currentEvent.isDone() && !Clock.isBefore(eventReminder, DateTime.now())) {
 				AlarmType newAlarm = new AlarmType(currentEvent.getEventName(), eventReminder);
 				reminderList.add(newAlarm);
 			}
@@ -244,36 +255,27 @@ public class ListOfEvent {
 	
 	private static ArrayList<String> toDisplay(ArrayList<Event> list) {
 		ArrayList<String> listToDisplay = new ArrayList<String>();
+
 		for(int index = 0; index < list.size(); index++) {
-			Event currentEvent = list.get(index);
+			Event currentEvent = listOfEvent.get(index);
 			if(currentEvent.getEventType() != Event.FLOATING_TYPE) {
 				String contentToDisplay = currentEvent.composeContentToDisplayInString();
-				contentToDisplay = String.format(displayFormat, index + 1, contentToDisplay);
+				contentToDisplay = String.format(displayFormat, 
+						currentNumberOfFloatingEvent + index + 1, contentToDisplay);
 				listToDisplay.add(contentToDisplay);
 			}
 		}
 		return listToDisplay;
 	}
 	
-	private static ArrayList<String> allEventsToDisplay(ArrayList<Event> list) {
-		ArrayList<String> listToDisplay = new ArrayList<String>();
-		for(int index = 0; index < list.size(); index++) {
-			Event currentEvent = list.get(index);
-			String contentToDisplay = currentEvent.composeContentToDisplayInString();
-			contentToDisplay = String.format(displayFormat, index + 1, contentToDisplay);
-			listToDisplay.add(contentToDisplay);
-		}
-		return listToDisplay;
-	}
-	
 	private static ArrayList<String> floatingToDisplay() {
 		ArrayList<String> listToDisplay = new ArrayList<String>();
-		
+		currentNumberOfFloatingEvent = 0;
 		for(int index = 0; index < listOfEvent.size(); index++) {
 			Event currentEvent = listOfEvent.get(index);
 			if(currentEvent.getEventType() == Event.FLOATING_TYPE) {
-				
-				String contentToDisplay = currentEvent.composeContentToDisplayInString();
+				currentNumberOfFloatingEvent++;
+				String contentToDisplay = listOfEvent.get(index).composeContentToDisplayInString();
 				contentToDisplay = String.format(displayFormat, index + 1, contentToDisplay);
 				listToDisplay.add(contentToDisplay);
 			}
@@ -306,10 +308,12 @@ public class ListOfEvent {
 		DateTime start = newEvent.getEventStartTime();
 		DateTime end = newEvent.getEventEndTime();
 		if(!Clock.isBigBangTime(reminder) && Clock.isBigBangTime(start)) {
+			feedback.add("Error: Floating events cant have reminder");
 			return false;
 		} else if(!Clock.isBigBangTime(end) && Clock.isBigBangTime(start))  {
 			return false;
-		} else if(!Clock.isBigBangTime(end) && Clock.isBefore(end, start)) {
+		} else if(Clock.isBefore(end, start) && !Clock.isBigBangTime(end)) {
+			feedback.add("Error: End time is before start time");
 			return false;
 		}
 		return true;
@@ -374,7 +378,8 @@ public class ListOfEvent {
 
 	public static ArrayList<String> getSearchResultsToDisplayInString() {
 		searchResults = sort(searchResults);
-		ArrayList<String> searchResultsToDisplay = allEventsToDisplay(searchResults);		
+		ArrayList<String> searchResultsToDisplay = toDisplay(searchResults);
+		
 		return searchResultsToDisplay;
 	}
 	
