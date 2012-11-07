@@ -133,11 +133,6 @@ public class StringOperation {
 			input = input.substring(pos, input.length());
 			input = insertCharAt(input, "23:59", 0);
 		}
-		if (input.matches("^\\d\\d?")) {
-			StringBuilder sb = new StringBuilder(input);
-			sb.append(":00");
-			input = sb.toString();
-		}
 		if (input.matches("^\\d\\d?\\,[0-9tn].{0,}")) {
 			input = input.replaceFirst(",", ":00,");
 		}

@@ -1,27 +1,29 @@
 package Project;
 
-import java.io.IOException;
 import java.util.*;
 
 public class Executor implements ListOfEventObserver {
 
+	private static final String COMMAND_SWITCH_UPCOMING = "upcoming";
+	private static final String COMMAND_BACK = "back";
 	private static ArrayList<String> currentListOfUpcomingEventToDisplay = new ArrayList<String>();
 	private static ArrayList<String> currentListOfFloatingEventToDisplay = new ArrayList<String>();
 	private static ArrayList<String> searchResults = new ArrayList<String>();
 
 	private static Executor _instance = new Executor();
-	
+
 	private Executor() {
-		
+
 	}
-	
+
 	public static Executor getInstance() {
 		return _instance;
-	}	
+	}
+
 	private static final String STRING_NULL = "";
 	private static final String SHORTHAND_UPDATE = "u";
 	private static final String SHORTHAND_DELETE = "-";
-	private static final String SHORTHAND_ADD = "+";	
+	private static final String SHORTHAND_ADD = "+";
 	private static final String EXPRESSION_WHITESPACE = "\\s+";
 	private static final String COMMAND_ADD = "add";
 	private static final String COMMAND_DELETE = "delete";
@@ -31,7 +33,7 @@ public class Executor implements ListOfEventObserver {
 	private static final String COMMAND_EXIT = "exit";
 	private static final String COMMAND_UNDONE = "undone";
 	private static final String COMMAND_UNDO = "undo";
-	
+
 	private static boolean searchState = false;
 	private static String previousCommand = "Nothing";
 
@@ -51,7 +53,7 @@ public class Executor implements ListOfEventObserver {
 		PatternLib.setUpPattern();
 		Logic.setUp();
 		Vector<String> parameters = new Vector<String>();
-		
+
 		String[] parameterList = { "-1", "-1", "-1", "-1", "-1", "-1" };
 		Logic.setUp();
 		// Check if user has just entered a positive integer parameter, returns
@@ -69,27 +71,33 @@ public class Executor implements ListOfEventObserver {
 		}
 		for (int i = 0; i < parameters.size(); i++)
 			parameterList[i] = parameters.get(i);
-		
+
 		ListOfEvent.sortList();
 
 		try {
 			String command = Logic.getCommand(parameterList);
 			if (command.equalsIgnoreCase(COMMAND_ADD)
 					|| command.equalsIgnoreCase(SHORTHAND_ADD)) {
-				ListOfActionArchive.add(new ActionArchiveAdd(
-						analyzeAddInput(parameterList)));
-				try {
-					// Saving to file after add
-					ListOfEvent.syncDataToDatabase();
-				} catch (Exception e) {
-					// ListOfEvent.formatListOfEvent();
-					Log.toLog(2, ExceptionHandler.getException(10));
-					return 10;
+				Event newEvent = analyzeAddInput(parameterList);
+				if (newEvent != null) {
+					ListOfActionArchive.add(new ActionArchiveAdd(newEvent));
+					try {
+						// Saving to file after add
+						ListOfEvent.syncDataToDatabase();
+					} catch (Exception e) {
+						// ListOfEvent.formatListOfEvent();
+						Log.toLog(2, ExceptionHandler.getException(10));
+						return 10;
+					}
+					previousCommand = COMMAND_ADD;
+					Log.toLog(0, ExceptionHandler.getException(0));
+					ListOfEvent.notifyObservers();
+					return 0;
+				} else {
+					previousCommand = COMMAND_ADD;
+					Log.toLog(2, ExceptionHandler.getException(9));
+					return 9;
 				}
-				previousCommand = COMMAND_ADD;
-				Log.toLog(0, ExceptionHandler.getException(0));
-				ListOfEvent.notifyObservers();
-				return 0;
 			} else if (command.equalsIgnoreCase(COMMAND_DELETE)
 					|| command.equalsIgnoreCase(SHORTHAND_DELETE)) {
 
@@ -168,9 +176,14 @@ public class Executor implements ListOfEventObserver {
 				Log.toLog(0, ExceptionHandler.getException(7));
 				System.exit(0);
 				return 7;
-			} else if (command.equalsIgnoreCase("back")) {
+			} else if (command.equalsIgnoreCase(COMMAND_BACK)) {
 				return 15;
-			} else
+			} 
+			else if (command.trim().equalsIgnoreCase(COMMAND_SWITCH_UPCOMING))
+			{
+				return 17;
+			}
+			else
 				return 5;
 		} catch (Exception e) {
 			Log.toLog(2, ExceptionHandler.getException(9));
@@ -185,7 +198,7 @@ public class Executor implements ListOfEventObserver {
 			Log.toLog(2, ExceptionHandler.getException(10));
 			return 10;
 		}
-		
+
 		ListOfEvent.notifyObservers();
 		return 11;
 
@@ -243,7 +256,6 @@ public class Executor implements ListOfEventObserver {
 	}
 
 	public void updateListOfEvent() {
-		ListOfEvent.sortList();
 		currentListOfFloatingEventToDisplay = ListOfEvent
 				.getListOfFloatingEventToDisplayInString();
 		currentListOfUpcomingEventToDisplay = ListOfEvent
@@ -258,7 +270,7 @@ public class Executor implements ListOfEventObserver {
 	public static void loadDatabase() throws Exception {
 		ListOfEvent.setUpDataFromDatabase();
 	}
-	
+
 	public static void formatDatabase() throws Exception {
 		ListOfEvent.formatListOfEvent();
 	}

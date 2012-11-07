@@ -239,8 +239,8 @@ public class ListOfEvent {
 			Event currentEvent = listOfEvent.get(index);
 			if(currentEvent.getEventType() != Event.FLOATING_TYPE) {
 				String contentToDisplay = currentEvent.composeContentToDisplayInString();
-				contentToDisplay = String.format(displayFormat, index + 1, contentToDisplay);
-						//currentNumberOfFloatingEvent + 
+				contentToDisplay = String.format(displayFormat, 
+						currentNumberOfFloatingEvent + index + 1, contentToDisplay);
 				listToDisplay.add(contentToDisplay);
 			}
 		}
@@ -290,7 +290,7 @@ public class ListOfEvent {
 			return false;
 		} else if(!Clock.isBigBangTime(end) && Clock.isBigBangTime(start))  {
 			return false;
-		} else if(Clock.isBefore(end, start) && !Clock.isBigBangTime(end)) {
+		} else if(!Clock.isBigBangTime(end) && Clock.isBefore(end, start)) {
 			return false;
 		}
 		return true;
