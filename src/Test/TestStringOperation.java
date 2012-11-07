@@ -3,11 +3,12 @@ package Test;
 
 import static org.junit.Assert.*;
 
+import global.StringOperation;
+
 import java.util.regex.Pattern;
 
 import org.junit.Test;
 
-import Project.StringOperation;
 
 public class TestStringOperation {
 

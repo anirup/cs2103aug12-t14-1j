@@ -5,12 +5,14 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 
+import logic.PatternLib;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import Project.ListOfEvent;
-import Project.PatternLib;
+import event.ListOfEvent;
+
 
 
 public class TestListOfEvent {
