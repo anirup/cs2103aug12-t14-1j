@@ -105,14 +105,13 @@ public class PatternLib {
 		pattern = new PatternDateTime(Pattern.compile(patternTime24AndDateStringNoYear, flags), "HH:mm dd/MMM");
 		pat.add(pattern);
 		
-
-		pattern = new PatternDateTime(Pattern.compile(patternDateWithoutYearInt, flags), "dd/MM");
-		pat.add(pattern);
-		
 		pattern = new PatternDateTime(Pattern.compile(patternTime12InDay, flags), "patternTime12InDay");
 		pat.add(pattern);
 		
 		pattern = new PatternDateTime(Pattern.compile(patternTime24InDay, flags), "patternTime24InDay");
+		pat.add(pattern);
+		
+		pattern = new PatternDateTime(Pattern.compile(patternDateWithoutYearInt, flags), "dd/MM");
 		pat.add(pattern);
 		
 		pattern = new PatternDateTime(Pattern.compile(patternDateWithoutYearString, flags), "dd/MMM");
