@@ -164,6 +164,7 @@ public class ListOfEvent {
 	
 	public static void searchInNameAndHashTags(Vector<String> searchWords) {	
 		ListOfEvent.sortList();
+		searchResults.clear();
 		int size = ListOfEvent.size();
 		for (int i = 0; i < size; i++) {
 			if (searchWords.isEmpty())
