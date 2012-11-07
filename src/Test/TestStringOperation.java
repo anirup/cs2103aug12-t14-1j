@@ -17,6 +17,11 @@ public class TestStringOperation {
 		String test = "r-15min";
 		assertEquals("test extractFirstNumber", 15, StringOperation.extractFirstNumber(test));
 	}
+	@Test
+	public void testgetFirstNumber() {
+		String test = "15min";
+		assertEquals("test extractFirstNumber", 15, StringOperation.getFirstNumber(test));
+	}
 
 	@Test
 	public void testFirstMatch() {
@@ -43,6 +48,6 @@ public class TestStringOperation {
 	@Test
 	public void testGetFirst() {
 		String test = "7:00pm this mon";
-		assertEquals("test getFirst()", "7:00pm", StringOperation.getFirst(test));
+		assertEquals("test getFirst()", "7:00pm", StringOperation.getFirstWord(test));
 	}
 }

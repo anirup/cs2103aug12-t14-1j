@@ -25,6 +25,7 @@ public class ExceptionHandler {
 		listOfExceptions.add("Switched to Original View");//15
 		listOfExceptions.add("Error: No Keywords Entered");//16
 		listOfExceptions.add("Switched to Upcoming Events View");//17
+		listOfExceptions.add("Error: Update Format Wrong.");//18
 	}
 	
 	public static String getException(int index)

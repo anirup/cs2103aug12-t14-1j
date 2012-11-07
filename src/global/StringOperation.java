@@ -40,6 +40,18 @@ public class StringOperation {
 		}
 		return -1;
 	}
+
+	public static int getFirstNumber(String input) {
+		Pattern pat = Pattern.compile("(^[0-9]{1,} )");
+		Matcher mat = pat.matcher(input);
+		if(mat.find()) {
+			int posStart = mat.start();
+			int posEnd = mat.end()-1;
+			int firstNumber = Integer.parseInt(input.substring(posStart, posEnd));
+			return firstNumber;
+		}
+		return -1;
+	}
 	
 	public static int isInteger(String input) {
 		int intValue;

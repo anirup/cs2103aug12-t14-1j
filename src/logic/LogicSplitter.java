@@ -5,14 +5,13 @@ import java.util.Vector;
 import org.joda.time.DateTime;
 
 public class LogicSplitter {
+	private static final String SHORTHAND_UPDATE = "u";
+	private static final String COMMAND_UPDATE = "update";
 	private static final String SHORTHAND_ADD = "+";
 	private static final String COMMAND_ADD = "add";
 	private static final String COMMAND_SEARCH = "search";
 	private static final String STRING_SPACE = " ";
 	private static final String EMPTY_STRING = "";
-	private static final String Priority_Normal = "NORMAL";
-	private static final String Priority_Low = "LOW";
-	private static final String Priority_High = "HIGH";
 	private static int message = 0;
 	public static void setUp() {
 		message = 0;
@@ -22,9 +21,10 @@ public class LogicSplitter {
 		return message;
 	}
 
-	public static Vector<String> splitInput(String userInput) {
+	public static Vector<String> splitInput(String userInput) throws Exception{
 		int[] reminderFound = { 0 };
 		int[] timeCount = { 0 };
+		int index=-1;
 		Vector<String> parameterList = new Vector<String>();
 		Vector<Integer> timeIndexes = new Vector<Integer>();
 		try {
@@ -32,11 +32,26 @@ public class LogicSplitter {
 					parameterList);
 		} catch (Exception e) {
 			message = 12;
-			return parameterList;
+			Exception exception = new Exception();
+			throw exception;
+		}if(parameterList.get(0).equalsIgnoreCase(COMMAND_UPDATE)||parameterList.get(0).equalsIgnoreCase(SHORTHAND_UPDATE))
+		{
+			index=StringOperation.getFirstNumber(userInput.trim());
+			if(index==-1)
+			{
+				message=18;
+				Exception exception = new Exception();
+				throw exception;
+			}
+			else
+			{
+				String formattedIndex=String.format("%d",index);
+				userInput=userInput.substring(userInput.indexOf(formattedIndex)+formattedIndex.length());
+			}
 		}
-		if (parameterList.get(0).equals(COMMAND_ADD)
-				|| parameterList.get(0).equals(SHORTHAND_ADD)
-				|| parameterList.get(0).equals(COMMAND_SEARCH)) {
+		if (parameterList.get(0).equalsIgnoreCase(COMMAND_UPDATE)||parameterList.get(0).equalsIgnoreCase(SHORTHAND_UPDATE)||parameterList.get(0).equalsIgnoreCase(COMMAND_ADD)
+				|| parameterList.get(0).equalsIgnoreCase(SHORTHAND_ADD)
+				|| parameterList.get(0).equalsIgnoreCase(COMMAND_SEARCH)) {
 			try {
 
 				userInput = extractTimeFieldsAndUpdateInputString(
@@ -44,31 +59,38 @@ public class LogicSplitter {
 						timeCount);
 			} catch (Exception e) {
 				message = 13;
-				return parameterList;
+				Exception exception=new Exception();
+				throw exception;
 			}
 			try {
 				extractKeywordsAlongWithHashTags(userInput, parameterList);
 			} catch (Exception e) {
 				message = 14;
-				return parameterList;
+				Exception exception = new Exception();
+				throw exception;
 			}
 			try {
 				shiftKeywordsToSecondIndex(parameterList);
 			} catch (Exception e) {
 				message = 16;
-				return parameterList;
+				Exception exception=new Exception();
+				throw exception;
 			}
 			try {
 				processEndStartTime(userInput, parameterList, timeIndexes);
 			} catch (Exception e) {
 				message = 13;
-				return parameterList;
+				Exception exception = new Exception();
+				throw exception;
 			}
 		} else {
 			extractKeywordsAlongWithHashTags(userInput, parameterList);
 		}
-		parameterList = trimAllParameters(parameterList);
-		String[] convertedArray = new String[parameterList.size()];
+		for(int i=parameterList.size();i<5;i++)
+		{
+			parameterList.add("-1");
+		}
+		parameterList.add(String.format("%d",index));
 		parameterList = trimAllParameters(parameterList);
 		return parameterList;
 	}

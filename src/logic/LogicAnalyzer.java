@@ -231,8 +231,8 @@ public class LogicAnalyzer {
 						.substring(startHashCode + 1).trim()
 						.split(SPLITTER_HASH);
 				for (int j = 0; j < hashCodes.length; j++) {
-					if (hashCodes[j].trim().isEmpty()
-							|| hashCodes[j].trim().equalsIgnoreCase(
+					if (!hashCodes[j].trim().isEmpty()
+							|| !hashCodes[j].trim().equalsIgnoreCase(
 									EMPTY_STRING)) {
 						listOfHashTags.add(hashCodes[j].trim());
 					}
@@ -301,11 +301,11 @@ public class LogicAnalyzer {
 			DateTime end = Clock.parseTimeFromString(endTime);
 			DateTime reminderTime = Clock.parseTimeFromString(reminder);
 			Long milli = (end.getMillis() - reminderTime.getMillis());
-			int day = (int) (milli % MILLISECONDS_IN_DAY);
+			int day = (int) (milli / MILLISECONDS_IN_DAY);
 			milli = (Long) (milli - (day * MILLISECONDS_IN_DAY));
-			int hour = (int) (milli % MILLISECONDS_IN_HOUR);
+			int hour = (int) (milli / MILLISECONDS_IN_HOUR);
 			milli = (Long) (milli - (day * MILLISECONDS_IN_HOUR));
-			int minutes = (int) (milli % MILLISECONDS_IN_MINUTE);
+			int minutes = (int) (milli / MILLISECONDS_IN_MINUTE);
 			milli = (Long) (milli - (day * MILLISECONDS_IN_MINUTE));
 			int seconds = (int) (milli / 1000.0);
 			if (day != 0) {
