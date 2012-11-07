@@ -1,11 +1,8 @@
 package logic;
 import global.Clock;
 import global.StringOperation;
-
 import java.util.Vector;
-
 import org.joda.time.DateTime;
-
 
 public class LogicSplitter {
 	private static final String SHORTHAND_ADD = "+";
@@ -17,20 +14,12 @@ public class LogicSplitter {
 	private static final String Priority_Low = "LOW";
 	private static final String Priority_High = "HIGH";
 	private static int message = 0;
-	public static Vector<String> additionalComments;
-
 	public static void setUp() {
 		message = 0;
-		additionalComments = new Vector<String>();
-		additionalComments.clear();
 	}
 
 	public static int getMessage() {
 		return message;
-	}
-
-	public static Vector<String> getAdditionalComments() {
-		return additionalComments;
 	}
 
 	public static Vector<String> splitInput(String userInput) {
@@ -80,56 +69,8 @@ public class LogicSplitter {
 		}
 		parameterList = trimAllParameters(parameterList);
 		String[] convertedArray = new String[parameterList.size()];
-		Vector<String> checkHashTags = LogicAnalyzer.getHashTags(parameterList
-				.toArray(convertedArray));
-		checkMultiplePriorities(checkHashTags);
 		parameterList = trimAllParameters(parameterList);
-		setOtherAdditionalComments(reminderFound, timeCount);
 		return parameterList;
-	}
-
-	private static void checkMultiplePriorities(Vector<String> checkHashTags) {
-		int count = 0;
-		for (int j = 0; j < checkHashTags.size(); j++) {
-			if ((checkHashTags.get(j).equalsIgnoreCase(Priority_High))
-					|| (checkHashTags.get(j).equalsIgnoreCase(Priority_Low))
-					|| (checkHashTags.get(j).equalsIgnoreCase(Priority_Normal))) {
-				count++;
-				if (count > 1) {
-					additionalComments
-							.add("More than 1 Type of Priorities Detected - Taking the first one.");
-				}
-			}
-		}
-
-	}
-
-	private static void setOtherAdditionalComments(int[] reminderFound,
-			int[] timeCount) {
-		if (timeCount[0] == 0) {
-			additionalComments
-					.add("No Time Parameters Found - If You Did Enter Time Parameters - Please check Supported Time formats.");
-		} else if (timeCount[0] == 1) {
-			additionalComments
-					.add("1 Time Parameter Found - It was taken as Start Time");
-		} else if (timeCount[0] == 2) {
-			additionalComments
-					.add("2 Time Parameters Found - Taken as Start and End Time");
-		} else if (timeCount[0] > 2) {
-			additionalComments
-					.add("More than 2 Time Parameters Found - Please check Supported Time Formats.");
-		}
-		if (reminderFound[0] == 0) {
-			additionalComments.add("No Reminder Set");
-		} else if (reminderFound[0] == 1) {
-			additionalComments.add("Reminder Set");
-		} else if (reminderFound[0] > 1) {
-			additionalComments
-					.add("More than 1 Reminder Found - Reminder Set as the first one");
-		}
-		if (reminderFound[0] > 0 && timeCount[0] == 0) {
-			additionalComments.add("No Reminder Time for Floating Type Events");
-		}
 	}
 
 	private static String extractCommandTypeAndUpdateInputString(
