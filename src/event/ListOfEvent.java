@@ -1,5 +1,6 @@
 package event;
 
+import executor.Executor;
 import fileIO.DatabaseManager;
 import global.Clock;
 import global.StringOperation;
@@ -13,6 +14,7 @@ import java.util.Vector;
 import org.joda.time.DateTime;
 
 import alarm.AlarmType;
+import alarm.ListOfAlarm;
 
 public class ListOfEvent {
 	private static ArrayList<Event> listOfEvent = new ArrayList<Event>();
@@ -41,6 +43,8 @@ public class ListOfEvent {
 	}
 	
 	public static void setUpDataFromDatabase() throws Exception {
+		addObserver(Executor.getInstance());
+		addObserver(ListOfAlarm.getInstance());
 		DatabaseManager.setUpDataFromDatabase(fileName);
 		notifyObservers();
 	}
