@@ -6,6 +6,8 @@ import java.util.Vector;
 
 import javax.swing.JLabel;
 
+import alarm.AlarmThread;
+
 import logAndException.ExceptionHandler;
 import logAndException.Log;
 
@@ -969,6 +971,8 @@ public class What2DoUI extends javax.swing.JFrame {
 		 */
 		ExceptionHandler.setUpList();
 		Log.setup();
+		AlarmThread newAlarm = new AlarmThread();
+		new Thread(newAlarm).start();
 		try
 		{
 		Executor.loadDatabase();
