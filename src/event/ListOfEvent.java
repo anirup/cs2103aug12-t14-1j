@@ -237,8 +237,8 @@ public class ListOfEvent {
 		for(int index = 0; index < listOfEvent.size(); index++) {
 			Event currentEvent = listOfEvent.get(index);
 			DateTime eventReminder = currentEvent.getEventReminder();
-			if(!Clock.isSameTime(Clock.getBigBangTime(), eventReminder) 
-					&& !currentEvent.isDone() && !Clock.isBefore(eventReminder, DateTime.now())) {
+			if((Clock.getBigBangTime() == eventReminder)
+					&& !currentEvent.isDone() && !eventReminder.isBeforeNow()) {
 				AlarmType newAlarm = new AlarmType(currentEvent.getEventName(), eventReminder);
 				reminderList.add(newAlarm);
 			}
@@ -323,7 +323,7 @@ public class ListOfEvent {
 
 	private static boolean isObsoleteEvent(Event event) {
 		DateTime completedTime = event.getTimeCompleted();
-		if(Clock.isBefore(completedTime, DateTime.now().minusMonths(1)) && !Clock.isBigBangTime(completedTime)) {
+		if(completedTime.isBefore(DateTime.now().minusMonths(1)) && !Clock.isBigBangTime(completedTime)) {
 			return true;
 		}
 		return false;
