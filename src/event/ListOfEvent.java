@@ -175,7 +175,6 @@ public class ListOfEvent {
 		Event updatedEvent = getEventFromString(eventToUpdate);
 		if(updatedEvent != null) {
 			listOfEvent.add(updatedEvent);
-			update(removedEvent, updatedEvent);
 			update.add(removedEvent);
 			update.add(updatedEvent);
 			isBeforeCurrentTime(updatedEvent);

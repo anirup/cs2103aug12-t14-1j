@@ -767,6 +767,10 @@ public class What2DoUI extends javax.swing.JFrame {
 						.contains("NORMAL")) {
 					html2 += "</span> <span style=\"color: orange; \">";
 				}
+				if (formattedUpcomingEvents.get(i + 1).get(2)
+						.contains("LOW")) {
+					html2 += "</span> <span style=\"color: rgb(204,127,50); \">";
+				}
 				html2 += String
 						.format("%s</span> &nbsp;<span style=\"color: rgb(155, 187, 89); \">",
 								formattedUpcomingEvents.get(i + 1).get(2));
