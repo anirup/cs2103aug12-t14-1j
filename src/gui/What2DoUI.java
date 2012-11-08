@@ -1,4 +1,6 @@
 package gui;
+
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -6,6 +8,7 @@ import javax.swing.JLabel;
 
 import logAndException.ExceptionHandler;
 import logAndException.Log;
+
 import executor.Executor;
 
 /**
@@ -30,6 +33,7 @@ public class What2DoUI extends javax.swing.JFrame {
 	Vector<String> previousEntry = new Vector<String>();
 	int previousIndex=0;
 	int updateFlag=0;
+	boolean searchView=false;
 	
 	/**
 	 * This method is called from within the constructor to initialize the form.
@@ -455,25 +459,32 @@ public class What2DoUI extends javax.swing.JFrame {
 		if (evt.getKeyChar() == '\n') {
 			flag = 0;
 			String data = textField1.getText();
+			if (data.contains("update")){
+				data+=updateStream(data);
+			}
 			if (data.contains("search")) {
+				searchView=true;
 				jPanel2.setVisible(false);
 				jPanel4.setVisible(false);
 				jPanel3.setVisible(true);
 				Executor.searchToTrue();
 			}
 			if (data.contains("back")) {
+				searchView=false;
 				Executor.searchToFalse();
 				jPanel3.setVisible(false);
 				jPanel4.setVisible(false);
 				jPanel2.setVisible(true);
 			}
 			if (data.contains("floating")){
+				searchView=false;
 				Executor.searchToFalse();
 				jPanel2.setVisible(false);
                 jPanel3.setVisible(false);
                 jPanel4.setVisible(true);
             }
             if (data.contains("upcoming")){
+            	searchView=false;
             	Executor.searchToFalse();
                 jPanel4.setVisible(false);
                 jPanel3.setVisible(false);
@@ -497,6 +508,58 @@ public class What2DoUI extends javax.swing.JFrame {
 			previousIndex=previousEntry.size()-1;
 		}
 
+	}
+
+	private String updateStream(String message) throws Exception {
+		int index=extractIndex(message);
+		String result=findEventByIndex(index);
+		String formattedResult=formatResult(result);
+		return formattedResult;
+	}
+
+	private String formatResult(String result) {
+		String formattedResult="";
+		String formattedResultArray[]=result.split("\\..");
+		for (int i=0; i<formattedResultArray.length; i++){
+			formattedResult+=formattedResultArray[i]+"  ";
+		}
+		formattedResult.trim();
+		return formattedResult;
+	}
+
+	private String findEventByIndex(int index) {
+		ArrayList<String> upcomingEvents=Executor.printDataBase();
+		ArrayList<String> floatingEvents=Executor.printFloatingDataBase();
+		ArrayList<String> searchResults=Executor.printSearchResults();
+
+		String index_string=Integer.toString(index);
+		if (index==0){
+			return null;
+		}
+		else{
+			for (int i=0; i<searchResults.size(); i++)
+				if (searchResults.get(i).startsWith(index_string))
+					return searchResults.get(i);
+			for (int i=0; i<upcomingEvents.size(); i++)
+				if (upcomingEvents.get(i).startsWith(index_string))
+					return upcomingEvents.get(i);
+			for (int i=0; i<floatingEvents.size(); i++)
+				if (floatingEvents.get(i).startsWith(index_string))
+					return floatingEvents.get(i);
+		}
+			
+		return null;
+	}
+
+	private int extractIndex(String message) {
+		String trimmedMessage=message.replace("update ", "");
+		try{
+			return Integer.parseInt(trimmedMessage);
+			
+		}
+		catch(Exception noIndex){
+			return 0;
+		}
 	}
 
 	private void displayDatabase(String message) {
