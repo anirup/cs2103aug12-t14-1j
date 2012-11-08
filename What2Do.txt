@@ -1,0 +1,5 @@
+201211719526167..sandeep..NORMAL....false..invalid..invalid..invalid..invalid
+2012117191847707..sandeep..NORMAL....false..invalid..invalid..invalid..invalid
+201211719557319..efgh..NORMAL....false..invalid..13:00 07/11/2012..14:00 07/11/2012..invalid
+20121171961860..gsdgsg..NORMAL....false..invalid..18:00 07/11/2012..19:00 08/11/2012..invalid
+1352334619317..abcd..NORMAL..#efgh..false..16:29 08/11/2012..16:30 08/11/2012..17:30 08/11/2012..invalid
