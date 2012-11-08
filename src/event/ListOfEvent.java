@@ -60,7 +60,9 @@ public class ListOfEvent {
 	}
 	
 	public static ArrayList<String> getFeedback() {
-		return feedback;
+		ArrayList<String> feedbackToReturn = feedback;
+		feedback.clear();
+		return feedbackToReturn;
 	}
 	
 	public static int size() {
@@ -159,7 +161,9 @@ public class ListOfEvent {
 			searchResults.add(updatedEvent);
 			update(removedEvent, updatedEvent);
 			update.add(removedEvent);
-			update.add(updatedEvent);			
+			update.add(updatedEvent);
+			isBeforeCurrentTime(updatedEvent);
+			isClashedWithExistingEvents(updatedEvent);
 			return update;
 		}
 		return null;
@@ -169,10 +173,15 @@ public class ListOfEvent {
 		ArrayList<Event> update = new ArrayList<Event>();
 		Event removedEvent = listOfEvent.remove(position);
 		Event updatedEvent = getEventFromString(eventToUpdate);
-		listOfEvent.add(position,updatedEvent);
-	//	update(removedEvent, updatedEvent);
-		update.add(removedEvent);
-		update.add(updatedEvent);
+		if(updatedEvent != null) {
+			listOfEvent.add(updatedEvent);
+			update(removedEvent, updatedEvent);
+			update.add(removedEvent);
+			update.add(updatedEvent);
+			isBeforeCurrentTime(updatedEvent);
+			isClashedWithExistingEvents(updatedEvent);
+			return update;
+		}
 		return update;
 	}
 	
@@ -323,12 +332,12 @@ public class ListOfEvent {
 		DateTime start = newEvent.getEventStartTime();
 		DateTime end = newEvent.getEventEndTime();
 		if(!Clock.isBigBangTime(reminder) && Clock.isBigBangTime(start)) {
-			feedback.add("Error: Floating events cant have reminder");
+			//feedback.add("Error: Floating events cant have reminder");
 			return false;
 		} else if(!Clock.isBigBangTime(end) && Clock.isBigBangTime(start))  {
 			return false;
 		} else if(Clock.isBefore(end, start) && !Clock.isBigBangTime(end)) {
-			feedback.add("Error: End time is before start time");
+			//feedback.add("Error: End time is before start time");
 			return false;
 		}
 		return true;

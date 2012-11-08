@@ -36,15 +36,15 @@ public class ListOfAlarm implements ListOfEventObserver {
 		setListOfAlarm(ListOfEvent.setUpListOfReminder());
 	}
 	
-	public static void runAlarm() {
+	public static void runAlarm()  throws Exception{
 		if(!alarmList.isEmpty()) {
 			Iterator<AlarmType> it = alarmList.iterator(); 
 			while(it.hasNext()) {
 				AlarmType alarmElement = it.next();
 				if(alarmElement.isAlarmTime()){
-					DialogRun d = new DialogRun(alarmElement.getEventName());
+					DialogRun d = new DialogRun("EVENT NAME: " + alarmElement.getEventName());
 					new Thread(d).start();
-					//it.remove();
+					Thread.sleep(1000);
 					break;
 				}
 					

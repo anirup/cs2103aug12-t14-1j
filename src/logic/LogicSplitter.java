@@ -220,13 +220,13 @@ public class LogicSplitter {
 				&& StringOperation.isInteger(userInput.trim()) == -1) {
 			try
 			{
-			parameterList.add(userInput.trim().substring(0,
-					getIndexOfNextComponent(userInput)));
+			parameterList.add(userInput.substring(0,
+					getIndexOfNextComponent(userInput)).trim());
 			}
 			catch(Exception e)
 			{
-				parameterList.add(userInput.trim().substring(0,
-						getIndexOfNextComponent(userInput)-1));
+				parameterList.add(userInput.substring(0,
+						getIndexOfNextComponent(userInput)-1).trim());
 			}
 			userInput = userInput.replace(parameterList.lastElement(),
 					EMPTY_STRING);
