@@ -36,7 +36,7 @@ public class What2DoUI extends javax.swing.JFrame {
 	int previousIndex = 0;
 	int updateFlag = 0;
 	boolean searchView = false;
-	boolean updateflag = false;
+	boolean updateFlagBool = false;
 
 	/**
 	 * This method is called from within the constructor to initialize the form.
@@ -406,7 +406,7 @@ public class What2DoUI extends javax.swing.JFrame {
 			if (data.contains("update")) {
 				int index = extractIndex(data);
 				if (index != 0) {
-					updateflag = true;
+					updateFlagBool = true;
 					String event = updateStream(data, index);
 					if (event != null) {
 						data += event;
@@ -419,7 +419,7 @@ public class What2DoUI extends javax.swing.JFrame {
 						return;
 					}
 				} else {
-					updateflag = false;
+					updateFlagBool = false;
 				}
 			}
 			if (data.contains("search")) {
@@ -436,6 +436,9 @@ public class What2DoUI extends javax.swing.JFrame {
 				searchView = false;
 				Executor.searchToFalse();
 				setViewToUpcoming();
+			}
+			if (!(data.contains("update"))){
+				updateFlagBool=false;
 			}
 			/*
 			if (data.contains("back")) {
@@ -460,7 +463,7 @@ public class What2DoUI extends javax.swing.JFrame {
 				setViewToUpcoming();
 			}
 			*/
-			if (updateflag == false) {
+			if (updateFlagBool == false) {
 				String message = analyzeInputUsingLogic(data);
 
 				displayDatabase(message);
@@ -1104,7 +1107,7 @@ public class What2DoUI extends javax.swing.JFrame {
 			textField1.setText(previousEntry.get(previousIndex));
 			previousIndex--;
 		}
-		if (evt.getKeyCode() == 40 && previousIndex != previousEntry.size() - 1) {
+		if (evt.getKeyCode() == 40 && previousIndex != previousEntry.size() - 1 && !(previousEntry.isEmpty())) {
 			textField1.setText(previousEntry.get(++previousIndex));
 		}
 	}
