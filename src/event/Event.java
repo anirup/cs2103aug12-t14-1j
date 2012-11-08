@@ -1,5 +1,6 @@
 package event;
 import global.Clock;
+import global.StringOperation;
 
 import org.joda.time.DateTime;
  
@@ -13,11 +14,6 @@ public class Event {
 	private DateTime _eventEndTime;
 	private DateTime _timeCompleted;
 	private boolean _isDone;
-	private static final String EMPTY_STRING = "";
-	private static final int MILLISECONDS_IN_SECOND = 1000;
-	private static final int MILLISECONDS_IN_MINUTE = 60000;
-	private static final int MILLISECONDS_IN_HOUR = 3600000;
-	private static final int MILLISECONDS_IN_DAY = 86400000;
 	public static final String SPLITTER = "..";
 	protected final String NEW_LINE = "\n";
 	public static final String SPACE = " ";
@@ -26,7 +22,7 @@ public class Event {
 	protected static final int INDEX_FOR_EVENT_NAME = 1;
 	protected static final int INDEX_FOR_EVENT_PRIORITY = 2;
 	protected static final int INDEX_FOR_EVENT_HASHTAG = 3;
-	protected static final int INDEX_OF_EVENT_ISDONE = 4;
+	protected static final int INDEX_FOR_EVENT_ISDONE = 4;
 	protected static final int INDEX_FOR_EVENT_REMINDER_TIME = 5;
 	protected static final int INDEX_FOR_EVENT_START_TIME = 6;
 	protected static final int INDEX_FOR_EVENT_END_TIME = 7;
@@ -49,7 +45,7 @@ public class Event {
 		_eventStartTime = Clock.getBigBangTime();
 		_eventEndTime = Clock.getBigBangTime();
 		_eventPriority = null;
-		_timeCompleted = Clock.getBigBangTime();;
+		_timeCompleted = Clock.getBigBangTime();
 	}
 	
 	public Event(String eventID, String name, PRIORITY_TYPE priority, String hashTag, DateTime reminder, DateTime start, DateTime end) {
@@ -66,16 +62,24 @@ public class Event {
 
 	public void parse(String[] contentToExtract) {		
 		assert contentToExtract.length == 9;
+		if(!isValidString(contentToExtract)) {
+			return;
+		}
+		getEventFields(contentToExtract);
+		checkEventTime();
+		return;
+	}
+	
+	private void getEventFields(String[] contentToExtract) {
 		_eventID = contentToExtract[INDEX_FOR_EVENT_ID];
 		_eventName = contentToExtract[INDEX_FOR_EVENT_NAME];
 		_eventPriority = extractEventPriority(contentToExtract[INDEX_FOR_EVENT_PRIORITY]);
 		_eventHashTag = contentToExtract[INDEX_FOR_EVENT_HASHTAG];
-		_isDone = extractEventIsDone(contentToExtract[INDEX_OF_EVENT_ISDONE]);
+		_isDone = extractEventIsDone(contentToExtract[INDEX_FOR_EVENT_ISDONE]);
 		_eventReminder = Clock.parseTimeFromString(contentToExtract[INDEX_FOR_EVENT_REMINDER_TIME]);
 		_eventStartTime = Clock.parseTimeFromString(contentToExtract[INDEX_FOR_EVENT_START_TIME]);
 		_eventEndTime = Clock.parseTimeFromString(contentToExtract[INDEX_FOR_EVENT_END_TIME]);
 		_timeCompleted = Clock.parseTimeFromString(contentToExtract[INDEX_FOR_COMPLETED_TIME]);
-		return;
 	}
 	
 	private PRIORITY_TYPE extractEventPriority(String priority) {
@@ -161,6 +165,40 @@ public class Event {
 		default:
 			return "NORMAL";
 		}
+	}
+	
+	private void checkEventTime() {
+		if(!Clock.isBigBangTime(_eventReminder) && Clock.isBigBangTime(_eventStartTime)) {
+			_eventReminder = Clock.getBigBangTime();
+		} else if(!Clock.isBigBangTime(_eventEndTime) && Clock.isBigBangTime(_eventStartTime))  {
+			_eventStartTime = _eventEndTime;
+			_eventEndTime = Clock.getBigBangTime();
+		} else if(Clock.isBefore(_eventEndTime, _eventStartTime) && !Clock.isBigBangTime(_eventEndTime)) {
+			DateTime temp = _eventStartTime;
+			_eventStartTime = _eventEndTime;
+			_eventEndTime = temp;
+		}
+	}
+
+	private boolean isValidString(String[] eventContent) {
+		if(eventContent.length != 9) {
+			return false;
+		} 
+		String isDone = eventContent[INDEX_FOR_EVENT_ISDONE];
+		if(!StringOperation.isValidIsDone(isDone)) {
+			return false;
+		}
+		for(int timeFieldIndex = INDEX_FOR_EVENT_REMINDER_TIME; timeFieldIndex <= INDEX_FOR_COMPLETED_TIME; timeFieldIndex++) {
+			if(!Clock.isValidTimeInString(eventContent[timeFieldIndex])) {
+				return false;
+			}
+		}
+		String priority = eventContent[INDEX_FOR_EVENT_PRIORITY];
+		if(!(priority.trim().equalsIgnoreCase("high") || priority.trim().equalsIgnoreCase("low") ||
+				priority.trim().equalsIgnoreCase("normal"))) {
+			return false;
+		}
+		return true;
 	}
 	
 	public void markDone() {

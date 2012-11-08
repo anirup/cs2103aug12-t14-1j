@@ -3,7 +3,6 @@ package event;
 import executor.Executor;
 import fileIO.DatabaseManager;
 import global.Clock;
-import global.StringOperation;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,14 +17,13 @@ import alarm.ListOfAlarm;
 
 public class ListOfEvent {
 	private static ArrayList<Event> listOfEvent = new ArrayList<Event>();
+	private static ArrayList<Event> listOfUpcomingEventToDisplay = new ArrayList<Event>();
+	private static ArrayList<Event> listOfFloatingEventToDisplay = new ArrayList<Event>();
 	private static ArrayList<Event> searchResults = new ArrayList<Event>();
 	private static ArrayList<ListOfEventObserver> listOfObserver= new ArrayList<ListOfEventObserver>();
 	private static final String fileName = "What2Do.txt";
 	private static final String displayFormat = "%1$d..%2$s";
-	private static final int INDEX_OF_PRIORITY = 2;
-	private static final int INDEX_OF_EVENT_ISDONE = 4;
-	private static final int INDEX_OF_REMINDER_TIME = 5;
-	private static final int INDEX_OF_COMPLETED_TIME = 8;
+
 	private static ArrayList<String> feedback = new ArrayList<String>();
 	private static final String STRING_NULL = "";
 
@@ -103,12 +101,13 @@ public class ListOfEvent {
 	
 	public static Event add(String eventInString) {
 		Event newEvent = getEventFromString(eventInString);
-		if(newEvent != null) {
+		if(newEvent.isSameEvent(new Event())) {
 			isClashedWithExistingEvents(newEvent);
 			isBeforeCurrentTime(newEvent);
 			listOfEvent.add(newEvent);
+			return newEvent;
 		}
-		return newEvent;
+		return null;
 	}
 	
 	private static void isClashedWithExistingEvents(Event newEvent) {
@@ -157,7 +156,7 @@ public class ListOfEvent {
 		ArrayList<Event> update = new ArrayList<Event>();
 		Event removedEvent = searchResults.remove(position);
 		Event updatedEvent = getEventFromString(eventToUpdate);
-		if(updatedEvent != null) {
+		if(updatedEvent.isSameEvent(new Event())) {
 			searchResults.add(updatedEvent);
 			update(removedEvent, updatedEvent);
 			update.add(removedEvent);
@@ -173,7 +172,7 @@ public class ListOfEvent {
 		ArrayList<Event> update = new ArrayList<Event>();
 		Event removedEvent = listOfEvent.remove(position);
 		Event updatedEvent = getEventFromString(eventToUpdate);
-		if(updatedEvent != null) {
+		if(updatedEvent.isSameEvent(new Event())) {
 			listOfEvent.add(updatedEvent);
 			update.add(removedEvent);
 			update.add(updatedEvent);
@@ -265,20 +264,6 @@ public class ListOfEvent {
 		return list;
 	}
 	
-	private static ArrayList<String> toDisplay(ArrayList<Event> list) {
-		ArrayList<String> listToDisplay = new ArrayList<String>();
-
-		for(int index = 0; index < list.size(); index++) {
-			Event currentEvent = list.get(index);
-			if(currentEvent.getEventType() != Event.FLOATING_TYPE) {
-				String contentToDisplay = currentEvent.composeContentToDisplayInString();
-				contentToDisplay = String.format(displayFormat,  index + 1, contentToDisplay);
-				listToDisplay.add(contentToDisplay);
-			}
-		}
-		return listToDisplay;
-	}
-	
 	private static ArrayList<String> toDisplayForSearch(ArrayList<Event> list) {
 		ArrayList<String> listToDisplay = new ArrayList<String>();
 
@@ -293,24 +278,43 @@ public class ListOfEvent {
 		return listToDisplay;
 	}
 
-	private static ArrayList<String> floatingToDisplay() {
+	private static ArrayList<String> toDisplay(ArrayList<Event> list) {
 		ArrayList<String> listToDisplay = new ArrayList<String>();
-		for(int index = 0; index < listOfEvent.size(); index++) {
-			Event currentEvent = listOfEvent.get(index);
+		int numberOfFloatingEvent = listOfFloatingEventToDisplay.size();
+		for(int index = 0; index < list.size(); index++) {
+			Event currentEvent = list.get(index);
+			String contentToDisplay;
 			if(currentEvent.getEventType() == Event.FLOATING_TYPE) {
-				String contentToDisplay = listOfEvent.get(index).composeContentToDisplayInString();
-				contentToDisplay = String.format(displayFormat, index + 1, contentToDisplay);
-				listToDisplay.add(contentToDisplay);
+				contentToDisplay = formatEventToStringToDisplay(currentEvent,index + 1);
+			} else {
+				contentToDisplay = formatEventToStringToDisplay(currentEvent, numberOfFloatingEvent + index);
 			}
+			listToDisplay.add(contentToDisplay);
 		}
 		return listToDisplay;
 	}
 	
+	private static String formatEventToStringToDisplay(Event event, int index) {
+		String contentToDisplay = event.composeContentToDisplayInString();
+		contentToDisplay = String.format(displayFormat, index + 1, contentToDisplay);
+		return contentToDisplay;
+	}
+	
+	private static void retrieve() {
+		listOfFloatingEventToDisplay.clear();
+		listOfUpcomingEventToDisplay.clear();
+		for(int index = 0; index < listOfEvent.size(); index++) {
+			Event currentEvent = listOfEvent.get(index);
+			if(currentEvent.getEventType() != Event.FLOATING_TYPE) {
+				listOfFloatingEventToDisplay.add(currentEvent);
+			} else if(!currentEvent.isBefore(currentEvent)) {
+				listOfUpcomingEventToDisplay.add(currentEvent);
+			}
+		}
+	}
+	
 	public static Event getEventFromString(String eventInString) {
 		String[] eventContent = eventInString.split("\\..");
-		if(!isValidString(eventContent)) {
-			return null;
-		}
 		Event newEvent = new Event();
 		newEvent.parse(eventContent);
 		if(!isValidNewEvent(newEvent)) {
@@ -320,23 +324,7 @@ public class ListOfEvent {
 	}
 	
 	private static boolean isValidNewEvent(Event newEvent) {
-		if(isObsoleteEvent(newEvent) || !isValidEventTime(newEvent) || !checkEventID(newEvent)) {
-			return false;
-		}
-		return true;
-	}
-	
-	private static boolean isValidEventTime(Event newEvent) {
-		DateTime reminder = newEvent.getEventReminder();
-		DateTime start = newEvent.getEventStartTime();
-		DateTime end = newEvent.getEventEndTime();
-		if(!Clock.isBigBangTime(reminder) && Clock.isBigBangTime(start)) {
-			//feedback.add("Error: Floating events cant have reminder");
-			return false;
-		} else if(!Clock.isBigBangTime(end) && Clock.isBigBangTime(start))  {
-			return false;
-		} else if(Clock.isBefore(end, start) && !Clock.isBigBangTime(end)) {
-			//feedback.add("Error: End time is before start time");
+		if(isObsoleteEvent(newEvent) || !checkEventID(newEvent)) {
 			return false;
 		}
 		return true;
@@ -349,28 +337,6 @@ public class ListOfEvent {
 		}
 		return false;
 	}
-	
-	private static boolean isValidString(String[] eventContent) {
-		if(eventContent.length != 9) {
-			return false;
-		} 
-		String isDone = eventContent[INDEX_OF_EVENT_ISDONE];
-		if(!StringOperation.isValidIsDone(isDone)) {
-			return false;
-		}
-		for(int timeFieldIndex = INDEX_OF_REMINDER_TIME; timeFieldIndex <= INDEX_OF_COMPLETED_TIME; timeFieldIndex++) {
-			if(!Clock.isValidTimeInString(eventContent[timeFieldIndex])) {
-				return false;
-			}
-		}
-		String priority = eventContent[INDEX_OF_PRIORITY];
-		if(!(priority.trim().equalsIgnoreCase("high") || priority.trim().equalsIgnoreCase("low") ||
-				priority.trim().equalsIgnoreCase("normal"))) {
-			return false;
-		}
-		return true;
-	}
-	
 	
 	private static ArrayList<String> getContentToSyncToDatabase() {
 		ArrayList<String> listOfEventToString = new ArrayList<String>();
@@ -401,18 +367,18 @@ public class ListOfEvent {
 
 	public static ArrayList<String> getSearchResultsToDisplayInString() {
 		searchResults = sort(searchResults);
-		ArrayList<String> searchResultsToDisplay = toDisplayForSearch(searchResults);
-		
+		ArrayList<String> searchResultsToDisplay = toDisplayForSearch(searchResults);		
 		return searchResultsToDisplay;
 	}
 	
 	public static ArrayList<String> getListOfEventToDisplayInString() {
 		listOfEvent = sort(listOfEvent);
-		return toDisplay(listOfEvent);
+		return toDisplay(listOfUpcomingEventToDisplay);
 	}
 	
 	public static ArrayList<String> getListOfFloatingEventToDisplayInString() {
-		return floatingToDisplay();
+		retrieve();
+		return toDisplay(listOfFloatingEventToDisplay);
 	}
 	
 	public static void formatListOfEvent() throws Exception {
