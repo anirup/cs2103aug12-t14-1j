@@ -201,7 +201,6 @@ public class Executor implements ListOfEventObserver {
 	private static void executeSearch(String[] parameterList) {
 		analyzeAndSearch(parameterList);
 		ListOfEvent.notifyObservers();
-		searchToTrue();
 	}
 
 	private static int executeDelete(int userInputInteger) throws Exception {
