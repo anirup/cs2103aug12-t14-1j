@@ -1,5 +1,5 @@
 package logAndException;
-
+ 
 import java.util.Vector;
 
 public class ExceptionHandler {

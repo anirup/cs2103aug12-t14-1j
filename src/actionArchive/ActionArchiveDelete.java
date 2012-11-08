@@ -3,7 +3,7 @@ package actionArchive;
 import event.Event;
 import event.ListOfEvent;
 
-
+ 
 public class ActionArchiveDelete extends ActionArchive{
 	private Event _deletedEvent;
 	private static final String MESSAGE_UNDO_DELETE = "Undo: Delete %1$s";

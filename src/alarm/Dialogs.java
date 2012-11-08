@@ -9,7 +9,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-
+ 
 class Dialogs extends JDialog {
 	/**
 	 * 

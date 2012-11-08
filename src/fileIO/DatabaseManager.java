@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 import event.Event;
 import event.ListOfEvent;
-
+ 
 public class DatabaseManager {
 	private static ArrayList<String> listOfEventInString = new ArrayList<String>();
 	private static String fileName;

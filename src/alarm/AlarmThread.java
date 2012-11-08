@@ -1,5 +1,5 @@
 package alarm;
-
+ 
 public class AlarmThread implements Runnable {
 	Thread t;
 

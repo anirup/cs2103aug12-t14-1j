@@ -4,7 +4,7 @@ import event.Event;
 import event.ListOfEvent;
 
 public class ActionArchiveAdd extends ActionArchive {
-	private Event _addedEvent;
+	private Event  _addedEvent;
 	private static final String MESSAGE_UNDO_ADD = "Undo: Add %1$s";
 	
 	public ActionArchiveAdd(Event addedEvent) {

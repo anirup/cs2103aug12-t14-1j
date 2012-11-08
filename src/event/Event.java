@@ -2,7 +2,7 @@ package event;
 import global.Clock;
 
 import org.joda.time.DateTime;
-
+ 
 public class Event {
 	private String _eventID;
 	private String _eventName;

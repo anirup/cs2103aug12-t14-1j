@@ -4,7 +4,7 @@ import global.Clock;
 import java.util.logging.*;
 
 import org.joda.time.DateTime;
-
+ 
 public class Log {
 	private static final Logger messageLogger=Logger.getLogger("Log");
 	private static FileHandler fh=null;

@@ -3,7 +3,7 @@ import global.Clock;
 import global.StringOperation;
 import java.util.Vector;
 import org.joda.time.DateTime;
-
+ 
 public class LogicSplitter {
 	private static final String SHORTHAND_UPDATE = "u";
 	private static final String COMMAND_UPDATE = "update";
@@ -34,7 +34,8 @@ public class LogicSplitter {
 			message = 12;
 			Exception exception = new Exception();
 			throw exception;
-		}if(parameterList.get(0).equalsIgnoreCase(COMMAND_UPDATE)||parameterList.get(0).equalsIgnoreCase(SHORTHAND_UPDATE))
+		}
+		if(parameterList.get(0).equalsIgnoreCase(COMMAND_UPDATE)||parameterList.get(0).equalsIgnoreCase(SHORTHAND_UPDATE))
 		{
 			index=StringOperation.getFirstNumber(userInput.trim());
 			if(index==-1)

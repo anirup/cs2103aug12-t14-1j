@@ -1,7 +1,7 @@
 package event;
 import java.util.Comparator;
 import event.Event;
-
+ 
 public class CompareEventByPriority implements Comparator<Event>{
 	
 	public int compare(Event firstEvent, Event secondEvent) {
