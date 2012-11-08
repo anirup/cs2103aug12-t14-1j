@@ -62,13 +62,12 @@ public class Executor implements ListOfEventObserver {
 	}
 
 	public static int analyze(String userInput) throws Exception {
-		PatternLib.setUpPattern();
-		LogicSplitter.setUp();
+		init();
+
 		Vector<String> parameters = new Vector<String>();
 		String[] parameterList = { "-1", "-1", "-1", "-1", "-1", "-1" };
-		LogicSplitter.setUp();
-		LogicAnalyzer.setUp();
-
+		
+		
 		try {
 			parameters = LogicSplitter.splitInput(userInput);
 		} catch (Exception e) {
@@ -128,6 +127,12 @@ public class Executor implements ListOfEventObserver {
 		ListOfEvent.notifyObservers();
 		return 11;
 
+	}
+
+	private static void init() {
+		PatternLib.setUpPattern();
+		LogicSplitter.setUp();
+		LogicAnalyzer.setUp();
 	}
 
 	private static int splittingError() throws Exception {
