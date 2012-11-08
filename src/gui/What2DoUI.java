@@ -36,7 +36,7 @@ public class What2DoUI extends javax.swing.JFrame {
 	int previousIndex = 0;
 	int updateFlag = 0;
 	boolean searchView = false;
-	boolean updateflag = false;
+	boolean updateFlagBool = false;
 
 	/**
 	 * This method is called from within the constructor to initialize the form.
@@ -406,7 +406,7 @@ public class What2DoUI extends javax.swing.JFrame {
 			if (data.contains("update")) {
 				int index = extractIndex(data);
 				if (index != 0) {
-					updateflag = true;
+					updateFlagBool = true;
 					String event = updateStream(data, index);
 					if (event != null) {
 						data += event;
@@ -419,24 +419,34 @@ public class What2DoUI extends javax.swing.JFrame {
 						return;
 					}
 				} else {
-					updateflag = false;
+					updateFlagBool = false;
 				}
 			}
 			if (data.contains("search")) {
 				searchView = true;
 				setViewToSearch();
 				Executor.searchToTrue();
+			}	
+			else if (data.contains("floating")) {
+				searchView = false;
+				Executor.searchToFalse();
+				setViewToFloating();
 			}
+			else{
+				searchView = false;
+				Executor.searchToFalse();
+				setViewToUpcoming();
+			}
+			if (!(data.contains("update"))){
+				updateFlagBool=false;
+			}
+			/*
 			if (data.contains("back")) {
 				searchView = false;
 				Executor.searchToFalse();
 				setViewToUpcoming();
 			}
-			if (data.contains("floating")) {
-				searchView = false;
-				Executor.searchToFalse();
-				setViewToFloating();
-			}
+			
 			if (data.contains("upcoming")) {
 				searchView = false;
 				Executor.searchToFalse();
@@ -452,7 +462,8 @@ public class What2DoUI extends javax.swing.JFrame {
 				Executor.searchToFalse();
 				setViewToUpcoming();
 			}
-			if (updateflag == false) {
+			*/
+			if (updateFlagBool == false) {
 				String message = analyzeInputUsingLogic(data);
 
 				displayDatabase(message);
@@ -760,11 +771,14 @@ public class What2DoUI extends javax.swing.JFrame {
 						.format("%s</span> &nbsp;<span style=\"color: rgb(155, 187, 89); \">",
 								formattedUpcomingEvents.get(i + 1).get(2));
 				html2 += String
-						.format("%s</span> &nbsp;<span style=\"color: rgb(75, 172, 198); \"",
+						.format("%s</span> &nbsp;<span style=\"color: rgb(0, 0, 0); \"",
 								formattedUpcomingEvents.get(i + 1).get(3));
 
+				html2 += "<b><i>Starts at </b></i></span><span style=\"color: rgb(75, 172, 198); \">";
+
+				
 				html2 += String
-						.format(">%s</span>&nbsp; <span style=\"color: rgb(0, 0, 0); \">",
+						.format("%s</span>&nbsp; <span style=\"color: rgb(0, 0, 0); \">",
 								formattedUpcomingEvents.get(i + 1).get(5));
 
 				if (formattedUpcomingEvents.get(i + 1).get(6).contains(":")) {
@@ -1093,7 +1107,7 @@ public class What2DoUI extends javax.swing.JFrame {
 			textField1.setText(previousEntry.get(previousIndex));
 			previousIndex--;
 		}
-		if (evt.getKeyCode() == 40 && previousIndex != previousEntry.size() - 1) {
+		if (evt.getKeyCode() == 40 && previousIndex != previousEntry.size() - 1 && !(previousEntry.isEmpty())) {
 			textField1.setText(previousEntry.get(++previousIndex));
 		}
 	}
