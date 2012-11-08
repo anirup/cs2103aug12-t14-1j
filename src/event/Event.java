@@ -216,7 +216,7 @@ public class Event {
 		content= content + SPLITTER + Boolean.toString(_isDone);
 		content= content + SPLITTER + Clock.toStringToDisplay(_eventStartTime);
 		content= content + SPLITTER + Clock.toStringToDisplay(_eventEndTime);
-		content= content + SPLITTER + reminderToStringToDisplay();
+		content= content + SPLITTER + reminderToStringToDisplay() + SPLITTER;
 		return content;
 	}
 	

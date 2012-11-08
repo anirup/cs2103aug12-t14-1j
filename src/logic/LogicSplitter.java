@@ -219,7 +219,7 @@ public class LogicSplitter {
 		if (!userInput.trim().isEmpty()
 				&& StringOperation.isInteger(userInput.trim()) == -1) {
 			parameterList.add(userInput.trim().substring(0,
-					getIndexOfNextComponent(userInput)));
+					getIndexOfNextComponent(userInput)-1));
 			userInput = userInput.replace(parameterList.lastElement(),
 					EMPTY_STRING);
 		} else
