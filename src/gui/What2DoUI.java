@@ -426,17 +426,24 @@ public class What2DoUI extends javax.swing.JFrame {
 				searchView = true;
 				setViewToSearch();
 				Executor.searchToTrue();
+			}	
+			else if (data.contains("floating")) {
+				searchView = false;
+				Executor.searchToFalse();
+				setViewToFloating();
 			}
+			else{
+				searchView = false;
+				Executor.searchToFalse();
+				setViewToUpcoming();
+			}
+			/*
 			if (data.contains("back")) {
 				searchView = false;
 				Executor.searchToFalse();
 				setViewToUpcoming();
 			}
-			if (data.contains("floating")) {
-				searchView = false;
-				Executor.searchToFalse();
-				setViewToFloating();
-			}
+			
 			if (data.contains("upcoming")) {
 				searchView = false;
 				Executor.searchToFalse();
@@ -452,6 +459,7 @@ public class What2DoUI extends javax.swing.JFrame {
 				Executor.searchToFalse();
 				setViewToUpcoming();
 			}
+			*/
 			if (updateflag == false) {
 				String message = analyzeInputUsingLogic(data);
 
@@ -760,11 +768,14 @@ public class What2DoUI extends javax.swing.JFrame {
 						.format("%s</span> &nbsp;<span style=\"color: rgb(155, 187, 89); \">",
 								formattedUpcomingEvents.get(i + 1).get(2));
 				html2 += String
-						.format("%s</span> &nbsp;<span style=\"color: rgb(75, 172, 198); \"",
+						.format("%s</span> &nbsp;<span style=\"color: rgb(0, 0, 0); \"",
 								formattedUpcomingEvents.get(i + 1).get(3));
 
+				html2 += "<b><i>Starts at </b></i></span><span style=\"color: rgb(75, 172, 198); \">";
+
+				
 				html2 += String
-						.format(">%s</span>&nbsp; <span style=\"color: rgb(0, 0, 0); \">",
+						.format("%s</span>&nbsp; <span style=\"color: rgb(0, 0, 0); \">",
 								formattedUpcomingEvents.get(i + 1).get(5));
 
 				if (formattedUpcomingEvents.get(i + 1).get(6).contains(":")) {
