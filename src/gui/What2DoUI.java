@@ -34,6 +34,7 @@ public class What2DoUI extends javax.swing.JFrame {
 	int previousIndex=0;
 	int updateFlag=0;
 	boolean searchView=false;
+	boolean updateflag=false;
 	
 	/**
 	 * This method is called from within the constructor to initialize the form.
@@ -460,7 +461,27 @@ public class What2DoUI extends javax.swing.JFrame {
 			flag = 0;
 			String data = textField1.getText();
 			if (data.contains("update")){
-				data+=updateStream(data);
+				int index=extractIndex(data);
+				if(index!=0)
+				{
+					updateflag=true;
+					String event=updateStream(data,index);
+					if(event!=null)
+					{
+					data+=event;
+					textField1.setText(data);
+					}
+					else 
+					{
+						textField1.setText("");
+						jLabel3.setText(String.format("<html><p class=\"MsoNormal\"><b><span style=\"color: rgb(0, 176, 80)\"; >%s</span></b></p></html>","Update Index not Found"));
+						return;
+					}
+				}
+				else
+				{
+					updateflag=false;
+				}
 			}
 			if (data.contains("search")) {
 				searchView=true;
@@ -490,14 +511,8 @@ public class What2DoUI extends javax.swing.JFrame {
                 jPanel3.setVisible(false);
                 jPanel2.setVisible(true);
             }
-            if (data.contains("update")){
-            	updateFlag+=1;
-            	updateFlag=updateFlag%3;
-            	if (updateFlag==1){
-            		//call anirup's function-textField1.setText("");
-            	}
-            		
-            }
+            if(updateflag==false)
+            {
 			int index = Executor.analyze(data);
 			String message = ExceptionHandler.getException(index);
 			toUpdate = !(message.contains("Error"));
@@ -506,25 +521,43 @@ public class What2DoUI extends javax.swing.JFrame {
 			textField1.setText("");
 			previousEntry.add(data);
 			previousIndex=previousEntry.size()-1;
+            }
 		}
 
 	}
 
-	private String updateStream(String message) throws Exception {
-		int index=extractIndex(message);
+	private String updateStream(String message, int index) throws Exception {
 		String result=findEventByIndex(index);
 		String formattedResult=formatResult(result);
 		return formattedResult;
 	}
 
 	private String formatResult(String result) {
-		String formattedResult="";
+		if(result!=null)
+		{
+		String formattedResult="  ";
 		String formattedResultArray[]=result.split("\\..");
-		for (int i=0; i<formattedResultArray.length; i++){
-			formattedResult+=formattedResultArray[i]+"  ";
+		formattedResult+=formattedResultArray[1]+"  ";
+		formattedResult+="#" + formattedResultArray[2]+"";
+		formattedResult+=formattedResultArray[3]+"  ";
+		if(formattedResultArray.length>5 && formattedResultArray[5]!="")
+		{
+		formattedResult+=formattedResultArray[5]+"  ";
 		}
+		if(formattedResultArray.length>6 && formattedResultArray[6]!="")
+		{
+		formattedResult+=formattedResultArray[6]+"  ";
+		}
+		if(formattedResultArray.length>7 && formattedResultArray[7]!="")
+		{
+		formattedResult+=formattedResultArray[7]+"  ";
+		}
+
 		formattedResult.trim();
 		return formattedResult;
+		}
+		else
+			return null;
 	}
 
 	private String findEventByIndex(int index) {
