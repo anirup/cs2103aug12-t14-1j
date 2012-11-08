@@ -1,6 +1,8 @@
 package event;
  
 
+import global.Clock;
+
 import java.util.Comparator;
 
 
@@ -17,6 +19,11 @@ public class CompareEventByTime implements Comparator<Event>{
 	}
 	
 	private static int getDateOrder(Event a, Event b) {
+		if(Clock.isBefore(a.getEventEndTime(), Clock.getBigBangTime()) &&
+				!Clock.isBigBangTime(a.getEventEndTime()) || 
+				(a.getEventType() == Event.FLOATING_TYPE && a.isDone())) {
+			return 1;
+		}
 		if (a.getEventStartTime().isBefore(b.getEventStartTime()))
 			return -1;
 		else if (a.getEventStartTime().isAfter(b.getEventStartTime()))
@@ -24,6 +31,4 @@ public class CompareEventByTime implements Comparator<Event>{
 		else
 			return 0;
 	}
-
-	
 }

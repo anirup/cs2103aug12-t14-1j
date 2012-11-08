@@ -17,8 +17,6 @@ import alarm.ListOfAlarm;
 
 public class ListOfEvent {
 	private static ArrayList<Event> listOfEvent = new ArrayList<Event>();
-	private static ArrayList<Event> listOfUpcomingEventToDisplay = new ArrayList<Event>();
-	private static ArrayList<Event> listOfFloatingEventToDisplay = new ArrayList<Event>();
 	private static ArrayList<Event> searchResults = new ArrayList<Event>();
 	private static ArrayList<ListOfEventObserver> listOfObserver= new ArrayList<ListOfEventObserver>();
 	private static final String fileName = "What2Do.txt";
@@ -102,14 +100,19 @@ public class ListOfEvent {
 	public static Event add(String eventInString) {
 		Event newEvent = getEventFromString(eventInString);
 		if(newEvent.isSameEvent(new Event())) {
-			isClashedWithExistingEvents(newEvent);
-			isBeforeCurrentTime(newEvent);
+			checkForWarning(newEvent);
 			listOfEvent.add(newEvent);
 			return newEvent;
 		}
 		return null;
 	}
 	
+	private static void checkForWarning(Event newEvent) {
+		isClashedWithExistingEvents(newEvent);
+		if(newEvent.isBeforeCurrentTime()) {
+			feedback.add("Warning: new added event is before current time");
+		}
+	}
 	private static void isClashedWithExistingEvents(Event newEvent) {
 		for(int index = 0; index < listOfEvent.size(); index++) {
 			Event currentEvent = listOfEvent.get(index);
@@ -117,15 +120,6 @@ public class ListOfEvent {
 				feedback.add("The new Event is Clashed with exixting Events. Do you want to add?");
 				return;
 			}
-		}
-	}
-
-	private static void isBeforeCurrentTime(Event newEvent) {
-		if(newEvent.getEventType() == Event.FLOATING_TYPE) {
-			return;
-		} else if (newEvent.getEventEndTime().isBeforeNow()) {
-			feedback.add("The new Event has already passed. Do you want to add?");
-			return;
 		}
 	}
 	
@@ -161,8 +155,7 @@ public class ListOfEvent {
 			update(removedEvent, updatedEvent);
 			update.add(removedEvent);
 			update.add(updatedEvent);
-			isBeforeCurrentTime(updatedEvent);
-			isClashedWithExistingEvents(updatedEvent);
+			checkForWarning(updatedEvent);
 			return update;
 		}
 		return null;
@@ -176,8 +169,7 @@ public class ListOfEvent {
 			listOfEvent.add(updatedEvent);
 			update.add(removedEvent);
 			update.add(updatedEvent);
-			isBeforeCurrentTime(updatedEvent);
-			isClashedWithExistingEvents(updatedEvent);
+			checkForWarning(updatedEvent);
 			return update;
 		}
 		return update;
@@ -264,32 +256,16 @@ public class ListOfEvent {
 		return list;
 	}
 	
-	private static ArrayList<String> toDisplayForSearch(ArrayList<Event> list) {
+	private static ArrayList<String> getSearchResultsToDisplay() {
 		ArrayList<String> listToDisplay = new ArrayList<String>();
 
-		for(int index = 0; index < list.size(); index++) {
-			Event currentEvent = list.get(index);
+		for(int index = 0; index < searchResults.size(); index++) {
+			Event currentEvent = searchResults.get(index);
 			
 				String contentToDisplay = currentEvent.composeContentToDisplayInString();
 				contentToDisplay = String.format(displayFormat,  index + 1, contentToDisplay);
 				listToDisplay.add(contentToDisplay);
 			
-		}
-		return listToDisplay;
-	}
-
-	private static ArrayList<String> toDisplay(ArrayList<Event> list) {
-		ArrayList<String> listToDisplay = new ArrayList<String>();
-		int numberOfFloatingEvent = listOfFloatingEventToDisplay.size();
-		for(int index = 0; index < list.size(); index++) {
-			Event currentEvent = list.get(index);
-			String contentToDisplay;
-			if(currentEvent.getEventType() == Event.FLOATING_TYPE) {
-				contentToDisplay = formatEventToStringToDisplay(currentEvent,index + 1);
-			} else {
-				contentToDisplay = formatEventToStringToDisplay(currentEvent, numberOfFloatingEvent + index);
-			}
-			listToDisplay.add(contentToDisplay);
 		}
 		return listToDisplay;
 	}
@@ -300,17 +276,32 @@ public class ListOfEvent {
 		return contentToDisplay;
 	}
 	
-	private static void retrieve() {
-		listOfFloatingEventToDisplay.clear();
-		listOfUpcomingEventToDisplay.clear();
+	private static ArrayList<String> getFloatingEventToDisplay() {
+		ArrayList<String> floatingEventToGUI = new ArrayList<String>();
 		for(int index = 0; index < listOfEvent.size(); index++) {
 			Event currentEvent = listOfEvent.get(index);
-			if(currentEvent.getEventType() != Event.FLOATING_TYPE) {
-				listOfFloatingEventToDisplay.add(currentEvent);
-			} else if(!currentEvent.isBefore(currentEvent)) {
-				listOfUpcomingEventToDisplay.add(currentEvent);
+			if(currentEvent.getEventType() == Event.FLOATING_TYPE) {
+				String contentToDisplay = formatEventToStringToDisplay(currentEvent, index + 1);
+				floatingEventToGUI.add(contentToDisplay);
+			} else {
+				return floatingEventToGUI;
 			}
 		}
+		return floatingEventToGUI;
+	}
+	
+	private static ArrayList<String> getUpcomingEventToDisplay() {
+		ArrayList<String> upcomingEventToGUI = new ArrayList<String>();
+		for(int index = 0; index < listOfEvent.size(); index++) {
+			Event currentEvent = listOfEvent.get(index); 
+			if(currentEvent.getEventType() != Event.FLOATING_TYPE) {
+				if(!currentEvent.isBeforeCurrentTime()) {
+					String contentToDisplay = formatEventToStringToDisplay(currentEvent, index + 1);
+					upcomingEventToGUI.add(contentToDisplay);					
+				}
+			}
+		}
+		return upcomingEventToGUI;
 	}
 	
 	public static Event getEventFromString(String eventInString) {
@@ -367,18 +358,17 @@ public class ListOfEvent {
 
 	public static ArrayList<String> getSearchResultsToDisplayInString() {
 		searchResults = sort(searchResults);
-		ArrayList<String> searchResultsToDisplay = toDisplayForSearch(searchResults);		
-		return searchResultsToDisplay;
+		return getSearchResultsToDisplay();		
 	}
 	
 	public static ArrayList<String> getListOfEventToDisplayInString() {
 		listOfEvent = sort(listOfEvent);
-		return toDisplay(listOfUpcomingEventToDisplay);
+		return getUpcomingEventToDisplay();
 	}
 	
 	public static ArrayList<String> getListOfFloatingEventToDisplayInString() {
-		retrieve();
-		return toDisplay(listOfFloatingEventToDisplay);
+		listOfEvent = sort(listOfEvent);
+		return getFloatingEventToDisplay();
 	}
 	
 	public static void formatListOfEvent() throws Exception {
