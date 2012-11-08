@@ -535,22 +535,22 @@ public class What2DoUI extends javax.swing.JFrame {
 	private String formatResult(String result) {
 		if(result!=null)
 		{
-		String formattedResult="  ";
+		String formattedResult=" ";
 		String formattedResultArray[]=result.split("\\..");
-		formattedResult+=formattedResultArray[1]+"  ";
+		formattedResult+=formattedResultArray[1]+" ";
 		formattedResult+="#" + formattedResultArray[2]+"";
-		formattedResult+=formattedResultArray[3]+"  ";
+		formattedResult+=formattedResultArray[3]+" ";
 		if(formattedResultArray.length>5 && formattedResultArray[5]!="")
 		{
-		formattedResult+=formattedResultArray[5]+"  ";
+		formattedResult+=formattedResultArray[5]+" ";
 		}
 		if(formattedResultArray.length>6 && formattedResultArray[6]!="")
 		{
-		formattedResult+=formattedResultArray[6]+"  ";
+		formattedResult+=formattedResultArray[6]+" ";
 		}
 		if(formattedResultArray.length>7 && formattedResultArray[7]!="")
 		{
-		formattedResult+=formattedResultArray[7]+"  ";
+		formattedResult+=formattedResultArray[7]+" ";
 		}
 
 		formattedResult.trim();

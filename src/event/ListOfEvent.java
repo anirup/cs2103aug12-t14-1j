@@ -186,7 +186,8 @@ public class ListOfEvent {
 		return false;
 	}
 	
-	public static void searchInNameAndHashTags(Vector<String> searchWords) {	
+	public static void searchInNameAndHashTags(Vector<String> searchWords) {
+		searchResults.clear();
 		int size = ListOfEvent.size();
 		for (int i = 0; i < size; i++) {
 			if (searchWords.isEmpty())
@@ -260,7 +261,7 @@ public class ListOfEvent {
 		ArrayList<String> listToDisplay = new ArrayList<String>();
 
 		for(int index = 0; index < list.size(); index++) {
-			Event currentEvent = listOfEvent.get(index);
+			Event currentEvent = list.get(index);
 			if(currentEvent.getEventType() != Event.FLOATING_TYPE) {
 				String contentToDisplay = currentEvent.composeContentToDisplayInString();
 				contentToDisplay = String.format(displayFormat,  index + 1, contentToDisplay);
@@ -270,6 +271,20 @@ public class ListOfEvent {
 		return listToDisplay;
 	}
 	
+	private static ArrayList<String> toDisplayForSearch(ArrayList<Event> list) {
+		ArrayList<String> listToDisplay = new ArrayList<String>();
+
+		for(int index = 0; index < list.size(); index++) {
+			Event currentEvent = list.get(index);
+			
+				String contentToDisplay = currentEvent.composeContentToDisplayInString();
+				contentToDisplay = String.format(displayFormat,  index + 1, contentToDisplay);
+				listToDisplay.add(contentToDisplay);
+			
+		}
+		return listToDisplay;
+	}
+
 	private static ArrayList<String> floatingToDisplay() {
 		ArrayList<String> listToDisplay = new ArrayList<String>();
 		for(int index = 0; index < listOfEvent.size(); index++) {
@@ -378,7 +393,7 @@ public class ListOfEvent {
 
 	public static ArrayList<String> getSearchResultsToDisplayInString() {
 		searchResults = sort(searchResults);
-		ArrayList<String> searchResultsToDisplay = toDisplay(searchResults);
+		ArrayList<String> searchResultsToDisplay = toDisplayForSearch(searchResults);
 		
 		return searchResultsToDisplay;
 	}
