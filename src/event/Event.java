@@ -3,6 +3,8 @@ import global.Clock;
 import global.StringOperation;
 
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
  
 public class Event {
 	private String _eventID;
@@ -17,7 +19,7 @@ public class Event {
 	public static final String SPLITTER = "..";
 	protected final String NEW_LINE = "\n";
 	public static final String SPACE = " ";
-	
+	private static final DateTime unableToParse = new DateTime(1970, 1, 1, 1, 0);
 	protected static final int INDEX_FOR_EVENT_ID = 0;
 	protected static final int INDEX_FOR_EVENT_NAME = 1;
 	protected static final int INDEX_FOR_EVENT_PRIORITY = 2;
@@ -103,7 +105,7 @@ public class Event {
 	}
 	
 	public boolean isBefore(Event anotherEvent) {
-		return Clock.isBefore(this.getEventStartTime(), anotherEvent.getEventStartTime());
+		return _eventStartTime.isBefore(anotherEvent.getEventStartTime());
 	}
 	
 	public boolean isClashedWith(Event anotherEvent) {
@@ -111,9 +113,9 @@ public class Event {
 		DateTime firstEnd = this._eventEndTime;
 		DateTime secondStart = anotherEvent._eventStartTime;
 		DateTime secondEnd = anotherEvent._eventEndTime;
-		if((Clock.isBefore(firstStart, secondEnd) && Clock.isBefore(secondStart, firstStart)) 
-				|| (Clock.isBefore(firstEnd, secondEnd) && Clock.isBefore(secondStart, firstEnd))
-				|| (Clock.isBefore(secondStart, firstEnd) && Clock.isBefore(firstStart, secondEnd))) {
+		if((firstStart.isBefore(secondEnd) && secondStart.isBefore(firstStart)) 
+				|| (firstEnd.isBefore(secondEnd) && secondStart.isBefore(firstEnd))
+				|| secondStart.isBefore(firstEnd) && firstStart.isBefore(secondEnd)) {
 			return true;
 		} 
 		return false;
@@ -173,7 +175,7 @@ public class Event {
 		} else if(!Clock.isBigBangTime(_eventEndTime) && Clock.isBigBangTime(_eventStartTime))  {
 			_eventStartTime = _eventEndTime;
 			_eventEndTime = Clock.getBigBangTime();
-		} else if(Clock.isBefore(_eventEndTime, _eventStartTime) && !Clock.isBigBangTime(_eventEndTime)) {
+		} else if(_eventEndTime.isBefore(_eventStartTime) && !Clock.isBigBangTime(_eventEndTime)) {
 			DateTime temp = _eventStartTime;
 			_eventStartTime = _eventEndTime;
 			_eventEndTime = temp;
@@ -189,7 +191,7 @@ public class Event {
 			return false;
 		}
 		for(int timeFieldIndex = INDEX_FOR_EVENT_REMINDER_TIME; timeFieldIndex <= INDEX_FOR_COMPLETED_TIME; timeFieldIndex++) {
-			if(!Clock.isValidTimeInString(eventContent[timeFieldIndex])) {
+			if(isValidTimeInString(eventContent[timeFieldIndex])) {
 				return false;
 			}
 		}
@@ -202,7 +204,7 @@ public class Event {
 	}
 	
 	public void markDone() {
-		if(Clock.isBefore(_eventEndTime, DateTime.now()) && Clock.isBigBangTime(_eventEndTime)) {
+		if(_eventEndTime.isBefore(DateTime.now()) && Clock.isBigBangTime(_eventEndTime)) {
 			_timeCompleted = _eventEndTime;
 		} else {
 			_timeCompleted = DateTime.now();
@@ -261,10 +263,27 @@ public class Event {
 		content= content + SPLITTER + getPriorityInString();
 		content= content + SPLITTER + _eventHashTag;
 		content= content + SPLITTER + Boolean.toString(_isDone);
-		content= content + SPLITTER + Clock.toStringToDisplay(_eventStartTime);
-		content= content + SPLITTER + Clock.toStringToDisplay(_eventEndTime);
+		content= content + SPLITTER + toStringToDisplay(_eventStartTime);
+		content= content + SPLITTER + toStringToDisplay(_eventEndTime);
 		content= content + SPLITTER + reminderToStringToDisplay() + SPLITTER;
 		return content;
+	}
+	
+	private boolean isValidTimeInString(String time) {
+		DateTime date = Clock.parseTimeFromString(time);
+		if(date == unableToParse) {
+			return false;
+		}
+		return true;
+	}
+	
+	private String toStringToDisplay(DateTime time) {
+		DateTimeFormatter dateFormat = DateTimeFormat.forPattern("HH:mm dd/MM/yyyy");
+		String dateInString = time.toString(dateFormat);
+		if(dateInString.equalsIgnoreCase("00:00 01/01/1970")) {
+			return "";
+		}
+		return dateInString;
 	}
 	
 	private String reminderToStringToDisplay() {

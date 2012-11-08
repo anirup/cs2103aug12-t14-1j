@@ -19,8 +19,7 @@ public class CompareEventByTime implements Comparator<Event>{
 	}
 	
 	private static int getDateOrder(Event a, Event b) {
-		if(Clock.isBefore(a.getEventEndTime(), Clock.getBigBangTime()) &&
-				!Clock.isBigBangTime(a.getEventEndTime()) || 
+		if((a.getEventEndTime().isBeforeNow() && !Clock.isBigBangTime(a.getEventEndTime())) || 
 				(a.getEventType() == Event.FLOATING_TYPE && a.isDone())) {
 			return 1;
 		}
