@@ -92,7 +92,7 @@ public class Executor implements ListOfEventObserver {
 		}
 
 		try {
-			String command = LogicAnalyzer.getCommand(parameterList);
+			String command = parameterList[0];
 			if (isAdd(command)) {
 				return executeAdd(parameterList);
 			} else if (isDelete(command)) {
@@ -253,7 +253,7 @@ public class Executor implements ListOfEventObserver {
 			return 9;
 		}
 		ArrayList<Event> changedEvents;
-		String eventToAdd = LogicAnalyzer.getEventString(parameterList);
+		String eventToAdd = LogicAnalyzer.getAddUpdateEventString(parameterList);
 		if (searchState == false) {
 			changedEvents = ListOfEvent.updateList(updateIndex, eventToAdd);
 		} else {
@@ -346,8 +346,8 @@ public class Executor implements ListOfEventObserver {
 	private static Vector<String> getSearchWords(String[] parameterList) {
 		Vector<String> searchWords = new Vector<String>();
 		searchWords = LogicAnalyzer.getHashTags(parameterList);
-		String[] tempArr = (LogicAnalyzer.getKeyWords(parameterList)).trim()
-				.split(EXPRESSION_WHITESPACE);
+		String[] tempArr = (parameterList[1].trim()
+				.split(EXPRESSION_WHITESPACE));
 		searchWords.addAll(Arrays.asList(tempArr));
 		return searchWords;
 	}
@@ -358,7 +358,7 @@ public class Executor implements ListOfEventObserver {
 
 	public static Event analyzeAddInput(String[] parameterList) {
 
-		String eventToAdd = LogicAnalyzer.getEventString(parameterList);
+		String eventToAdd = LogicAnalyzer.getAddUpdateEventString(parameterList);
 		return ListOfEvent.add(eventToAdd);
 
 	}
