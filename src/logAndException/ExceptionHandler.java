@@ -26,6 +26,8 @@ public class ExceptionHandler {
 		listOfExceptions.add("Error: No Keywords Entered");//16
 		listOfExceptions.add("Switched to Upcoming Events View");//17
 		listOfExceptions.add("Error: Update Format Wrong.");//18
+		listOfExceptions.add("Error: No Event at Entered Index.");//19
+		listOfExceptions.add("Error: Illegal Keyword Entered.Please Enter a Valid Integer");//20
 	}
 	
 	public static String getException(int index)
