@@ -20,34 +20,34 @@ public class TestAnalyzer {
 	private static String[] newparameterList12={"delete", "2", "-1", "-1", "-1", "-1"};
 	@Test
 	public void testGetEventString1() {
-		assertEquals("testGetEventString","",LogicAnalyzer.getEventString(newparameterList));
+		assertEquals("testGetEventString","",LogicAnalyzer.getAddUpdateEventString(newparameterList));
 	}
 	public void testGetEventString2() {
-		assertEquals("testGetEventString","",LogicAnalyzer.getEventString(newparameterList1));
+		assertEquals("testGetEventString","",LogicAnalyzer.getAddUpdateEventString(newparameterList1));
 	}
 	public void testGetEventString3() {
-		assertEquals("testGetEventString","",LogicAnalyzer.getEventString(newparameterList2));
+		assertEquals("testGetEventString","",LogicAnalyzer.getAddUpdateEventString(newparameterList2));
 	}
 	public void testGetEventString4() {
-		assertEquals("testGetEventString","",LogicAnalyzer.getEventString(newparameterList3));
+		assertEquals("testGetEventString","",LogicAnalyzer.getAddUpdateEventString(newparameterList3));
 	}
 	public void testGetEventString5() {
-		assertEquals("testGetEventString","",LogicAnalyzer.getEventString(newparameterList4));
+		assertEquals("testGetEventString","",LogicAnalyzer.getAddUpdateEventString(newparameterList4));
 	}
 	public void testGetEventString6() {
-		assertEquals("testGetEventString","",LogicAnalyzer.getEventString(newparameterList5));
+		assertEquals("testGetEventString","",LogicAnalyzer.getAddUpdateEventString(newparameterList5));
 	}
 	public void testGetEventString7() {
-		assertEquals("testGetEventString","",LogicAnalyzer.getEventString(newparameterList6));
+		assertEquals("testGetEventString","",LogicAnalyzer.getAddUpdateEventString(newparameterList6));
 	}
 	public void testGetEventString8() {
-		assertEquals("testGetEventString","",LogicAnalyzer.getEventString(newparameterList7));
+		assertEquals("testGetEventString","",LogicAnalyzer.getAddUpdateEventString(newparameterList7));
 	}
 	public void testGetEventString9() {
-		assertEquals("testGetEventString","",LogicAnalyzer.getEventString(newparameterList8));
+		assertEquals("testGetEventString","",LogicAnalyzer.getAddUpdateEventString(newparameterList8));
 	}
 	public void testGetEventString10() {
-		assertEquals("testGetEventString","",LogicAnalyzer.getEventString(newparameterList9
+		assertEquals("testGetEventString","",LogicAnalyzer.getAddUpdateEventString(newparameterList9
 				));
 	}
 
@@ -70,19 +70,4 @@ public class TestAnalyzer {
 	public void testGetInteger() {
 		
 	}
-
-	@Test
-	public void testGetReminderInFromat1() {
-		assertEquals("testgetreminderformat", "r-1min", LogicAnalyzer.getReminderInFromat("17:00 12/12/12", "16:59 12/12/12"));
-	}
-	public void testGetReminderInFromat2() {
-		assertEquals("testgetreminderformat", "r-1day1min", LogicAnalyzer.getReminderInFromat("17:00 12/12/12", "16:59 11/12/12"));
-	}
-	public void testGetReminderInFromat3() {
-		assertEquals("testgetreminderformat", "r-1hr1min", LogicAnalyzer.getReminderInFromat("17:00 12/12/12", "15:59 12/12/12"));
-	}
-	public void testGetReminderInFromat4() {
-		assertEquals("testgetreminderformat", "r-1day2hr1min", LogicAnalyzer.getReminderInFromat("17:00 12/12/12", "14:59 11/12/12"));
-	}
-
 }

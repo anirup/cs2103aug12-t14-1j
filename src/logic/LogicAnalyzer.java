@@ -51,7 +51,14 @@ public class LogicAnalyzer {
 			fieldFound[i] = false;
 		}
 	}
-	public static String getEventString(String[] parameterList) {
+	public static int getInteger(String[] parameterList) {
+		try {
+			return Integer.parseInt(parameterList[1]);
+		} catch (NumberFormatException e) {
+			return -1;
+		}
+	}
+	public static String getAddUpdateEventString(String[] parameterList) {
 		String eventID = getEventID();
 		String eventName = getKeyWords(parameterList);
 		Vector<String> listOfHashTags = getAllHashTags(parameterList);
@@ -111,7 +118,7 @@ public class LogicAnalyzer {
 		return content;
 	}
 
-	public static String getKeyWords(String[] parameterList) {
+	private static String getKeyWords(String[] parameterList) {
 		fieldFound[1] = true;
 		if (parameterList[1].trim().contains(SPLITTER_HASH)) {
 			return parameterList[1].trim()
@@ -203,6 +210,12 @@ public class LogicAnalyzer {
 		return (new Duration(miliseconds));
 	}
 
+	private static Vector<String> getAllHashTags(String[] parameterList) {
+		Vector<String> listOfHashTags = getHashTags(parameterList);
+		getPriority(listOfHashTags);
+		return listOfHashTags;
+	}
+
 	public static Vector<String> getHashTags(String[] parameterList) {
 		Vector<String> listOfHashTags = new Vector<String>();
 		for (int i = 0; i < parameterList.length; i++) {
@@ -220,17 +233,10 @@ public class LogicAnalyzer {
 				}
 				break;
 			}
-
+	
 		}
 		return listOfHashTags;
 	}
-
-	private static Vector<String> getAllHashTags(String[] parameterList) {
-		Vector<String> listOfHashTags = getHashTags(parameterList);
-		getPriority(listOfHashTags);
-		return listOfHashTags;
-	}
-
 	private static String getHashTagsString(Vector<String> hashList) {
 		String allHash = EMPTY_STRING;
 		for (int i = 0; i < hashList.size(); i++) {
@@ -238,15 +244,10 @@ public class LogicAnalyzer {
 		}
 		return allHash;
 	}
-
-	public static String getCommand(String[] parameterList) {
-		fieldFound[0] = true;
-		return parameterList[0];
-	}
-
+	
 	private static String getTime(String[] parameterList) {
 		String endTime = EMPTY_STRING;
-		for (int i = 2; i < 6; i++) {
+		for (int i = 2; i < 5; i++) {
 			if (fieldFound[i] == false
 					&& !parameterList[i].equals(ELEMENT_EMPTY)) {
 				endTime = EMPTY_STRING;
@@ -264,13 +265,5 @@ public class LogicAnalyzer {
 		return eventId;
 		
 
-	}
-
-	public static int getInteger(String[] parameterList) {
-		try {
-			return Integer.parseInt(parameterList[1]);
-		} catch (NumberFormatException e) {
-			return -1;
-		}
 	}
 }
