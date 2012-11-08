@@ -241,6 +241,15 @@ public class Event {
 		return _eventEndTime;
 	}
 	
+	public boolean isBeforeCurrentTime() {
+		if(this.getEventType() == Event.FLOATING_TYPE) {
+			return false;
+		} else if (this.getEventEndTime().isBeforeNow()) {
+			return true;
+		}
+		return false;
+	}
+	
 	public boolean isSameEvent(Event anotherEvent) {
 		String currentEventID = this.getEventID();
 		String anotherEventID = anotherEvent.getEventID();
