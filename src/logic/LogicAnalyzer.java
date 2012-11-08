@@ -9,6 +9,12 @@ import org.joda.time.Duration;
 
 
 public class LogicAnalyzer {
+	private static final String Priority_Low_Shorthand2 = "l";
+	private static final String Priority_Low_Shorthand1 = "low";
+	private static final String Priority_Normal_Shorthand2 = "n";
+	private static final String Priority_Normal_Shorthand1 = "normal";
+	private static final String Priority_High_Shorthand2 = "h";
+	private static final String Priority_High_Shorthand1 = "high";
 	private static final String ELEMENT_EMPTY = "-1";
 	private static final String EXTRACT_NUMBERS_PATTERN = "[0-9]{1,}";
 	private static final String STRING_FALSE = "false";
@@ -24,7 +30,7 @@ public class LogicAnalyzer {
 	private static final String REMINDER_DAY_SHORTHAND2 = "d";
 	private static final String REMINDER_DAY_SHORTHAND1 = "day";
 	private static final String REMINDER_DAYS = "days";
-	private static final String REMINDER_HOUR_SHORTHAND2 = "h";
+	private static final String REMINDER_HOUR_SHORTHAND2 = Priority_High_Shorthand2;
 	private static final String REMINDER_HOUR_SHORTHAND1 = "hr";
 	private static final String REMINDER_HOUR = "hour";
 	private static final int MILLISECONDS_IN_SECOND = 1000;
@@ -119,20 +125,20 @@ public class LogicAnalyzer {
 	private static void getPriority(Vector<String> hashTags) {
 		boolean found = false;
 		for (int i = 0; i < hashTags.size(); i++) {
-			if (hashTags.get(i).trim().equalsIgnoreCase("high")
-					|| hashTags.get(i).trim().equalsIgnoreCase("h")) {
+			if (hashTags.get(i).trim().equalsIgnoreCase(Priority_High_Shorthand1)
+					|| hashTags.get(i).trim().equalsIgnoreCase(Priority_High_Shorthand2)) {
 				hashTags.remove(i);
 				hashTags.add(0, Priority_High);
 				found = true;
 				return;
-			} else if (hashTags.get(i).trim().equalsIgnoreCase("normal")
-					|| hashTags.get(i).trim().equalsIgnoreCase("n")) {
+			} else if (hashTags.get(i).trim().equalsIgnoreCase(Priority_Normal_Shorthand1)
+					|| hashTags.get(i).trim().equalsIgnoreCase(Priority_Normal_Shorthand2)) {
 				hashTags.remove(i);
 				hashTags.add(0, Priority_Normal);
 				found = true;
 				return;
-			} else if (hashTags.get(i).trim().equalsIgnoreCase("low")
-					|| hashTags.get(i).trim().equalsIgnoreCase("l")) {
+			} else if (hashTags.get(i).trim().equalsIgnoreCase(Priority_Low_Shorthand1)
+					|| hashTags.get(i).trim().equalsIgnoreCase(Priority_Low_Shorthand2)) {
 				hashTags.remove(i);
 				hashTags.add(0, Priority_Low);
 				found = true;
@@ -148,7 +154,6 @@ public class LogicAnalyzer {
 		long miliseconds = 0;
 		int indexOfReminder = -1;
 		Vector<Long> timeQuantity = new Vector<Long>();
-		Vector<String> timeParameter = new Vector<String>();
 		for (int i = 0; i < parameterList.length; i++) {
 			if (parameterList[i].trim().contains("r-")
 					|| parameterList[i].trim().contains("R-")) {
