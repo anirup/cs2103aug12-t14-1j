@@ -246,7 +246,9 @@ public class Event {
 	public boolean isBeforeCurrentTime() {
 		if(this.getEventType() == Event.FLOATING_TYPE) {
 			return false;
-		} else if (this.getEventEndTime().isBeforeNow()) {
+		} else if (this.getEventType() == DEADLINE_TYPE && this.getEventStartTime().isBeforeNow()) {
+			return true;
+		} else if (this.getEventType() == TIMED_TYPE && this.getEventEndTime().isBeforeNow()) {
 			return true;
 		}
 		return false;
