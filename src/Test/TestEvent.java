@@ -108,24 +108,24 @@ public class TestEvent {
 		
 	}
 	
-	//@Test
+	@Test
 	public void testIsClashed() {		
-		assertEquals("test isClash()", true, floating.isClashedWith(deadline));
-		assertEquals("test isClash()", true, floating.isClashedWith(timed));
-		assertEquals("test isClash()", true, deadline.isClashedWith(timed));
-		assertEquals("test isClash()", true, timed.isClashedWith(clashTimed1));
-		assertEquals("test isClash()", true, timed.isClashedWith(clashTimed2));
-		assertEquals("test isClash()", true, timed.isClashedWith(clashTimed3));
+		assertEquals("test isClash()1", false, floating.isClashedWith(deadline));
+		assertEquals("test isClash()2", false, floating.isClashedWith(timed));
+		assertEquals("test isClash()3", false, deadline.isClashedWith(timed));
+		assertEquals("test isClash()4", true, timed.isClashedWith(clashTimed1));
+		assertEquals("test isClash()5", true, timed.isClashedWith(clashTimed2));
+		assertEquals("test isClash()6", true, timed.isClashedWith(clashTimed3));
 	}
 	
-	//@Test
+	@Test
 	public void testIsBefore() {
-		assertEquals("test isBefore()", true, floating.isBefore(deadline));
-		assertEquals("test isBefore()", true, floating.isBefore(deadline));
-		assertEquals("test isBefore()", true, floating.isBefore(deadline));
-		assertEquals("test isBefore()", true, floating.isBefore(deadline));
-		assertEquals("test isBefore()", true, floating.isBefore(deadline));
-		assertEquals("test isBefore()", true, floating.isBefore(deadline));
+		assertEquals("test isBefore()1", true, floating.isBefore(deadline));
+		assertEquals("test isBefore()2", true, deadline.isBefore(timed));
+		assertEquals("test isBefore()3", false, timed.isBefore(deadline));
+		assertEquals("test isBefore()4", false, timed.isBefore(clashTimed1));
+		assertEquals("test isBefore()5", true, clashTimed2.isBefore(clashTimed3));
+		assertEquals("test isBefore()6", false, clashTimed3.isBefore(floating));
 	}
 }
 

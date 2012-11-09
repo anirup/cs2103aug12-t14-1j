@@ -65,26 +65,56 @@ public class ListOfEvent {
 		return listOfEvent.size();
 	}
 	
-	public static void markDoneSearch(int position)
-	{
+	public static Event markDoneSearch(int position) {
+		if(isOutOfBoundIndex(position, searchResults)) {
+			return null;
+		}
 		searchResults.get(position).markDone();
 		int index = indexOf(searchResults.get(position));
 		markDoneList(index);
+		return listOfEvent.get(index);
 	}
 	
-	public static void markUndoneSearch(int position)
-	{
+	public static Event markUndoneSearch(int position) {
+		if(isOutOfBoundIndex(position, searchResults)) {
+			return null;
+		}
 		searchResults.get(position).markUndone();
 		int index = indexOf(searchResults.get(position));
 		markUndoneList(index);
+		return listOfEvent.get(index);
 	}
 	
-	public static void markUndoneList(int position) {
-		listOfEvent.get(position).markUndone();
+	public static Event markUndoneList(int position) {
+		if(isOutOfBoundIndex(position, searchResults)) {
+			return null;
+		}
+		Event eventToMarkUndone = listOfEvent.get(position);
+		eventToMarkUndone.markUndone();
+		return eventToMarkUndone;
 	}
 	
-	public static void markDoneList(int position) {
-		listOfEvent.get(position).markDone();
+	public static Event markDoneList(int position) {
+		if(isOutOfBoundIndex(position, searchResults)) {
+			return null;
+		}
+		Event eventToMarkDone = listOfEvent.get(position);
+		eventToMarkDone.markDone();
+		return eventToMarkDone;
+	}
+	
+	private static boolean isOutOfBoundIndex(int index, ArrayList<Event> list) {
+		if(index > list.size()-1) {
+			feedback.add("Error: Out Of Bound index");
+			return true;
+		}
+		return false;
+	}
+	
+	public static void markDoneList(Event event) {
+		int index = indexOf(event);
+		assert index >= 0;
+		listOfEvent.get(index).markDone();
 	}
 	
 	public static void markUndoneList(Event event) {
@@ -113,6 +143,7 @@ public class ListOfEvent {
 			feedback.add("Warning: new added event is before current time");
 		}
 	}
+	
 	private static void isClashedWithExistingEvents(Event newEvent) {
 		for(int index = 0; index < listOfEvent.size(); index++) {
 			Event currentEvent = listOfEvent.get(index);
@@ -146,8 +177,10 @@ public class ListOfEvent {
 	}
 	
 	public static ArrayList<Event> updateSearch(int position, String eventToUpdate) {
-		assert position <= searchResults.size();
 		ArrayList<Event> update = new ArrayList<Event>();
+		if(isOutOfBoundIndex(position, searchResults)) {
+			return update;
+		}
 		Event removedEvent = searchResults.remove(position);
 		Event updatedEvent = getEventFromString(eventToUpdate);
 		if(updatedEvent.isSameEvent(new Event())) {
@@ -158,11 +191,14 @@ public class ListOfEvent {
 			checkForWarning(updatedEvent);
 			return update;
 		}
-		return null;
+		return update;
 	}
 	
 	public static ArrayList<Event> updateList(int position, String eventToUpdate) {
 		ArrayList<Event> update = new ArrayList<Event>();
+		if(isOutOfBoundIndex(position, listOfEvent)) {
+			return update;
+		}
 		Event removedEvent = listOfEvent.remove(position);
 		Event updatedEvent = getEventFromString(eventToUpdate);
 		if(updatedEvent.isSameEvent(new Event())) {
