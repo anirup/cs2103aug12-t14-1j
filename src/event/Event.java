@@ -39,14 +39,14 @@ public class Event {
 	}
 	
 	public Event() {
-		_eventID = null;
-		_eventName = null;
-		_eventHashTag = null;
+		_eventID = "";
+		_eventName = "";
+		_eventHashTag = "";
 		_isDone = false;
 		_eventReminder = Clock.getBigBangTime();
 		_eventStartTime = Clock.getBigBangTime();
 		_eventEndTime = Clock.getBigBangTime();
-		_eventPriority = null;
+		_eventPriority = PRIORITY_TYPE.NORMAL;
 		_timeCompleted = Clock.getBigBangTime();
 	}
 	
@@ -191,7 +191,7 @@ public class Event {
 			return false;
 		}
 		for(int timeFieldIndex = INDEX_FOR_EVENT_REMINDER_TIME; timeFieldIndex <= INDEX_FOR_COMPLETED_TIME; timeFieldIndex++) {
-			if(isValidTimeInString(eventContent[timeFieldIndex])) {
+			if(!isValidTimeInString(eventContent[timeFieldIndex])) {
 				return false;
 			}
 		}
@@ -246,7 +246,9 @@ public class Event {
 	public boolean isBeforeCurrentTime() {
 		if(this.getEventType() == Event.FLOATING_TYPE) {
 			return false;
-		} else if (this.getEventEndTime().isBeforeNow()) {
+		} else if (this.getEventType() == DEADLINE_TYPE && this.getEventStartTime().isBeforeNow()) {
+			return true;
+		} else if (this.getEventType() == TIMED_TYPE && this.getEventEndTime().isBeforeNow()) {
 			return true;
 		}
 		return false;

@@ -99,7 +99,7 @@ public class ListOfEvent {
 	
 	public static Event add(String eventInString) {
 		Event newEvent = getEventFromString(eventInString);
-		if(newEvent.isSameEvent(new Event())) {
+		if(!newEvent.isSameEvent(new Event())) {
 			checkForWarning(newEvent);
 			listOfEvent.add(newEvent);
 			return newEvent;
@@ -272,7 +272,7 @@ public class ListOfEvent {
 	
 	private static String formatEventToStringToDisplay(Event event, int index) {
 		String contentToDisplay = event.composeContentToDisplayInString();
-		contentToDisplay = String.format(displayFormat, index + 1, contentToDisplay);
+		contentToDisplay = String.format(displayFormat, index, contentToDisplay);
 		return contentToDisplay;
 	}
 	
@@ -298,6 +298,8 @@ public class ListOfEvent {
 				if(!currentEvent.isBeforeCurrentTime()) {
 					String contentToDisplay = formatEventToStringToDisplay(currentEvent, index + 1);
 					upcomingEventToGUI.add(contentToDisplay);					
+				} else {
+					return upcomingEventToGUI;
 				}
 			}
 		}
@@ -309,7 +311,7 @@ public class ListOfEvent {
 		Event newEvent = new Event();
 		newEvent.parse(eventContent);
 		if(!isValidNewEvent(newEvent)) {
-			return null;
+			return new Event();
 		}
 		return newEvent;
 	}
@@ -375,5 +377,9 @@ public class ListOfEvent {
 		listOfEvent.clear();
 		searchResults.clear();
 		setUpDataFromDatabase();
+	}
+
+	public static void clearListOfEvent() {
+		listOfEvent.clear();
 	} 	
 }
