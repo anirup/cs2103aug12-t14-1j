@@ -46,11 +46,13 @@ public class LogicAnalyzer {
 	private static final String Priority_High = "HIGH";
 	private static boolean fieldFound[] = { false, false, false, false, false,
 		false };
+	
 	public static void setUp() {
 		for (int i = 0; i < 6; i++) {
 			fieldFound[i] = false;
 		}
 	}
+	
 	public static int getInteger(String[] parameterList) {
 		try {
 			return Integer.parseInt(parameterList[1]);
@@ -58,6 +60,7 @@ public class LogicAnalyzer {
 			return -1;
 		}
 	}
+	
 	public static String getAddUpdateEventString(String[] parameterList) {
 		String eventID = getEventID();
 		String eventName = getKeyWords(parameterList);
@@ -86,7 +89,7 @@ public class LogicAnalyzer {
 		}
 		if ((!startTime.equalsIgnoreCase(STRING_INVALID))
 				&& !(endTime.equalsIgnoreCase(STRING_INVALID))) {
-			if (Clock.isBefore(end, start)) {
+			if (end.isBefore(start)) {
 				DateTime temp = start;
 				start = end;
 				end = temp;
