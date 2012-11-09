@@ -61,6 +61,10 @@ public class LogicAnalyzer {
 	public static String getAddUpdateEventString(String[] parameterList) {
 		String eventID = getEventID();
 		String eventName = getKeyWords(parameterList);
+		if(eventName.trim().isEmpty())
+		{
+			return "";
+		}
 		Vector<String> listOfHashTags = getAllHashTags(parameterList);
 		String priority = listOfHashTags.get(0);
 		listOfHashTags.remove(0);
