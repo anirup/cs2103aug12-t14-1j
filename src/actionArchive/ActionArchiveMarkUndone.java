@@ -4,15 +4,15 @@ import event.Event;
 import event.ListOfEvent;
 
  
-public class ActionArchiveMarkDone extends ActionArchive {
+public class ActionArchiveMarkUndone extends ActionArchive {
 	private Event _eventMarkedDone;
 	
-	public ActionArchiveMarkDone(Event eventMarkedDone) {
+	public ActionArchiveMarkUndone(Event eventMarkedDone) {
 		_eventMarkedDone = eventMarkedDone;
 	}
 	
 	public String rollBack() {
-		ListOfEvent.markUndoneList(_eventMarkedDone);
+		ListOfEvent.markDoneList(_eventMarkedDone);
 		return null;
 	}
 }
