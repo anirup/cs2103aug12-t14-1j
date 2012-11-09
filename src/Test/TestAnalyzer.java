@@ -15,9 +15,13 @@ public class TestAnalyzer {
 	private static String[] newparameterList7={"add", "fenbojamgpwkr #low", "r-1min", "17:00 12/12/12", "2100 tmr","-1"};
 	private static String[] newparameterList8={"add", "jet bijaer n gwajngomn egtaejn ","2100","-1","-1","-1"};
 	private static String[] newparameterList9={"add", "fhebi", "-1", "-1", "-1", "-1"};
-	private static String[] newparameterList10={"update", "2", "-1", "-1", "-1", "-1"};
-	private static String[] newparameterList11={"search", "abcd #ghi #klm", "-1", "-1", "-1", "-1"};
-	private static String[] newparameterList12={"delete", "2", "-1", "-1", "-1", "-1"};
+	private static String[] newparameterList10={"update", "qekjfnqew", " abcdef #a#b#c", "5:00pm tmr", "r-1min", "-1", "-5"};
+	private static String[] newparameterList11={"update", "2", "-1", "-1", "-1", "-1"};
+	private static String[] newparameterList12={"search", "abcd #ghi #klm", "-1", "-1", "-1", "-1"};
+	private static String[] newparameterList13={"delete", "2", "-1", "-1", "-1", "-1"};
+	private static String[] newparameterList14={"owrjngjowrn","-1", "-1", "-1", "-1", "-1"};
+	private static String[] newparameterList15={"delete", "adfae", "-1", "-1", "-1", "-1"};
+
 	@Test
 	public void testGetEventString1() {
 		assertEquals("testGetEventString","",LogicAnalyzer.getAddUpdateEventString(newparameterList));
@@ -52,17 +56,7 @@ public class TestAnalyzer {
 	}
 
 	@Test
-	public void testGetKeyWords() {
-		
-	}
-
-	@Test
 	public void testGetHashTags() {
-		
-	}
-
-	@Test
-	public void testGetCommand() {
 		
 	}
 

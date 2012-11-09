@@ -86,7 +86,7 @@ public class LogicAnalyzer {
 		}
 		if ((!startTime.equalsIgnoreCase(STRING_INVALID))
 				&& !(endTime.equalsIgnoreCase(STRING_INVALID))) {
-			if (Clock.isBefore(end, start)) {
+			if (end.isBefore(start)) {
 				DateTime temp = start;
 				start = end;
 				end = temp;

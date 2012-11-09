@@ -1,8 +1,8 @@
 package executor;
- 
+
 import java.util.*;
 
-import logAndException.ExceptionHandler;
+import logAndException.MessageHandler;
 import logAndException.Log;
 import logic.LogicAnalyzer;
 import logic.LogicSplitter;
@@ -19,18 +19,6 @@ public class Executor implements ListOfEventObserver {
 	private static ArrayList<String> currentListOfUpcomingEventToDisplay = new ArrayList<String>();
 	private static ArrayList<String> currentListOfFloatingEventToDisplay = new ArrayList<String>();
 	private static ArrayList<String> searchResults = new ArrayList<String>();
-
-	private static Executor _instance = new Executor();
-
-	private Executor() {
-
-	}
-
-	public static Executor getInstance() {
-		return _instance;
-	}
-
-	private static final String STRING_NULL = "";
 	private static final String SHORTHAND_UPDATE = "u";
 	private static final String SHORTHAND_DELETE = "-";
 	private static final String SHORTHAND_ADD = "+";
@@ -43,11 +31,19 @@ public class Executor implements ListOfEventObserver {
 	private static final String COMMAND_EXIT = "exit";
 	private static final String COMMAND_UNDONE = "undone";
 	private static final String COMMAND_UNDO = "undo";
-
 	private static boolean searchState = false;
 	private static String previousCommand = "Nothing";
 	private static int userInputInteger;
 	private static int updateIndex = -1;
+	private static Executor _instance = new Executor();
+
+	private Executor() {
+
+	}
+
+	public static Executor getInstance() {
+		return _instance;
+	}
 
 	private static boolean getSearchState() {
 		return searchState;
@@ -66,8 +62,7 @@ public class Executor implements ListOfEventObserver {
 
 		Vector<String> parameters = new Vector<String>();
 		String[] parameterList = { "-1", "-1", "-1", "-1", "-1", "-1" };
-		
-		
+
 		try {
 			parameters = LogicSplitter.splitInput(userInput);
 		} catch (Exception e) {
@@ -87,7 +82,7 @@ public class Executor implements ListOfEventObserver {
 			ListOfEvent.syncDataToDatabase();
 		} catch (Exception e) {
 			ListOfEvent.formatListOfEvent();
-			Log.toLog(2, ExceptionHandler.getException(10));
+			Log.toLog(2, MessageHandler.getMessage(10));
 			return 10;
 		}
 
@@ -110,7 +105,7 @@ public class Executor implements ListOfEventObserver {
 			} else if (isUndo(command)) {
 				return executeUndo();
 			} else if (command.equalsIgnoreCase(COMMAND_EXIT)) {
-				Log.toLog(0, ExceptionHandler.getException(7));
+				Log.toLog(0, MessageHandler.getMessage(7));
 				System.exit(0);
 				return 7;
 			} else if (command.equalsIgnoreCase(COMMAND_BACK)) {
@@ -120,7 +115,7 @@ public class Executor implements ListOfEventObserver {
 			} else
 				return 5;
 		} catch (Exception e) {
-			Log.toLog(2, ExceptionHandler.getException(9));
+			Log.toLog(2, MessageHandler.getMessage(9));
 			return 9;
 		}
 
@@ -137,7 +132,7 @@ public class Executor implements ListOfEventObserver {
 
 	private static int splittingError() throws Exception {
 		if (LogicSplitter.getMessage() == 0) {
-			Log.toLog(2, ExceptionHandler.getException(9));
+			Log.toLog(2, MessageHandler.getMessage(9));
 			return 9;
 		} else
 			return LogicSplitter.getMessage();
@@ -146,11 +141,10 @@ public class Executor implements ListOfEventObserver {
 	private static int getUserInteger(String[] parameterList) {
 		return LogicAnalyzer.getInteger(parameterList) - 1;
 	}
-	
-	public ArrayList<String> getFeedback(){
+
+	public ArrayList<String> getFeedback() {
 		return ListOfEvent.getFeedback();
 	}
-	
 
 	private static boolean isUndo(String command) {
 		return command.equalsIgnoreCase(COMMAND_UNDO);
@@ -162,24 +156,24 @@ public class Executor implements ListOfEventObserver {
 				if (userInputInteger < searchResults.size()) {
 					ListOfEvent.markUndoneSearch(userInputInteger);
 				} else {
-					Log.toLog(2, ExceptionHandler.getException(19));
+					Log.toLog(2, MessageHandler.getMessage(19));
 					return 19;
 				}
 			} else if (getSearchState() == false) {
 				if (userInputInteger < ListOfEvent.size()) {
 					ListOfEvent.markUndoneList(userInputInteger);
 				} else {
-					Log.toLog(2, ExceptionHandler.getException(19));
+					Log.toLog(2, MessageHandler.getMessage(19));
 					return 19;
 				}
 			}
-			Log.toLog(0, ExceptionHandler.getException(4));
+			Log.toLog(0, MessageHandler.getMessage(4));
 			ListOfEvent.notifyObservers();
 			return 4;
 		}
 
 		else {
-			Log.toLog(2, ExceptionHandler.getException(20));
+			Log.toLog(2, MessageHandler.getMessage(20));
 			return 20;
 		}
 	}
@@ -198,25 +192,25 @@ public class Executor implements ListOfEventObserver {
 				if (userInputInteger < searchResults.size()) {
 					ListOfEvent.markDoneSearch(userInputInteger);
 				} else {
-					Log.toLog(2, ExceptionHandler.getException(19));
+					Log.toLog(2, MessageHandler.getMessage(19));
 					return 19;
 				}
 			} else if (getSearchState() == false) {
 				if (userInputInteger < ListOfEvent.size()) {
 					ListOfEvent.markDoneList(userInputInteger);
 				} else {
-					Log.toLog(2, ExceptionHandler.getException(19));
+					Log.toLog(2, MessageHandler.getMessage(19));
 					return 19;
 				}
 			} else {
-				Log.toLog(2, ExceptionHandler.getException(20));
+				Log.toLog(2, MessageHandler.getMessage(20));
 				return 20;
 			}
-			Log.toLog(0, ExceptionHandler.getException(3));
+			Log.toLog(0, MessageHandler.getMessage(3));
 			ListOfEvent.notifyObservers();
 			return 3;
 		} else {
-			Log.toLog(2, ExceptionHandler.getException(20));
+			Log.toLog(2, MessageHandler.getMessage(20));
 			return 20;
 		}
 	}
@@ -249,11 +243,12 @@ public class Executor implements ListOfEventObserver {
 			updateIndex = Integer
 					.parseInt(parameterList[parameterList.length - 1]) - 1;
 		} catch (Exception e) {
-			Log.toLog(0, ExceptionHandler.getException(2));
+			Log.toLog(0, MessageHandler.getMessage(2));
 			return 9;
 		}
 		ArrayList<Event> changedEvents;
-		String eventToAdd = LogicAnalyzer.getAddUpdateEventString(parameterList);
+		String eventToAdd = LogicAnalyzer
+				.getAddUpdateEventString(parameterList);
 		if (searchState == false) {
 			changedEvents = ListOfEvent.updateList(updateIndex, eventToAdd);
 		} else {
@@ -262,7 +257,7 @@ public class Executor implements ListOfEventObserver {
 		ListOfActionArchive.add(new ActionArchiveUpdate(changedEvents.get(0),
 				changedEvents.get(1)));
 		updateIndex = -1;
-		Log.toLog(0, ExceptionHandler.getException(2));
+		Log.toLog(0, MessageHandler.getMessage(2));
 		ListOfEvent.notifyObservers();
 		return 2;
 	}
@@ -270,7 +265,7 @@ public class Executor implements ListOfEventObserver {
 	private static int executeUndo() throws Exception {
 		undoLast();
 		previousCommand = COMMAND_UNDO;
-		Log.toLog(0, ExceptionHandler.getException(6));
+		Log.toLog(0, MessageHandler.getMessage(6));
 		ListOfEvent.notifyObservers();
 		return 6;
 	}
@@ -288,7 +283,7 @@ public class Executor implements ListOfEventObserver {
 					ListOfActionArchive.add(new ActionArchiveDelete(ListOfEvent
 							.removeSearch(userInputInteger)));
 				} else {
-					Log.toLog(2, ExceptionHandler.getException(19));
+					Log.toLog(2, MessageHandler.getMessage(19));
 					return 19;
 				}
 			} else {
@@ -296,15 +291,15 @@ public class Executor implements ListOfEventObserver {
 					ListOfActionArchive.add(new ActionArchiveDelete(ListOfEvent
 							.removeList(userInputInteger)));
 				} else {
-					Log.toLog(2, ExceptionHandler.getException(19));
+					Log.toLog(2, MessageHandler.getMessage(19));
 					return 19;
 				}
 			}
 		} else {
-			Log.toLog(2, ExceptionHandler.getException(20));
+			Log.toLog(2, MessageHandler.getMessage(20));
 			return 20;
 		}
-		Log.toLog(0, ExceptionHandler.getException(1));
+		Log.toLog(0, MessageHandler.getMessage(1));
 		ListOfEvent.notifyObservers();
 		return 1;
 	}
@@ -312,22 +307,22 @@ public class Executor implements ListOfEventObserver {
 	private static int executeAdd(String[] parameterList) throws Exception {
 		Event newEvent = analyzeAddInput(parameterList);
 		if (newEvent != null) {
-			ListOfActionArchive.add(new ActionArchiveAdd(newEvent));			
+			ListOfActionArchive.add(new ActionArchiveAdd(newEvent));
 			try {
 				// Saving to file after add
 				ListOfEvent.syncDataToDatabase();
 			} catch (Exception e) {
 				// ListOfEvent.formatListOfEvent();
-				Log.toLog(2, ExceptionHandler.getException(10));
+				Log.toLog(2, MessageHandler.getMessage(10));
 				return 10;
 			}
 			previousCommand = COMMAND_ADD;
-			Log.toLog(0, ExceptionHandler.getException(0));
+			Log.toLog(0, MessageHandler.getMessage(0));
 			ListOfEvent.notifyObservers();
 			return 0;
 		} else {
 			previousCommand = COMMAND_ADD;
-			Log.toLog(2, ExceptionHandler.getException(9));
+			Log.toLog(2, MessageHandler.getMessage(9));
 			return 9;
 		}
 	}
@@ -335,7 +330,7 @@ public class Executor implements ListOfEventObserver {
 	private static void undoLast() {
 		ListOfActionArchive.undo();
 	}
-	
+
 	public static void analyzeAndSearch(String[] parameterList) {
 		searchResults.clear();
 		Vector<String> searchWords = getSearchWords(parameterList);
@@ -358,7 +353,8 @@ public class Executor implements ListOfEventObserver {
 
 	public static Event analyzeAddInput(String[] parameterList) {
 
-		String eventToAdd = LogicAnalyzer.getAddUpdateEventString(parameterList);
+		String eventToAdd = LogicAnalyzer
+				.getAddUpdateEventString(parameterList);
 		return ListOfEvent.add(eventToAdd);
 
 	}
