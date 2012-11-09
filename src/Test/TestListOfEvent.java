@@ -29,7 +29,7 @@ public class TestListOfEvent {
 	ArrayList<DateTime> completed = new ArrayList<DateTime>();
 	
 	Event floating, deadline, timed, clashTimed1, clashTimed2, clashTimed3;
-	 
+	
 	String floatingInString, deadlineInString, timedInString, 
 		invalidReminder, swapTime, invalidPriority, invalidIsDone, invalidEventID, invalidTime, floatingDone;
 	
@@ -151,5 +151,31 @@ public class TestListOfEvent {
 		assertEquals("test getDisplay()", "3..clashed timed2..LOW..#timed..false..21:15 07/11/2013..23:15 07/11/2013..r-1923 days..", upcoming.get(1));
 		assertEquals("test getDisplay()", "4..clashed timed1..LOW..#timed..false..22:10 07/11/2013..01:10 08/11/2013..r-1923 days..", upcoming.get(2));
 		assertEquals("test getDisplay()", "5..clashed timed3..LOW..#timed..false..22:15 07/11/2013..23:15 07/11/2013..r-1923 days..", upcoming.get(3));
+	}
+	
+	@Test
+	public void testRemove() {
+		ListOfEvent.add(floating);
+		ListOfEvent.add(deadline);
+		ListOfEvent.add(timed);
+		ListOfEvent.add(clashTimed1);
+		ListOfEvent.add(clashTimed2);
+		ListOfEvent.add(clashTimed3);
+		ListOfEvent.removeList(0);
+		ListOfEvent.removeList(0);
+		assertEquals("test remove", 4, ListOfEvent.size());
+	}
+	
+	@Test
+	public void testUpdate() {
+		ListOfEvent.add(timed);
+		ListOfEvent.add(clashTimed1);
+		ListOfEvent.add(clashTimed2);
+		ListOfEvent.add(clashTimed3);
+		ListOfEvent.add(deadline);
+		ListOfEvent.add(floating);
+		ListOfEvent.updateList(0, floatingDone);
+		assertEquals("test update1", "04..clashed timed1..LOW..#timed..false..10:00 07/09/2000..22:10 07/11/2013..01:10 08/11/2013..invalid", ListOfEvent.get(0).toString());
+		ListOfEvent.updateList(10, "floatingDone");
 	}
 }

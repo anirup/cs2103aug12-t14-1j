@@ -1,6 +1,4 @@
 package actionArchive;
-
-
  
 public class ActionArchive {
 	
@@ -8,4 +6,3 @@ public class ActionArchive {
 		return null;
 	}
 }
- 
