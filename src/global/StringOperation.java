@@ -202,24 +202,4 @@ public class StringOperation {
 		input = removeDateTimeSeparator(input);
 		return input;
 	}
-
-	public static String booleanToString(boolean _isDone) {
-		if(_isDone) {
-			return "true";
-		}
-		return "false";
-	}
-	
-	public static String crossOutSubString(String subString, String string) {
-		int index = string.indexOf(subString);
-		if(index < 0) {
-			return null;
-		}
-		int lengthOfSubString = subString.length();
-		string = concat(string,subString);
-		for(int i = 0; i < lengthOfSubString; i++) {
-			string = insertCharAt(string, "=", index);
-		}
-		return string;
-	}
 }

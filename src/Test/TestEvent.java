@@ -1,4 +1,5 @@
 package Test; 
+
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
@@ -75,13 +76,16 @@ public class TestEvent {
 		assertEquals("test parse()", event, newEvent.toString());
 		
 		
-		event = "02..project..NORMAL..#work #impt..false..00:05 01/01/1970..05:00 15/10/2012..19:00 15/10/2012..invalid";
+		event = "02..project..NORMAL..#work #impt..false..00:05 01/01/1970..05:00 15/10/2013..19:00 15/10/2013..invalid";
 		newEvent.parse(event.split("\\.."));
 		assertEquals("test parse()", event, newEvent.toString());
 		
 		event = "03..project..LOW..#work #impt..false..invalid..invalid..invalid..invalid";
 		newEvent.parse(event.split("\\.."));
 		assertEquals("test parse()", event, newEvent.toString());
+		
+		event = "";
+		newEvent.parse(event.split("\\.."));
 	}
 	
 	@Test
@@ -94,9 +98,14 @@ public class TestEvent {
 	
 	@Test
 	public void testComposeContentToDisplay() {
-		assertEquals("test toString()", "floating..HIGH..#floating..false......", floating.composeContentToDisplayInString());
-		assertEquals("test toString()", "deadline..NORMAL..#deadline..false..5 mins..10:10 07/09/2000..", deadline.composeContentToDisplayInString());
-		assertEquals("test toString()", "timed..LOW..#timed..false..1777 days..22:14 07/11/2012..00:14 08/11/2012", timed.composeContentToDisplayInString());	
+		assertEquals("test toString()", "floating..HIGH..#floating..false........", floating.composeContentToDisplayInString());
+		assertEquals("test toString()", "deadline..NORMAL..#deadline..false..10:10 07/09/2000....r-5 minutes..", deadline.composeContentToDisplayInString());
+		assertEquals("test toString()", "timed..LOW..#timed..false..22:14 07/11/2012..00:14 08/11/2012..r-1777 days..", timed.composeContentToDisplayInString());	
+	}
+	
+	@Test
+	public void testCompare() {
+		
 	}
 	
 	//@Test
