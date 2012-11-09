@@ -730,8 +730,9 @@ public class What2DoUI extends javax.swing.JFrame {
 				} else {
 					html2 += "<b><i></b></i></span>&nbsp; <span style=\"color: rgb(228, 108, 10); \">";
 				}
+				String reminderTime=formattedUpcomingEvents.get(i + 1).get(7).replace("r-", "");
 				html2 += String.format("%s</span></span></b></p>",
-						formattedUpcomingEvents.get(i + 1).get(7));
+						reminderTime);
 			}
 			for (int i = 0; i < floatingEvents.size(); i++) {
 				// html3+=String.format("<br><p class=\"MsoNormal\"><b>%s &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; %s&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(192, 80, 77); \">%s</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(31, 73, 125); \">%s</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(31, 73, 125); \">%s</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(152, 72, 7); \">%s</span></b></p>",
@@ -786,8 +787,9 @@ public class What2DoUI extends javax.swing.JFrame {
 				} else {
 					html3 += "<b><i></b></i></span>&nbsp; <span style=\"color: rgb(228, 108, 10); \">";
 				}
+				String reminderTime=formattedFloatingEvents.get(i + 1).get(7).replace("r-", "");
 				html3 += String.format("%s</span></span></b></p>",
-						formattedFloatingEvents.get(i + 1).get(7));
+						reminderTime);
 			}
 			for (int i = 0; i < searchResults.size(); i++) {
 				// html4+=String.format("<br><p class=\"MsoNormal\"><b>%s &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; %s&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(192, 80, 77); \">%s</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(31, 73, 125); \">%s</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(31, 73, 125); \">%s</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(152, 72, 7); \">%s</span></b></p>",
@@ -838,8 +840,9 @@ public class What2DoUI extends javax.swing.JFrame {
 				} else {
 					html4 += "<b><i></b></i></span>&nbsp; <span style=\"color: rgb(228, 108, 10); \">";
 				}
+				String reminderTime=formattedSearchResults.get(i + 1).get(7).replace("r-", "");
 				html4 += String.format("%s</span></span></b></p>",
-						formattedSearchResults.get(i + 1).get(7));
+						reminderTime);
 			}
 			html2 += "</p></html>";
 			html3 += "</html>";
