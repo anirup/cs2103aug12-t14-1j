@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-
+ 
 public class PatternDateTime {
 	private Pattern _pattern;
 	private String _timeFormat;

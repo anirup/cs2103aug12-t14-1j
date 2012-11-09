@@ -5,7 +5,7 @@ import global.StringOperation;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
- 
+  
 public class Event {
 	private String _eventID;
 	private String _eventName;
@@ -304,6 +304,9 @@ public class Event {
 			reminderTime+= Long.toString(dateInMillis/hour) + " hours";
 		}else if(dateInMillis/minutes >0) {
 			reminderTime+=Long.toString(dateInMillis/minutes) + " minutes";
+		}
+		else {
+			reminderTime+=("0 minutes");
 		}
 		return ("r-"+reminderTime);
 	}

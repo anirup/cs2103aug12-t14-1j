@@ -1,7 +1,7 @@
 package event;
 
 import java.util.Comparator;
-
+ 
 public class CompareEventByTime implements Comparator<Event>{
 	
 	@Override

@@ -1,6 +1,6 @@
 package alarm;
 class DialogRun  implements Runnable {
- 
+  
 	private String event;
 	private Dialogs reminder;
 	

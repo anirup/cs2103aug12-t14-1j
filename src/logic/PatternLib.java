@@ -1,5 +1,5 @@
 package logic;
- 
+  
 import global.Clock;
 
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public class PatternLib {
 	private static final String timeSeparator = "[:\\.-]";
 	private static final String dateInWeek = "((Mon)|(Monday)|(Tue)|(Tuesday)|(Wed)|(Wednesday)|(Thu)|(Thursday)|(Fri)|(Friday)|(Sat)|(Saturday)|(Sun)|(Sunday))";
 	private static final String weekIndicator = "((this)|(next))";
-	private static final String patternDateSpecial = "((today)|(tomorrow)|(tmr)|(tom))";
+	private static final String patternDateSpecial = "((today)|(tomorrow)|(tmr))";
 	private static final String space = " ";
 	private static final String patternTime12InDay = "^(" + hour12 + "(" + timeSeparator  + minute + ")" + "?" + space +  "?" + amOrPm + ")";
 	private static final String patternTime24InDay = "^(" + hour24 + "(" + timeSeparator  + minute + ")" + ")";

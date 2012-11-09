@@ -1,5 +1,5 @@
 package logic;
-
+ 
 import global.StringOperation;
 
 import java.util.Vector;

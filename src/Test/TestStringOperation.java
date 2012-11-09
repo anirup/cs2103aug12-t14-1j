@@ -22,7 +22,7 @@ public class TestStringOperation {
 		String test = "15min";
 		assertEquals("test extractFirstNumber", 15, StringOperation.getFirstNumber(test));
 	}
-
+ 
 	@Test
 	public void testFirstMatch() {
 		String test = "project r- 5min #high #impt 5pm to 7pm 9Sep";

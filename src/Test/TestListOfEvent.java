@@ -29,7 +29,7 @@ public class TestListOfEvent {
 	ArrayList<DateTime> completed = new ArrayList<DateTime>();
 	
 	Event floating, deadline, timed, clashTimed1, clashTimed2, clashTimed3;
-	
+	 
 	String floatingInString, deadlineInString, timedInString, 
 		invalidReminder, swapTime, invalidPriority, invalidIsDone, invalidEventID, invalidTime, floatingDone;
 	

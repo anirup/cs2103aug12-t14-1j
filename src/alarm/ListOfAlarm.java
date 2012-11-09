@@ -6,7 +6,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import event.ListOfEvent;
 import event.ListOfEventObserver;
-
+ 
 
 
 public class ListOfAlarm implements ListOfEventObserver {

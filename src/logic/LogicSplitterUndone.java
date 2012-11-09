@@ -1,5 +1,5 @@
 package logic;
-
+ 
 import java.util.Vector;
 
 public class LogicSplitterUndone extends LogicSplitter{

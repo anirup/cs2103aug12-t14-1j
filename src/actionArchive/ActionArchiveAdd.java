@@ -19,5 +19,5 @@ public class ActionArchiveAdd extends ActionArchive {
 		ListOfEvent.remove(_addedEvent);
 		String messageUndo = String.format(MESSAGE_UNDO_ADD, _addedEvent.getEventName());
 		return messageUndo;
-	}
+	} 
 }

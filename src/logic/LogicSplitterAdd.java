@@ -1,6 +1,6 @@
 package logic;
 import java.util.Vector;
-
+ 
 public class LogicSplitterAdd extends LogicSplitter{
 	
 	protected static Vector<String> splitInputAdd(String userInput, Vector<String> parameterList) throws Exception{

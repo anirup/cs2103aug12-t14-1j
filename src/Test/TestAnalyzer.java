@@ -21,7 +21,7 @@ public class TestAnalyzer {
 	private static String[] newparameterList13={"delete", "2", "-1", "-1", "-1", "-1"};
 	private static String[] newparameterList14={"owrjngjowrn","-1", "-1", "-1", "-1", "-1"};
 	private static String[] newparameterList15={"delete", "adfae", "-1", "-1", "-1", "-1"};
-
+ 
 	@Test
 	public void testGetEventString1() {
 		assertEquals("testGetEventString","",LogicAnalyzer.getAddUpdateEventString(newparameterList));
