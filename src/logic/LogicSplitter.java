@@ -1,7 +1,13 @@
 package logic;
 import global.Clock;
 import global.StringOperation;
+
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Vector;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.joda.time.DateTime;
   
 public class LogicSplitter {
@@ -34,8 +40,10 @@ public class LogicSplitter {
 		} catch (Exception e) {
 			message = 12;
 			throw exception;
-		}try
-		{if(parameterList.get(0).toLowerCase().contains(COMMAND_ADD)||parameterList.get(0).contains(SHORTHAND_ADD))
+			
+		}
+		try{
+		if(parameterList.get(0).toLowerCase().contains(COMMAND_ADD)||parameterList.get(0).contains(SHORTHAND_ADD))
 		{
 			parameterList=LogicSplitterAdd.splitInputAdd(userInput,parameterList);
 		}
@@ -64,10 +72,24 @@ public class LogicSplitter {
 		{
 			throw exception;
 		}
+		String hashTags=getAllHashTags(userInput);
+		if(parameterList.size()>1)
+		{
+			parameterList.set(1, String.format(parameterList.get(1) + hashTags));
+		}
 		parameterList = trimAllParameters(parameterList);
 		return parameterList;
 	}
-	
+	protected static String getAllHashTags(String userInput) {
+		String hashTagString="";
+		Pattern hashPattern=Pattern.compile("(#[a-zA-Z0-9&&[^ ]]{1,} ?)");
+		Matcher matches = hashPattern.matcher(userInput);
+		while(matches.find())
+		{
+			hashTagString+=matches.group();
+		}
+		return hashTagString;
+	}
 	protected static String extractCommandTypeAndUpdateInputString(
 			String command, Vector<String> parameterList) throws Exception {
 		command = StringOperation.removeExtraSpace(command);
@@ -78,10 +100,11 @@ public class LogicSplitter {
 		return command;
 	}
 
-	protected static String extractTimeFieldsAndUpdateInputString(
+/*	protected static String extractTimeFieldsAndUpdateInputString(
 			int[] reminderFound, String userInput,
 			Vector<String> parameterList, Vector<Integer> timeIndexes,
 			int[] timeCount) throws Exception {
+		Vector<String> timeList=new Vector<String>();
 		for (int j = 0; j < userInput.length(); j++) {
 			String temp = userInput.substring(j, userInput.length());
 			String original = temp;
@@ -99,7 +122,7 @@ public class LogicSplitter {
 						}
 					}
 					j += PatternLib.isFindDateTime(temp)[2];
-					parameterList.add(temp.substring(0, indexEnd));
+					timeList.add(temp.substring(0, indexEnd));
 					userInput += temp.substring(0, indexEnd);
 					timeIndexes.add(j);
 					timeIndexes.add(indexEnd);
@@ -109,7 +132,7 @@ public class LogicSplitter {
 						userInput += EMPTY_STRING;
 				timeCount[0]++;
 				if(timeCount[0]>2)
-					parameterList.remove(1);
+					timeList.remove(0);
 			} else if (PatternLib.isFindReminderTime(original)[1] == 0) {
 				if (reminderFound[0] < 1) {
 					int a[] = PatternLib.isFindReminderTime(original);
@@ -141,8 +164,69 @@ public class LogicSplitter {
 				userInput = userInput + original;
 			}
 		}
+		parameterList.addAll(timeList);
+		return userInput;
+	}	*/
+	protected static String extractTimeFieldsAndUpdateInputString(
+			int[] reminderFound, String userInput,
+			Vector<String> parameterList, Vector<Integer> timeIndexes,
+			int[] timeCount) throws Exception {
+		Vector<String> timeList=new Vector<String>();
+		for (int j = 0; j < userInput.length(); j++) {
+			String temp = userInput.substring(j, userInput.length());
+			String original = temp;
+			userInput = userInput.substring(0, j);
+			if (PatternLib.isFindDateTime(temp)[1] == 0) {
+					int indexStart = 0;
+					int indexEnd = PatternLib.isFindDateTime(temp)[2];
+					j += PatternLib.isFindDateTime(temp)[2]-1;
+					timeList.add(StringOperation.prepareInputToAnalyzeTime(temp.substring(indexStart, indexEnd)));
+					userInput += temp.substring(indexStart, indexEnd);
+					timeIndexes.add(j);
+					timeIndexes.add(indexEnd);
+					if (indexEnd < original.length() - 1) {
+						userInput = userInput + original.substring(indexEnd);
+					} else
+						userInput += EMPTY_STRING;
+				timeCount[0]++;
+				if(timeCount[0]>2) {
+					timeList.remove(0);
+				}
+			} else if (PatternLib.isFindReminderTime(original)[1] == 0) {
+				if (reminderFound[0] < 1) {
+					int a[] = PatternLib.isFindReminderTime(original);
+					userInput = userInput
+							+ original.substring(0,
+									PatternLib.isFindReminderTime(original)[2]);
+					if (reminderFound[0] == 0) {
+						parameterList.add(original.substring(0,
+								PatternLib.isFindReminderTime(original)[2]));
+
+					}
+					j += a[2];
+					int i;
+					String formatted = original.substring(
+							PatternLib.isFindReminderTime(original)[1],
+							PatternLib.isFindReminderTime(original)[2]);
+					for (i = original.length(); i >= 0; i--) {
+						if (!original.substring(0, i).contains(formatted)) {
+							break;
+						}
+					}
+					if (i < original.length() - 1) {
+						userInput = userInput + original.substring(i + 1);
+					} else
+						userInput += EMPTY_STRING;
+				}
+				reminderFound[0]++;
+			} else {
+				userInput = userInput + original;
+			}
+		}
+		parameterList.addAll(timeList);
 		return userInput;
 	}
+
 
 	protected static void processEndStartTime(String userInput,
 			Vector<String> parameterList, Vector<Integer> timeIndexes)
@@ -158,19 +242,19 @@ public class LogicSplitter {
 			}
 		}
 		if (timeFields.size() == 2) {
-			int endFirst = timeIndexes.get(0);
-			int startFirst = timeIndexes.get(0) - timeIndexes.get(1);
-			int endSecond = timeIndexes.get(2);
-			int startSecond = timeIndexes.get(2) - timeIndexes.get(3);
+			int endFirst = timeIndexes.get(0)+1;
+			int startFirst = timeIndexes.get(0) - timeIndexes.get(1)+1;
+			int endSecond = timeIndexes.get(2)+1;
+			int startSecond = timeIndexes.get(2) - timeIndexes.get(3)+1;
 			int firstTimePattern = PatternLib.isMatchDateTime(userInput
 					.substring(startFirst, endFirst));
 			int secondTimePattern = PatternLib.isMatchDateTime(userInput
 					.substring(startSecond, endSecond));
 			DateTime time1 = PatternLib
-					.getDateTime(userInput.substring(startFirst, endFirst),
+					.getDateTime(StringOperation.prepareInputToAnalyzeTime(userInput.substring(startFirst, endFirst)),
 							firstTimePattern);
 			DateTime time2 = PatternLib.getDateTime(
-					userInput.substring(startSecond, endSecond),
+					StringOperation.prepareInputToAnalyzeTime(userInput.substring(startSecond, endSecond)),
 					secondTimePattern);
 			if (userInput.substring(endFirst - 1, startSecond + 1).contains(
 					" to")) {
@@ -208,12 +292,19 @@ public class LogicSplitter {
 	}
 
 	protected static int getIndexOfNextComponent(String input) {
-		int result1 = input.length(), result2 = input.length();
+		int result1= input.length() ,result3= input.length(), result2 = input.length();
 		for (int i = 0; i < input.length(); i++) {
 
 			if (input.toLowerCase().indexOf("r-") == i) {
 				result1 = i;
 				break;
+			}
+		}
+		for (int i=0; i<input.length();i++)
+		{
+			if(input.indexOf("#") ==i ) {
+			result3=i;
+			break;
 			}
 		}
 		for (int i = 0; i < input.length(); i++) {
@@ -223,12 +314,12 @@ public class LogicSplitter {
 				result2 = input.length() - 1 - i;
 			}
 		}
-		if (result1 > result2) {
-			return result2;
-		} else if (result2 > result1) {
-			return result1;
-		} else
-			return input.length();
+		ArrayList<Integer> arrayForSort = new ArrayList<Integer>();
+		arrayForSort.add(result1);
+		arrayForSort.add(result2);
+		arrayForSort.add(result3);
+		Collections.sort(arrayForSort);
+		return arrayForSort.get(0);
 	}
 
 	protected static void shiftKeywordsToSecondIndex(Vector<String> parameterList) {

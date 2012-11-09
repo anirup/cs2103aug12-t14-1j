@@ -30,7 +30,7 @@ public class Log {
 		errorLogger.addHandler(fh2);
 		messageLogger.setLevel(java.util.logging.Level.SEVERE);
 		if(Level==0)
-		messageLogger.log(java.util.logging.Level.INFO, message);
+			messageLogger.log(java.util.logging.Level.INFO, message);
 		else if(Level==1)
 			messageLogger.log(java.util.logging.Level.WARNING, message);
 		else

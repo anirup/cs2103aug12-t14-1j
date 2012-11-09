@@ -41,7 +41,7 @@ public class PatternLib {
 	private static final String patternDateWithoutYearInt = "((" + date29 + dateSeparator + month29Int + ")|(" + 
 								date30 + dateSeparator + month30Int + ")|(" + date31 +  dateSeparator + month31Int + "))"; 
 	private static final String patternDateWithoutYearString = "((" + date29 + dateSeparator + "?" + month29String + ")|(" + 
-								date30 + dateSeparator + "?" + month30String + ")|(" + date31 +  dateSeparator + "?" + month31String + "))"; 
+								date30 + dateSeparator + "?" +" ?" + month30String + ")|(" + date31 +  dateSeparator + "?" + month31String + "))"; 
 	private static final String patternDateWithYearInt = "((" + date28 + dateSeparator + month29Int + dateSeparator + yearInt + ")|(" +
 								date29 + dateSeparator + month29Int + dateSeparator + leapYearInt + ")|(" + 
 								date30 + dateSeparator + month30Int + dateSeparator + yearInt + ")|(" + 
