@@ -11,7 +11,7 @@ import logic.PatternLib;
 import actionArchive.*;
 
 import event.*;
-
+ 
 public class Executor implements ListOfEventObserver {
 
 	private static final String COMMAND_SWITCH_UPCOMING = "upcoming";

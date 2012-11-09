@@ -1,5 +1,5 @@
 package alarm;
- 
+  
 import org.joda.time.DateTime;
 
 public class AlarmType {

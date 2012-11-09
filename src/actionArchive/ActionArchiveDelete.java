@@ -2,7 +2,7 @@ package actionArchive;
 
 import event.Event;
 import event.ListOfEvent;
-
+ 
  
 public class ActionArchiveDelete extends ActionArchive{
 	private Event _deletedEvent;

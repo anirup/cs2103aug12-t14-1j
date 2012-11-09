@@ -18,7 +18,7 @@ public class TestClock {
 		DateTime anotherDate = new DateTime(2007, 7, 10, 10, 10);
 		assertEquals("test changeToDate()", new DateTime(2007, 7, 10, 7, 7), Clock.changeToDate(date, anotherDate));
 	}
-	
+	 
 	@Test
 	public void testParseFromString() {
 		String dateInString = "00:00 07/07/2007";

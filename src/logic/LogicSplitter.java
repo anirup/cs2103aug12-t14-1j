@@ -3,7 +3,7 @@ import global.Clock;
 import global.StringOperation;
 import java.util.Vector;
 import org.joda.time.DateTime;
- 
+  
 public class LogicSplitter {
 	protected static final String SHORTHAND_UPDATE = "u";
 	protected static final String COMMAND_UPDATE = "update";

@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
-
+ 
 public class LogicAnalyzer {
 	private static final String Priority_Low_Shorthand2 = "l";
 	private static final String Priority_Low_Shorthand1 = "low";
@@ -101,7 +101,7 @@ public class LogicAnalyzer {
 
 		String eventTime = startTime + SPLITTER + endTime;
 		String reminderString = null;
-		if (startTime != STRING_INVALID && eventReminder.getMillis() != 0) {
+		if (startTime != STRING_INVALID) {
 			DateTime reminder = start.minusSeconds((int) eventReminder
 					.getStandardSeconds());
 			reminderString = reminder.getHourOfDay() + SPLITTER_TIME

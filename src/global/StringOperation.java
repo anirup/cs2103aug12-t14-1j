@@ -3,7 +3,7 @@ package global;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
+ 
 public class StringOperation {
 	
 	public static String removeFirstWord(String input) {

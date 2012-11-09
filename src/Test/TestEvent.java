@@ -25,7 +25,7 @@ public class TestEvent {
 	
 	Event floating, deadline, timed, clashTimed1, clashTimed2, clashTimed3, clashTimed4;
 	
-	
+	 
 	@Before
 	public void setUp() {
 		start.add(new DateTime(2000, 9, 7, 10, 10));

@@ -2,7 +2,7 @@ package actionArchive;
  
 import java.util.LinkedList;
 
-
+ 
 public class ListOfActionArchive {
 	private static LinkedList<ActionArchive> listOfUserLog = new LinkedList<ActionArchive>();
 	

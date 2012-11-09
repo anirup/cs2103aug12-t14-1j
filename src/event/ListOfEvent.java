@@ -14,7 +14,7 @@ import org.joda.time.DateTime;
 
 import alarm.AlarmType;
 import alarm.ListOfAlarm;
-
+ 
 public class ListOfEvent {
 	private static ArrayList<Event> listOfEvent = new ArrayList<Event>();
 	private static ArrayList<Event> searchResults = new ArrayList<Event>();
