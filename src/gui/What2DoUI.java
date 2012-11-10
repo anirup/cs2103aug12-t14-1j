@@ -10,6 +10,10 @@ import javax.imageio.ImageIO;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 
+/*
+import com.melloware.jintellitype.HotkeyListener;
+import com.melloware.jintellitype.JIntellitype;
+*/
 
 import alarm.AlarmThread;
 import javax.swing.JFrame;
@@ -68,11 +72,11 @@ public class What2DoUI extends javax.swing.JFrame {
 
 		
 	    setApplicationIcon();
-
 	    setResizable(false);
 		pack();
 	}// </editor-fold>
 
+	
 	private void setApplicationIcon() {
 		Image im = null;
 	    try {
@@ -801,7 +805,7 @@ public class What2DoUI extends javax.swing.JFrame {
 					html2 += "<b><i></b></i></span>&nbsp; <span style=\"color: rgb(228, 108, 10); font-family: Helvetica, sans-serif;\">";
 				}
 
-				html2 += String.format("%s</span></span></b></p>", formattedUpcomingEvents.get(i + 1).get(7));
+				html2 += String.format("%s</span></span></b></p>", formattedUpcomingEvents.get(i + 1).get(7).replace("r-",""));
 				html2+="<b>------------------------------------------------------------------------------------------------------------------------</b></p>";
 
 			}
@@ -841,32 +845,6 @@ public class What2DoUI extends javax.swing.JFrame {
 				}
 				html3+="</p><b>------------------------------------------------------------------------------------------------------------------------</b></p>";
 
-				/*html3 += String
-						.format("%s</span> &nbsp;<span style=\"color: rgb(75, 172, 198); font-family: Helvetica, sans-serif;\"",
-								formattedFloatingEvents.get(i + 1).get(3));
-
-				html3 += String
-						.format(">%s</span>&nbsp; <span style=\"color: rgb(0, 0, 0); font-family: Helvetica, sans-serif;\">",
-								formattedFloatingEvents.get(i + 1).get(5));
-
-				if (formattedFloatingEvents.get(i + 1).get(6).contains(":")) {
-					html3 += "<b><i>to </b></i></span>&nbsp; <span style=\"color: rgb(79, 129, 189); font-family: Helvetica, sans-serif;\">";
-				} else {
-					html3 += "<b><i></b></i></span>&nbsp; <span style=\"color: rgb(79, 129, 189); font-family: Helvetica, sans-serif;\">";
-				}
-				html3 += String
-						.format("%s</span>&nbsp; <span style=\"color: rgb(0, 0, 0); font-family: Helvetica, sans-serif;\">",
-								formattedFloatingEvents.get(i + 1).get(6));
-
-				if (formattedFloatingEvents.get(i + 1).get(7).contains(":")) {
-					html3 += "<b><i>Reminder at : </b></i></span>&nbsp; <span style=\"color: rgb(228, 108, 10); font-family: Helvetica, sans-serif;\">";
-				} else {
-					html3 += "<b><i></b></i></span>&nbsp; <span style=\"color: rgb(228, 108, 10); font-family: Helvetica, sans-serif;\">";
-				}
-
-				html3 += String.format("%s</span></span></b></p>",
-						formattedFloatingEvents.get(i + 1).get(7));
-						*/
 
 			}
 			for (int i = 0; i < searchResults.size(); i++) {
@@ -929,7 +907,7 @@ public class What2DoUI extends javax.swing.JFrame {
 					html4 += "<b><i></b></i></span>&nbsp; <span style=\"color: rgb(228, 108, 10); font-family: Helvetica, sans-serif;\">";
 				}
 
-				html4 += String.format("%s</span></span></b></p>", formattedSearchResults.get(i + 1).get(7));
+				html4 += String.format("%s</span></span></b></p>", formattedSearchResults.get(i + 1).get(7).replace("r-",""));
 				html4+="<b>----------------------------------------------" +
 						"------------------------------------------------------------------------------------------------------------------------------------------------------------------</b></p>";
 
@@ -953,7 +931,7 @@ public class What2DoUI extends javax.swing.JFrame {
 	}
 
 	private int get_spaces(String word) {
-		int ret=10-word.length();
+		int ret=20-word.length();
 		if (word.contains("..")){
 			ret+=1;
 		}
@@ -1070,11 +1048,11 @@ public class What2DoUI extends javax.swing.JFrame {
 	}
 
 	private String correctSize(String string) {
-		if (string.length()<10)
+		if (string.length()<20)
 			return string;
 		else
 		{
-			return string.substring(0,7)+"..";
+			return string.substring(0,17)+"..";
 		}
 	}
 
