@@ -1,4 +1,7 @@
 package alarm;
+
+import javax.swing.ImageIcon;
+
 class DialogRun  implements Runnable {
   
 	private String event;
@@ -12,7 +15,8 @@ class DialogRun  implements Runnable {
 	private static void run(Dialogs applet) {
 		
 		applet.setAlwaysOnTop(true);
-		applet.setLocationRelativeTo(null);
+		applet.setLocationRelativeTo(null);		
+		applet.setIconImage(new ImageIcon(applet.getClass().getResource("/logo.jpg")).getImage());
 		applet.startAlarm();
 		applet.setVisible(true);
 		
