@@ -204,11 +204,11 @@ public class Event {
 	}
 	
 	public void markDone() {
-		if(_eventEndTime.isBefore(DateTime.now()) && Clock.isBigBangTime(_eventEndTime)) {
-			_timeCompleted = _eventEndTime;
-		} else {
+		//if(_eventEndTime.isBefore(DateTime.now()) && !(Clock.isBigBangTime(_eventEndTime))) {
+			//_timeCompleted = _eventEndTime;
+		//} else {
 			_timeCompleted = DateTime.now();
-		}
+		//}
 		_isDone = true;
 		return;
 	}
