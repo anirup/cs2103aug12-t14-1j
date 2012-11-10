@@ -3,17 +3,22 @@ package gui;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Vector;
+
 import javax.swing.JLabel;
+
 import alarm.AlarmThread;
+
 import logAndException.Log;
 import logAndException.MessageHandler;
+
 import executor.Executor;
- 
+
 /**
  * 
  * @author SANDEEP
  */
 public class What2DoUI extends javax.swing.JFrame {
+
 	/**
 	 * Creates new form What2DoUI
 	 */
@@ -53,7 +58,9 @@ public class What2DoUI extends javax.swing.JFrame {
 		setTextAlignment();
 		hideCertainAreasInitially();
 		setLayoutsOfComponents();
+
 		displayDatabase("");
+
 		pack();
 	}// </editor-fold>
 
@@ -93,8 +100,10 @@ public class What2DoUI extends javax.swing.JFrame {
 												289,
 												javax.swing.GroupLayout.PREFERRED_SIZE)
 										.addContainerGap()));
+
 		jPanel2.setBounds(0, 0, 890, 340);
 		jLayeredPane1.add(jPanel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
 		javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(
 				jPanel3);
 		jPanel3.setLayout(jPanel3Layout);
@@ -114,8 +123,10 @@ public class What2DoUI extends javax.swing.JFrame {
 						.addComponent(jScrollPane1,
 								javax.swing.GroupLayout.DEFAULT_SIZE, 309,
 								Short.MAX_VALUE).addContainerGap()));
+
 		jPanel3.setBounds(0, 0, 883, 331);
 		jLayeredPane1.add(jPanel3, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
 		javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(
 				jPanel4);
 		jPanel4.setLayout(jPanel4Layout);
@@ -135,8 +146,10 @@ public class What2DoUI extends javax.swing.JFrame {
 						.addComponent(jScrollPane7,
 								javax.swing.GroupLayout.DEFAULT_SIZE, 313,
 								Short.MAX_VALUE).addContainerGap()));
+
 		jPanel4.setBounds(0, 0, 903, 335);
 		jLayeredPane1.add(jPanel4, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
 		javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(
 				jPanel1);
 		jPanel1.setLayout(jPanel1Layout);
@@ -217,6 +230,7 @@ public class What2DoUI extends javax.swing.JFrame {
 												javax.swing.GroupLayout.DEFAULT_SIZE,
 												340, Short.MAX_VALUE)
 										.addContainerGap()));
+
 		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(
 				getContentPane());
 		getContentPane().setLayout(layout);
@@ -239,21 +253,26 @@ public class What2DoUI extends javax.swing.JFrame {
 
 	private void hideCertainAreasInitially() {
 		jPanel3.setVisible(false);
+
 		jPanel4.setVisible(false);
 	}
 
 	private void setTextAlignment() {
 		jTextArea1.setHorizontalAlignment(JLabel.LEFT);
 		jTextArea1.setVerticalAlignment(JLabel.TOP);
+
 		jTextArea2.setHorizontalAlignment(JLabel.LEFT);
 		jTextArea2.setVerticalAlignment(JLabel.TOP);
+
 		jTextArea4.setHorizontalAlignment(JLabel.LEFT);
 		jTextArea4.setVerticalAlignment(JLabel.TOP);
 	}
 
 	private void setOpacity() {
 		jTextArea1.setOpaque(true);
+
 		jTextArea2.setOpaque(true);
+
 		jTextArea4.setOpaque(true);
 		jLabel3.setOpaque(true);
 		jLabel4.setOpaque(true);
@@ -262,21 +281,24 @@ public class What2DoUI extends javax.swing.JFrame {
 	private void setBorders() {
 		jLabel2.setBorder(javax.swing.BorderFactory.createLineBorder(
 				new java.awt.Color(0, 0, 0), 5));
+
 		jLabel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(
 				0, 0, 0), 5, true));
+
 		jTextArea2.setBorder(javax.swing.BorderFactory.createTitledBorder(null,
-				"Upcoming Events",
+				"<html><p class=\"MsoNormal\"><span style=\"color: rgb(0, 0, 0); font-family: Helvetica, sans-serif; \"><b>Your upcoming events are&hellip;</b></p></html>",
 				javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
 				javax.swing.border.TitledBorder.DEFAULT_POSITION,
 				new java.awt.Font("Monospaced", 1, 14), java.awt.Color.black)); // NOI18N
+
 		jTextArea1.setBorder(javax.swing.BorderFactory.createTitledBorder(null,
-				"Search Results",
+				"<html><p class=\"MsoNormal\"><span style=\"color: rgb(0, 0, 0); font-family: Helvetica, sans-serif; \"><b>The search results are&hellip;</b></p></html>",
 				javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
 				javax.swing.border.TitledBorder.DEFAULT_POSITION,
 				new java.awt.Font("Monospaced", 1, 14), java.awt.Color.black));
+
 		jTextArea4.setBorder(javax.swing.BorderFactory.createTitledBorder(null,
-				"Floating Events",
-				javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
+				"<html><p class=\"MsoNormal\"><span style=\"color: rgb(0, 0, 0); font-family: Helvetica, sans-serif; \"><b>Your floating events are&hellip;</b></p></html>",				javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
 				javax.swing.border.TitledBorder.DEFAULT_POSITION,
 				new java.awt.Font("Times New Roman", 1, 14),
 				java.awt.Color.black)); // NOI18N
@@ -340,6 +362,7 @@ public class What2DoUI extends javax.swing.JFrame {
 		textField1.setFont(new java.awt.Font("Monospaced", 0, 18)); // NOI18N
 		jLabel4.setFont(new java.awt.Font("Monospaced", 2, 14));
 		jTextArea2.setFont(new java.awt.Font("Monospaced", 1, 12));
+
 	}
 
 	private void initializeGUIElements() {
@@ -353,11 +376,13 @@ public class What2DoUI extends javax.swing.JFrame {
 		jPanel2 = new javax.swing.JPanel();
 		jScrollPane3 = new javax.swing.JScrollPane();
 		jTextArea2 = new javax.swing.JLabel();
+
 		jScrollPane2 = new javax.swing.JScrollPane();
 		jLabel3 = new javax.swing.JLabel();
 		jPanel3 = new javax.swing.JPanel();
 		jScrollPane1 = new javax.swing.JScrollPane();
 		jTextArea1 = new javax.swing.JLabel();
+
 		jPanel4 = new javax.swing.JPanel();
 		jScrollPane7 = new javax.swing.JScrollPane();
 		jTextArea4 = new javax.swing.JLabel();
@@ -365,8 +390,11 @@ public class What2DoUI extends javax.swing.JFrame {
 
 	private void textField1KeyTyped(java.awt.event.KeyEvent evt)
 			throws Exception {// GEN-FIRST:event_textField1KeyTyped
+
 		setSuggestionBoxTest(evt);
+
 		actUponUserCommand(evt);
+
 	}
 
 	private void actUponUserCommand(java.awt.event.KeyEvent evt)
@@ -397,31 +425,46 @@ public class What2DoUI extends javax.swing.JFrame {
 				searchView = true;
 				setViewToSearch();
 				Executor.searchToTrue();
-			} else if (data.contains("floating")) {
+			}	
+			else if (data.contains("floating")) {
 				searchView = false;
 				Executor.searchToFalse();
 				setViewToFloating();
-			} else {
+			}
+			else{
 				searchView = false;
 				Executor.searchToFalse();
 				setViewToUpcoming();
 			}
-			if (!(data.contains("update"))) {
-				updateFlagBool = false;
+			if (!(data.contains("update"))){
+				updateFlagBool=false;
 			}
 			/*
-			 * if (data.contains("back")) { searchView = false;
-			 * Executor.searchToFalse(); setViewToUpcoming(); }
-			 * 
-			 * if (data.contains("upcoming")) { searchView = false;
-			 * Executor.searchToFalse(); setViewToUpcoming(); } if
-			 * (data.contains("add")) { searchView = false;
-			 * Executor.searchToFalse(); setViewToUpcoming(); } if
-			 * (data.contains("+")) { searchView = false;
-			 * Executor.searchToFalse(); setViewToUpcoming(); }
-			 */
+			if (data.contains("back")) {
+				searchView = false;
+				Executor.searchToFalse();
+				setViewToUpcoming();
+			}
+			
+			if (data.contains("upcoming")) {
+				searchView = false;
+				Executor.searchToFalse();
+				setViewToUpcoming();
+			}
+			if (data.contains("add")) {
+				searchView = false;
+				Executor.searchToFalse();
+				setViewToUpcoming();
+			}
+			if (data.contains("+")) {
+				searchView = false;
+				Executor.searchToFalse();
+				setViewToUpcoming();
+			}
+			*/
 			if (updateFlagBool == false) {
 				String message = analyzeInputUsingLogic(data);
+
 				displayDatabase(message);
 				prepareForNextEntry(data);
 			}
@@ -464,6 +507,7 @@ public class What2DoUI extends javax.swing.JFrame {
 				&& ((evt.getKeyChar() == 'a') || (evt.getKeyChar() == '+'))) {
 			flag = 1;
 			lastEvent = evt.getKeyChar();
+
 			jLabel4.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; \">[add] [Key words] [start time and date] [End time and date] [r-reminder time]</span></b><span style=\"font-family: Helvetica, sans-serif; \"></span><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(192, 80, 77); \"></span><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>");
 		}
 		if (flag == 0 && ((evt.getKeyChar() == 'b'))) {
@@ -475,6 +519,7 @@ public class What2DoUI extends javax.swing.JFrame {
 			flag = 1;
 			lastEvent = evt.getKeyChar();
 			jLabel4.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; \">[delete] [index number]</span></b><span style=\"font-family: Helvetica, sans-serif; \"></span><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(192, 80, 77); \"></span><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>");
+
 		}
 		if (flag == 0 && evt.getKeyChar() == 'd') {
 			lastEvent = evt.getKeyChar();
@@ -484,6 +529,7 @@ public class What2DoUI extends javax.swing.JFrame {
 			flag = 1;
 			lastEvent = evt.getKeyChar();
 			jLabel4.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; \">[delete] [index number]</span></b><span style=\"font-family: Helvetica, sans-serif; \"></span><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(192, 80, 77); \"></span><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>");
+
 		} else if (flag == 0 && evt.getKeyChar() == 'o' && lastEvent == 'd') {
 			flag = 1;
 			lastEvent = evt.getKeyChar();
@@ -493,10 +539,12 @@ public class What2DoUI extends javax.swing.JFrame {
 			flag = 1;
 			lastEvent = evt.getKeyChar();
 			jLabel4.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; \">[search] [keywords]</span></b><span style=\"font-family: Helvetica, sans-serif; \"></span><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(192, 80, 77); \"></span><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>");
+
 		}
 		if (flag == 0 && evt.getKeyChar() == 'u') {
 			lastEvent = 'u';
 			jLabel4.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; \">[update] [index number]</span></b><span style=\"font-family: Helvetica, sans-serif; \"></span><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(192, 80, 77); \"></span><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>");
+
 		}
 		if (flag == 0 && evt.getKeyChar() == 'e') {
 			flag = 1;
@@ -507,6 +555,7 @@ public class What2DoUI extends javax.swing.JFrame {
 			flag = 1;
 			lastEvent = evt.getKeyChar();
 			jLabel4.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; \">[undo] [index number]</span></b><span style=\"font-family: Helvetica, sans-serif; \"></span><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(192, 80, 77); \"></span><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>");
+
 		} else if (flag == 0 && evt.getKeyChar() == 'p' && lastEvent == 'u') {
 			flag = 1;
 			lastEvent = evt.getKeyChar();
@@ -545,6 +594,7 @@ public class What2DoUI extends javax.swing.JFrame {
 					&& formattedResultArray[7] != "") {
 				formattedResult += formattedResultArray[7] + " ";
 			}
+
 			formattedResult.trim();
 			return formattedResult;
 		} else
@@ -555,6 +605,7 @@ public class What2DoUI extends javax.swing.JFrame {
 		ArrayList<String> upcomingEvents = Executor.printDataBase();
 		ArrayList<String> floatingEvents = Executor.printFloatingDataBase();
 		ArrayList<String> searchResults = Executor.printSearchResults();
+
 		String index_string = Integer.toString(index);
 		if (index == 0) {
 			return null;
@@ -569,6 +620,7 @@ public class What2DoUI extends javax.swing.JFrame {
 				if (floatingEvents.get(i).startsWith(index_string))
 					return floatingEvents.get(i);
 		}
+
 		return null;
 	}
 
@@ -576,6 +628,7 @@ public class What2DoUI extends javax.swing.JFrame {
 		String trimmedMessage = message.replace("update ", "");
 		try {
 			return Integer.parseInt(trimmedMessage);
+
 		} catch (Exception noIndex) {
 			return 0;
 		}
@@ -585,7 +638,9 @@ public class What2DoUI extends javax.swing.JFrame {
 		ArrayList<String> upcomingEvents = Executor.printDataBase();
 		ArrayList<String> floatingEvents = Executor.printFloatingDataBase();
 		ArrayList<String> searchResults = Executor.printSearchResults();
+
 		// index, name, hash-tags, start time end time, reminder
+
 		/*
 		 * String upcomingEventsString =
 		 * format(upcomingEvents,getMaximumLengths(upcomingEvents)); String
@@ -593,6 +648,7 @@ public class What2DoUI extends javax.swing.JFrame {
 		 * getMaximumLengths(floatingEvents)); String searchResultsString =
 		 * format(searchResults,getMaximumLengths(searchResults));
 		 */
+
 		ArrayList<ArrayList<String>> demoUpcomingEvents = new ArrayList<ArrayList<String>>();
 		ArrayList<ArrayList<String>> demoFloatingEvents = new ArrayList<ArrayList<String>>();
 		ArrayList<ArrayList<String>> demoSearch = new ArrayList<ArrayList<String>>();
@@ -641,209 +697,227 @@ public class What2DoUI extends javax.swing.JFrame {
 			}
 			formattedSearchResults.add(temp);
 		}
+
 		formatForUpcoming(demoUpcomingEvents, upcomingEvents);
 		formatForSearch(demoSearch, searchResults);
 		formatForFloating(demoFloatingEvents, floatingEvents);
+
 		format(formattedUpcomingEvents, upcomingEvents,
 				getMaximumLengths(upcomingEvents));
 		format(formattedFloatingEvents, floatingEvents,
 				getMaximumLengths(floatingEvents));
 		format(formattedSearchResults, searchResults,
 				getMaximumLengths(searchResults));
+
 		// String
 		// html2="<html><p class=\"MsoNormal\"><b>ID &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Events Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(192, 80, 77); \">Details</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(31, 73, 125); \">Start</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(31, 73, 125); \">End</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(152, 72, 7); \">Reminder</span></b></p>";
 		String html2 = "<html>";
 		String html3 = "<html>";
 		String html4 = "<html>";
+		
+		html2+="<b>------------------------------------------------------------------------------------------------------------------------</b></p>";
+		html3+="<b>------------------------------------------------------------------------------------------------------------------------</b></p>";
+		html4+="<b>----------------------------------------------" +
+				"------------------------------------------------------------------------------------------------------------------------------------------------------------------</b></p>";
+		int j=0;
+
 		if (toUpdate) {
+
 			for (int i = 0; i < upcomingEvents.size(); i++) {
-				// html2+=String.format("<br><p class=\"MsoNormal\"><b>%s<span style=\"color: rgb(192, 80, 77); \">%s</span><span style=\"color: rgb(31, 73, 125); \">%s</span><span style=\"color: rgb(31, 73, 125); \">%s</span><span style=\"color: rgb(152, 72, 7); \">%s</span><span style=\"color: rgb(31, 73, 125); \">%s</span></b></p>",
-				// demoUpcomingEvents.get(i+1).get(0),
-				// demoUpcomingEvents.get(i+1).get(1),
-				// demoUpcomingEvents.get(i+1).get(2),
-				// demoUpcomingEvents.get(i+1).get(3),
-				// demoUpcomingEvents.get(i+1).get(4),
-				// demoUpcomingEvents.get(i+1).get(5),
-				// demoUpcomingEvents.get(i+1).get(6));
-				// html2+=String.format("<br><p class=\"MsoNormal\"><b>%s <span style=\"color: rgb(192, 80, 77); \">%s</span><span style=\"color: rgb(31, 73, 125); \">%s</span><span style=\"color: rgb(31, 73, 125); \">%s</span><span style=\"color: rgb(152, 72, 7); \">%s</span></b></p>",
-				// formattedDisplay.get(i+1).get(0),
-				// formattedDisplay.get(i+1).get(1),
-				// formattedDisplay.get(i+1).get(2),
-				// formattedDisplay.get(i+1).get(3),
-				// formattedDisplay.get(i+1).get(4),
-				// formattedDisplay.get(i+1).get(5));
-				// html2+=String.format("<br><p class=\"MsoNormal\"><b>%s&nbsp;<span style=\"color: rgb(0, 32, 96); \">%s</span>&nbsp;<span style=\"color: red; \">%s</span> &nbsp;<span style=\"color: rgb(155, 187, 89); \">%s</span> &nbsp;<span style=\"color: rgb(75, 172, 198); \">%s</span>&nbsp; <span style=\"color: rgb(79, 129, 189); \">%s</span>&nbsp; <span style=\"color: rgb(228, 108, 10); \">%s</span></span></b></p>",
-				// demoUpcomingEvents.get(i+1).get(0),
-				// demoUpcomingEvents.get(i+1).get(1),
-				// demoUpcomingEvents.get(i+1).get(2),
-				// demoUpcomingEvents.get(i+1).get(3),
-				// demoUpcomingEvents.get(i+1).get(4),
-				// demoUpcomingEvents.get(i+1).get(5),
-				// demoUpcomingEvents.get(i+1).get(6));
-				// html2+=String.format("<br><p class=\"MsoNormal\"><b>%s&nbsp;<span style=\"color: rgb(0, 32, 96); \">%s</span>&nbsp;<span style=\"color: red; \">%s</span> &nbsp;<span style=\"color: rgb(155, 187, 89); \">%s</span> &nbsp;<span style=\"color: rgb(75, 172, 198); \">%s</span>&nbsp; <span style=\"color: rgb(79, 129, 189); \">%s</span>&nbsp; <span style=\"color: rgb(228, 108, 10); \">%s</span></span></b></p>",
-				// formattedUpcomingEvents.get(i+1).get(0),
-				// formattedUpcomingEvents.get(i+1).get(1),
-				// formattedUpcomingEvents.get(i+1).get(2),
-				// formattedUpcomingEvents.get(i+1).get(3),
-				// formattedUpcomingEvents.get(i+1).get(4),
-				// formattedUpcomingEvents.get(i+1).get(5),
-				// formattedUpcomingEvents.get(i+1).get(6));
+				
+
 				if (formattedUpcomingEvents.get(i + 1).get(4).contains("true")) {
 					html2 += String
-							.format("<br><p class=\"MsoNormal\"><b>%s&nbsp;<span style=\"color: rgb(0, 32, 96); background-color: lime; background-position: initial initial; background-repeat: initial initial;\">%s</span>&nbsp;<span style=\"color: red; \">",
-									formattedUpcomingEvents.get(i + 1).get(0),
-									formattedUpcomingEvents.get(i + 1).get(1));
+							.format("<br><p class=\"MsoNormal\"><b>%s<span style=\"color: rgb(0, 32, 96); font-family: Helvetica, sans-serif; background-color: lime; background-position: initial initial; background-repeat: initial initial;\">%s</span>",
+									formattedUpcomingEvents.get(i + 1).get(0)+")",
+									formattedUpcomingEvents.get(i+1).get(1));
 				} else {
 					html2 += String
-							.format("<br><p class=\"MsoNormal\"><b>%s&nbsp;<span style=\"color: rgb(0, 32, 96); \">%s</span>&nbsp;<span style=\"color: red; \">",
-									formattedUpcomingEvents.get(i + 1).get(0),
-									formattedUpcomingEvents.get(i + 1).get(1));
+							.format("<br><p class=\"MsoNormal\"><b>%s<span style=\"color: rgb(0, 32, 96); font-family: Helvetica, sans-serif; \">%s</span>",
+									formattedUpcomingEvents.get(i + 1).get(0)+")",
+									formattedUpcomingEvents.get(i+1).get(1));
+				}
+				
+
+				for (j=0; j<get_spaces(formattedUpcomingEvents.get(i+1).get(1)); j++){
+					html2+="&nbsp;";
+				}
+				if (formattedUpcomingEvents.get(i + 1).get(2)
+						.contains("HIGH")) {
+					html2+=String.format("<span style=\"color: red; font-family: Helvetica, sans-serif;\">%s</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", formattedUpcomingEvents.get(i + 1).get(2));
 				}
 				if (formattedUpcomingEvents.get(i + 1).get(2)
 						.contains("NORMAL")) {
-					html2 += "</span> <span style=\"color: rgb(255,128,0); \">";
+					html2 += String.format("<span style=\"color: orange; font-family: Helvetica, sans-serif;\">%s</span> &nbsp;", formattedUpcomingEvents.get(i + 1).get(2));
 				}
-				if (formattedUpcomingEvents.get(i + 1).get(2).contains("LOW")) {
-					html2 += "</span> <span style=\"color: rgb(204,127,50); \">";
+				if (formattedUpcomingEvents.get(i + 1).get(2)
+						.contains("LOW")) {
+					html2 += String.format("<span style=\"color: rgb(204,127,50); font-family: Helvetica, sans-serif;\">%s</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", formattedUpcomingEvents.get(i + 1).get(2));
 				}
-				html2 += String
-						.format("%s</span> &nbsp;<span style=\"color: rgb(155, 187, 89); \">",
-								formattedUpcomingEvents.get(i + 1).get(2));
-				html2 += String
-						.format("%s</span> &nbsp;<span style=\"color: rgb(0, 0, 0); \"",
-								formattedUpcomingEvents.get(i + 1).get(3));
-				html2 += "<b><i>Starts at </b></i></span><span style=\"color: rgb(75, 172, 198); \">";
+				html2 += String.format("&nbsp;<span style=\"color: rgb(155, 187, 89); font-family: Helvetica, sans-serif;\">%s</span> &nbsp;", formattedUpcomingEvents.get(i + 1).get(3));
+				for (j=0; j<get_spaces(formattedUpcomingEvents.get(i+1).get(3)); j++){
+					html2+="&nbsp;";
+				}
 
+				html2 += "<span style=\"color: rgb(0, 0, 0); font-family: Helvetica, sans-serif;\"";
+
+				html2 += "<b><i>From </b></i></span><span style=\"color: rgb(75, 172, 198); font-family: Helvetica, sans-serif;\">";
+
+				
 				html2 += String
-						.format("%s</span>&nbsp; <span style=\"color: rgb(0, 0, 0); \">",
+						.format("%s</span>&nbsp; <span style=\"color: rgb(0, 0, 0); font-family: Helvetica, sans-serif;\">",
 								formattedUpcomingEvents.get(i + 1).get(5));
+
 				if (formattedUpcomingEvents.get(i + 1).get(6).contains(":")) {
-					html2 += "<b><i>to </b></i></span>&nbsp; <span style=\"color: rgb(79, 129, 189); \">";
+					html2 += "<b><i>to </b></i></span>&nbsp; <span style=\"color: rgb(79, 129, 189); font-family: Helvetica, sans-serif;\">";
 				} else {
-					html2 += "<b><i></b></i></span>&nbsp; <span style=\"color: rgb(79, 129, 189); \">";
+					html2 += "<b><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b></i></span>&nbsp; <span style=\"color: rgb(79, 129, 189); font-family: Helvetica, sans-serif;\">";
 				}
 				html2 += String
-						.format("%s</span>&nbsp; <span style=\"color: rgb(0, 0, 0); \">",
+						.format("%s</span>&nbsp; <span style=\"color: rgb(0, 0, 0); font-family: Helvetica, sans-serif;\">",
 								formattedUpcomingEvents.get(i + 1).get(6));
+
 				if (formattedUpcomingEvents.get(i + 1).get(7).contains("r-")) {
-					html2 += "<b><i>Reminder at : </b></i></span>&nbsp; <span style=\"color: rgb(228, 108, 10); \">";
+					html2 += "<b><i>Reminder at : </b></i></span>&nbsp; <span style=\"color: rgb(228, 108, 10); font-family: Helvetica, sans-serif;\">";
 				} else {
-					html2 += "<b><i></b></i></span>&nbsp; <span style=\"color: rgb(228, 108, 10); \">";
+					html2 += "<b><i></b></i></span>&nbsp; <span style=\"color: rgb(228, 108, 10); font-family: Helvetica, sans-serif;\">";
 				}
-				String reminderTime=formattedUpcomingEvents.get(i + 1).get(7).replace("r-", "");
-				html2 += String.format("%s</span></span></b></p>",
-						reminderTime);
+
+				html2 += String.format("%s</span></span></b></p>", formattedUpcomingEvents.get(i + 1).get(7));
+				html2+="<b>------------------------------------------------------------------------------------------------------------------------</b></p>";
+
 			}
 			for (int i = 0; i < floatingEvents.size(); i++) {
-				// html3+=String.format("<br><p class=\"MsoNormal\"><b>%s &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; %s&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(192, 80, 77); \">%s</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(31, 73, 125); \">%s</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(31, 73, 125); \">%s</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(152, 72, 7); \">%s</span></b></p>",
-				// demoFloatingEvents.get(i+1).get(0),
-				// demoFloatingEvents.get(i+1).get(1),
-				// demoFloatingEvents.get(i+1).get(2),
-				// demoFloatingEvents.get(i+1).get(3),
-				// demoFloatingEvents.get(i+1).get(4),
-				// demoFloatingEvents.get(i+1).get(5));
-				// html3+=String.format("<br><p class=\"MsoNormal\"><b>%s&nbsp;<span style=\"color: rgb(0, 32, 96); \">%s</span>&nbsp;<span style=\"color: red; \">%s</span> &nbsp;<span style=\"color: rgb(155, 187, 89); \">%s</span> &nbsp;<span style=\"color: rgb(75, 172, 198); \">%s</span>&nbsp; <span style=\"color: rgb(79, 129, 189); \">%s</span>&nbsp; <span style=\"color: rgb(228, 108, 10); \">%s</span></span></b></p>",
-				// formattedFloatingEvents.get(i+1).get(0),
-				// formattedFloatingEvents.get(i+1).get(1),
-				// formattedFloatingEvents.get(i+1).get(2),
-				// formattedFloatingEvents.get(i+1).get(3),
-				// formattedFloatingEvents.get(i+1).get(5),
-				// formattedFloatingEvents.get(i+1).get(6),
-				// formattedFloatingEvents.get(i+1).get(7));
+				
 				if (formattedFloatingEvents.get(i + 1).get(4).contains("true")) {
 					html3 += String
-							.format("<br><p class=\"MsoNormal\"><b>%s&nbsp;<span style=\"color: rgb(0, 32, 96); background-color: lime; background-position: initial initial; background-repeat: initial initial;\">%s</span>&nbsp;<span style=\"color: red; \">",
-									formattedFloatingEvents.get(i + 1).get(0),
-									formattedFloatingEvents.get(i + 1).get(1));
+							.format("<br><p class=\"MsoNormal\"><b>%s<span style=\"color: rgb(0, 32, 96); font-family: Helvetica, sans-serif; background-color: lime; background-position: initial initial; background-repeat: initial initial;\">%s</span>",
+									formattedFloatingEvents.get(i + 1).get(0)+")",
+									formattedFloatingEvents.get(i+1).get(1));
 				} else {
 					html3 += String
-							.format("<br><p class=\"MsoNormal\"><b>%s&nbsp;<span style=\"color: rgb(0, 32, 96); \">%s</span>&nbsp;<span style=\"color: red; \">",
-									formattedFloatingEvents.get(i + 1).get(0),
-									formattedFloatingEvents.get(i + 1).get(1));
+							.format("<br><p class=\"MsoNormal\"><b>%s<span style=\"color: rgb(0, 32, 96); font-family: Helvetica, sans-serif; \">%s</span>",
+									formattedFloatingEvents.get(i + 1).get(0)+")",
+									formattedFloatingEvents.get(i+1).get(1));
+				}
+				
+
+				for (j=0; j<get_spaces(formattedFloatingEvents.get(i+1).get(1)); j++){
+					html3+="&nbsp;";
+				}
+				if (formattedFloatingEvents.get(i + 1).get(2)
+						.contains("HIGH")) {
+					html3+=String.format("<span style=\"color: red; font-family: Helvetica, sans-serif;\">%s</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", formattedFloatingEvents.get(i + 1).get(2));
 				}
 				if (formattedFloatingEvents.get(i + 1).get(2)
 						.contains("NORMAL")) {
-					html3 += "</span> <span style=\"color: orange; \">";
+					html3 += String.format("<span style=\"color: orange; font-family: Helvetica, sans-serif;\">%s</span> &nbsp;", formattedFloatingEvents.get(i + 1).get(2));
 				}
-				html3 += String
-						.format("%s</span> &nbsp;<span style=\"color: rgb(155, 187, 89); \">",
-								formattedFloatingEvents.get(i + 1).get(2));
-				html3 += String
-						.format("%s</span> &nbsp;<span style=\"color: rgb(75, 172, 198); \"",
+				if (formattedFloatingEvents.get(i + 1).get(2)
+						.contains("LOW")) {
+					html3 += String.format("<span style=\"color: rgb(204,127,50); font-family: Helvetica, sans-serif;\">%s</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", formattedFloatingEvents.get(i + 1).get(2));
+				}
+				html3 += String.format("&nbsp;<span style=\"color: rgb(155, 187, 89); font-family: Helvetica, sans-serif;\">%s</span> &nbsp;", formattedFloatingEvents.get(i + 1).get(3));
+				for (j=0; j<get_spaces(formattedFloatingEvents.get(i+1).get(3)); j++){
+					html3+="&nbsp;";
+				}
+				html3+="</p><b>------------------------------------------------------------------------------------------------------------------------</b></p>";
+
+				/*html3 += String
+						.format("%s</span> &nbsp;<span style=\"color: rgb(75, 172, 198); font-family: Helvetica, sans-serif;\"",
 								formattedFloatingEvents.get(i + 1).get(3));
+
 				html3 += String
-						.format(">%s</span>&nbsp; <span style=\"color: rgb(0, 0, 0); \">",
+						.format(">%s</span>&nbsp; <span style=\"color: rgb(0, 0, 0); font-family: Helvetica, sans-serif;\">",
 								formattedFloatingEvents.get(i + 1).get(5));
+
 				if (formattedFloatingEvents.get(i + 1).get(6).contains(":")) {
-					html3 += "<b><i>to </b></i></span>&nbsp; <span style=\"color: rgb(79, 129, 189); \">";
+					html3 += "<b><i>to </b></i></span>&nbsp; <span style=\"color: rgb(79, 129, 189); font-family: Helvetica, sans-serif;\">";
 				} else {
-					html3 += "<b><i></b></i></span>&nbsp; <span style=\"color: rgb(79, 129, 189); \">";
+					html3 += "<b><i></b></i></span>&nbsp; <span style=\"color: rgb(79, 129, 189); font-family: Helvetica, sans-serif;\">";
 				}
 				html3 += String
-						.format("%s</span>&nbsp; <span style=\"color: rgb(0, 0, 0); \">",
+						.format("%s</span>&nbsp; <span style=\"color: rgb(0, 0, 0); font-family: Helvetica, sans-serif;\">",
 								formattedFloatingEvents.get(i + 1).get(6));
+
 				if (formattedFloatingEvents.get(i + 1).get(7).contains(":")) {
-					html3 += "<b><i>Reminder at : </b></i></span>&nbsp; <span style=\"color: rgb(228, 108, 10); \">";
+					html3 += "<b><i>Reminder at : </b></i></span>&nbsp; <span style=\"color: rgb(228, 108, 10); font-family: Helvetica, sans-serif;\">";
 				} else {
-					html3 += "<b><i></b></i></span>&nbsp; <span style=\"color: rgb(228, 108, 10); \">";
+					html3 += "<b><i></b></i></span>&nbsp; <span style=\"color: rgb(228, 108, 10); font-family: Helvetica, sans-serif;\">";
 				}
-				String reminderTime=formattedFloatingEvents.get(i + 1).get(7).replace("r-", "");
+
 				html3 += String.format("%s</span></span></b></p>",
-						reminderTime);
+						formattedFloatingEvents.get(i + 1).get(7));
+						*/
+
 			}
 			for (int i = 0; i < searchResults.size(); i++) {
-				// html4+=String.format("<br><p class=\"MsoNormal\"><b>%s &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; %s&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(192, 80, 77); \">%s</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(31, 73, 125); \">%s</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(31, 73, 125); \">%s</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"color: rgb(152, 72, 7); \">%s</span></b></p>",
-				// demoSearch.get(i+1).get(0), demoSearch.get(i+1).get(1),
-				// demoSearch.get(i+1).get(2), demoSearch.get(i+1).get(3),
-				// demoSearch.get(i+1).get(4), demoSearch.get(i+1).get(6));
-				// html4+=String.format("<br><p class=\"MsoNormal\"><b>%s&nbsp;<span style=\"color: rgb(0, 32, 96); \">%s</span>&nbsp;<span style=\"color: red; \">%s</span> &nbsp;<span style=\"color: rgb(155, 187, 89); \">%s</span> &nbsp;<span style=\"color: rgb(75, 172, 198); \">%s</span>&nbsp; <span style=\"color: rgb(79, 129, 189); \">%s</span>&nbsp; <span style=\"color: rgb(228, 108, 10); \">%s</span></span></b></p>",
-				// formattedSearchResults.get(i+1).get(0),
-				// formattedSearchResults.get(i+1).get(1),
-				// formattedSearchResults.get(i+1).get(2),
-				// formattedSearchResults.get(i+1).get(3),
-				// formattedSearchResults.get(i+1).get(5),
-				// formattedSearchResults.get(i+1).get(6),
-				// formattedSearchResults.get(i+1).get(7));
+				
 				if (formattedSearchResults.get(i + 1).get(4).contains("true")) {
 					html4 += String
-							.format("<br><p class=\"MsoNormal\"><b>%s&nbsp;<span style=\"color: rgb(0, 32, 96); background-color: lime; background-position: initial initial; background-repeat: initial initial;\">%s</span>&nbsp;<span style=\"color: red; \">",
-									formattedSearchResults.get(i + 1).get(0),
-									formattedSearchResults.get(i + 1).get(1));
+							.format("<br><p class=\"MsoNormal\"><b>%s<span style=\"color: rgb(0, 32, 96); font-family: Helvetica, sans-serif; background-color: lime; background-position: initial initial; background-repeat: initial initial;\">%s</span>",
+									formattedSearchResults.get(i + 1).get(0)+")",
+									formattedSearchResults.get(i+1).get(1));
 				} else {
 					html4 += String
-							.format("<br><p class=\"MsoNormal\"><b>%s&nbsp;<span style=\"color: rgb(0, 32, 96); \">%s</span>&nbsp;<span style=\"color: red; \">",
-									formattedSearchResults.get(i + 1).get(0),
-									formattedSearchResults.get(i + 1).get(1));
+							.format("<br><p class=\"MsoNormal\"><b>%s<span style=\"color: rgb(0, 32, 96); font-family: Helvetica, sans-serif; \">%s</span>",
+									formattedSearchResults.get(i + 1).get(0)+")",
+									formattedSearchResults.get(i+1).get(1));
 				}
-				if (formattedSearchResults.get(i + 1).get(2).contains("NORMAL")) {
-					html4 += "</span> <span style=\"color: orange; \">";
+				
+
+				for (j=0; j<get_spaces(formattedSearchResults.get(i+1).get(1)); j++){
+					html4+="&nbsp;&nbsp;";
 				}
+				if (formattedSearchResults.get(i + 1).get(2)
+						.contains("HIGH")) {
+					html4+=String.format("<span style=\"color: red; font-family: Helvetica, sans-serif;\">%s</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", formattedSearchResults.get(i + 1).get(2));
+				}
+				if (formattedSearchResults.get(i + 1).get(2)
+						.contains("NORMAL")) {
+					html4 += String.format("<span style=\"color: orange; font-family: Helvetica, sans-serif;\">%s</span> &nbsp;&nbsp;", formattedSearchResults.get(i + 1).get(2));
+				}
+				if (formattedSearchResults.get(i + 1).get(2)
+						.contains("LOW")) {
+					html4 += String.format("<span style=\"color: rgb(204,127,50); font-family: Helvetica, sans-serif;\">%s</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", formattedSearchResults.get(i + 1).get(2));
+				}
+				html4 += String.format("&nbsp;<span style=\"color: rgb(155, 187, 89); font-family: Helvetica, sans-serif;\">%s</span> &nbsp;", formattedSearchResults.get(i + 1).get(3));
+				for (j=0; j<get_spaces(formattedSearchResults.get(i+1).get(3)); j++){
+					html4+="&nbsp;&nbsp;&nbsp;";
+				}
+
+				if (formattedSearchResults.get(i+1).get(4).contains(":")){
+				html4 += "<span style=\"color: rgb(0, 0, 0); font-family: Helvetica, sans-serif;\"<b><i>From </b></i></span>";
+				}
+				html4 += "<span style=\"color: rgb(75, 172, 198); font-family: Helvetica, sans-serif;\">";
+				
+				
 				html4 += String
-						.format("%s</span> &nbsp;<span style=\"color: rgb(155, 187, 89); \">",
-								formattedSearchResults.get(i + 1).get(2));
-				html4 += String
-						.format("%s</span> &nbsp;<span style=\"color: rgb(75, 172, 198); \"",
-								formattedSearchResults.get(i + 1).get(3));
-				html4 += String
-						.format(">%s</span>&nbsp; <span style=\"color: rgb(0, 0, 0); \">",
+						.format("%s</span>&nbsp; <span style=\"color: rgb(0, 0, 0); font-family: Helvetica, sans-serif;\">",
 								formattedSearchResults.get(i + 1).get(5));
+
 				if (formattedSearchResults.get(i + 1).get(6).contains(":")) {
-					html4 += "<b><i>to </b></i></span>&nbsp; <span style=\"color: rgb(79, 129, 189); \">";
+					html4 += "<b><i>to </b></i></span>&nbsp; <span style=\"color: rgb(79, 129, 189); font-family: Helvetica, sans-serif;\">";
 				} else {
-					html4 += "<b><i></b></i></span>&nbsp; <span style=\"color: rgb(79, 129, 189); \">";
+					html4 += "<b><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b></i></span>&nbsp; <span style=\"color: rgb(79, 129, 189); font-family: Helvetica, sans-serif;\">";
 				}
 				html4 += String
-						.format("%s</span>&nbsp; <span style=\"color: rgb(0, 0, 0); \">",
+						.format("%s</span>&nbsp; <span style=\"color: rgb(0, 0, 0); font-family: Helvetica, sans-serif;\">",
 								formattedSearchResults.get(i + 1).get(6));
-				if (formattedSearchResults.get(i + 1).get(7).contains(":")) {
-					html4 += "<b><i>Reminder at : </b></i></span>&nbsp; <span style=\"color: rgb(228, 108, 10); \">";
+
+				if (formattedSearchResults.get(i + 1).get(7).contains("r-")) {
+					html4 += "<b><i>Reminder at : </b></i></span>&nbsp; <span style=\"color: rgb(228, 108, 10); font-family: Helvetica, sans-serif;\">";
 				} else {
-					html4 += "<b><i></b></i></span>&nbsp; <span style=\"color: rgb(228, 108, 10); \">";
+					html4 += "<b><i></b></i></span>&nbsp; <span style=\"color: rgb(228, 108, 10); font-family: Helvetica, sans-serif;\">";
 				}
-				String reminderTime=formattedSearchResults.get(i + 1).get(7).replace("r-", "");
-				html4 += String.format("%s</span></span></b></p>",
-						reminderTime);
+
+				html4 += String.format("%s</span></span></b></p>", formattedSearchResults.get(i + 1).get(7));
+				html4+="<b>----------------------------------------------" +
+						"------------------------------------------------------------------------------------------------------------------------------------------------------------------</b></p>";
+
+
 			}
+
 			html2 += "</p></html>";
 			html3 += "</html>";
 			html4 += "</html>";
@@ -860,6 +934,14 @@ public class What2DoUI extends javax.swing.JFrame {
 		}
 	}
 
+	private int get_spaces(String word) {
+		int ret=10-word.length();
+		if (word.contains("..")){
+			ret+=1;
+		}
+		return ret;
+	}
+
 	private void formatForUpcoming(ArrayList<ArrayList<String>> demo,
 			ArrayList<String> events) {
 		demo.get(0).set(0, "ID");
@@ -868,6 +950,7 @@ public class What2DoUI extends javax.swing.JFrame {
 		demo.get(0).set(3, "Start");
 		demo.get(0).set(4, "End");
 		demo.get(0).set(5, "Reminder");
+
 		for (int i = 0; i < events.size(); i++) {
 			String[] tempArray = events.get(i).split("\\..");
 			for (int j = 0; j < tempArray.length; j++) {
@@ -884,6 +967,7 @@ public class What2DoUI extends javax.swing.JFrame {
 		demo.get(0).set(3, "Start");
 		demo.get(0).set(4, "End");
 		demo.get(0).set(5, "Reminder");
+
 		for (int i = 0; i < events.size(); i++) {
 			String[] tempArray = events.get(i).split("\\..");
 			for (int j = 0; j < tempArray.length; j++) {
@@ -897,6 +981,7 @@ public class What2DoUI extends javax.swing.JFrame {
 		demo.get(0).set(0, "ID");
 		demo.get(0).set(1, "Event Name");
 		demo.get(0).set(2, "Details");
+
 		for (int i = 0; i < events.size(); i++) {
 			String[] tempArray = events.get(i).split("\\..");
 			for (int j = 0; j < tempArray.length; j++) {
@@ -905,87 +990,73 @@ public class What2DoUI extends javax.swing.JFrame {
 		}
 	}
 
-	/*
-	 * private String format(ArrayList<String> events, int[] maximumLengths) {
-	 * String result = ""; result += "ID" + getSpaces(maximumLengths[0] - 2) +
-	 * " " + "Event Name" + getSpaces(maximumLengths[1] - 10) + " " + "Details"
-	 * + getSpaces(maximumLengths[2] - 7) + " " + "Start" +
-	 * getSpaces(maximumLengths[3] - 5) + " " + "End" +
-	 * getSpaces(maximumLengths[4] - 3) + " " + "Reminder" +
-	 * getSpaces(maximumLengths[5] - 8) + " " + "\n"; for (int i = 0; i <
-	 * events.size(); i++) { String[] tempArray = events.get(i).split("\\..");
-	 * String[] tempArray2 = { "", "", "", "", "", "" }; for (int j = 0; j <
-	 * tempArray.length; j++) { tempArray2[j] = tempArray[j]; } result +=
-	 * tempArray2[0] + getSpaces(maximumLengths[0] - tempArray2[0].length()) +
-	 * " "; result += tempArray2[1] + getSpaces(maximumLengths[1] -
-	 * tempArray2[1].length()) + " "; result += tempArray2[2] +
-	 * getSpaces(maximumLengths[2] - tempArray2[2].length()) + " "; result +=
-	 * tempArray2[3] + getSpaces(maximumLengths[3] - tempArray2[3].length()) +
-	 * " "; result += tempArray2[4] + getSpaces(maximumLengths[4] -
-	 * tempArray2[4].length()) + " "; result += tempArray2[5] +
-	 * getSpaces(maximumLengths[5] - tempArray2[5].length()) + " "; result +=
-	 * "\n"; } return result; }
-	 */
+	
 	private void format(ArrayList<ArrayList<String>> formattedDisplay,
 			ArrayList<String> events, int[] maximumLengths) {
 		formattedDisplay.get(0).set(0,
-				"ID" + getSpaces(maximumLengths[0] - 2) + " ");
+				"ID" + getSpaces(maximumLengths[0] - 2) + "     ");
 		formattedDisplay.get(0).set(1,
-				"Event Name" + getSpaces(maximumLengths[1] - 10) + " ");
+				"Event Name" + getSpaces(maximumLengths[1] - 10) + "     ");
 		formattedDisplay.get(0).set(2,
-				"Details" + getSpaces(maximumLengths[2] - 7) + " ");
+				"Details" + getSpaces(maximumLengths[2] - 7) + "     ");
 		formattedDisplay.get(0).set(3,
-				"Start" + getSpaces(maximumLengths[3] - 5) + " ");
+				"Start" + getSpaces(maximumLengths[3] - 5) + "     ");
 		formattedDisplay.get(0).set(4,
-				"End" + getSpaces(maximumLengths[4] - 3) + " ");
+				"End" + getSpaces(maximumLengths[4] - 3) + "     ");
 		formattedDisplay.get(0).set(5,
-				"Reminder" + getSpaces(maximumLengths[5] - 8) + " ");
+				"Reminder" + getSpaces(maximumLengths[5] - 8) + "     ");
+
 		for (int i = 0; i < events.size(); i++) {
 			String[] tempArray = events.get(i).split("\\..");
 			String[] tempArray2 = { "", "", "", "", "", "", "", "" };
 			for (int j = 0; j < tempArray.length; j++) {
 				tempArray2[j] = tempArray[j];
 			}
+
 			formattedDisplay.get(i + 1).set(
 					0,
 					tempArray2[0]
-							+ getSpaces(maximumLengths[0]
-									- tempArray2[0].length()) + " ");
+							);
+			tempArray2[1]=correctSize(tempArray2[1]);
 			formattedDisplay.get(i + 1).set(
-					1,
+					1, 
 					tempArray2[1]
-							+ getSpaces(maximumLengths[1]
-									- tempArray2[1].length()) + " ");
+							);
 			formattedDisplay.get(i + 1).set(
 					2,
 					tempArray2[2]
-							+ getSpaces(maximumLengths[2]
-									- tempArray2[2].length()) + " ");
+							);
+			tempArray2[3]=correctSize(tempArray2[3]);
+
 			formattedDisplay.get(i + 1).set(
 					3,
 					tempArray2[3]
-							+ getSpaces(maximumLengths[3]
-									- tempArray2[3].length()) + " ");
+							);
 			formattedDisplay.get(i + 1).set(
 					4,
 					tempArray2[4]
-							+ getSpaces(maximumLengths[4]
-									- tempArray2[4].length()) + " ");
+							);
 			formattedDisplay.get(i + 1).set(
 					5,
 					tempArray2[5]
-							+ getSpaces(maximumLengths[5]
-									- tempArray2[5].length()) + " ");
+							);
 			formattedDisplay.get(i + 1).set(
 					6,
 					tempArray2[6]
-							+ getSpaces(maximumLengths[6]
-									- tempArray2[6].length()) + " ");
+							);
 			formattedDisplay.get(i + 1).set(
 					7,
-					tempArray2[7]
-							+ getSpaces(maximumLengths[7]
-									- tempArray2[7].length()) + " ");
+					tempArray2[7]);
+
+		}
+	}
+
+	private String correctSize(String string) {
+		if (string.length()<10)
+			return string;
+		else
+		{
+			return string.substring(0,7)+"..";
 		}
 	}
 
@@ -1013,12 +1084,13 @@ public class What2DoUI extends javax.swing.JFrame {
 				if (tempStorage[k].length() > lengths[k])
 					lengths[k] = tempStorage[k].length();
 			}
+
 		}
 		return lengths;
 	}
 
 	private void textField1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_textField1ActionPerformed
-	// TODO add your handling code here:
+		// TODO add your handling code here:
 	}// GEN-LAST:event_textField1ActionPerformed
 
 	private void textField1KeyPressed(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_textField1KeyPressed
@@ -1027,8 +1099,7 @@ public class What2DoUI extends javax.swing.JFrame {
 			textField1.setText(previousEntry.get(previousIndex));
 			previousIndex--;
 		}
-		if (evt.getKeyCode() == 40 && previousIndex != previousEntry.size() - 1
-				&& !(previousEntry.isEmpty())) {
+		if (evt.getKeyCode() == 40 && previousIndex != previousEntry.size() - 1 && !(previousEntry.isEmpty())) {
 			textField1.setText(previousEntry.get(++previousIndex));
 		}
 	}
@@ -1051,12 +1122,13 @@ public class What2DoUI extends javax.swing.JFrame {
 		MessageHandler.setUpList();
 		Log.setup();
 		AlarmThread newAlarm = new AlarmThread();
-		new Thread(newAlarm).start();
+		  new Thread(newAlarm).start();
 		try {
 			Executor.loadDatabase();
 		} catch (Exception e) {
 			Executor.formatDatabase();
 		}
+
 		try {
 			for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager
 					.getInstalledLookAndFeels()) {
@@ -1079,6 +1151,7 @@ public class What2DoUI extends javax.swing.JFrame {
 					java.util.logging.Level.SEVERE, null, ex);
 		}
 		// </editor-fold>
+
 		/* Create and display the form */
 		java.awt.EventQueue.invokeLater(new Runnable() {
 			@Override
