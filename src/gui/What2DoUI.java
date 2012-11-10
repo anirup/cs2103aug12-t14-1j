@@ -1,12 +1,18 @@
 package gui;
 
+import java.awt.Image;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import javax.imageio.ImageIO;
 import javax.swing.JLabel;
+import javax.swing.ImageIcon;
+
 
 import alarm.AlarmThread;
+import javax.swing.JFrame;
 
 import logAndException.Log;
 import logAndException.MessageHandler;
@@ -58,11 +64,23 @@ public class What2DoUI extends javax.swing.JFrame {
 		setTextAlignment();
 		hideCertainAreasInitially();
 		setLayoutsOfComponents();
-
 		displayDatabase("");
 
+		
+	    setApplicationIcon();
+
+	    setResizable(false);
 		pack();
 	}// </editor-fold>
+
+	private void setApplicationIcon() {
+		Image im = null;
+	    try {
+	    im = ImageIO.read(getClass().getResource("logo.jpg"));
+	    } catch (IOException ex) {
+	    }
+	    setIconImage(im);
+	}
 
 	private void setLayoutsOfComponents() {
 		javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(
@@ -1184,5 +1202,7 @@ public class What2DoUI extends javax.swing.JFrame {
 	private javax.swing.JLabel jLabel3;
 	private javax.swing.JLabel jLabel4;
 	private java.awt.TextField textField1;
+	
+	//super.setIconImage(image);
 	// End of variables declaration
 }
