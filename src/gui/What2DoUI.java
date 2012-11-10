@@ -29,6 +29,14 @@ public class What2DoUI extends javax.swing.JFrame {
 	public What2DoUI() {
 		initComponents();
 	}
+	int upcoming_start_position=0;
+	int upcoming_end_position=6;
+	int floating_start_position=0;
+	int floating_end_position=6;
+	int search_start_position=0;
+	int search_end_position=6;
+	
+	String view="upcoming";
 
 	// html1=setUp();
 	String html1 = "<html><table class=\"MsoTableGrid\" border=\"1\" cellspacing=\"0\" cellpadding=\"0\" style=\"border-collapse: collapse; border: none; \"><tbody><tr><td width=\"308\" valign=\"top\" style=\"width: 231.05pt; border: 1pt solid windowtext; padding: 0cm 5.4pt; \"><p class=\"MsoNormal\" style=\"margin-bottom: 0.0001pt; line-height: normal; \">&nbsp;</p></td><td width=\"308\" valign=\"top\" style=\"width: 231.05pt; border-style: solid solid solid none; border-top-color: windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; padding: 0cm 5.4pt; \"><p class=\"MsoNormal\" style=\"margin-bottom: 0.0001pt; line-height: normal; \">&nbsp;</p></td></tr><tr><td width=\"308\" valign=\"top\" style=\"width: 231.05pt; border-style: none solid solid; border-right-color: windowtext; border-bottom-color: windowtext; border-left-color: windowtext; border-right-width: 1pt; border-bottom-width: 1pt; border-left-width: 1pt; padding: 0cm 5.4pt; \"><p class=\"MsoNormal\" style=\"margin-bottom: 0.0001pt; line-height: normal; \">&nbsp;</p></td><td width=\"308\" valign=\"top\" style=\"width: 231.05pt; border-style: none solid solid none; border-bottom-color: windowtext; border-bottom-width: 1pt; border-right-color: windowtext; border-right-width: 1pt; padding: 0cm 5.4pt; \"><p class=\"MsoNormal\" style=\"margin-bottom: 0.0001pt; line-height: normal; \">&nbsp;</p></td> </tr></tbody></table><p class=\"MsoNormal\">&nbsp;</p></html>";
@@ -406,6 +414,37 @@ public class What2DoUI extends javax.swing.JFrame {
 		if (evt.getKeyChar() == '\n') {
 			flag = 0;
 			String data = textField1.getText();
+			if (data.equals("n")){
+				if (view.equals("upcoming"))
+					upcoming_start_position+=7;
+				if (view.equals("floating")){
+					setViewToFloating();
+					floating_start_position+=7;
+				}
+				if (view.equals("search")){
+					search_start_position+=7;
+					setViewToSearch();
+				}
+				
+				displayDatabase("");
+				
+			}
+			if (data.equals("p")){
+				if (view.equals("upcoming")){
+					setViewToUpcoming();
+					upcoming_start_position-=7;
+				}
+				if (view.equals("floating")){
+					setViewToFloating();
+					floating_start_position-=7;
+				}
+				if (view.equals("search")){
+					search_start_position-=7;
+					setViewToSearch();
+				}
+				displayDatabase("");
+				
+			}
 			if (data.contains("update")) {
 				int index = extractIndex(data);
 				if (index != 0) {
@@ -433,11 +472,17 @@ public class What2DoUI extends javax.swing.JFrame {
 				searchView = false;
 				Executor.searchToFalse();
 				setViewToFloating();
-			} else {
+			}else if (data.contains("upcoming")) {
 				searchView = false;
 				Executor.searchToFalse();
 				setViewToUpcoming();
-			}
+			} 
+			/*else {
+				searchView = false;
+				Executor.searchToFalse();
+				setViewToUpcoming();
+				
+			}*/
 			if (!(data.contains("update"))) {
 				updateFlagBool = false;
 			}
@@ -468,18 +513,21 @@ public class What2DoUI extends javax.swing.JFrame {
 	}
 
 	private void setViewToFloating() {
+		view="floating";
 		jPanel2.setVisible(false);
 		jPanel3.setVisible(false);
 		jPanel4.setVisible(true);
 	}
 
 	private void setViewToUpcoming() {
+		view="upcoming";
 		jPanel3.setVisible(false);
 		jPanel4.setVisible(false);
 		jPanel2.setVisible(true);
 	}
 
 	private void setViewToSearch() {
+		view="search";
 		jPanel2.setVisible(false);
 		jPanel4.setVisible(false);
 		jPanel3.setVisible(true);
@@ -614,9 +662,14 @@ public class What2DoUI extends javax.swing.JFrame {
 	}
 
 	private void displayDatabase(String message) {
+		
 		ArrayList<String> upcomingEvents = Executor.printDataBase();
 		ArrayList<String> floatingEvents = Executor.printFloatingDataBase();
 		ArrayList<String> searchResults = Executor.printSearchResults();
+		//upcoming_end_position=upcoming_start_position+6;
+
+		
+
 		// index, name, hash-tags, start time end time, reminder
 		/*
 		 * String upcomingEventsString =
@@ -694,8 +747,13 @@ public class What2DoUI extends javax.swing.JFrame {
 		html4 += "<b>----------------------------------------------"
 				+ "------------------------------------------------------------------------------------------------------------------------------------------------------------------</b></p>";
 		int j = 0;
-		if (toUpdate) {
-			for (int i = 0; i < upcomingEvents.size(); i++) {
+		upcoming_end_position=(upcomingEvents.size()-upcoming_start_position<6?upcomingEvents.size():6);
+		floating_end_position=(floatingEvents.size()-floating_start_position<6?floatingEvents.size():6);
+		search_end_position=(searchResults.size()-search_start_position<6?searchResults.size():6);
+
+		
+		if ((toUpdate)|| (!toUpdate)) {
+			for (int i = upcoming_start_position; i < upcoming_end_position; i++) {
 				if (formattedUpcomingEvents.get(i + 1).get(4).contains("true")) {
 					html2 += String
 							.format("<br><p class=\"MsoNormal\"><b>%s<span style=\"color: rgb(0, 32, 96); font-family: Helvetica, sans-serif; background-color: lime; background-position: initial initial; background-repeat: initial initial;\">%s</span>",
@@ -761,7 +819,7 @@ public class What2DoUI extends javax.swing.JFrame {
 								.replace("r-", ""));
 				html2 += "<b>------------------------------------------------------------------------------------------------------------------------</b></p>";
 			}
-			for (int i = 0; i < floatingEvents.size(); i++) {
+			for (int i = floating_start_position; i < floating_end_position; i++) {
 
 				if (formattedFloatingEvents.get(i + 1).get(4).contains("true")) {
 					html3 += String
@@ -805,7 +863,7 @@ public class What2DoUI extends javax.swing.JFrame {
 				}
 				html3 += "</p><b>------------------------------------------------------------------------------------------------------------------------</b></p>";
 			}
-			for (int i = 0; i < searchResults.size(); i++) {
+			for (int i = search_start_position; i < search_end_position; i++) {
 
 				if (formattedSearchResults.get(i + 1).get(4).contains("true")) {
 					html4 += String
@@ -883,7 +941,7 @@ public class What2DoUI extends javax.swing.JFrame {
 			jLabel3.setText(String
 					.format("<html><p class=\"MsoNormal\"><b><span style=\"color: rgb(0, 176, 80)\"; >%s</span></b></p></html>",
 							message));
-		} else {
+		} if (!toUpdate) {
 			jLabel3.setText(String
 					.format("<html><p class=\"MsoNormal\"><b><span style=\"color: red; \">%s</span></b></p></html>",
 							message));
