@@ -86,7 +86,7 @@ public class ListOfEvent {
 	}
 	
 	public static Event markUndoneList(int position) {
-		if(isOutOfBoundIndex(position, searchResults)) {
+		if(isOutOfBoundIndex(position,listOfEvent )) {
 			return null;
 		}
 		Event eventToMarkUndone = listOfEvent.get(position);
@@ -95,7 +95,7 @@ public class ListOfEvent {
 	}
 	
 	public static Event markDoneList(int position) {
-		if(isOutOfBoundIndex(position, searchResults)) {
+		if(isOutOfBoundIndex(position, listOfEvent)) {
 			return null;
 		}
 		Event eventToMarkDone = listOfEvent.get(position);
@@ -212,10 +212,10 @@ public class ListOfEvent {
 	}
 	
 	public static boolean update(Event eventToReplace, Event eventToBeReplaced) {
-		int indexOfEventToBeReplaced = indexOf(eventToBeReplaced);
+		int indexOfEventToBeReplaced = indexOf(eventToReplace);
 		if (indexOfEventToBeReplaced != -1) {
 			listOfEvent.remove(indexOfEventToBeReplaced);
-			listOfEvent.add(indexOfEventToBeReplaced, eventToReplace);
+			listOfEvent.add(indexOfEventToBeReplaced, eventToBeReplaced);
 			return true;
 		}
 		return false;
