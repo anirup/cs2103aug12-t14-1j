@@ -80,7 +80,7 @@ public class What2DoUI extends javax.swing.JFrame {
 	private void setApplicationIcon() {
 		Image im = null;
 	    try {
-	    im = ImageIO.read(getClass().getResource("logo.jpg"));
+	    im = ImageIO.read(getClass().getResource("/logo.jpg"));
 	    } catch (IOException ex) {
 	    }
 	    setIconImage(im);
