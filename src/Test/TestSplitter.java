@@ -1,9 +1,6 @@
 package Test;
 
-import static org.junit.Assert.*;
-
 import java.util.Vector;
-
 import logic.LogicSplitter;
 import logic.PatternLib;
 
@@ -17,6 +14,7 @@ public class TestSplitter {
 		PatternLib.setUpPattern();
 		Vector<String> temp=LogicSplitter.splitInput("add dfojnvojern1 7:00 9 sep #wnwf r-1min");
 		System.out.print(temp.toString()); 
+		assert(true);
 	}
 
 }

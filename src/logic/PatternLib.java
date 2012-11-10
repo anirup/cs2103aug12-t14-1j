@@ -25,7 +25,7 @@ public class PatternLib {
 	private static final String month29String = "((feb)|(february))";
 	private static final String yearInt = "((20)?[0-9][0-9])";
 	private static final String leapYearInt = "((20)?(([02468][048])|([13579][26])))";
-	private static final String dateSeparator = "[\\/-:.]";
+	private static final String dateSeparator = "[-\\/:.]";
 	private static final String hour12 = "((1[0-2])|(0?[0-9]))";
 	private static final String hour24 = "((2[0-3])|(1[0-9])|(0?[0-9]))";
 	private static final String minute = "(([1-5][0-9])|(0?[0-9]))";
