@@ -43,27 +43,27 @@ public class LogicSplitter {
 			
 		}
 		try{
-		if(parameterList.get(0).toLowerCase().contains(COMMAND_ADD)||parameterList.get(0).contains(SHORTHAND_ADD))
+		if(parameterList.get(0).toLowerCase().trim().equalsIgnoreCase(COMMAND_ADD)||parameterList.get(0).trim().equalsIgnoreCase(SHORTHAND_ADD))
 		{
 			parameterList=LogicSplitterAdd.splitInputAdd(userInput,parameterList);
 		}
-		else if(parameterList.get(0).toLowerCase().contains(COMMAND_UPDATE)||parameterList.get(0).contains(SHORTHAND_UPDATE))
+		else if(parameterList.get(0).trim().equalsIgnoreCase(COMMAND_UPDATE)||parameterList.get(0).trim().equalsIgnoreCase(SHORTHAND_UPDATE))
 		{
 			parameterList=LogicSplitterUpdate.splitInputUpdate(userInput,parameterList);
 		}
-		else if(parameterList.get(0).toLowerCase().contains(COMMAND_UNDONE))
+		else if(parameterList.get(0).trim().equalsIgnoreCase(COMMAND_UNDONE))
 		{
 			parameterList=LogicSplitterUndone.splitInputUndone(userInput,parameterList);
 		}
-		else if(parameterList.get(0).toLowerCase().contains(COMMAND_DONE))
+		else if(parameterList.get(0).trim().equalsIgnoreCase(COMMAND_DONE))
 		{
 			parameterList=LogicSplitterDone.splitInputDone(userInput,parameterList);
 		}
-		else if(parameterList.get(0).toLowerCase().contains(COMMAND_DELETE)||parameterList.get(0).contains(SHORTHAND_DELETE))
+		else if(parameterList.get(0).trim().equalsIgnoreCase(COMMAND_DELETE)||parameterList.get(0).trim().equalsIgnoreCase(SHORTHAND_DELETE))
 		{
 			parameterList=LogicSplitterDelete.splitInputDelete(userInput,parameterList);
 		}
-		else if(parameterList.get(0).toLowerCase().contains(COMMAND_SEARCH))
+		else if(parameterList.get(0).trim().equalsIgnoreCase(COMMAND_SEARCH))
 		{
 			parameterList=LogicSplitterSearch.splitInputSearch(userInput,parameterList);
 		}
@@ -189,7 +189,7 @@ public class LogicSplitter {
 					} else
 						userInput += EMPTY_STRING;
 				timeCount[0]++;
-				if(timeCount[0]>2) {
+				if(timeList.size()>2) {
 					timeList.remove(0);
 				}
 			} else if (PatternLib.isFindReminderTime(original)[1] == 0) {

@@ -53,7 +53,7 @@ public class LogicAnalyzer {
 	}
 	public static int getInteger(String[] parameterList) {
 		try {
-			return Integer.parseInt(parameterList[1]);
+			return Integer.parseInt(parameterList[1].trim());
 		} catch (NumberFormatException e) {
 			return -1;
 		}
@@ -104,15 +104,12 @@ public class LogicAnalyzer {
 		}
 
 		String eventTime = startTime + SPLITTER + endTime;
-		String reminderString = null;
-		if (startTime != STRING_INVALID) {
+		String reminderString = "";
+		if (startTime != STRING_INVALID && eventReminder!=null) {
 			DateTime reminder = start.minusSeconds((int) eventReminder
 					.getStandardSeconds());
-			reminderString = reminder.getHourOfDay() + SPLITTER_TIME
-					+ reminder.getMinuteOfHour() + STRING_SPACE
-					+ reminder.getDayOfMonth() + SPLITTER_DATE
-					+ reminder.getMonthOfYear() + SPLITTER_DATE
-					+ reminder.getYear();
+			reminderString = getReminderTimeInString(reminderString, reminder);
+			
 		} else {
 			reminderString = STRING_INVALID;
 		}
@@ -121,12 +118,60 @@ public class LogicAnalyzer {
 				+ reminderString + SPLITTER + eventTime + SPLITTER + STRING_INVALID;
 		return content;
 	}
+	private static String getReminderTimeInString(String reminderString,
+			DateTime reminder) {
+		if(reminder.getHourOfDay()<10)
+		{
+			reminderString+="0"+reminder.getHourOfDay();
+		}
+		else
+		{
+			reminderString+=reminder.getHourOfDay();
+		}
+		reminderString+=SPLITTER_TIME;
+		if(reminder.getMinuteOfHour()<10)
+		{
+			reminderString+="0"+reminder.getMinuteOfHour();
+		}
+		else
+		{
+			reminderString+=reminder.getMinuteOfHour();
+		}
+		reminderString+=STRING_SPACE;
+		if(reminder.getDayOfMonth()<10)
+		{
+			reminderString+="0"+reminder.getDayOfMonth();
+		}
+		else
+		{
+			reminderString+=reminder.getDayOfMonth();
+		}
+		reminderString+=SPLITTER_DATE;
+		if(reminder.getMonthOfYear()<10)
+		{
+			reminderString+="0"+reminder.getMonthOfYear();
+		}
+		else
+		{
+			reminderString+=reminder.getMonthOfYear();
+		}
+		reminderString+=SPLITTER_DATE;
+		if(reminder.getYear()<10)
+		{
+			reminderString+="0"+reminder.getYear();
+		}
+		else
+		{
+			reminderString+=reminder.getYear();
+		}
+		return reminderString;
+	}
 
 	private static String getKeyWords(String[] parameterList) {
 		fieldFound[1] = true;
 		if (parameterList[1].trim().contains(SPLITTER_HASH)) {
 			return parameterList[1].trim()
-					.substring(0, parameterList[1].indexOf(SPLITTER_HASH))
+					.substring(0, parameterList[1].trim().indexOf(SPLITTER_HASH))
 					.trim();
 		} else {
 			return parameterList[1].trim();
@@ -208,10 +253,11 @@ public class LogicAnalyzer {
 								.contains(REMINDER_SECOND)) {
 					miliseconds += timeQuantity.get(0) * MILLISECONDS_IN_SECOND;
 				}
+				return (new Duration(miliseconds));
 		} else {
 			fieldFound[4] = true;
 		}
-		return (new Duration(miliseconds));
+		return null;
 	}
 
 	private static Vector<String> getAllHashTags(String[] parameterList) {
@@ -226,7 +272,7 @@ public class LogicAnalyzer {
 			int startHashCode = parameterList[i].indexOf(SPLITTER_HASH);
 			if (startHashCode > -1) {
 				String[] hashCodes = parameterList[i].trim()
-						.substring(startHashCode + 1).trim()
+						.substring(startHashCode).trim()
 						.split(SPLITTER_HASH);
 				for (int j = 0; j < hashCodes.length; j++) {
 					if (!hashCodes[j].trim().isEmpty()
@@ -251,7 +297,7 @@ public class LogicAnalyzer {
 	
 	private static String getTime(String[] parameterList) {
 		String endTime = EMPTY_STRING;
-		for (int i = 2; i < 5; i++) {
+		for (int i = 2; i <= 5 && i < parameterList.length; i++) {
 			if (fieldFound[i] == false
 					&& !parameterList[i].equals(ELEMENT_EMPTY)) {
 				endTime = EMPTY_STRING;

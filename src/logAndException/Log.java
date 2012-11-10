@@ -7,34 +7,34 @@ import java.util.logging.*;
 import org.joda.time.DateTime;
   
 public class Log {
-	private static final Logger messageLogger=Logger.getLogger("Log");
-	private static final Logger errorLogger=Logger.getLogger("Log");
+	private static final Logger messageLogger=Logger.getLogger("Message");
+	private static final Logger errorLogger=Logger.getLogger("Error");
 	private static FileHandler fh=null;
 	private static FileHandler fh2=null;
 	public static void setup() throws Exception
-	{	File dir = new File("Logging");  
+	{	File dir = new File("Log Files");  
 		dir.mkdir();
-		String fileName="Logging/MessageLog -" + Clock.toString(DateTime.now()).replace(":", "").replace("/", "") + ".txt";
+		String fileName="Log Files/MessageLog -" + Clock.toString(DateTime.now()).replace(":", "").replace("/", "") + ".txt";
 		fh = new FileHandler(fileName, true);
-		String fileName2="Logging/ErrorLog -" + Clock.toString(DateTime.now()).replace(":", "").replace("/", "") + ".txt";
+		String fileName2="Log Files/ErrorLog -" + Clock.toString(DateTime.now()).replace(":", "").replace("/", "") + ".txt";
 		fh2 = new FileHandler(fileName2, true);	
-		
+		fh.setFormatter(new SimpleFormatter());
+		fh2.setFormatter(new SimpleFormatter());
+		messageLogger.addHandler(fh);
+		messageLogger.setLevel(java.util.logging.Level.ALL);
+		errorLogger.addHandler(fh2);
+		errorLogger.setLevel(java.util.logging.Level.SEVERE);
  	}
 	public static void toLog(int Level,String message) throws Exception
 	{
 		if(fh!=null)
 		{
-		fh.setFormatter(new SimpleFormatter());
-		messageLogger.addHandler(fh);
-		messageLogger.setLevel(java.util.logging.Level.ALL);
-		errorLogger.addHandler(fh2);
-		messageLogger.setLevel(java.util.logging.Level.SEVERE);
 		if(Level==0)
-			messageLogger.log(java.util.logging.Level.INFO, message);
+			messageLogger.info(message);
 		else if(Level==1)
-			messageLogger.log(java.util.logging.Level.WARNING, message);
+			messageLogger.warning(message);
 		else
-			errorLogger.log(java.util.logging.Level.SEVERE, message);
+			errorLogger.severe(message);
 		}
 	}
 	

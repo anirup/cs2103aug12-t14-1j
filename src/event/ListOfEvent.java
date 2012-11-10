@@ -183,12 +183,12 @@ public class ListOfEvent {
 		}
 		Event removedEvent = searchResults.remove(position);
 		Event updatedEvent = getEventFromString(eventToUpdate);
-		if(updatedEvent.isSameEvent(new Event())) {
+		if(!updatedEvent.isSameEvent(new Event())) {
 			searchResults.add(updatedEvent);
+			checkForWarning(updatedEvent);
 			update(removedEvent, updatedEvent);
 			update.add(removedEvent);
 			update.add(updatedEvent);
-			checkForWarning(updatedEvent);
 			return update;
 		}
 		return update;
@@ -201,11 +201,11 @@ public class ListOfEvent {
 		}
 		Event removedEvent = listOfEvent.remove(position);
 		Event updatedEvent = getEventFromString(eventToUpdate);
-		if(updatedEvent.isSameEvent(new Event())) {
+		if(!updatedEvent.isSameEvent(new Event())) {
+			checkForWarning(updatedEvent);
 			listOfEvent.add(updatedEvent);
 			update.add(removedEvent);
 			update.add(updatedEvent);
-			checkForWarning(updatedEvent);
 			return update;
 		}
 		return update;
@@ -273,7 +273,7 @@ public class ListOfEvent {
 		for(int index = 0; index < listOfEvent.size(); index++) {
 			Event currentEvent = listOfEvent.get(index);
 			DateTime eventReminder = currentEvent.getEventReminder();
-			if((Clock.getBigBangTime() == eventReminder)
+			if((Clock.getBigBangTime() != eventReminder)
 					&& !currentEvent.isDone() && !eventReminder.isBeforeNow()) {
 				AlarmType newAlarm = new AlarmType(currentEvent.getEventName(), eventReminder);
 				reminderList.add(newAlarm);
