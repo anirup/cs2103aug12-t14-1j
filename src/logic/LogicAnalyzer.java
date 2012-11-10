@@ -297,7 +297,7 @@ public class LogicAnalyzer {
 	
 	private static String getTime(String[] parameterList) {
 		String endTime = EMPTY_STRING;
-		for (int i = 2; i <= 5 && i < parameterList.length; i++) {
+		for (int i = 2; i < 5 && i < parameterList.length; i++) {
 			if (fieldFound[i] == false
 					&& !parameterList[i].equals(ELEMENT_EMPTY)) {
 				endTime = EMPTY_STRING;

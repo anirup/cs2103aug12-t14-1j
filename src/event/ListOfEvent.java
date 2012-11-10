@@ -163,7 +163,7 @@ public class ListOfEvent {
 	}	
 	
 	public static Event removeSearch(int position) {
-		return remove(position, searchResults);
+		return remove(remove(position, searchResults));
 	}
 	
 	private static Event remove(int position, ArrayList<Event> list) {
