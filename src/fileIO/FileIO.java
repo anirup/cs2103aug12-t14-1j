@@ -28,6 +28,12 @@ public class FileIO {
 		return retrieveDatabase();
 	}
 	
+	public void clearFile() throws IOException {
+		FileWriter writer = new FileWriter(database);
+		writer.close();
+		
+	}
+	
 	public void syncToDatabase(ArrayList<String> currentListOfEvent) throws IOException {
 		database = new File(fileName);
 		if (!database.exists()) {
