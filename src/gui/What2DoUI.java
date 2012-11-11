@@ -86,7 +86,7 @@ public class What2DoUI extends javax.swing.JFrame {
 		hideCertainAreasInitially();
 		setLayoutsOfComponents();
 		displayDatabase("");
-		setTitle("Igor");
+		setTitle("Igor. Your Personal Assistant.");
 		setApplicationIcon();
 		setResizable(false);
 		setInitialText();
