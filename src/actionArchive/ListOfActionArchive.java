@@ -10,13 +10,12 @@ public class ListOfActionArchive {
 		listOfUserLog.add(userLog);
 		return;
 	}
-	
-	public static ActionArchive getLast() {
-		return listOfUserLog.getLast();
-	}
 
 	public static String undo() {
 		ActionArchive lastActionArchive = listOfUserLog.pollLast();
+		if(lastActionArchive == null) {
+			return "";
+		}
 		return lastActionArchive.rollBack();
 	}	
 }

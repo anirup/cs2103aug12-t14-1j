@@ -4,25 +4,23 @@ import java.util.*;
 
 import logAndException.MessageHandler;
 import logAndException.Log;
-import logic.LogicAnalyzer;
-import logic.LogicSplitter;
-import logic.PatternLib;
 
-import actionArchive.*;
-
-import event.*;
+import event.ListOfEvent;
+import event.ListOfEventObserver;
 
 public class Executor implements ListOfEventObserver {
 
+	private static final int INDEX_FIRST = 0;
+	private static final String EXPRESSION_WHITESPACE = "\\s+";
 	private static final String COMMAND_SWITCH_UPCOMING = "upcoming";
 	private static final String COMMAND_BACK = "back";
 	private static ArrayList<String> currentListOfUpcomingEventToDisplay = new ArrayList<String>();
 	private static ArrayList<String> currentListOfFloatingEventToDisplay = new ArrayList<String>();
 	private static ArrayList<String> searchResults = new ArrayList<String>();
+	private static ArrayList<String> feedback = new ArrayList<String>();
 	private static final String SHORTHAND_UPDATE = "u";
 	private static final String SHORTHAND_DELETE = "-";
 	private static final String SHORTHAND_ADD = "+";
-	private static final String EXPRESSION_WHITESPACE = "\\s+";
 	private static final String COMMAND_ADD = "add";
 	private static final String COMMAND_DELETE = "delete";
 	private static final String COMMAND_UPDATE = "update";
@@ -32,8 +30,7 @@ public class Executor implements ListOfEventObserver {
 	private static final String COMMAND_UNDONE = "undone";
 	private static final String COMMAND_UNDO = "undo";
 	private static boolean searchState = false;	
-	private static int userInputInteger;
-	private static int updateIndex = -1;
+
 	private static Executor _instance = new Executor();
 
 	private Executor() {
@@ -42,11 +39,7 @@ public class Executor implements ListOfEventObserver {
 
 	public static Executor getInstance() {
 		return _instance;
-	}
-
-	private static boolean getSearchState() {
-		return searchState;
-	}
+	}	
 
 	public static void searchToFalse() {
 		searchState = false;
@@ -57,96 +50,74 @@ public class Executor implements ListOfEventObserver {
 	}
 
 	public static int analyze(String userInput) throws Exception {
-		init();
-
-		Vector<String> parameters = new Vector<String>();
-		String[] parameterList = { "-1", "-1", "-1", "-1", "-1", "-1" };
-
+			
+		String command = getCommand(userInput);
+		Command action;		
 		try {
-			parameters = LogicSplitter.splitInput(userInput);
-		} catch (Exception e) {
-			return splittingError();
-		}
-		for (int i = 0; i < parameters.size(); i++)
-			parameterList[i] = parameters.get(i);
-
-		// Check if user has just entered a positive integer parameter, returns
-		// -2 if not an integer, -1 if user entered 0
-		userInputInteger = getUserInteger(parameterList);
-
-		ListOfEvent.sortList();
-
-		try {
-			// Save to file before each operation
-			ListOfEvent.syncDataToDatabase();
-		} catch (Exception e) {
-			ListOfEvent.formatListOfEvent();
-			Log.toLog(2, MessageHandler.getMessage(10));
-			return 10;
-		}
-
-		try {
-			String command = parameterList[0];
+			
 			if (isAdd(command)) {
-				return executeAdd(parameterList);
+				action = new CommandAdd(userInput,searchState,getSearchSize(),getSizeOfDisplayedEvents());
+				action.execute();
+				feedback = action.getFeedback();
+				return action.getMessageValue();
+				
 			} else if (isDelete(command)) {
-				return executeDelete(userInputInteger);
+				action = new CommandDelete(userInput,searchState,getSearchSize(),getSizeOfDisplayedEvents());
+				action.execute();
+				feedback = action.getFeedback();
+				return action.getMessageValue();
+				
 			} else if (isUpdate(command)) {
-				return executeUpdate(parameterList);
+				action = new CommandUpdate(userInput,searchState,getSearchSize(),getSizeOfDisplayedEvents());
+				action.execute();
+				feedback = action.getFeedback();
+				return action.getMessageValue();
+				
 			} else if (isSearch(command)) {
-				executeSearch(parameterList);
+				action = new CommandSearch(userInput,searchState,getSearchSize(),getSizeOfDisplayedEvents());
+				action.execute();
+				feedback = action.getFeedback();
+				return action.getMessageValue();
+				
 			} else if (isDone(command)) {
-				return executeDone();
+				action = new CommandDone(userInput,searchState,getSearchSize(),getSizeOfDisplayedEvents());
+				action.execute();
+				feedback = action.getFeedback();
+				return action.getMessageValue();
+				
 			} else if (isUndone(command)) {
-				return executeUndone();
+				action = new CommandUndone(userInput,searchState,getSearchSize(),getSizeOfDisplayedEvents());
+				action.execute();
+				feedback = action.getFeedback();
+				return action.getMessageValue();
+				
 			} else if (isUndo(command)) {
-				return executeUndo();
+				action = new CommandUndo(userInput,searchState,getSearchSize(),getSizeOfDisplayedEvents());
+				action.execute();
+				feedback = action.getFeedback();
+				return action.getMessageValue();
+				
 			} else if (command.equalsIgnoreCase(COMMAND_EXIT)) {
-				Log.toLog(0, MessageHandler.getMessage(7));
-				System.exit(0);
-				return 7;
+				action = new CommandExit(userInput,searchState,getSearchSize(),getSizeOfDisplayedEvents());
+				action.execute();
+				feedback = action.getFeedback();
+				return action.getMessageValue();
 			} else if (command.equalsIgnoreCase(COMMAND_BACK)) {
 				searchToFalse();
 				return 15;
-			} else if (command.trim().equalsIgnoreCase(COMMAND_SWITCH_UPCOMING)) {
+			} else if (command.equalsIgnoreCase(COMMAND_SWITCH_UPCOMING)) {
 				return 17;
 			} else
 				return 5;
 		} catch (Exception e) {
 			Log.toLog(2, MessageHandler.getMessage(9));
 			return 9;
-		}
+		}	
+	}	
 
-		ListOfEvent.notifyObservers();
-		return 11;
-
-	}
-
-	private static void init() {
-		PatternLib.setUpPattern();
-		LogicSplitter.setUp();
-		LogicAnalyzer.setUp();
-	}
-
-	private static int splittingError() throws Exception {
-		if (LogicSplitter.getMessage() == 0) {
-			Log.toLog(2, MessageHandler.getMessage(9));
-			return 9;
-		} else
-			return LogicSplitter.getMessage();
-	}
-
-	private static int getUserInteger(String[] parameterList) {
-		return LogicAnalyzer.getInteger(parameterList) - 1;
-	}
-
-	public ArrayList<String> getFeedback() {
-		return ListOfEvent.getFeedback();
-	}
-
-	private static boolean isValidIndex(int userInputInteger) {
-		return userInputInteger > -1;
-	}
+	public static ArrayList<String> getFeedback() {
+		return feedback;
+	}	
 
 	private static boolean isUndo(String command) {
 		return command.equalsIgnoreCase(COMMAND_UNDO);
@@ -177,210 +148,20 @@ public class Executor implements ListOfEventObserver {
 	private static boolean isUpdate(String command) {
 		return command.equalsIgnoreCase(COMMAND_UPDATE)
 				|| command.equalsIgnoreCase(SHORTHAND_UPDATE);
-	}
-
-	private static int executeUndone() throws Exception {
-		if (isValidIndex(userInputInteger)) {
-			if (getSearchState() == true) {
-				if (userInputInteger < searchResults.size()) {
-					Event eventUndone = ListOfEvent
-							.markUndoneSearch(userInputInteger);
-					ListOfActionArchive.add(new ActionArchiveMarkUndone(
-							eventUndone));
-				} else {
-					Log.toLog(2, MessageHandler.getMessage(19));
-					return 19;
-				}
-			} else if (getSearchState() == false) {
-				if (userInputInteger < getSizeOfDisplayedEvents()) {
-					Event eventUndone = ListOfEvent
-							.markUndoneList(userInputInteger);
-					ListOfActionArchive.add(new ActionArchiveMarkUndone(
-							eventUndone));
-				} else {
-					Log.toLog(2, MessageHandler.getMessage(19));
-					return 19;
-				}
-			}
-			Log.toLog(0, MessageHandler.getMessage(4));
-			ListOfEvent.notifyObservers();
-			return 4;
-		}
-
-		else {
-			Log.toLog(2, MessageHandler.getMessage(20));
-			return 20;
-		}
-	}
-
-	private static int executeDone() throws Exception {
-		if (isValidIndex(userInputInteger)) {
-			if (getSearchState() == true) {
-				if (userInputInteger < searchResults.size()) {
-					Event doneEvent = ListOfEvent
-							.markDoneSearch(userInputInteger);
-					ListOfActionArchive
-							.add(new ActionArchiveMarkDone(doneEvent));
-				} else {
-					Log.toLog(2, MessageHandler.getMessage(19));
-					return 19;
-				}
-			} else if (getSearchState() == false) {
-				if (userInputInteger < getSizeOfDisplayedEvents()) {
-					Event doneEvent = ListOfEvent
-							.markDoneList(userInputInteger);
-					ListOfActionArchive
-							.add(new ActionArchiveMarkDone(doneEvent));
-				} else {
-					Log.toLog(2, MessageHandler.getMessage(19));
-					return 19;
-				}
-			} else {
-				Log.toLog(2, MessageHandler.getMessage(20));
-				return 20;
-			}
-			Log.toLog(0, MessageHandler.getMessage(3));
-			ListOfEvent.notifyObservers();
-			return 3;
-		} else {
-			Log.toLog(2, MessageHandler.getMessage(20));
-			return 20;
-		}
-	}
-
-	private static int executeUpdate(String[] parameterList) throws Exception {
-		try {
-			updateIndex = Integer
-					.parseInt(parameterList[parameterList.length - 1]) - 1;
-		} catch (Exception e) {
-			Log.toLog(0, MessageHandler.getMessage(2));
-			return 9;
-		}
-		ArrayList<Event> changedEvents;
-		String eventToAdd = LogicAnalyzer.getAddUpdateEventString(parameterList);		
-		if (searchState == false) {
-			if (updateIndex < getSizeOfDisplayedEvents()) {
-				changedEvents = ListOfEvent.updateList(updateIndex, eventToAdd);
-			} else {
-				Log.toLog(2, MessageHandler.getMessage(19));
-				return 19;
-			}
-
-		} else {
-			if (updateIndex < getSizeOfDisplayedEvents()) {
-				changedEvents = ListOfEvent.updateSearch(updateIndex,eventToAdd);
-			} else {
-				Log.toLog(2, MessageHandler.getMessage(19));
-				return 19;
-			}
-		}
-
-		if (!changedEvents.isEmpty()) {
-			ListOfActionArchive.add(new ActionArchiveUpdate(changedEvents.get(0), changedEvents.get(1)));
-		}
-		updateIndex = -1;
-		Log.toLog(0, MessageHandler.getMessage(2));
-		ListOfEvent.notifyObservers();
-		return 2;
-	}
-
-	private static int executeUndo() throws Exception {
-		undoLast();		
-		Log.toLog(0, MessageHandler.getMessage(6));
-		ListOfEvent.notifyObservers();
-		return 6;
-	}
-
-	private static void executeSearch(String[] parameterList) {
-		analyzeAndSearch(parameterList);
-		ListOfEvent.notifyObservers();
-	}
-
-	private static int executeDelete(int userInputInteger) throws Exception {
-		assert isValidIndex(userInputInteger);
-		if (isValidIndex(userInputInteger)) {
-			if (searchState == true) {
-				if (userInputInteger < searchResults.size()) {
-					ListOfActionArchive.add(new ActionArchiveDelete(ListOfEvent
-							.removeSearch(userInputInteger)));
-				} else {
-					Log.toLog(2, MessageHandler.getMessage(19));
-					return 19;
-				}
-			} else {
-				if (userInputInteger < getSizeOfDisplayedEvents()) {
-					ListOfActionArchive.add(new ActionArchiveDelete(ListOfEvent
-							.removeList(userInputInteger)));
-				} else {
-					Log.toLog(2, MessageHandler.getMessage(19));
-					return 19;
-				}
-			}
-		} else {
-			Log.toLog(2, MessageHandler.getMessage(20));
-			return 20;
-		}
-		Log.toLog(0, MessageHandler.getMessage(1));
-		ListOfEvent.notifyObservers();
-		return 1;
-	}
+	}	
 	
-	private static int executeAdd(String[] parameterList) throws Exception {
-		Event newEvent = analyzeAddInput(parameterList);
-		if (newEvent != null) {
-			ListOfActionArchive.add(new ActionArchiveAdd(newEvent));
-			try {
-				// Saving to file after add
-				ListOfEvent.syncDataToDatabase();
-			} catch (Exception e) {				
-				Log.toLog(2, MessageHandler.getMessage(10));
-				return 10;
-			}			
-			Log.toLog(0, MessageHandler.getMessage(0));
-			ListOfEvent.notifyObservers();
-			return 0;
-		} else {			
-			Log.toLog(2, MessageHandler.getMessage(9));
-			return 9;
-		}
-	}
-
-	private static void undoLast() {
-		ListOfActionArchive.undo();
-	}
-
-	public static void analyzeAndSearch(String[] parameterList) {
-		searchResults.clear();
-		Vector<String> searchWords = getSearchWords(parameterList);
-		commenceSearch(searchWords);
-		ListOfEvent.notifyObservers();
-	}
-
-	private static Vector<String> getSearchWords(String[] parameterList) {
-		Vector<String> searchWords = new Vector<String>();
-		searchWords = LogicAnalyzer.getHashTags(parameterList);
-		String[] tempArr = (parameterList[1].trim()
-				.split(EXPRESSION_WHITESPACE));
-		searchWords.addAll(Arrays.asList(tempArr));
-		return searchWords;
-	}
-
-	private static void commenceSearch(Vector<String> searchWords) {
-		ListOfEvent.searchInNameAndHashTags(searchWords);
-	}
-
+	private static String getCommand(String userInput) {
+		return userInput.split(EXPRESSION_WHITESPACE)[INDEX_FIRST].trim();
+	}	
+	
 	private static int getSizeOfDisplayedEvents() {
 		int size = currentListOfUpcomingEventToDisplay.size();
 		size += currentListOfFloatingEventToDisplay.size();
 		return size;
 	}
-
-	private static Event analyzeAddInput(String[] parameterList) {
-
-		String eventToAdd = LogicAnalyzer
-				.getAddUpdateEventString(parameterList);
-		return ListOfEvent.add(eventToAdd);
-
+	
+	private static int getSearchSize() {
+		return searchResults.size();
 	}
 
 	public static ArrayList<String> printDataBase() {
