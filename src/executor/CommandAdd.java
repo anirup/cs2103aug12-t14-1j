@@ -1,7 +1,5 @@
 package executor;
 
-import logAndException.Log;
-import logAndException.MessageHandler;
 import logic.LogicAnalyzer;
 import actionArchive.ActionArchiveAdd;
 import actionArchive.ListOfActionArchive;
@@ -26,7 +24,7 @@ public class CommandAdd extends Command{
 		
 		int splitError = this.splitInput();
 		if (splitError!= -1) {
-			returnVal = splitError;
+			setLogAndMessage(LOG_ERROR, splitError);			
 			return;
 		}
 		
@@ -35,20 +33,17 @@ public class CommandAdd extends Command{
 			ListOfActionArchive.add(new ActionArchiveAdd(newEvent));
 			try {
 				// Saving to file after add
-				ListOfEvent.syncDataToDatabase();
-				Log.toLog(0, MessageHandler.getMessage(0));
+				ListOfEvent.syncDataToDatabase();				
 				ListOfEvent.notifyObservers();
-				returnVal = 0;
+				setLogAndMessage(LOG_MESSAGE,SUCCESSFUL_ADD);
 				return;
 			} catch (Exception e) {				
-				Log.toLog(2, MessageHandler.getMessage(10));
-				returnVal = 10;
+				setLogAndMessage(LOG_ERROR,ERROR_DATABASE);
 				return;
 			}			
 			
 		} else {			
-			Log.toLog(2, MessageHandler.getMessage(9));
-			returnVal =  9;
+			setLogAndMessage(LOG_ERROR,INVALID_COMMAND);			
 			return;
 		}
 	}

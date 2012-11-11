@@ -1,8 +1,6 @@
 package executor;
 
 import actionArchive.ListOfActionArchive;
-import logAndException.Log;
-import logAndException.MessageHandler;
 import event.ListOfEvent;
 
 public class CommandUndo extends Command {
@@ -16,16 +14,15 @@ public class CommandUndo extends Command {
 
 		int splitError = this.splitInput();
 		if (splitError != -1) {
-			returnVal = splitError;
+			setLogAndMessage(LOG_ERROR, splitError);			
 			return;
 		}					
 		String undoMessage = ListOfActionArchive.undo();
 		if(undoMessage=="") {		
-			Log.toLog(2, MessageHandler.getMessage(21));
-			returnVal = 21;
+			setLogAndMessage(LOG_ERROR, ERROR_UNDO);
 			return;
 		}
-		Log.toLog(0, MessageHandler.getMessage(6));
+		
 		ListOfEvent.notifyObservers();
 		
 		try {
@@ -33,12 +30,10 @@ public class CommandUndo extends Command {
 			ListOfEvent.syncDataToDatabase();
 		} catch (Exception e) {
 			ListOfEvent.formatListOfEvent();
-			Log.toLog(2, MessageHandler.getMessage(10));
-			returnVal = 10;
+			setLogAndMessage(LOG_ERROR, ERROR_DATABASE);
 			return;
 		}
-		
-		returnVal = 6;
+		setLogAndMessage(LOG_MESSAGE, SUCCESSFUL_UNDO);
 		return;
 	}
 
