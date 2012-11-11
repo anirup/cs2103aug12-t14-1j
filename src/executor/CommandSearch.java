@@ -20,15 +20,14 @@ public class CommandSearch extends Command {
 
 		int splitError = this.splitInput();
 		if (splitError != -1) {
-			returnVal = splitError;
+			setLogAndMessage(LOG_ERROR, splitError);			
 			return;
 		}
 
 		analyzeAndSearch(parameterList);
-		ListOfEvent.notifyObservers();
-		
-		returnVal = 11;
-		return;
+		ListOfEvent.notifyObservers();		
+		setLogAndMessage(LOG_MESSAGE, SUCCESSFUL_COMMAND);			
+		return;		
 	}
 
 	private void analyzeAndSearch(String[] parameterList) {

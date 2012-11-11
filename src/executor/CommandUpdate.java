@@ -2,8 +2,6 @@ package executor;
 
 import java.util.ArrayList;
 
-import logAndException.Log;
-import logAndException.MessageHandler;
 import logic.LogicAnalyzer;
 import actionArchive.ActionArchiveUpdate;
 import actionArchive.ListOfActionArchive;
@@ -21,7 +19,7 @@ public class CommandUpdate extends Command {
 
 		int splitError = this.splitInput();
 		if (splitError != -1) {
-			returnVal = splitError;
+			setLogAndMessage(LOG_ERROR, splitError);			
 			return;
 		}
 
@@ -31,8 +29,7 @@ public class CommandUpdate extends Command {
 			updateIndex = Integer
 					.parseInt(parameterList[parameterList.length - 1]) - 1;
 		} catch (Exception e) {
-			Log.toLog(0, MessageHandler.getMessage(2));
-			returnVal = 9;
+			setLogAndMessage(LOG_ERROR, INVALID_COMMAND);			
 			return;
 		}
 
@@ -41,8 +38,7 @@ public class CommandUpdate extends Command {
 				.getAddUpdateEventString(parameterList);
 
 		if (eventToAdd.equals("")) {
-			Log.toLog(2, MessageHandler.getMessage(16));
-			returnVal = 16;
+			setLogAndMessage(LOG_ERROR, ERROR_NO_KEYWORDS);	
 			return;
 		}
 
@@ -50,8 +46,7 @@ public class CommandUpdate extends Command {
 			if (updateIndex < this.shownEventSize) {
 				changedEvents = ListOfEvent.updateList(updateIndex, eventToAdd);
 			} else {
-				Log.toLog(2, MessageHandler.getMessage(19));
-				returnVal = 19;
+				setLogAndMessage(LOG_ERROR, ERROR_OUT_OF_BOUNDS);	
 				return;
 			}
 
@@ -60,8 +55,7 @@ public class CommandUpdate extends Command {
 				changedEvents = ListOfEvent.updateSearch(updateIndex,
 						eventToAdd);
 			} else {
-				Log.toLog(2, MessageHandler.getMessage(19));
-				returnVal = 19;
+				setLogAndMessage(LOG_ERROR, ERROR_OUT_OF_BOUNDS);
 				return;
 			}
 		}
@@ -77,14 +71,12 @@ public class CommandUpdate extends Command {
 			ListOfEvent.syncDataToDatabase();
 		} catch (Exception e) {
 			ListOfEvent.formatListOfEvent();
-			Log.toLog(2, MessageHandler.getMessage(10));
-			returnVal = 10;
+			setLogAndMessage(LOG_ERROR, ERROR_DATABASE);
 			return;
 		}
-
-		Log.toLog(0, MessageHandler.getMessage(2));
+		
 		ListOfEvent.notifyObservers();
-		returnVal = 2;
+		setLogAndMessage(LOG_MESSAGE, SUCCESSFUL_UPDATE);
 		return;
 	}
 

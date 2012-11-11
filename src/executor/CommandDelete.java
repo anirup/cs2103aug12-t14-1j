@@ -1,7 +1,5 @@
 package executor;
 
-import logAndException.Log;
-import logAndException.MessageHandler;
 import actionArchive.ActionArchiveDelete;
 import actionArchive.ListOfActionArchive;
 import event.ListOfEvent;
@@ -17,7 +15,7 @@ public class CommandDelete extends Command {
 
 		int splitError = this.splitInput();
 		if (splitError != -1) {
-			returnVal = splitError;
+			setLogAndMessage(LOG_ERROR, splitError);			
 			return;
 		}
 		
@@ -28,8 +26,7 @@ public class CommandDelete extends Command {
 					ListOfActionArchive.add(new ActionArchiveDelete(ListOfEvent
 							.removeSearch(userInputInteger)));
 				} else {
-					Log.toLog(2, MessageHandler.getMessage(19));
-					returnVal = 19;
+					setLogAndMessage(LOG_ERROR, ERROR_OUT_OF_BOUNDS);					
 					return;
 				}
 			} else {
@@ -37,14 +34,12 @@ public class CommandDelete extends Command {
 					ListOfActionArchive.add(new ActionArchiveDelete(ListOfEvent
 							.removeList(userInputInteger)));
 				} else {
-					Log.toLog(2, MessageHandler.getMessage(19));
-					returnVal = 19;
+					setLogAndMessage(LOG_ERROR, ERROR_OUT_OF_BOUNDS);						
 					return;
 				}
 			}
 		} else {
-			Log.toLog(2, MessageHandler.getMessage(20));
-			returnVal = 20;
+			setLogAndMessage(LOG_ERROR, ERROR_NON_INTEGER);
 			return;
 		}
 		
@@ -53,14 +48,12 @@ public class CommandDelete extends Command {
 			ListOfEvent.syncDataToDatabase();
 		} catch (Exception e) {
 			ListOfEvent.formatListOfEvent();
-			Log.toLog(2, MessageHandler.getMessage(10));
-			returnVal = 10;
+			setLogAndMessage(LOG_ERROR, ERROR_DATABASE);
 			return;
 		}
 		
-		Log.toLog(0, MessageHandler.getMessage(1));
 		ListOfEvent.notifyObservers();
-		returnVal = 1;
+		setLogAndMessage(LOG_MESSAGE, SUCCESSFUL_DELETE);
 		return;
 	}
 

@@ -43,6 +43,7 @@ public class ListOfEvent {
 		database = new DatabaseManager(fileName);
 		database.setUpDataFromDatabase();
 		notifyObservers();
+		feedback.clear();
 	}
 	
 	public static void syncDataToDatabase() throws IOException {
@@ -145,7 +146,7 @@ public class ListOfEvent {
 	private static void checkForWarning(Event newEvent) {
 		isClashedWithExistingEvents(newEvent);
 		if(newEvent.isBeforeCurrentTime()) {
-			feedback.add("WARNING: The New Event is Clashed with exixting Events.");
+			feedback.add("WARNING: The New Event is before current time.");
 		}
 	}
 	
@@ -153,7 +154,7 @@ public class ListOfEvent {
 		for(int index = 0; index < listOfEvent.size(); index++) {
 			Event currentEvent = listOfEvent.get(index);
 			if(currentEvent.isClashedWith(newEvent)) {
-				feedback.add("WARNING: The New Event is before current time");
+				feedback.add("WARNING: The New Event is Clashed with existing Events.");
 				return;
 			}
 		}

@@ -1,8 +1,6 @@
 package executor;
 
 import event.ListOfEvent;
-import logAndException.Log;
-import logAndException.MessageHandler;
 
 public class CommandExit extends Command {
 	
@@ -18,11 +16,10 @@ public class CommandExit extends Command {
 			ListOfEvent.syncDataToDatabase();
 		} catch (Exception e) {
 			ListOfEvent.formatListOfEvent();
-			Log.toLog(2, MessageHandler.getMessage(10));
-			returnVal = 10;
+			setLogAndMessage(LOG_ERROR, ERROR_DATABASE);
 			return;
 		}
-		Log.toLog(0, MessageHandler.getMessage(7));
+		setLogAndMessage(LOG_MESSAGE, MESSAGE_SAVE);
 		System.exit(0);
 	}
 
