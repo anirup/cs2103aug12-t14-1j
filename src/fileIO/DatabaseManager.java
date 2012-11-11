@@ -2,35 +2,38 @@ package fileIO;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
-
-import event.Event;
 import event.ListOfEvent;
   
 public class DatabaseManager {
 	private static ArrayList<String> listOfEventInString = new ArrayList<String>();
-	private static String fileName;
-
-	public static void setUpDataFromDatabase(String nameOfFile) throws Exception {
-		fileName = nameOfFile;
-		listOfEventInString = FileIO.setUpDatabase(fileName);
+	private FileIO fileIO;
+	
+	public DatabaseManager(String fileName) throws IOException {
+		fileIO = new FileIO(fileName);
+	}
+	
+	public void setUpDataFromDatabase() throws Exception {
+		listOfEventInString.clear();
+		listOfEventInString = fileIO.setUpDatabase();
 		setUpListOfEventFromString();
 	}
 	
-	public static void syncDataToDatabase(ArrayList<String> listOfEventInString, String nameOfFile) throws IOException {
-		fileName = nameOfFile;
-		FileIO.syncToDatabase(listOfEventInString, fileName);
+	public void syncDataToDatabase(ArrayList<String> listOfEventInString) throws IOException {
+		fileIO.syncToDatabase(listOfEventInString);
 	}
 	
-	private static void setUpListOfEventFromString() throws IOException {
+	private void setUpListOfEventFromString() throws IOException {
 		Iterator<String> iterator = listOfEventInString.iterator();
 		while(iterator.hasNext()) {
 			String currentLine = iterator.next();
-			Event newEvent = ListOfEvent.add(currentLine);
+			ListOfEvent.add(currentLine);
 		}
 		return;
 	}
 	
-	private static void formatDatabase() throws IOException {
-		FileIO.formatDatabase();
+	public void formatDatabase() throws IOException {
+		if(fileIO != null) {
+			fileIO.formatDatabase();			
+		}
 	}
 } 
