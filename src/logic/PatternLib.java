@@ -166,7 +166,7 @@ public class PatternLib {
 			}
 		}
 		return isFind;
-	}
+	} 
 	public static int[] isFindReminderTime(String input) {
 		int[] isFind = {-1, -1, -1};
 		for(int i = 0; i < patReminder.size(); i++) {
