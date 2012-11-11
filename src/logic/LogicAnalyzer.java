@@ -18,7 +18,7 @@ public class LogicAnalyzer {
 	private static final String ELEMENT_EMPTY = "-1";
 	private static final String EXTRACT_NUMBERS_PATTERN = "[0-9]{1,}";
 	private static final String STRING_FALSE = "false";
-	private static final String STRING_INVALID = "invalid";
+	private static final String STRING_INVALID = "invalid"; 
 	private static final String STRING_SPACE = " ";
 	private static final String EMPTY_STRING = "";
 	private static final String REMINDER_SECOND_SHORTHAND2 = "s";

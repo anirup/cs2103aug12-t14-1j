@@ -27,7 +27,7 @@ public class LogicSplitter {
 	public static void setUp() {
 		message = 0;
 	}
-
+ 
 	public static int getMessage() {
 		return message;
 	}

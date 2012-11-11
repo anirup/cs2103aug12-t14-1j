@@ -31,7 +31,7 @@ public class LogicSplitterUpdate extends LogicSplitter{
 			message = 13;
 			throw exception;
 		}
-		try {
+		try { 
 			extractKeywordsAlongWithHashTags(userInput, parameterList);
 		} catch (Exception e) {
 			message = 14;

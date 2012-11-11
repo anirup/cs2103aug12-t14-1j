@@ -22,7 +22,7 @@ public class LogicSplitterAdd extends LogicSplitter{
 				message = 14;
 				throw exception;
 			}
-			try {
+			try { 
 				shiftKeywordsToSecondIndex(parameterList);
 			} catch (Exception e) {
 				message = 16;

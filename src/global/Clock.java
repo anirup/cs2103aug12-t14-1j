@@ -16,7 +16,7 @@ public class Clock {
 		if(toString(time).equalsIgnoreCase("invalid")) {
 			return true;
 		}
-		return false;
+		return false; 
 	}
 	
 	public static DateTime parseTimeFromString(String date) {

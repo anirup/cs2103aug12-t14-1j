@@ -141,7 +141,7 @@ public class StringOperation {
 		Pattern pat = Pattern.compile("^(00?):?(00?) ?((am))?");
 		Matcher mat = pat.matcher(input);
 		if (mat.find()) {
-			int pos = mat.end();
+			int pos = mat.end();  
 			input = input.substring(pos, input.length());
 			input = insertCharAt(input, "23:59", 0);
 		}

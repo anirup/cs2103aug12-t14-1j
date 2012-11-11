@@ -73,7 +73,7 @@ public class PatternDateTime {
 		}
 		DateTime date = Clock.getBigBangTime();
 		return date.plusMillis(number);
-	}
+	} 
 
 	public DateTime getTime(String input) {
 		DateTime dt;
