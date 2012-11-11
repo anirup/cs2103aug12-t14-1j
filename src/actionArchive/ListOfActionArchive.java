@@ -1,0 +1,21 @@
+package actionArchive;
+ 
+import java.util.LinkedList;
+
+ 
+public class ListOfActionArchive {
+	private static LinkedList<ActionArchive> listOfUserLog = new LinkedList<ActionArchive>();
+	
+	public static void add(ActionArchive userLog) {
+		listOfUserLog.add(userLog);
+		return;
+	}
+
+	public static String undo() {
+		ActionArchive lastActionArchive = listOfUserLog.pollLast();
+		if(lastActionArchive == null) {
+			return "";
+		}
+		return lastActionArchive.rollBack();
+	}	
+}
