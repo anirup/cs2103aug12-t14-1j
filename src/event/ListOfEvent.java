@@ -370,7 +370,7 @@ public class ListOfEvent {
 		return false;
 	}
 	
-	private static ArrayList<String> getContentToSyncToDatabase() {
+	public static ArrayList<String> getContentToSyncToDatabase() {
 		ArrayList<String> listOfEventToString = new ArrayList<String>();
 		for(int index = 0; index < listOfEvent.size(); index++) {
 			listOfEventToString.add(listOfEvent.get(index).toString());

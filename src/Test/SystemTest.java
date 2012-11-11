@@ -14,12 +14,14 @@ public class SystemTest {
 	private static final String testFileName = "SystemTest.txt";
 	private static final String upcomingFileName = "Upcoming.txt";
 	private static final String floatingFileName = "Floating.txt";
-	private static final String searchFileName = "search.txt";
-	private static FileIO testFileIO, upcomingFileIO, floatingFileIO, searchFileIO;
+	private static final String searchFileName = "Search.txt";
+	private static final String listOfEventFileName = "ListOfEvent.txt";
+	private static FileIO testFileIO, upcomingFileIO, floatingFileIO, searchFileIO, listOfEventFileIO;
 	private static ArrayList<String> testCases = new ArrayList<String>();
 	private static ArrayList<String> upcoming = new ArrayList<String>();
 	private static ArrayList<String> floating = new ArrayList<String>();
 	private static ArrayList<String> search = new ArrayList<String>();
+	private static ArrayList<String> listOfEventInString = new ArrayList<String>();
 	
 	public static void main(String[] args) {
 		setUp();
@@ -28,20 +30,20 @@ public class SystemTest {
 	
 	private static void setUp() {
 		try {
-			Log.setup();
-			MessageHandler.setUpList();
-			Executor.loadDatabase();
+			setUpWhat2Do();
 			retrieveTest();
-			ListOfEvent.clearListOfEvent();
-			upcomingFileIO = new FileIO(upcomingFileName);
-			upcomingFileIO.setUpDatabase();
-			floatingFileIO = new FileIO(floatingFileName);
-			floatingFileIO.setUpDatabase();
-			searchFileIO = new FileIO(searchFileName);
-			searchFileIO.setUpDatabase();
+			setUpFileIO();
+			clearFile();
 		} catch (Exception e) {
 			System.out.println("unable to set up files");
 		}
+	}
+	
+	private static void setUpWhat2Do() throws Exception {
+		Log.setup();
+		MessageHandler.setUpList();
+		Executor.loadDatabase();
+		ListOfEvent.clearListOfEvent();
 	}
 	
 	private static void processTest() {
@@ -73,6 +75,8 @@ public class SystemTest {
 	
 	private static void sync() {
 		try {
+			listOfEventInString = ListOfEvent.getContentToSyncToDatabase();
+			listOfEventFileIO.writeContinue(listOfEventInString);
 			floatingFileIO.writeContinue(floating);
 			upcomingFileIO.writeContinue(upcoming);
 			searchFileIO.writeContinue(search);
@@ -80,6 +84,20 @@ public class SystemTest {
 			System.out.println("unable to write to File");
 		}
 		
+	}
+	
+	private static void setUpFileIO() throws IOException {
+		upcomingFileIO = new FileIO(upcomingFileName);
+		floatingFileIO = new FileIO(floatingFileName);
+		searchFileIO = new FileIO(searchFileName);
+		listOfEventFileIO = new FileIO(listOfEventFileName);
+	}
+	
+	private static void clearFile() throws IOException {
+		upcomingFileIO.clearFile();
+		floatingFileIO.clearFile();
+		searchFileIO.clearFile();
+		listOfEventFileIO.clearFile();
 	}
 	
 	private static void retrieveTest() {
