@@ -56,7 +56,8 @@ public class ListOfEvent {
 	}
 	
 	public static ArrayList<String> getFeedback() {
-		ArrayList<String> feedbackToReturn = feedback;
+		ArrayList<String> feedbackToReturn = new ArrayList<String>();
+		feedbackToReturn.addAll(feedback);
 		feedback.clear();
 		return feedbackToReturn;
 	}
