@@ -21,10 +21,10 @@ public class ListOfEvent {
 	private static ArrayList<ListOfEventObserver> listOfObserver= new ArrayList<ListOfEventObserver>();
 	private static final String fileName = "What2Do.txt";
 	private static final String displayFormat = "%1$d..%2$s";
-
+	
 	private static ArrayList<String> feedback = new ArrayList<String>();
 	private static final String STRING_NULL = "";
-
+	private static DatabaseManager database;
 	
 	public static void addObserver(ListOfEventObserver observer) {
 		listOfObserver.add(observer);
@@ -40,14 +40,17 @@ public class ListOfEvent {
 	public static void setUpDataFromDatabase() throws Exception {
 		addObserver(Executor.getInstance());
 		addObserver(ListOfAlarm.getInstance());
-		DatabaseManager.setUpDataFromDatabase(fileName);
+		database = new DatabaseManager(fileName);
 		notifyObservers();
 	}
 	
 	public static void syncDataToDatabase() throws IOException {
+		if(database == null) {
+			database = new DatabaseManager(fileName);
+		}
 		ArrayList<String> listOfEventInString = new ArrayList<String>();
 		listOfEventInString = getContentToSyncToDatabase();
-		DatabaseManager.syncDataToDatabase(listOfEventInString, fileName);
+		database.syncDataToDatabase(listOfEventInString);
 	}
 	
 	public void clearFeedback() {
@@ -141,7 +144,7 @@ public class ListOfEvent {
 	private static void checkForWarning(Event newEvent) {
 		isClashedWithExistingEvents(newEvent);
 		if(newEvent.isBeforeCurrentTime()) {
-			feedback.add("Warning: new added event is before current time");
+			feedback.add("WARNING: The New Event is Clashed with exixting Events.");
 		}
 	}
 	
@@ -149,7 +152,7 @@ public class ListOfEvent {
 		for(int index = 0; index < listOfEvent.size(); index++) {
 			Event currentEvent = listOfEvent.get(index);
 			if(currentEvent.isClashedWith(newEvent)) {
-				feedback.add("The new Event is Clashed with exixting Events. Do you want to add?");
+				feedback.add("WARNING: The New Event is before current time");
 				return;
 			}
 		}
@@ -368,7 +371,7 @@ public class ListOfEvent {
 		return false;
 	}
 	
-	private static ArrayList<String> getContentToSyncToDatabase() {
+	public static ArrayList<String> getContentToSyncToDatabase() {
 		ArrayList<String> listOfEventToString = new ArrayList<String>();
 		for(int index = 0; index < listOfEvent.size(); index++) {
 			listOfEventToString.add(listOfEvent.get(index).toString());

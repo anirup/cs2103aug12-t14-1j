@@ -10,23 +10,35 @@ import java.util.ArrayList;
 import java.util.Iterator;
  
 public class FileIO {
-	private static String fileName;
-	private static BufferedReader reader;
-	private static File database;
+	private String fileName;
+	private BufferedReader reader;
+	private File database;
 	private static BufferedWriter writer;
 	
-	public static ArrayList<String> setUpDatabase(String nameOfFile) throws IOException {
-		fileName = nameOfFile;
+	public FileIO(String name) throws IOException {
+		fileName = name;
 		database = new File(fileName);
 		if (!database.exists()) {
 			database.createNewFile();
 		}
 		reader = new BufferedReader(new FileReader(fileName));
+	}
+	
+	public ArrayList<String> setUpDatabase() throws IOException {
 		return retrieveDatabase();
 	}
 	
-	public static void syncToDatabase(ArrayList<String> currentListOfEvent, String nameOfFile) throws IOException {
-		fileName = nameOfFile;
+	public void clearFile() throws IOException {
+		FileWriter writer = new FileWriter(database);
+		writer.close();
+		
+	}
+	
+	public void syncToDatabase(ArrayList<String> currentListOfEvent) throws IOException {
+		database = new File(fileName);
+		if (!database.exists()) {
+			database.createNewFile();
+		}
 		setUpBufferedWriter();
 		Iterator<String> iterator = currentListOfEvent.iterator();
 		while(iterator.hasNext()) {
@@ -38,7 +50,17 @@ public class FileIO {
 		return;
 	}
 	
-	public static ArrayList<String> retrieveDatabase() throws IOException {
+	public void writeContinue(ArrayList<String> currentListOfEvent) throws IOException {
+		FileWriter writer = new FileWriter(database, true);
+		writer.write("-------------------------------------\n");
+		for(int index = 0; index < currentListOfEvent.size(); index++) {
+			writer.write(currentListOfEvent.get(index) + "\n");
+		}
+		writer.close();
+		return;
+	}
+	
+	private ArrayList<String> retrieveDatabase() throws IOException {
 		ArrayList<String> listOfEvent = new ArrayList<String>();
 		String currentLine;
 		while((currentLine = reader.readLine()) != null) {
@@ -48,19 +70,19 @@ public class FileIO {
 		return listOfEvent;
 	}
 	
-	private static void closeBufferedWriter() throws IOException {
+	private void closeBufferedWriter() throws IOException {
 		writer.close();
 	}
 
-	private static void setUpBufferedWriter() throws IOException {
+	private void setUpBufferedWriter() throws IOException {
 		writer = new BufferedWriter(new FileWriter(fileName));
 	}
 	
-	private static void writeToDatabase(String line) throws IOException {
+	private void writeToDatabase(String line) throws IOException {
 		writer.write(line + "\n");
 	}
 
-	public static void formatDatabase() throws IOException {
+	public void formatDatabase() throws IOException {
 		setUpBufferedWriter();
 		closeBufferedWriter();
 	}
