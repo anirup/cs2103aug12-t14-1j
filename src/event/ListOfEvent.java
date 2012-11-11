@@ -41,6 +41,7 @@ public class ListOfEvent {
 		addObserver(Executor.getInstance());
 		addObserver(ListOfAlarm.getInstance());
 		database = new DatabaseManager(fileName);
+		database.setUpDataFromDatabase();
 		notifyObservers();
 	}
 	
