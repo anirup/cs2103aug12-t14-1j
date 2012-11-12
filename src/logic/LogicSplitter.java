@@ -23,6 +23,8 @@ public class LogicSplitter {
 	private static final String STRING_SPACE = " ";
 	private static final String EMPTY_STRING = "";
 	protected static int message = 0;
+	private static final PatternLib timePattern = PatternLib.getInstance();
+	
 	public static void setUp() {
 		message = 0;
 	}
@@ -179,10 +181,10 @@ public class LogicSplitter {
 			String temp = userInput.substring(j, userInput.length());
 			String original = temp;
 			userInput = userInput.substring(0, j);
-			if (PatternLib.isFindDateTime(temp)[1] == 0) {
+			if (timePattern.isFindDateTime(temp)[1] == 0) {
 					int indexStart = 0;
-					int indexEnd = PatternLib.isFindDateTime(temp)[2];
-					j += PatternLib.isFindDateTime(temp)[2]-1;
+					int indexEnd = timePattern.isFindDateTime(temp)[2];
+					j += timePattern.isFindDateTime(temp)[2]-1;
 					timeList.add(prepareInputToAnalyzeTime(temp.substring(indexStart, indexEnd)));
 					userInput += temp.substring(indexStart, indexEnd);
 					timeIndexes.add(j);
@@ -195,22 +197,22 @@ public class LogicSplitter {
 				if(timeList.size()>2) {
 					timeList.remove(0);
 				}
-			} else if (PatternLib.isFindReminderTime(original)[1] == 0) {
+			} else if (timePattern.isFindReminderTime(original)[1] == 0) {
 				if (reminderFound[0] < 1) {
-					int a[] = PatternLib.isFindReminderTime(original);
+					int a[] = timePattern.isFindReminderTime(original);
 					userInput = userInput
 							+ original.substring(0,
-									PatternLib.isFindReminderTime(original)[2]);
+									timePattern.isFindReminderTime(original)[2]);
 					if (reminderFound[0] == 0) {
 						parameterList.add(original.substring(0,
-								PatternLib.isFindReminderTime(original)[2]));
+								timePattern.isFindReminderTime(original)[2]));
 
 					}
 					j += a[2];
 					int i;
 					String formatted = original.substring(
-							PatternLib.isFindReminderTime(original)[1],
-							PatternLib.isFindReminderTime(original)[2]);
+							timePattern.isFindReminderTime(original)[1],
+							timePattern.isFindReminderTime(original)[2]);
 					for (i = original.length(); i >= 0; i--) {
 						if (!original.substring(0, i).contains(formatted)) {
 							break;
@@ -249,14 +251,14 @@ public class LogicSplitter {
 			int startFirst = timeIndexes.get(0) - timeIndexes.get(1)+1;
 			int endSecond = timeIndexes.get(2)+1;
 			int startSecond = timeIndexes.get(2) - timeIndexes.get(3)+1;
-			int firstTimePattern = PatternLib.isMatchDateTime(userInput
+			int firstTimePattern = timePattern.isMatchDateTime(userInput
 					.substring(startFirst, endFirst));
-			int secondTimePattern = PatternLib.isMatchDateTime(userInput
+			int secondTimePattern = timePattern.isMatchDateTime(userInput
 					.substring(startSecond, endSecond));
-			DateTime time1 = PatternLib
+			DateTime time1 = timePattern
 					.getDateTime(prepareInputToAnalyzeTime(userInput.substring(startFirst, endFirst)),
 							firstTimePattern);
-			DateTime time2 = PatternLib.getDateTime(
+			DateTime time2 = timePattern.getDateTime(
 					prepareInputToAnalyzeTime(userInput.substring(startSecond, endSecond)),
 					secondTimePattern);
 			if (userInput.substring(endFirst - 1, startSecond + 1).contains(
@@ -311,7 +313,7 @@ public class LogicSplitter {
 			}
 		}
 		for (int i = 0; i < input.length(); i++) {
-			int timeIndex[] = PatternLib.isFindDateTime(input.substring(
+			int timeIndex[] = timePattern.isFindDateTime(input.substring(
 					input.length() - 1 - i, input.length()));
 			if (timeIndex[1] == 0) {
 				result2 = input.length() - 1 - i;
