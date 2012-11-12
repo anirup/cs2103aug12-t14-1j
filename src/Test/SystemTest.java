@@ -2,7 +2,6 @@ package Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
 import logAndException.Log;
 import logAndException.MessageHandler;
 import event.ListOfEvent;
@@ -103,7 +102,7 @@ public class SystemTest {
 	private static void retrieveTest() {
 		try {
 			testFileIO = new FileIO(testFileName);
-			testCases = testFileIO.setUpDatabase();
+			testCases = testFileIO.retrieveDatabase();
 		} catch (IOException e) {
 			System.out.println("unable to set up data");
 		}
