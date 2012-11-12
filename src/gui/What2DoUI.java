@@ -1018,7 +1018,27 @@ public class What2DoUI extends javax.swing.JFrame {
 		if (dataToUser.upcomingEvents.size()>6){
 			int number=(int)Math.ceil(dataToUser.upcomingEvents.size()/6.0);
 			upcomingEventsTextArea.setBorder(javax.swing.BorderFactory
-					.createTitledBorder(null, String.format(MESSAGE_TITLE_UPCOMING+"%d",number),
+					.createTitledBorder(null, String.format(MESSAGE_TITLE_UPCOMING+" (%d Pages)",number),
+							javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
+							javax.swing.border.TitledBorder.DEFAULT_POSITION,
+							new java.awt.Font(FONT_HEADERS, FONT_HEADER_STYLE,
+									FONT_HEADER_SIZE), java.awt.Color.black));
+
+		}
+		if (dataToUser.searchResults.size()>6){
+			int number=(int)Math.ceil(dataToUser.searchResults.size()/6.0);
+			searchResultsTextArea.setBorder(javax.swing.BorderFactory
+					.createTitledBorder(null, String.format(MESSAGE_TITLE_SEARCH+" (%d Pages)",number),
+							javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
+							javax.swing.border.TitledBorder.DEFAULT_POSITION,
+							new java.awt.Font(FONT_HEADERS, FONT_HEADER_STYLE,
+									FONT_HEADER_SIZE), java.awt.Color.black));
+
+		}
+		if (dataToUser.floatingEvents.size()>6){
+			int number=(int)Math.ceil(dataToUser.floatingEvents.size()/6.0);
+			floatingEventsTextArea.setBorder(javax.swing.BorderFactory
+					.createTitledBorder(null, String.format(MESSAGE_TITLE_FLOATING+" (%d Pages)",number),
 							javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
 							javax.swing.border.TitledBorder.DEFAULT_POSITION,
 							new java.awt.Font(FONT_HEADERS, FONT_HEADER_STYLE,
