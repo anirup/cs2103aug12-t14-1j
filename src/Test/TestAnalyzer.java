@@ -27,7 +27,7 @@ public class TestAnalyzer {
 	@Before
 	public void setup()
 	{
-		PatternLib.setUpPattern();
+		PatternLib.getInstance();
 		LogicAnalyzer.setUp();
 	}
 	@Test
