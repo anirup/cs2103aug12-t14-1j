@@ -580,6 +580,7 @@ public class What2DoUI extends javax.swing.JFrame {
 				data = data.trim();
 				int index = extractIndex(data);
 				if (index != 0) {
+					incompleteString+=data+" ";
 					updateFlagBool = true;
 					String event = updateStream(data, index);
 					if (event != null) {

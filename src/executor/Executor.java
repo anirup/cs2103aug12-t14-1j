@@ -53,6 +53,7 @@ public class Executor implements ListOfEventObserver {
 			
 		String command = getCommand(userInput);
 		Command action;		
+		feedback.clear();
 		try {
 			
 			if (isAdd(command)) {
