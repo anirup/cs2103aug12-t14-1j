@@ -3,9 +3,6 @@ package logic;
 import global.Clock;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
-
-import logic.PatternDateTime;
-
 import org.joda.time.DateTime;
 
 public class PatternLib {
@@ -66,7 +63,18 @@ public class PatternLib {
 	private static final String patternReminderHours = "r ?- ?([0-9]{1,} ?((hour[s]?)|(h)|(hr[s])))";
 	private static final String patternReminderDays = "r ?- ?([0-9]{1,} ?((day[s]?)|(d)))";
 
-	public static void setUpPattern() {
+	
+	private static PatternLib instance = new PatternLib();
+	
+	private PatternLib() {
+		setUpPattern();
+	}
+	
+	public static PatternLib getInstance() {
+		return instance;
+	}
+	
+	private static void setUpPattern() {
 
 		String patternTime12AndDateInWeek = "(" + patternTime12InDay + space
 				+ patternDateInWeek + ")";
@@ -190,14 +198,14 @@ public class PatternLib {
 		patReminder.add(pattern);
 	}
 
-	public static DateTime getDateTime(String input, int patternIndex) {
+	public DateTime getDateTime(String input, int patternIndex) {
 		if (patternIndex < 0) {
 			return Clock.getBigBangTime();
 		}
 		return pat.get(patternIndex).getDateTime(input);
 	}
 
-	public static int isMatchDateTime(String input) {
+	public int isMatchDateTime(String input) {
 		for (int i = 0; i < pat.size(); i++) {
 			if (pat.get(i).isMatches(input)) {
 				return i;
@@ -206,7 +214,7 @@ public class PatternLib {
 		return -1;
 	}
 
-	public static int[] isFindDateTime(String input) {
+	public int[] isFindDateTime(String input) {
 		int[] isFind = { -1, -1, -1 };
 		for (int i = 0; i < pat.size(); i++) {
 			int[] pos = pat.get(i).isFind(input);
@@ -220,7 +228,7 @@ public class PatternLib {
 		return isFind;
 	}
 
-	public static int[] isFindReminderTime(String input) {
+	public int[] isFindReminderTime(String input) {
 		int[] isFind = { -1, -1, -1 };
 		for (int i = 0; i < patReminder.size(); i++) {
 			int[] pos = patReminder.get(i).isFind(input);
