@@ -12,9 +12,6 @@ public class AlarmType {
 		eventName = event;
 		reminderTime = time; 
 	}
-	public DateTime getReminderTime() {
-		return reminderTime;
-	}
 	
 	public String getEventName() {
 		return eventName;
