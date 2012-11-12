@@ -146,7 +146,7 @@ public class ListOfEvent {
 	private static void checkForWarning(Event newEvent) {
 		isClashedWithExistingEvents(newEvent);
 		if(newEvent.isBeforeCurrentTime()) {
-			feedback.add("WARNING: The New Event is before current time.");
+			feedback.add("WARNING: The New Event is before Present time.");
 		}
 	}
 	
