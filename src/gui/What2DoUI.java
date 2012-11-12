@@ -665,6 +665,7 @@ public class What2DoUI extends javax.swing.JFrame {
 				}
 				displayDatabase(message);
 				prepareForNextEntry(data);
+
 			}
 		}
 	}
@@ -1019,8 +1020,11 @@ public class What2DoUI extends javax.swing.JFrame {
 		data_upcoming_events = dataToUser.data_upcoming_events;
 		data_floating_events = dataToUser.data_floating_events;
 		data_search_results = dataToUser.data_search_results;
+		upcomingEvents=dataToUser.upcomingEvents;
+		floatingEvents=dataToUser.floatingEvents;
+		searchResults=dataToUser.searchResults;
 		displayOnScreen();
-
+		
 		if (!toUpdate) {
 			feedbackLabel.setText(String.format(
 					MESSAGE_FEEDBACK_NOT_UPDATE_HTML, message));
