@@ -53,6 +53,7 @@ class Dialogs extends JDialog {
 		ok.setAlignmentY(BOTTOM_ALIGNMENT);
 		ok.setAlignmentX(CENTER_ALIGNMENT);
 		ok.setVisible(true);
+		this.getRootPane().setDefaultButton(ok);
 		ok.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sound.stop();

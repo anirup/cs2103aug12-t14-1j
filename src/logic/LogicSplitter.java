@@ -197,8 +197,8 @@ public class LogicSplitter {
 					prepareInputToAnalyzeTime(userInput.substring(startSecond, endSecond)),
 					secondTimePattern);
 			if (userInput.substring(endFirst - 1, startSecond + 1).contains(
-					" to")) {
-				if (firstTimePattern < 15 && firstTimePattern > 12) {
+					"to")) {
+				if (firstTimePattern < 14 && firstTimePattern > 11) {
 					time1 = Clock.changeToDate(time1, time2);
 				}
 			}
