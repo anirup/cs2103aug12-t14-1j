@@ -10,8 +10,6 @@ import logAndException.Log;
 import logAndException.MessageHandler;
 import logic.LogicAnalyzer;
 import logic.LogicSplitter;
-import logic.PatternLib;
-
 
 public class Command {
 
@@ -93,7 +91,6 @@ public class Command {
 	}
 
 	private void init() {
-		PatternLib.setUpPattern();
 		LogicSplitter.setUp();
 		LogicAnalyzer.setUp();
 	}

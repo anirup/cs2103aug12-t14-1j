@@ -46,6 +46,8 @@ public class LogicAnalyzer {
 	private static final String Priority_High = "HIGH";
 	private static boolean fieldFound[] = { false, false, false, false, false,
 		false };
+	private static final PatternLib timePattern = PatternLib.getInstance();
+	
 	public static void setUp() {
 		for (int i = 0; i < 6; i++) {
 			fieldFound[i] = false;
@@ -80,10 +82,10 @@ public class LogicAnalyzer {
 		}
 		DateTime start, end;
 		if (!(startTime != STRING_INVALID && endTime != STRING_INVALID)) {
-			start = PatternLib.getDateTime(startTime,
-					PatternLib.isMatchDateTime(startTime));
-			end = PatternLib.getDateTime(endTime,
-					PatternLib.isMatchDateTime(endTime));
+			start = timePattern.getDateTime(startTime,
+					timePattern.isMatchDateTime(startTime));
+			end = timePattern.getDateTime(endTime,
+					timePattern.isMatchDateTime(endTime));
 		} else {
 			start = DateTime.parse(startTime);
 			end = DateTime.parse(endTime);
