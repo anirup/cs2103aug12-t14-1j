@@ -1,8 +1,8 @@
 package logic;
  
-import global.StringOperation;
-
 import java.util.Vector;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class LogicSplitterUpdate extends LogicSplitter{
 
@@ -12,7 +12,7 @@ public class LogicSplitterUpdate extends LogicSplitter{
 		int index=-1;
 		Vector<Integer> timeIndexes = new Vector<Integer>();
 		Exception exception = new Exception();
-		index=StringOperation.getFirstNumber(userInput.trim());
+		index= getFirstNumber(userInput.trim());
 		if(index==-1)
 		{
 			message=18;
@@ -55,5 +55,17 @@ public class LogicSplitterUpdate extends LogicSplitter{
 		}
 		parameterList.add(String.format("%d",index));
 		return parameterList;
+	}
+	
+	public static int getFirstNumber(String input) {
+		Pattern pat = Pattern.compile("(^[0-9]{1,} )");
+		Matcher mat = pat.matcher(input);
+		if(mat.find()) {
+			int posStart = mat.start();
+			int posEnd = mat.end()-1;
+			int firstNumber = Integer.parseInt(input.substring(posStart, posEnd));
+			return firstNumber;
+		}
+		return -1;
 	}
 }

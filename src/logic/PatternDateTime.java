@@ -1,7 +1,6 @@
 package logic;
  
 import global.Clock;
-import global.StringOperation;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -60,7 +59,7 @@ public class PatternDateTime {
 	}
 
 	public DateTime getReminder(String input) {
-		int number = StringOperation.extractFirstNumber(input);
+		int number = extractFirstNumber(input);
 		int minuteToMillis = 60 * 1000;
 		int hourToMillis = 60 * minuteToMillis;
 		int dayToMillis = 24 * hourToMillis;
@@ -75,6 +74,18 @@ public class PatternDateTime {
 		return date.plusMillis(number);
 	} 
 
+	public static int extractFirstNumber(String input) {
+		Pattern pat = Pattern.compile("[a-z\\- &&[^0-9]][0-9][0-9]?[a-z &&[^0-9]]");
+		Matcher mat = pat.matcher(input);
+		if(mat.find()) {
+			int posStart = mat.start() + 1;
+			int posEnd = mat.end() - 1;
+			int firstNumber = Integer.parseInt(input.substring(posStart, posEnd));
+			return firstNumber;
+		}
+		return -1;
+	}
+	
 	public DateTime getTime(String input) {
 		DateTime dt;
 		if (input.contains("am") || input.contains("pm")) {
