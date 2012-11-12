@@ -23,7 +23,7 @@ import javax.swing.plaf.ColorUIResource;
 import logAndException.Log;
 import logAndException.MessageHandler;
 import executor.Executor;
-
+//import gui.FeedbackToUser;
 import java.beans.*; //property change stuff
 import java.awt.*;
 import java.awt.event.*;
@@ -33,39 +33,18 @@ import java.awt.event.*;
  * @author SANDEEP
  */
 public class What2DoUI extends javax.swing.JFrame {
-	private static final String ENDING_LINE_HTML = "</p><b>------------------------------------------------------------------------------------------------------------------------</b></p>";
-	private static final String REMINDER_HTML = "<span style=\"color: rgb(228, 108, 10); font-family: courier;\">%s</span></span></b></p>";
-	private static final String ALERT_BEFORE_HTML = "<b><i>Alert Before : </b></i></span>&nbsp";
-	private static final String END_TIME_HTML = "<span style=\"color: rgb(79, 129, 189); font-family: courier;\">%s</span>&nbsp; ";
-	private static final String SPACES_IF_NO_END_TIME_HTML = "<b><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b></i></span>";
-	private static final String TO_HTML = "<b><i>to </b></i></span>&nbsp; ";
-	private static final String NORMAL_FONT_HTML = "<span style=\"color: rgb(0, 0, 0); font-family: courier;\">";
-	private static final String START_TIME_HTML = "<span style=\"color: rgb(75, 172, 198); font-family: courier;\">%s</span>&nbsp;";
-	private static final String SPACE_HTML = "&nbsp;";
-	private static final String HASHTAGS_HTML = "&nbsp;<span style=\"color: rgb(155, 187, 89); font-family: courier;\">%s</span> &nbsp;";
-	private static final String PRIORITY_LOW_HTML = "<span style=\"color: rgb(204,127,50); font-family: courier;\">%s</span> &nbsp;&nbsp;&nbsp;&nbsp;";
-	private static final String PRIORITY_NORMAL_HTML = "<span style=\"color: orange; font-family: courier;\">%s</span> &nbsp;";
-	private static final String PRIORITY_HIGH_HTML = "<span style=\"color: red; font-family: courier;\">%s</span> &nbsp;&nbsp;&nbsp;";
-	private static final String NAME_UNHIGHLIGHTED_HTML = "<span style=\"color: rgb(0, 32, 96); font-family: courier; \">%s</span>";
-	private static final String NAME_HIGHLIGHTED_HTML = "<span style=\"color: rgb(0, 32, 96); font-family: courier; background-color: lime; background-position: initial initial; background-repeat: initial initial;\">%s</span>";
-	private static final String ID_HTML = "<br><p class=\"MsoNormal\"><b>%s";
-	private static final int NUMBER_OF_FIELDS = 8;
-	private static final int INDEX_HASHTAG = 3;
-	private static final int INDEX_EVENT_NAME = 1;
-	private static final String DOT_DOT = "..";
-	private static final int LENGHT_MAX_LARGE_WORD = 15;
-	private static final int LENGHT_MAX_SMALL_WORD = 6;
-	private static final int POSITION_START = 0;
-	private static final int LENGHT_LARGE_WORD = 20;
-	private static final int LENGTH_SMALL_WORD = 10;
-	private static final int ARROW_KEY_UP = 40;
-	private static final int ARROW_KEY_DOWN = 38;
+
 	private static final String MESSAGE_FEEDBACK_NOT_UPDATE_HTML = "<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif;color: red; \">%s</span></b></p></html>";
 	private static final String MESSAGE_FEEDBACK_UPDATE_HTML = "<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif;color: rgb(50, 205, 50)\"; >%s</span></b></p></html>";
-	private static final String STARTING_HTML = "<html>";
-	private static final String ENDING_HTML = "</p></html>";
 	private static final String MESSAGE_NEXT_PAGE_HTML = "<html><p class=\"MsoNormal\"><b><span style=\"color: rgb(50,205,50)\"; >Switched to Next Page</span></b></p></html>";
 	private static final String MESSAGE_PREVIOUS_PAGE_HTML = "<html><p class=\"MsoNormal\"><b><span style=\"color: rgb(50,205,50)\"; >Switched to Previous page</span></b></p></html>";
+
+	// Constants related to positioning in containers,
+	private static final String DOT_DOT = "..";
+	private static final int ARROW_KEY_UP = 40;
+	private static final int ARROW_KEY_DOWN = 38;
+
+	// Constants to set characterisitcs of Jcomponents
 	private static final int TEXT_AREAS_PREFERRED_SIZE_VERTICAL = 298;
 	private static final int TEXT_AREAS_PREFERRED_SIZE_HORIZONTAL = 880;
 	private static final int TEXT_AREAS_HEIGHT = 320;
@@ -86,22 +65,23 @@ public class What2DoUI extends javax.swing.JFrame {
 	private static final int GREY_BACKGROUND_R = 59;
 	private static final String MESSAGE_WELCOME_HTML = "<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(223,223,223)\">Welcome! This is Igor, at your service.</b></span></p></html>";
 	private static final String MESSAGE_SUGGESTION_INITIAL = "<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255)\">You can do any of the following :</span></b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255)\">- </span><b><span style=\"font-family: Helvetica, sans-serif; color: red; \">add (+)/delete(-)/search/update/undo/done/undone/exit</span><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>";
-	private static final int SCREEN_HALF = 2;
+	private static final int SCREEN_HALF = 6;
 	private static final int FONT_HEADER_STYLE = 1;
 	private static final int FONT_HEADER_SIZE = 14;
+	private static final String FONT_HEADERS = "Arial";
 
+	// Heading messages
 	private static final String MESSAGE_WELCOME = "This is Igor, at your service";
 	private static final String MESSAGE_TITLE_UPCOMING = "Your upcoming events are :";
 	private static final String MESSAGE_TITLE_FLOATING = "Your floating events are :";
 	private static final String MESSAGE_TITLE_SEARCH = "Your search results are :";
-	private static final String FONT_HEADERS = "Arial";
-	/**
-	 * Creates new form What2DoUIdia
-	 */
+
 	public What2DoUI() {
 		initComponents();
 	}
 
+	DataToUser dataToUser = new DataToUser();
+	//FeedbackToUser feedbackToUser=new FeedbackToUser();
 	ArrayList<String> upcomingEvents = new ArrayList<String>();
 	ArrayList<String> floatingEvents = new ArrayList<String>();
 	ArrayList<String> searchResults = new ArrayList<String>();
@@ -114,6 +94,8 @@ public class What2DoUI extends javax.swing.JFrame {
 	String data_floating_events = "";
 	String data_search_results = "";
 
+	Vector<Integer> shiftArray = new Vector<Integer>();
+	boolean shiftFlag = false;
 	int upcoming_start_position = 0;
 	int upcoming_end_position = 6;
 	int floating_start_position = 0;
@@ -126,9 +108,6 @@ public class What2DoUI extends javax.swing.JFrame {
 
 	String view = "upcoming";
 
-	// html1=setUp();A
-	String html1 = "<html><table class=\"MsoTableGrid\" border=\"1\" cellspacing=\"0\" cellpadding=\"0\" style=\"border-collapse: collapse; border: none; \"><tbody><tr><td width=\"308\" valign=\"top\" style=\"width: 231.05pt; border: 1pt solid windowtext; padding: 0cm 5.4pt; \"><p class=\"MsoNormal\" style=\"margin-bottom: 0.0001pt; line-height: normal; \">&nbsp;</p></td><td width=\"308\" valign=\"top\" style=\"width: 231.05pt; border-style: solid solid solid none; border-top-color: windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; padding: 0cm 5.4pt; \"><p class=\"MsoNormal\" style=\"margin-bottom: 0.0001pt; line-height: normal; \">&nbsp;</p></td></tr><tr><td width=\"308\" valign=\"top\" style=\"width: 231.05pt; border-style: none solid solid; border-right-color: windowtext; border-bottom-color: windowtext; border-left-color: windowtext; border-right-width: 1pt; border-bottom-width: 1pt; border-left-width: 1pt; padding: 0cm 5.4pt; \"><p class=\"MsoNormal\" style=\"margin-bottom: 0.0001pt; line-height: normal; \">&nbsp;</p></td><td width=\"308\" valign=\"top\" style=\"width: 231.05pt; border-style: none solid solid none; border-bottom-color: windowtext; border-bottom-width: 1pt; border-right-color: windowtext; border-right-width: 1pt; padding: 0cm 5.4pt; \"><p class=\"MsoNormal\" style=\"margin-bottom: 0.0001pt; line-height: normal; \">&nbsp;</p></td> </tr></tbody></table><p class=\"MsoNormal\">&nbsp;</p></html>";
-	String demo = "daff";
 	char lastEvent = ' ';
 	int flag = 0;
 	static boolean toUpdate = true;
@@ -137,8 +116,6 @@ public class What2DoUI extends javax.swing.JFrame {
 	int updateFlag = 0;
 	boolean searchView = false;
 	boolean updateFlagBool = false;
-
-
 
 	@SuppressWarnings("unchecked")
 	private void initComponents() {
@@ -159,7 +136,7 @@ public class What2DoUI extends javax.swing.JFrame {
 		setApplicationIcon();
 		setResizable(false);
 		setInitialText();
-		// setAppToScreenCenter();
+		setAppToScreenCenter();
 		createSystemTrayIcon();
 		pack();
 
@@ -245,7 +222,6 @@ public class What2DoUI extends javax.swing.JFrame {
 				javax.swing.JLayeredPane.DEFAULT_LAYER);
 		javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(
 				floatingEventsPanel);
-		floatingEventsPanel.setLayout(jPanel4Layout);
 		floatingEventsPanel.setLayout(jPanel4Layout);
 		jPanel4Layout.setHorizontalGroup(jPanel4Layout.createParallelGroup(
 				javax.swing.GroupLayout.Alignment.LEADING).addGroup(
@@ -541,9 +517,18 @@ public class What2DoUI extends javax.swing.JFrame {
 
 	private void textField1KeyTyped(java.awt.event.KeyEvent evt)
 			throws Exception {// GEN-FIRST:event_textField1KeyTyped
-		if (evt.getKeyChar() != KEY_RETURN)
-			setSuggestionBoxTest(evt);
+		if (!(shiftFlag)) {
+
+			if (evt.getKeyChar() != KEY_RETURN){
+				setSuggestionBoxTest(evt);
+			}
 		actUponUserCommand(evt);
+		//actUponUserCommand(evt, userInputField.getText());
+		}		
+		else{
+			prepareForNextEntry("");
+		}
+		shiftFlag=false;
 	}
 
 	private void actUponUserCommand(java.awt.event.KeyEvent evt)
@@ -685,38 +670,38 @@ public class What2DoUI extends javax.swing.JFrame {
 	}
 
 	private void decreaseSearchStartPosition() {
-		search_start_position -= 6;
-		if (search_start_position < 0) {
-			search_start_position = 0;
+		dataToUser.search_start_position -= 6;
+		if (dataToUser.search_start_position < 0) {
+			dataToUser.search_start_position = 0;
 		}
 	}
 
 	private void decreaseFloatingStartPosition() {
-		floating_start_position -= 6;
-		if (floating_start_position < 0) {
-			floating_start_position = 0;
+		dataToUser.floating_start_position -= 6;
+		if (dataToUser.floating_start_position < 0) {
+			dataToUser.floating_start_position = 0;
 		}
 	}
 
 	private void decreaseUpcomingStartPosition() {
-		upcoming_start_position -= 6;
+		dataToUser.upcoming_start_position -= 6;
 
-		if (upcoming_start_position < 0) {
-			upcoming_start_position = 0;
+		if (dataToUser.upcoming_start_position < 0) {
+			dataToUser.upcoming_start_position = 0;
 		}
 	}
 
 	private void updateSearchStartPosition() {
-		search_start_position += 6;
+		dataToUser.search_start_position += 6;
 	}
 
 	private void updateFloatingStartPosition() {
-		floating_start_position += 6;
+		dataToUser.floating_start_position += 6;
 	}
 
 	private void updateUpcomingStartPosition() {
 		if (view.equals("upcoming"))
-			upcoming_start_position += 6;
+			dataToUser.upcoming_start_position += 6;
 	}
 
 	private String analyzeInputUsingLogic(String data) throws Exception {
@@ -946,10 +931,13 @@ public class What2DoUI extends javax.swing.JFrame {
 		incompleteString = "";
 		nextEntryFlag = true;
 		userInputField.setText("");
-		previousEntry.add(data);
-		previousIndex = previousEntry.size();
+		if (!(data.equals(""))){
+			previousEntry.add(data);
+			previousIndex = previousEntry.size();
+		}
 	}
-//@Sandeep
+
+	// @Sandeep
 	private String updateStream(String message, int index) throws Exception {
 		String result = findEventByIndex(index);
 		String formattedResult = formatResult(result);
@@ -1007,15 +995,13 @@ public class What2DoUI extends javax.swing.JFrame {
 			return 0;
 		}
 	}
-
+/*
 	private void displayDatabase(String message) {
-		obtainDataFromDatabase();
-		initializeFormattedDatabasesToNull();
-		formatLocalDatabase();
-		setUpDisplayStrings();
-		updateEndPositions();
-		fillInDatabases();
-		endDisplayStrings();
+
+		dataToUser.getResults();
+		data_upcoming_events = dataToUser.data_upcoming_events;
+		data_floating_events = dataToUser.data_floating_events;
+		data_search_results = dataToUser.data_search_results;
 		displayOnScreen();
 
 		if (!toUpdate) {
@@ -1026,41 +1012,27 @@ public class What2DoUI extends javax.swing.JFrame {
 					message));
 		}
 	}
+*/
+	private void displayDatabase(String message) {
 
-	private void fillInDatabases() {
-		data_upcoming_events = fillInUpcomingEventsDatabase();
-		data_floating_events = fillInFloatingEventsDatabase();
-		data_search_results = fillInSearchResultsDatabase();
+		dataToUser.getResults();
+		data_upcoming_events = dataToUser.data_upcoming_events;
+		data_floating_events = dataToUser.data_floating_events;
+		data_search_results = dataToUser.data_search_results;
+		displayOnScreen();
+
+		if (!toUpdate) {
+			feedbackLabel.setText(String.format(
+					MESSAGE_FEEDBACK_NOT_UPDATE_HTML, message));
+		} else {
+			feedbackLabel.setText(String.format(MESSAGE_FEEDBACK_UPDATE_HTML,
+					message));
+		}
 	}
-
 	private void displayOnScreen() {
 		displayUpcomingEvents(data_upcoming_events);
 		displayFloatingEvents(data_floating_events);
 		displaySearchResults(data_search_results);
-	}
-
-	private void endDisplayStrings() {
-		data_upcoming_events += ENDING_HTML;
-		data_floating_events += ENDING_HTML;
-		data_search_results += ENDING_HTML;
-	}
-
-	private void setUpDisplayStrings() {
-		data_upcoming_events = STARTING_HTML;
-		data_floating_events = STARTING_HTML;
-		data_search_results = STARTING_HTML;
-	}
-
-	private void formatLocalDatabase() {
-		format(formattedUpcomingEvents, upcomingEvents);
-		format(formattedFloatingEvents, floatingEvents);
-		format(formattedSearchResults, searchResults);
-	}
-
-	private void obtainDataFromDatabase() {
-		upcomingEvents = obtainUpcomingEventsFromDatabase();
-		floatingEvents = obtainFloatingEventsFromDatabase();
-		searchResults = obtainSearchResultsFromDatabase();
 	}
 
 	private void displaySearchResults(String data_search_results) {
@@ -1075,357 +1047,9 @@ public class What2DoUI extends javax.swing.JFrame {
 		upcomingEventsTextArea.setText(data_upcoming_events);
 	}
 
-	private String fillInSearchResultsDatabase() {
-		for (int i = search_start_position; i < search_end_position; i++) {
-			boolean fieldIsEmpty = formattedSearchResults.get(i + 1).get(0)
-					.equals("");
-			if (!fieldIsEmpty) {
-
-				data_search_results += String.format(
-						ID_HTML,
-						formattedSearchResults.get(i + 1).get(0) + ")");
-
-				try {
-					if (Integer.parseInt(formattedSearchResults.get(i + 1)
-							.get(0).trim()) < 10) {
-						data_search_results += SPACE_HTML;
-					}
-				} catch (Exception e) {
-					// do nothing
-				}
-				if (formattedSearchResults.get(i + 1).get(4).contains("true")) {
-					data_search_results += String
-							.format(NAME_HIGHLIGHTED_HTML,
-									formattedSearchResults.get(i + 1).get(1));
-				} else {
-					data_search_results += String
-							.format(NAME_UNHIGHLIGHTED_HTML,
-									formattedSearchResults.get(i + 1).get(1));
-				}
-				for (int j = 0; j < getSpacesForLargeWord(formattedSearchResults
-						.get(i + 1).get(1)); j++) {
-					data_search_results += SPACE_HTML;
-				}
-				if (formattedSearchResults.get(i + 1).get(2).contains("HIGH")) {
-					data_search_results += String
-							.format(PRIORITY_HIGH_HTML,
-									formattedSearchResults.get(i + 1).get(2));
-				}
-				if (formattedSearchResults.get(i + 1).get(2).contains("NORMAL")) {
-					data_search_results += String
-							.format(PRIORITY_NORMAL_HTML,
-									formattedSearchResults.get(i + 1).get(2));
-				}
-				if (formattedSearchResults.get(i + 1).get(2).contains("LOW")) {
-					data_search_results += String
-							.format(PRIORITY_LOW_HTML,
-									formattedSearchResults.get(i + 1).get(2));
-				}
-				data_search_results += String
-						.format(HASHTAGS_HTML,
-								formattedSearchResults.get(i + 1).get(3));
-				for (int j = 0; j < getSpacesForSmallWord(formattedSearchResults
-						.get(i + 1).get(3)); j++) {
-					data_search_results += SPACE_HTML;
-				}
-				data_search_results += String.format(START_TIME_HTML,formattedSearchResults.get(i + 1).get(5));
-
-				data_search_results += NORMAL_FONT_HTML;
-				if (formattedSearchResults.get(i + 1).get(6).contains(":")) {
-					data_search_results += TO_HTML;
-				} else {
-
-					data_search_results += SPACES_IF_NO_END_TIME_HTML;
-				}
-				data_search_results+=String.format(END_TIME_HTML, formattedSearchResults.get(i + 1).get(6));
-				data_search_results += NORMAL_FONT_HTML;
-				if (formattedSearchResults.get(i + 1).get(7).contains("r-")) {
-					data_search_results += ALERT_BEFORE_HTML;
-				} 
-				
-				data_search_results += String.format(REMINDER_HTML,
-						formattedSearchResults.get(i + 1).get(7).replace("r-", ""));
-				data_search_results += ENDING_LINE_HTML;
-
-			}
-		}
-		return data_search_results;
-	}
-
-	private String fillInFloatingEventsDatabase() {
-		for (int i = floating_start_position; i < floating_end_position
-				&& !(formattedFloatingEvents.get(i + 1).get(0).equals("")); i++) {
-
-			data_floating_events += String.format(
-					ID_HTML, formattedFloatingEvents
-							.get(i + 1).get(0) + ")");
-
-			try {
-				if (Integer.parseInt(formattedFloatingEvents.get(i + 1).get(0)
-						.trim()) < 10) {
-					data_floating_events += SPACE_HTML;
-				}
-			} catch (Exception e) {
-				// do nothing
-			}
-			if (formattedFloatingEvents.get(i + 1).get(4).contains("true")) {
-				data_floating_events += String
-						.format(NAME_HIGHLIGHTED_HTML,
-								formattedFloatingEvents.get(i + 1).get(1));
-			} else {
-				data_floating_events += String
-						.format(NAME_UNHIGHLIGHTED_HTML,
-								formattedFloatingEvents.get(i + 1).get(1));
-			}
-			for (int j = 0; j < getSpacesForLargeWord(formattedFloatingEvents
-					.get(i + 1).get(1)); j++) {
-				data_floating_events += SPACE_HTML;
-			}
-			if (formattedFloatingEvents.get(i + 1).get(2).contains("HIGH")) {
-				data_floating_events += String
-						.format(PRIORITY_HIGH_HTML,
-								formattedFloatingEvents.get(i + 1).get(2));
-			}
-			if (formattedFloatingEvents.get(i + 1).get(2).contains("NORMAL")) {
-				data_floating_events += String
-						.format(PRIORITY_NORMAL_HTML,
-								formattedFloatingEvents.get(i + 1).get(2));
-			}
-			if (formattedFloatingEvents.get(i + 1).get(2).contains("LOW")) {
-				data_floating_events += String
-						.format(PRIORITY_LOW_HTML,
-								formattedFloatingEvents.get(i + 1).get(2));
-			}
-			data_floating_events += String
-					.format(HASHTAGS_HTML,
-							formattedFloatingEvents.get(i + 1).get(3));
-			for (int j = 0; j < getSpacesForLargeWord(formattedFloatingEvents
-					.get(i + 1).get(3)); j++) {
-				data_floating_events += SPACE_HTML;
-			}
-			data_floating_events +=ENDING_LINE_HTML ;
-		}
-		return data_floating_events;
-	}
-
-	private String fillInUpcomingEventsDatabase() {
-		for (int i = upcoming_start_position; i < upcoming_end_position; i++) {
-			boolean fieldIsEmpty = formattedUpcomingEvents.get(i + 1).get(0)
-					.equals("");
-			if (!fieldIsEmpty) {
-
-				data_upcoming_events += String.format(
-						ID_HTML,
-						formattedUpcomingEvents.get(i + 1).get(0) + ")");
-
-				try {
-					if (Integer.parseInt(formattedUpcomingEvents.get(i + 1)
-							.get(0).trim()) < 10) {
-						data_upcoming_events += SPACE_HTML;
-					}
-				} catch (Exception e) {
-					// do nothing
-				}
-				if (formattedUpcomingEvents.get(i + 1).get(4).contains("true")) {
-					data_upcoming_events += String
-							.format(NAME_HIGHLIGHTED_HTML,
-									formattedUpcomingEvents.get(i + 1).get(1));
-				} else {
-					data_upcoming_events += String
-							.format(NAME_UNHIGHLIGHTED_HTML,
-									formattedUpcomingEvents.get(i + 1).get(1));
-				}
-				for (int j = 0; j < getSpacesForLargeWord(formattedUpcomingEvents
-						.get(i + 1).get(1)); j++) {
-					data_upcoming_events += SPACE_HTML;
-				}
-				if (formattedUpcomingEvents.get(i + 1).get(2).contains("HIGH")) {
-					data_upcoming_events += String
-							.format(PRIORITY_HIGH_HTML,
-									formattedUpcomingEvents.get(i + 1).get(2));
-				}
-				if (formattedUpcomingEvents.get(i + 1).get(2).contains("NORMAL")) {
-					data_upcoming_events += String
-							.format(PRIORITY_NORMAL_HTML,
-									formattedUpcomingEvents.get(i + 1).get(2));
-				}
-				if (formattedUpcomingEvents.get(i + 1).get(2).contains("LOW")) {
-					data_upcoming_events += String
-							.format(PRIORITY_LOW_HTML,
-									formattedUpcomingEvents.get(i + 1).get(2));
-				}
-				data_upcoming_events += String
-						.format(HASHTAGS_HTML,
-								formattedUpcomingEvents.get(i + 1).get(3));
-				for (int j = 0; j < getSpacesForSmallWord(formattedUpcomingEvents
-						.get(i + 1).get(3)); j++) {
-					data_upcoming_events += SPACE_HTML;
-				}
-				data_upcoming_events += String.format(START_TIME_HTML,formattedUpcomingEvents.get(i + 1).get(5));
-
-				data_upcoming_events += NORMAL_FONT_HTML;
-				if (formattedUpcomingEvents.get(i + 1).get(6).contains(":")) {
-					data_upcoming_events += TO_HTML;
-				} else {
-
-					data_upcoming_events += SPACES_IF_NO_END_TIME_HTML;
-				}
-				data_upcoming_events+=String.format(END_TIME_HTML, formattedUpcomingEvents.get(i + 1).get(6));
-				data_upcoming_events += NORMAL_FONT_HTML;
-				if (formattedUpcomingEvents.get(i + 1).get(7).contains("r-")) {
-					data_upcoming_events += ALERT_BEFORE_HTML;
-				} 
-				
-				data_upcoming_events += String.format(REMINDER_HTML,
-						formattedUpcomingEvents.get(i + 1).get(7).replace("r-", ""));
-				data_upcoming_events += ENDING_LINE_HTML;
-
-			}
-		}
-		return data_upcoming_events;
-	}
-
-	private void updateEndPositions() {
-		upcoming_end_position = upcoming_start_position + 6;
-
-		floating_end_position = floating_start_position + 6;
-
-		search_end_position = search_start_position + 6;
-	}
-
-	private ArrayList<String> obtainSearchResultsFromDatabase() {
-		ArrayList<String> searchResults;
-		searchResults = Executor.printSearchResults();
-		return searchResults;
-	}
-
-	private ArrayList<String> obtainFloatingEventsFromDatabase() {
-		ArrayList<String> floatingEvents;
-		floatingEvents = Executor.printFloatingDataBase();
-		return floatingEvents;
-	}
-
-	private ArrayList<String> obtainUpcomingEventsFromDatabase() {
-		ArrayList<String> upcomingEvents;
-		upcomingEvents = Executor.printDataBase();
-		return upcomingEvents;
-	}
-
-	private void initializeFormattedDatabasesToNull() {
-		for (int i = 0; i < 100; i++) {
-			ArrayList<String> temporaryList = new ArrayList<String>();
-			for (int j = 0; j < 10; j++) {
-				temporaryList.add("");
-			}
-			formattedUpcomingEvents.add(temporaryList);
-		}
-		for (int i = 0; i < 100; i++) {
-			ArrayList<String> temporaryList = new ArrayList<String>();
-			for (int j = 0; j < 10; j++) {
-				temporaryList.add("");
-			}
-			formattedFloatingEvents.add(temporaryList);
-		}
-		for (int i = 0; i < 100; i++) {
-			ArrayList<String> temporaryList = new ArrayList<String>();
-			for (int j = 0; j < 10; j++) {
-				temporaryList.add("");
-			}
-			formattedSearchResults.add(temporaryList);
-		}
-	}
-
-	private int getSpacesForSmallWord(String word) {
-		int number_spaces_required = LENGTH_SMALL_WORD - word.length();
-		return number_spaces_required;
-
-	}
-
-	private int getSpacesForLargeWord(String word) {
-		int number_spaces_required = LENGHT_LARGE_WORD - word.length();
-
-		return number_spaces_required;
-	}
-
-	private void format(ArrayList<ArrayList<String>> formattedDisplay,
-			ArrayList<String> events) {
-
-		for (int i = 0; i < events.size(); i++) {
-
-			String[] individualEvents;
-			individualEvents = obtainFromOriginalDatabase(events, i);
-
-			String[] individualEventsForFormatting = new String[NUMBER_OF_FIELDS];
-			intializeToNull(individualEventsForFormatting);
-			transferElements(individualEvents, individualEventsForFormatting);
-
-			resizeLongFields(individualEventsForFormatting);
-
-			placeElementsIntoFormattedList(formattedDisplay, i,
-					individualEventsForFormatting);
-		}
-	}
-
-	private void resizeLongFields(String[] individualEventsForFormatting) {
-		individualEventsForFormatting[INDEX_EVENT_NAME] = largeResizeForDisplay(individualEventsForFormatting[1]);
-		individualEventsForFormatting[INDEX_HASHTAG] = smallResizeForDisplay(individualEventsForFormatting[3]);
-	}
-
-	private void intializeToNull(String[] individualEventsForFormatting) {
-		for (int j = 0; j < NUMBER_OF_FIELDS; j++) {
-			individualEventsForFormatting[j] = "";
-		}
-	}
-
-	private String[] obtainFromOriginalDatabase(ArrayList<String> events, int i) {
-		String[] individualEvents;
-		individualEvents = events.get(i).split("\\..");
-		return individualEvents;
-	}
-
-	private void placeElementsIntoFormattedList(
-			ArrayList<ArrayList<String>> formattedDisplay, int i,
-			String[] individualEventsForFormatting) {
-		formattedDisplay.get(i + 1).set(0, individualEventsForFormatting[0]);
-		formattedDisplay.get(i + 1).set(1, individualEventsForFormatting[1]);
-		formattedDisplay.get(i + 1).set(2, individualEventsForFormatting[2]);
-		formattedDisplay.get(i + 1).set(3, individualEventsForFormatting[3]);
-		formattedDisplay.get(i + 1).set(4, individualEventsForFormatting[4]);
-		formattedDisplay.get(i + 1).set(5, individualEventsForFormatting[5]);
-		formattedDisplay.get(i + 1).set(6, individualEventsForFormatting[6]);
-		formattedDisplay.get(i + 1).set(7, individualEventsForFormatting[7]);
-	}
-
-	private void transferElements(String[] individualEvents,
-			String[] individualEventsForFormatting) {
-		for (int j = 0; j < individualEvents.length; j++) {
-			individualEventsForFormatting[j] = individualEvents[j];
-		}
-	}
-
-	private String smallResizeForDisplay(String wordToResize) {
-		boolean is_OK_length = wordToResize.length() < LENGTH_SMALL_WORD;
-		if (is_OK_length)
-			return wordToResize;
-		else {
-			return wordToResize
-					.substring(POSITION_START, LENGHT_MAX_SMALL_WORD)
-					+ DOT_DOT;
-		}
-	}
-
-	private String largeResizeForDisplay(String wordToResize) {
-		boolean is_OK_length = wordToResize.length() < LENGHT_LARGE_WORD;
-		if (is_OK_length)
-			return wordToResize;
-		else {
-			return wordToResize
-					.substring(POSITION_START, LENGHT_MAX_LARGE_WORD)
-					+ DOT_DOT;
-		}
-	}
-
 	private void textField1KeyPressed(java.awt.event.KeyEvent evt) {
+		
+		shiftArray.add(evt.getKeyCode());
 
 		boolean onlyOneEntry = (previousIndex == previousEntry.size() - 1);
 		boolean noEntries = previousEntry.isEmpty();
@@ -1437,10 +1061,31 @@ public class What2DoUI extends javax.swing.JFrame {
 		}
 		if (evt.getKeyCode() == ARROW_KEY_UP && !onlyOneEntry && !noEntries) {
 			userInputField.setText(previousEntry.get(++previousIndex));
-		} else {
+		} 
+		else {
 			if (evt.getKeyCode() == ARROW_KEY_UP && onlyOneEntry) {
 				userInputField.setText("");
 			}
+		}
+		if(shiftArray.size()>1 && shiftArray.get(shiftArray.size()-2)==17 && shiftArray.get(shiftArray.size()-1)==70)
+		{
+			shiftArray.clear();
+			setViewToFloating();
+			shiftFlag=true;
+			feedbackLabel
+			.setText(String
+					.format("<html><p class=\"MsoNormal\"><b><span style=\"color: rgb(0, 176, 80)\"; >%s</span></b></p></html>",
+							"Switched to Floating View"));
+		}
+		if(shiftArray.size()>1 && shiftArray.get(shiftArray.size()-2)==17 && shiftArray.get(shiftArray.size()-1)==85)
+		{
+			shiftArray.clear();
+			setViewToUpcoming();
+			shiftFlag=true;
+			feedbackLabel
+			.setText(String
+					.format("<html><p class=\"MsoNormal\"><b><span style=\"color: rgb(0, 176, 80)\"; >%s</span></b></p></html>",
+							"Switched to Default View"));
 		}
 	}
 
@@ -1453,7 +1098,7 @@ public class What2DoUI extends javax.swing.JFrame {
 
 		MessageHandler.setUpList();
 		Log.setup();
-		AlarmThread newAlarm = new AlarmThread();
+		AlarmThread newAlarm = AlarmThread.getInstance();
 		new Thread(newAlarm).start();
 		try {
 			Executor.loadDatabase();
