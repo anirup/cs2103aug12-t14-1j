@@ -1,0 +1,12 @@
+add invalid #high #low #normal #5pm this mon r- 5 min
+add     lalala #low next friday       r-1day
+add test date 45 #high 5pm 7/7/2012 r-1 day
+add test date 46 #low #work 17pm 9sep 
+add test date 47 #low #high 17:00 9-september to 10:00 10/sep #work
+a- test date 48 #high r-5min 
+add test date 49 #high 5pm #low today r- 5 min
+add test date 50 #high 5pm tomorrow r- 0 min to 7pm tomorrow 
+add test date 51 #low #work 0:00 tomorrow r-5 min 
+add test date 52 
+
+

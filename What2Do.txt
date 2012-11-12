@@ -1,0 +1,15 @@
+1352734724180..meeting with friends..NORMAL....false..invalid..invalid..invalid..invalid
+1352735056224..cg2271 project..NORMAL....false..invalid..invalid..invalid..invalid
+1352735084261..study for exams..NORMAL....false..invalid..invalid..invalid..invalid
+1352735207773..internship application..NORMAL....false..invalid..invalid..invalid..invalid
+1352735021527..deepavali outing..NORMAL....false..invalid..16:00 13/11/2012..invalid..invalid
+1352734754445..meeting with friends..NORMAL....false..17:29 13/11/2012..17:30 13/11/2012..18:30 13/11/2012..invalid
+1352735316965..cs demo..NORMAL....false..invalid..14:30 15/11/2012..invalid..invalid
+1352734816345..meeting with friends..HIGH..#sdfgsdgsdggsdg..false..invalid..17:40 20/11/2012..17:55 20/11/2012..invalid
+1352737309509..go to dentist..NORMAL....false..invalid..00:00 22/11/2012..invalid..invalid
+1352735286589..cs demo..NORMAL....false..invalid..14:30 22/11/2012..invalid..invalid
+1352735128508..research paper..NORMAL....false..invalid..00:00 23/11/2012..invalid..invalid
+1352735135453..research paper..NORMAL....false..invalid..00:00 23/11/2012..invalid..invalid
+1352734530748..submit cs2103 project..NORMAL....false..invalid..23:59 12/11/2012..invalid..invalid
+1352735367943..exam..NORMAL....false..invalid..00:00 13/11/2012..invalid..invalid
+1352735339062..exam..NORMAL....false..invalid..00:00 12/11/2012..invalid..invalid
