@@ -36,8 +36,8 @@ public class What2DoUI extends javax.swing.JFrame {
 
 	private static final String MESSAGE_FEEDBACK_NOT_UPDATE_HTML = "<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif;color: red; \">%s</span></b></p></html>";
 	private static final String MESSAGE_FEEDBACK_UPDATE_HTML = "<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif;color: rgb(50, 205, 50)\"; >%s</span></b></p></html>";
-	private static final String MESSAGE_NEXT_PAGE_HTML = "<html><p class=\"MsoNormal\"><b><span style=\"color: rgb(50,205,50)\"; >Switched to Next Page</span></b></p></html>";
-	private static final String MESSAGE_PREVIOUS_PAGE_HTML = "<html><p class=\"MsoNormal\"><b><span style=\"color: rgb(50,205,50)\"; >Switched to Previous page</span></b></p></html>";
+	private static final String MESSAGE_NEXT_PAGE_HTML = "<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif;color: rgb(50, 205, 50)\"; >Switched to Next Page</span></b></p></html>";
+	private static final String MESSAGE_PREVIOUS_PAGE_HTML = "<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif;color: rgb(50, 205, 50)\"; >Switched to Previous page</span></b></p></html>";
 
 	// Constants related to positioning in containers,
 	private static final String DOT_DOT = "..";
@@ -605,7 +605,7 @@ public class What2DoUI extends javax.swing.JFrame {
 				Executor.searchToTrue();
 				feedbackLabel
 						.setText(String
-								.format("<html><p class=\"MsoNormal\"><b><span style=\"color: rgb(0, 176, 80)\"; >%s</span></b></p></html>",
+								.format("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif;color: rgb(50, 205, 50)\"; >%s</span></b></p></html>",
 										"Switched to Search View"));
 				prepareForNextEntry(data);
 			} else if (data.toLowerCase().contains("floating")) {
@@ -614,7 +614,7 @@ public class What2DoUI extends javax.swing.JFrame {
 				setViewToFloating();
 				feedbackLabel
 						.setText(String
-								.format("<html><p class=\"MsoNormal\"><b><span style=\"color: rgb(0, 176, 80)\"; >%s</span></b></p></html>",
+								.format("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif;color: rgb(50, 205, 50)\"; >%s</span></b></p></html>",
 										"Switched to Floating View"));
 				prepareForNextEntry(data);
 				return;
@@ -640,8 +640,10 @@ public class What2DoUI extends javax.swing.JFrame {
 					if (feedback.size() == 1)
 						feedbackMessage = feedback.get(0);
 					if (feedback.size() > 1)
-						feedbackMessage = "WARNING: The New Event is Clashed AND Before PRESENT TIME.";
+						feedbackMessage = "WARNING: The New Event is Clashed AND Before Present TIME.";
 					feedbackMessage += "\nDo you want to PROCEED? - ENTER YES/NO";
+					if (feedbackMessage.contains("Present"))
+						feedbackMessage +="\nPastEvents wont be shown but can be searched for.";
 					String[] option = { "YES", "NO" };
 					String input;
 					Object inputObject = JOptionPane.showInputDialog(this,
@@ -1063,13 +1065,16 @@ public class What2DoUI extends javax.swing.JFrame {
 		if (evt.getKeyCode() == ARROW_KEY_DOWN
 				&& unusedPreviousEntriesRemaining && !noEntries) {
 			userInputField.setText(previousEntry.get(--previousIndex));
+			incompleteString=previousEntry.get(previousIndex);
 		}
 		if (evt.getKeyCode() == ARROW_KEY_UP && !onlyOneEntry && !noEntries) {
 			userInputField.setText(previousEntry.get(++previousIndex));
+			incompleteString=previousEntry.get(previousIndex);
 		} 
 		else {
 			if (evt.getKeyCode() == ARROW_KEY_UP && onlyOneEntry) {
 				userInputField.setText("");
+				incompleteString="";
 			}
 		}
 		if(shiftArray.size()>1 && shiftArray.get(shiftArray.size()-2)==17 && shiftArray.get(shiftArray.size()-1)==70)
@@ -1079,7 +1084,7 @@ public class What2DoUI extends javax.swing.JFrame {
 			shiftFlag=true;
 			feedbackLabel
 			.setText(String
-					.format("<html><p class=\"MsoNormal\"><b><span style=\"color: rgb(0, 176, 80)\"; >%s</span></b></p></html>",
+					.format("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif;color: rgb(50, 205, 50)\"; >%s</span></b></p></html>",
 							"Switched to Floating View"));
 		}
 		if(shiftArray.size()>1 && shiftArray.get(shiftArray.size()-2)==17 && shiftArray.get(shiftArray.size()-1)==85)
@@ -1089,7 +1094,7 @@ public class What2DoUI extends javax.swing.JFrame {
 			shiftFlag=true;
 			feedbackLabel
 			.setText(String
-					.format("<html><p class=\"MsoNormal\"><b><span style=\"color: rgb(0, 176, 80)\"; >%s</span></b></p></html>",
+					.format("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif;color: rgb(50, 205, 50)\"; >%s</span></b></p></html>",
 							"Switched to Default View"));
 		}
 	}
