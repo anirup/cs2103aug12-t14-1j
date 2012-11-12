@@ -82,6 +82,7 @@ public class Command {
 	}
 	
 	protected void setLogAndMessage(int logType,int messageNum) throws Exception {
+		Log.toLog(logType, this.userInputString);
 		Log.toLog(logType, MessageHandler.getMessage(messageNum));
 		this.returnVal = messageNum;
 	}

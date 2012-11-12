@@ -28,7 +28,11 @@ public class MessageHandler {
 		listOfMessages.add("Error: Update Format Wrong.");//18
 		listOfMessages.add("Error: No Event at Entered Index.");//19
 		listOfMessages.add("Error: Illegal Keyword Entered.Please Enter a Valid Integer");//20
-		listOfMessages.add("Error: No more Undos Available.");//21
+	}
+	
+	public static void setMessage(int index, String message) {
+		listOfMessages.remove(index);
+		listOfMessages.add(index, message);
 	}
 	
 	public static String getMessage(int index)
