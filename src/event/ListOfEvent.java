@@ -110,20 +110,27 @@ public class ListOfEvent {
 		return false;
 	}
 	
-	public static void markDoneList(Event event) {
+	public static String markDoneList(Event event) {
 		int index = indexOf(event);
-		assert index >= 0;
-		listOfEvent.get(index).markDone();
+		if(index >= 0) {
+			listOfEvent.get(index).markDone();
+			return "'" + event.getEventName() + "'";
+		}
+		return "";
 	}
 	
-	public static void markUndoneList(Event event) {
+	public static String markUndoneList(Event event) {
 		int index = indexOf(event);
-		assert index >= 0;
-		listOfEvent.get(index).markUndone();
+		if(index >= 0) {
+			listOfEvent.get(index).markUndone();
+			return "'" + event.getEventName() + "'";
+		}
+		return "";
 	}
 	
-	public static void add(Event newEvent) {
+	public static String add(Event newEvent) {
 		listOfEvent.add(newEvent);
+		return "'" + newEvent.getEventName() + "'";
 	}
 	
 	public static Event add(String eventInString) {
@@ -162,7 +169,9 @@ public class ListOfEvent {
 	}	
 	
 	public static Event removeSearch(int position) {
-		return remove(remove(position, searchResults));
+		Event eventToRemove = remove(position, searchResults);
+		remove(eventToRemove);
+		return eventToRemove;
 	}
 	
 	private static Event remove(int position, ArrayList<Event> list) {
@@ -170,9 +179,10 @@ public class ListOfEvent {
 		return list.remove(position);
 	}
 	
-	public static Event remove(Event eventToRemove) {
+	public static String remove(Event eventToRemove) {
 		int index = indexOf(eventToRemove);
-		return remove(index, listOfEvent);
+		remove(index, listOfEvent);
+		return "'" + eventToRemove.getEventName() + "'";
 	}
 	
 	public static ArrayList<Event> updateSearch(int position, String eventToUpdate) {
@@ -210,14 +220,14 @@ public class ListOfEvent {
 		return update;
 	}
 	
-	public static boolean update(Event eventToReplace, Event eventToBeReplaced) {
-		int indexOfEventToBeReplaced = indexOf(eventToReplace);
-		if (indexOfEventToBeReplaced != -1) {
-			listOfEvent.remove(indexOfEventToBeReplaced);
-			listOfEvent.add(indexOfEventToBeReplaced, eventToBeReplaced);
-			return true;
+	public static String update(Event before, Event after) {
+		int indexOfBefore = indexOf(before);
+		if (indexOfBefore != -1) {
+			listOfEvent.remove(indexOfBefore);
+			listOfEvent.add(indexOfBefore, after);
+			return "'" + after.getEventName() + "' to '"  + before.getEventName() + "'";
 		}
-		return false;
+		return "";
 	}
 	
 	public static void searchInNameAndHashTags(Vector<String> searchWords) {
@@ -315,7 +325,7 @@ public class ListOfEvent {
 		ArrayList<String> floatingEventToGUI = new ArrayList<String>();
 		for(int index = 0; index < listOfEvent.size(); index++) {
 			Event currentEvent = listOfEvent.get(index);
-			if(currentEvent.getEventType() == Event.FLOATING_TYPE) {
+			if(currentEvent.getEventType() == Event.FLOATING_TYPE && !currentEvent.isDone()) {
 				String contentToDisplay = formatEventToStringToDisplay(currentEvent, index + 1);
 				floatingEventToGUI.add(contentToDisplay);
 			} else {
