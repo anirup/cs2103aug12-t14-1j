@@ -1,3 +1,4 @@
+//@author A0088617R
 package Test; 
 import static org.junit.Assert.*;
 import logic.LogicAnalyzer;

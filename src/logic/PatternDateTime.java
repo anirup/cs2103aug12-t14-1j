@@ -177,7 +177,7 @@ public class PatternDateTime {
 			return getDate(input);
 		}
 	}
-
+	//@author A0088617R
 	private DateTime getDateSpecial(String input) {
 		if (input.contains("this") || input.contains("next")
 				|| input.contains("today") || input.contains("tmr")
