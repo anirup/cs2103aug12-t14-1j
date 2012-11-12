@@ -56,11 +56,16 @@ public class SystemTrayIntegration {
 						isOpen = true;
 					}
 				}
+				if (Identifier == 2) {
+					JIntellitype.getInstance().cleanUp();
+					tray.remove(trayIcon);
+					System.exit(0);
+					}
 
 			}
 		};
-		JIntellitype.getInstance().registerHotKey(1, JIntellitype.MOD_CONTROL,
-				(int) 'W');
+		JIntellitype.getInstance().registerHotKey(1, JIntellitype.MOD_ALT,(int) 'M');
+		JIntellitype.getInstance().registerHotKey(2, JIntellitype.MOD_ALT,(int) 'C');
 		JIntellitype.getInstance().addHotKeyListener(hotKey);
 
 		Image image = null;

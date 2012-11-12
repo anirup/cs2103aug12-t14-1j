@@ -33,12 +33,86 @@ import java.awt.event.*;
  * @author SANDEEP
  */
 public class What2DoUI extends javax.swing.JFrame {
+	private static final String ENDING_LINE_HTML = "</p><b>------------------------------------------------------------------------------------------------------------------------</b></p>";
+	private static final String REMINDER_HTML = "<span style=\"color: rgb(228, 108, 10); font-family: courier;\">%s</span></span></b></p>";
+	private static final String ALERT_BEFORE_HTML = "<b><i>Alert Before : </b></i></span>&nbsp";
+	private static final String END_TIME_HTML = "<span style=\"color: rgb(79, 129, 189); font-family: courier;\">%s</span>&nbsp; ";
+	private static final String SPACES_IF_NO_END_TIME_HTML = "<b><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b></i></span>";
+	private static final String TO_HTML = "<b><i>to </b></i></span>&nbsp; ";
+	private static final String NORMAL_FONT_HTML = "<span style=\"color: rgb(0, 0, 0); font-family: courier;\">";
+	private static final String START_TIME_HTML = "<span style=\"color: rgb(75, 172, 198); font-family: courier;\">%s</span>&nbsp;";
+	private static final String SPACE_HTML = "&nbsp;";
+	private static final String HASHTAGS_HTML = "&nbsp;<span style=\"color: rgb(155, 187, 89); font-family: courier;\">%s</span> &nbsp;";
+	private static final String PRIORITY_LOW_HTML = "<span style=\"color: rgb(204,127,50); font-family: courier;\">%s</span> &nbsp;&nbsp;&nbsp;&nbsp;";
+	private static final String PRIORITY_NORMAL_HTML = "<span style=\"color: orange; font-family: courier;\">%s</span> &nbsp;";
+	private static final String PRIORITY_HIGH_HTML = "<span style=\"color: red; font-family: courier;\">%s</span> &nbsp;&nbsp;&nbsp;";
+	private static final String NAME_UNHIGHLIGHTED_HTML = "<span style=\"color: rgb(0, 32, 96); font-family: courier; \">%s</span>";
+	private static final String NAME_HIGHLIGHTED_HTML = "<span style=\"color: rgb(0, 32, 96); font-family: courier; background-color: lime; background-position: initial initial; background-repeat: initial initial;\">%s</span>";
+	private static final String ID_HTML = "<br><p class=\"MsoNormal\"><b>%s";
+	private static final int NUMBER_OF_FIELDS = 8;
+	private static final int INDEX_HASHTAG = 3;
+	private static final int INDEX_EVENT_NAME = 1;
+	private static final String DOT_DOT = "..";
+	private static final int LENGHT_MAX_LARGE_WORD = 15;
+	private static final int LENGHT_MAX_SMALL_WORD = 6;
+	private static final int POSITION_START = 0;
+	private static final int LENGHT_LARGE_WORD = 20;
+	private static final int LENGTH_SMALL_WORD = 10;
+	private static final int ARROW_KEY_UP = 40;
+	private static final int ARROW_KEY_DOWN = 38;
+	private static final String MESSAGE_FEEDBACK_NOT_UPDATE_HTML = "<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif;color: red; \">%s</span></b></p></html>";
+	private static final String MESSAGE_FEEDBACK_UPDATE_HTML = "<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif;color: rgb(50, 205, 50)\"; >%s</span></b></p></html>";
+	private static final String STARTING_HTML = "<html>";
+	private static final String ENDING_HTML = "</p></html>";
+	private static final String MESSAGE_NEXT_PAGE_HTML = "<html><p class=\"MsoNormal\"><b><span style=\"color: rgb(50,205,50)\"; >Switched to Next Page</span></b></p></html>";
+	private static final String MESSAGE_PREVIOUS_PAGE_HTML = "<html><p class=\"MsoNormal\"><b><span style=\"color: rgb(50,205,50)\"; >Switched to Previous page</span></b></p></html>";
+	private static final int TEXT_AREAS_PREFERRED_SIZE_VERTICAL = 298;
+	private static final int TEXT_AREAS_PREFERRED_SIZE_HORIZONTAL = 880;
+	private static final int TEXT_AREAS_HEIGHT = 320;
+	private static final int TEXT_AREAS_WIDTH = 930;
+	private static final int TEXT_AREAS_Y_COORDINATE = 10;
+	private static final int TEXT_AREA_X_COORDINATE = 10;
+	private static final char KEY_RETURN = '\n';
+	private static final int FONT_SIZE_OTHER_TEXT_DISPLAYS = 12;
+	private static final int FONT_STYLE_OTHER_TEXT_DISPLAYS = 1;
+	private static final int FONT_SIZE_USER_INPUT_AREA = 18;
+	private static final int FONT_STYLE_USER_INPUT_AREA = 0;
+	private static final String FONT_DISPLAY_TEXT_AREAS = "Monospaced";
+	private static final int WHITE_BACKGROUND_B = 227;
+	private static final int WHITE_BACKGROUND_G = 227;
+	private static final int WHITE_BACKGROUND_R = 227;
+	private static final int GREY_BACKGROUND_B = 59;
+	private static final int GREY_BACKGROUND_G = 59;
+	private static final int GREY_BACKGROUND_R = 59;
+	private static final String MESSAGE_WELCOME_HTML = "<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(223,223,223)\">Welcome! This is Igor, at your service.</b></span></p></html>";
+	private static final String MESSAGE_SUGGESTION_INITIAL = "<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255)\">You can do any of the following :</span></b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255)\">- </span><b><span style=\"font-family: Helvetica, sans-serif; color: red; \">add (+)/delete(-)/search/update/undo/done/undone/exit</span><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>";
+	private static final int SCREEN_HALF = 2;
+	private static final int FONT_HEADER_STYLE = 1;
+	private static final int FONT_HEADER_SIZE = 14;
+
+	private static final String MESSAGE_WELCOME = "This is Igor, at your service";
+	private static final String MESSAGE_TITLE_UPCOMING = "Your upcoming events are :";
+	private static final String MESSAGE_TITLE_FLOATING = "Your floating events are :";
+	private static final String MESSAGE_TITLE_SEARCH = "Your search results are :";
+	private static final String FONT_HEADERS = "Arial";
 	/**
 	 * Creates new form What2DoUIdia
 	 */
 	public What2DoUI() {
 		initComponents();
 	}
+
+	ArrayList<String> upcomingEvents = new ArrayList<String>();
+	ArrayList<String> floatingEvents = new ArrayList<String>();
+	ArrayList<String> searchResults = new ArrayList<String>();
+
+	ArrayList<ArrayList<String>> formattedUpcomingEvents = new ArrayList<ArrayList<String>>();
+	ArrayList<ArrayList<String>> formattedFloatingEvents = new ArrayList<ArrayList<String>>();
+	ArrayList<ArrayList<String>> formattedSearchResults = new ArrayList<ArrayList<String>>();
+
+	String data_upcoming_events = "";
+	String data_floating_events = "";
+	String data_search_results = "";
 
 	int upcoming_start_position = 0;
 	int upcoming_end_position = 6;
@@ -64,145 +138,141 @@ public class What2DoUI extends javax.swing.JFrame {
 	boolean searchView = false;
 	boolean updateFlagBool = false;
 
-	/**
-	 * This method is called from within the constructor to initialize the form.
-	 * WARNING: Do NOT modify this code. The content of this method is always
-	 * regenerated by the Form Editor.
-	 */
+
+
 	@SuppressWarnings("unchecked")
 	private void initComponents() {
-		setExitOnClose();
-
 		initializeGUIElements();
+		setExitOnClose();
 		setFonts();
 		setBackgrounds();
 		setCursorForUserTextFields();
 		addListenerToUserTextField();
 		setViewPorts();
-		setLogoIcons();
 		setBorders();
 		setOpacity();
 		setTextAlignment();
 		hideCertainAreasInitially();
 		setLayoutsOfComponents();
 		displayDatabase("");
-		setTitle("Igor. Your Personal Assistant.");
+		setTitle(MESSAGE_WELCOME);
 		setApplicationIcon();
 		setResizable(false);
 		setInitialText();
+		// setAppToScreenCenter();
+		createSystemTrayIcon();
+		pack();
+
+	}
+
+	private void createSystemTrayIcon() {
 		SystemTrayIntegration systemTray = new SystemTrayIntegration(this);
 		systemTray.createSystemTray();
-		// setUndecorated(true);
-		pack();
-		AddMenuBarIntoJFrame menu = new AddMenuBarIntoJFrame(this);
-
-		setAppToScreenCenter();
-
-		// menu.createMenu();
-
 	}
 
 	private void setAppToScreenCenter() {
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height
-				/ 2 - this.getSize().height / 2);
+		this.setLocation(dim.width / SCREEN_HALF - this.getSize().width
+				/ SCREEN_HALF, dim.height / SCREEN_HALF - this.getSize().height
+				/ SCREEN_HALF);
 	}
 
-	/*
-	 * 
-	 * private void setUpHotKey() { JIntellitype jShortcut =
-	 * JIntellitype.getInstance(); jShortcut.registerHotKey(1,
-	 * JIntellitype.MOD_WIN, (int)'A'); GUIHotKeyListener guiHotKeyListener =
-	 * new GUIHotKeyListener(); jShortcut.addHotKeyListener(guiHotKeyListener);
-	 * } private class GUIHotKeyListener implements HotkeyListener { public void
-	 * onHotKey(int arg0) { setVisible(true); System.out.println("hot key"); } }
-	 */
 	private void setExitOnClose() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
 	private void setApplicationIcon() {
-		Image im = null;
+		Image image = null;
 		try {
-			im = ImageIO.read(getClass().getResource("/logo.jpg"));
+			image = ImageIO.read(getClass().getResource("/logo.jpg"));
 		} catch (IOException ex) {
 		}
 
-		setIconImage(im);
+		setIconImage(image);
 	}
 
 	private void setLayoutsOfComponents() {
 		javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(
-				jPanel2);
-		jPanel2.setLayout(jPanel2Layout);
+				upcomingEventsPanel);
+		upcomingEventsPanel.setLayout(jPanel2Layout);
 		jPanel2Layout.setHorizontalGroup(jPanel2Layout.createParallelGroup(
 				javax.swing.GroupLayout.Alignment.LEADING).addGroup(
 				jPanel2Layout
 						.createSequentialGroup()
 						.addContainerGap()
-						.addComponent(jScrollPane3,
-								javax.swing.GroupLayout.DEFAULT_SIZE, 880,
+						.addComponent(scrollPaneForUpcoming,
+								javax.swing.GroupLayout.DEFAULT_SIZE,
+								TEXT_AREAS_PREFERRED_SIZE_HORIZONTAL,
 								Short.MAX_VALUE).addContainerGap()));
 		jPanel2Layout.setVerticalGroup(jPanel2Layout.createParallelGroup(
 				javax.swing.GroupLayout.Alignment.LEADING).addGroup(
 				jPanel2Layout
 						.createSequentialGroup()
 						.addContainerGap()
-						.addComponent(jScrollPane3,
-								javax.swing.GroupLayout.DEFAULT_SIZE, 298,
+						.addComponent(scrollPaneForUpcoming,
+								javax.swing.GroupLayout.DEFAULT_SIZE,
+								TEXT_AREAS_PREFERRED_SIZE_VERTICAL,
 								Short.MAX_VALUE).addContainerGap()));
-		jPanel2.setBounds(10, 10, 930, 320);
-		jLayeredPane1.add(jPanel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+		upcomingEventsPanel.setBounds(TEXT_AREA_X_COORDINATE,
+				TEXT_AREAS_Y_COORDINATE, TEXT_AREAS_WIDTH, TEXT_AREAS_HEIGHT);
+		jLayeredPane1.add(upcomingEventsPanel,
+				javax.swing.JLayeredPane.DEFAULT_LAYER);
 		javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(
-				jPanel3);
-		jPanel3.setLayout(jPanel3Layout);
-		jPanel3.setLayout(jPanel3Layout);
+				searchResulsPanel);
+		searchResulsPanel.setLayout(jPanel3Layout);
+		searchResulsPanel.setLayout(jPanel3Layout);
 		jPanel3Layout.setHorizontalGroup(jPanel3Layout.createParallelGroup(
 				javax.swing.GroupLayout.Alignment.LEADING).addGroup(
 				jPanel3Layout
 						.createSequentialGroup()
 						.addContainerGap()
-						.addComponent(jScrollPane1,
-								javax.swing.GroupLayout.DEFAULT_SIZE, 880,
+						.addComponent(scrollPaneForSearch,
+								javax.swing.GroupLayout.DEFAULT_SIZE,
+								TEXT_AREAS_PREFERRED_SIZE_HORIZONTAL,
 								Short.MAX_VALUE).addContainerGap()));
 		jPanel3Layout.setVerticalGroup(jPanel3Layout.createParallelGroup(
 				javax.swing.GroupLayout.Alignment.LEADING).addGroup(
 				jPanel3Layout
 						.createSequentialGroup()
 						.addContainerGap()
-						.addComponent(jScrollPane1,
-								javax.swing.GroupLayout.DEFAULT_SIZE, 298,
+						.addComponent(scrollPaneForSearch,
+								javax.swing.GroupLayout.DEFAULT_SIZE,
+								TEXT_AREAS_PREFERRED_SIZE_VERTICAL,
 								Short.MAX_VALUE).addContainerGap()));
-		jPanel3.setBounds(10, 10, 930, 320);
-		jLayeredPane1.add(jPanel3, javax.swing.JLayeredPane.DEFAULT_LAYER);
+		searchResulsPanel.setBounds(TEXT_AREA_X_COORDINATE,
+				TEXT_AREAS_Y_COORDINATE, TEXT_AREAS_WIDTH, TEXT_AREAS_HEIGHT);
+		jLayeredPane1.add(searchResulsPanel,
+				javax.swing.JLayeredPane.DEFAULT_LAYER);
 		javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(
-				jPanel4);
-		jPanel4.setLayout(jPanel4Layout);
-		jPanel4.setLayout(jPanel4Layout);
+				floatingEventsPanel);
+		floatingEventsPanel.setLayout(jPanel4Layout);
+		floatingEventsPanel.setLayout(jPanel4Layout);
 		jPanel4Layout.setHorizontalGroup(jPanel4Layout.createParallelGroup(
 				javax.swing.GroupLayout.Alignment.LEADING).addGroup(
 				jPanel4Layout
 						.createSequentialGroup()
 						.addContainerGap()
-						.addComponent(jScrollPane7,
-								javax.swing.GroupLayout.DEFAULT_SIZE, 880,
+						.addComponent(scrollPaneForFloating,
+								javax.swing.GroupLayout.DEFAULT_SIZE,
+								TEXT_AREAS_PREFERRED_SIZE_HORIZONTAL,
 								Short.MAX_VALUE).addContainerGap()));
 		jPanel4Layout.setVerticalGroup(jPanel4Layout.createParallelGroup(
 				javax.swing.GroupLayout.Alignment.LEADING).addGroup(
 				jPanel4Layout
 						.createSequentialGroup()
 						.addContainerGap()
-						.addComponent(jScrollPane7,
-								javax.swing.GroupLayout.DEFAULT_SIZE, 298,
+						.addComponent(scrollPaneForFloating,
+								javax.swing.GroupLayout.DEFAULT_SIZE,
+								TEXT_AREAS_PREFERRED_SIZE_VERTICAL,
 								Short.MAX_VALUE).addContainerGap()));
-		jPanel4.setBounds(10, 10, 930, 320);
-		jLayeredPane1.add(jPanel4, javax.swing.JLayeredPane.DEFAULT_LAYER);
+		floatingEventsPanel.setBounds(TEXT_AREA_X_COORDINATE,
+				TEXT_AREAS_Y_COORDINATE, TEXT_AREAS_WIDTH, TEXT_AREAS_HEIGHT);
+		jLayeredPane1.add(floatingEventsPanel,
+				javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-		jTextPane1.setBorder(null);
-		jScrollPane2.setViewportView(jLabel3);
 		javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(
-				jPanel1);
-		jPanel1.setLayout(jPanel1Layout);
+				panelContainingEverything);
+		panelContainingEverything.setLayout(jPanel1Layout);
 		jPanel1Layout
 				.setHorizontalGroup(jPanel1Layout
 						.createParallelGroup(
@@ -230,18 +300,18 @@ public class What2DoUI extends javax.swing.JFrame {
 																						.createParallelGroup(
 																								javax.swing.GroupLayout.Alignment.LEADING)
 																						.addComponent(
-																								textField1,
+																								userInputField,
 																								javax.swing.GroupLayout.Alignment.TRAILING,
 																								javax.swing.GroupLayout.PREFERRED_SIZE,
 																								909,
 																								javax.swing.GroupLayout.PREFERRED_SIZE)
 																						.addComponent(
-																								jScrollPane4,
+																								scrollPaneForFeedback,
 																								javax.swing.GroupLayout.PREFERRED_SIZE,
 																								909,
 																								javax.swing.GroupLayout.PREFERRED_SIZE)
 																						.addComponent(
-																								jScrollPane2,
+																								scrollPaneForSuggestions,
 																								javax.swing.GroupLayout.PREFERRED_SIZE,
 																								909,
 																								javax.swing.GroupLayout.PREFERRED_SIZE))))
@@ -256,21 +326,21 @@ public class What2DoUI extends javax.swing.JFrame {
 										.createSequentialGroup()
 										.addContainerGap()
 										.addComponent(
-												textField1,
+												userInputField,
 												javax.swing.GroupLayout.PREFERRED_SIZE,
 												26,
 												javax.swing.GroupLayout.PREFERRED_SIZE)
 										.addPreferredGap(
 												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 										.addComponent(
-												jScrollPane4,
+												scrollPaneForFeedback,
 												javax.swing.GroupLayout.PREFERRED_SIZE,
 												javax.swing.GroupLayout.DEFAULT_SIZE,
 												javax.swing.GroupLayout.PREFERRED_SIZE)
 										.addPreferredGap(
 												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 										.addComponent(
-												jScrollPane2,
+												scrollPaneForSuggestions,
 												javax.swing.GroupLayout.PREFERRED_SIZE,
 												29,
 												javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -285,100 +355,107 @@ public class What2DoUI extends javax.swing.JFrame {
 												javax.swing.GroupLayout.DEFAULT_SIZE,
 												Short.MAX_VALUE)));
 		jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL,
-				new java.awt.Component[] { jScrollPane2, jScrollPane4,
-						textField1 });
+				new java.awt.Component[] { scrollPaneForSuggestions,
+						scrollPaneForFeedback, userInputField });
 
 		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(
 				getContentPane());
 		getContentPane().setLayout(layout);
 		layout.setHorizontalGroup(layout.createParallelGroup(
 				javax.swing.GroupLayout.Alignment.LEADING).addComponent(
-				jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE,
+				panelContainingEverything,
+				javax.swing.GroupLayout.PREFERRED_SIZE,
 				javax.swing.GroupLayout.DEFAULT_SIZE,
 				javax.swing.GroupLayout.PREFERRED_SIZE));
 		layout.setVerticalGroup(layout.createParallelGroup(
 				javax.swing.GroupLayout.Alignment.LEADING).addComponent(
-				jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE,
+				panelContainingEverything,
+				javax.swing.GroupLayout.PREFERRED_SIZE,
 				javax.swing.GroupLayout.DEFAULT_SIZE,
 				javax.swing.GroupLayout.PREFERRED_SIZE));
 	}
 
 	private void hideCertainAreasInitially() {
-		jPanel3.setVisible(false);
-		jPanel4.setVisible(false);
+		hideFloatingDisplay();
+		hideSearchDisplay();
+	}
+
+	private void hideSearchDisplay() {
+		floatingEventsPanel.setVisible(false);
+	}
+
+	private void hideFloatingDisplay() {
+		searchResulsPanel.setVisible(false);
 	}
 
 	private void setTextAlignment() {
+		setHorizontalTextAlignment();
+		setVerticalTextAlignment();
+	}
 
-		jTextArea1.setHorizontalAlignment(JLabel.LEFT);
-		jTextArea1.setVerticalAlignment(JLabel.TOP);
-		jTextArea2.setHorizontalAlignment(JLabel.LEFT);
-		jTextArea2.setVerticalAlignment(JLabel.TOP);
-		jTextArea4.setHorizontalAlignment(JLabel.LEFT);
-		jTextArea4.setVerticalAlignment(JLabel.TOP);
-		jLabel3.setHorizontalAlignment(JLabel.CENTER);
-		jLabel3.setVerticalAlignment(JLabel.CENTER);
-		jLabel4.setHorizontalAlignment(JLabel.CENTER);
-		jLabel4.setVerticalAlignment(JLabel.CENTER);
+	private void setVerticalTextAlignment() {
+		searchResultsTextArea.setVerticalAlignment(JLabel.TOP);
+		upcomingEventsTextArea.setVerticalAlignment(JLabel.TOP);
+		floatingEventsTextArea.setVerticalAlignment(JLabel.TOP);
+		suggestionLabel.setVerticalAlignment(JLabel.CENTER);
+		feedbackLabel.setVerticalAlignment(JLabel.CENTER);
+	}
 
+	private void setHorizontalTextAlignment() {
+		searchResultsTextArea.setHorizontalAlignment(JLabel.LEFT);
+		upcomingEventsTextArea.setHorizontalAlignment(JLabel.LEFT);
+		floatingEventsTextArea.setHorizontalAlignment(JLabel.LEFT);
+		suggestionLabel.setHorizontalAlignment(JLabel.CENTER);
+		feedbackLabel.setHorizontalAlignment(JLabel.CENTER);
 	}
 
 	private void setOpacity() {
-		jTextArea1.setOpaque(true);
-		jTextArea2.setOpaque(true);
-		jTextArea4.setOpaque(true);
-		jLabel3.setOpaque(true);
-		jLabel4.setOpaque(true);
+		searchResultsTextArea.setOpaque(true);
+		upcomingEventsTextArea.setOpaque(true);
+		floatingEventsTextArea.setOpaque(true);
+		suggestionLabel.setOpaque(true);
+		feedbackLabel.setOpaque(true);
 	}
 
 	private void setBorders() {
 
-		jTextArea2.setBorder(javax.swing.BorderFactory
-				.createTitledBorder(null, "Your upcoming events are...",
+		upcomingEventsTextArea.setBorder(javax.swing.BorderFactory
+				.createTitledBorder(null, MESSAGE_TITLE_UPCOMING,
 						javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
 						javax.swing.border.TitledBorder.DEFAULT_POSITION,
-						new java.awt.Font("Comic Sans MS", 1, 14),
-						java.awt.Color.black)); // NOI18N
-		jTextArea1.setBorder(javax.swing.BorderFactory
-				.createTitledBorder(null, "The Search Results are...",
+						new java.awt.Font(FONT_HEADERS, FONT_HEADER_STYLE,
+								FONT_HEADER_SIZE), java.awt.Color.black));
+		searchResultsTextArea.setBorder(javax.swing.BorderFactory
+				.createTitledBorder(null, MESSAGE_TITLE_SEARCH,
 						javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
 						javax.swing.border.TitledBorder.DEFAULT_POSITION,
 						new java.awt.Font("Comic Sans MS", 1, 14),
 						java.awt.Color.black));
-		jTextArea4.setBorder(javax.swing.BorderFactory
-				.createTitledBorder(null, "Your floating events are...",
+		floatingEventsTextArea.setBorder(javax.swing.BorderFactory
+				.createTitledBorder(null, MESSAGE_TITLE_FLOATING,
 						javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
 						javax.swing.border.TitledBorder.DEFAULT_POSITION,
 						new java.awt.Font("Comic Sans MS", 1, 14),
-						java.awt.Color.black)); // NOI18N
-
-		/*
-		 * jLabel3.setBorder(BorderFactory.createEmptyBorder());
-		 * jLabel4.setBorder(BorderFactory.createEmptyBorder());
-		 */
-	}
-
-	private void setLogoIcons() {
-
+						java.awt.Color.black));
 	}
 
 	private void setViewPorts() {
-		jScrollPane4.setViewportView(jLabel4);
-		jScrollPane3.setViewportView(jTextArea2);
-		jScrollPane1.setViewportView(jTextArea1);
-		jScrollPane7.setViewportView(jTextArea4);
-		jScrollPane2.setViewportView(jLabel3);
+		scrollPaneForFeedback.setViewportView(feedbackLabel);
+		scrollPaneForUpcoming.setViewportView(upcomingEventsTextArea);
+		scrollPaneForSearch.setViewportView(searchResultsTextArea);
+		scrollPaneForFloating.setViewportView(floatingEventsTextArea);
+		scrollPaneForSuggestions.setViewportView(suggestionLabel);
+
 	}
 
 	private void setInitialText() {
-		jLabel4.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(223,223,223)\">Welcome! This is Igor, at your service.</b></span></p></html>");
-
-		jLabel3.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255)\">You can do any of the following :</span></b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255)\">- </span><b><span style=\"font-family: Helvetica, sans-serif; color: red; \">add (+)/delete(-)/search/update/undo/done/undone/exit</span><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>");
+		feedbackLabel.setText(MESSAGE_WELCOME_HTML);
+		suggestionLabel.setText(MESSAGE_SUGGESTION_INITIAL);
 
 	}
 
 	private void addListenerToUserTextField() {
-		textField1.addKeyListener(new java.awt.event.KeyAdapter() {
+		userInputField.addKeyListener(new java.awt.event.KeyAdapter() {
 			public void keyPressed(java.awt.event.KeyEvent evt) {
 				textField1KeyPressed(evt);
 			}
@@ -395,96 +472,101 @@ public class What2DoUI extends javax.swing.JFrame {
 	}
 
 	private void setCursorForUserTextFields() {
-		textField1.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+		userInputField.setCursor(new java.awt.Cursor(
+				java.awt.Cursor.TEXT_CURSOR));
 	}
 
 	private void setBackgrounds() {
-		jPanel1.setBackground(new java.awt.Color(59, 59, 59));
-		jPanel2.setBackground(new java.awt.Color(59, 59, 59));
-		jPanel3.setBackground(new java.awt.Color(59, 59, 59));
-		jLabel3.setBackground(new java.awt.Color(59, 59, 59));
-		jLabel4.setBackground(new java.awt.Color(59, 59, 59));
-		jPanel4.setBackground(new java.awt.Color(59, 59, 59));
-		textField1.setBackground(new java.awt.Color(227, 227, 227));
-		jTextArea1.setBackground(new java.awt.Color(227, 227, 227));
-		jTextArea2.setBackground(new java.awt.Color(227, 227, 227));
-		jTextArea4.setBackground(new java.awt.Color(227, 227, 227));
+		panelContainingEverything.setBackground(new java.awt.Color(
+				GREY_BACKGROUND_R, GREY_BACKGROUND_G, GREY_BACKGROUND_B));
+		upcomingEventsPanel.setBackground(new java.awt.Color(GREY_BACKGROUND_R,
+				GREY_BACKGROUND_G, GREY_BACKGROUND_B));
+		searchResulsPanel.setBackground(new java.awt.Color(GREY_BACKGROUND_R,
+				GREY_BACKGROUND_G, GREY_BACKGROUND_B));
+		suggestionLabel.setBackground(new java.awt.Color(GREY_BACKGROUND_R,
+				GREY_BACKGROUND_G, GREY_BACKGROUND_B));
+		feedbackLabel.setBackground(new java.awt.Color(GREY_BACKGROUND_R,
+				GREY_BACKGROUND_G, GREY_BACKGROUND_B));
+		floatingEventsPanel.setBackground(new java.awt.Color(GREY_BACKGROUND_R,
+				GREY_BACKGROUND_G, GREY_BACKGROUND_B));
+		userInputField.setBackground(new java.awt.Color(WHITE_BACKGROUND_R,
+				WHITE_BACKGROUND_G, WHITE_BACKGROUND_B));
+		searchResultsTextArea.setBackground(new java.awt.Color(
+				WHITE_BACKGROUND_R, WHITE_BACKGROUND_G, WHITE_BACKGROUND_B));
+		upcomingEventsTextArea.setBackground(new java.awt.Color(
+				WHITE_BACKGROUND_R, WHITE_BACKGROUND_G, WHITE_BACKGROUND_B));
+		floatingEventsTextArea.setBackground(new java.awt.Color(
+				WHITE_BACKGROUND_R, WHITE_BACKGROUND_G, WHITE_BACKGROUND_B));
 	}
 
 	private void setFonts() {
-		jTextArea4.setFont(new java.awt.Font("Monospaced", 1, 12)); // NOI18N
-		jLabel4.setFont(new java.awt.Font("Monospaced", 2, 14));
-		textField1.setFont(new java.awt.Font("Monospaced", 0, 18)); // NOI18N
-		jLabel4.setFont(new java.awt.Font("Monospaced", 2, 14));
-		jTextArea2.setFont(new java.awt.Font("Monospaced", 1, 12));
-		jTextArea1.setFont(new java.awt.Font("Monospaced", 1, 12));
+		userInputField.setFont(new java.awt.Font(FONT_DISPLAY_TEXT_AREAS,
+				FONT_STYLE_USER_INPUT_AREA, FONT_SIZE_USER_INPUT_AREA)); // NOI18N
 
-		jLabel3.setFont(new java.awt.Font("Monospaced", 2, 14));
-		jLabel3.setFont(new java.awt.Font("Monospaced", 2, 14));
+		suggestionLabel.setFont(new java.awt.Font(FONT_DISPLAY_TEXT_AREAS,
+				FONT_STYLE_OTHER_TEXT_DISPLAYS, FONT_SIZE_OTHER_TEXT_DISPLAYS));
+		feedbackLabel.setFont(new java.awt.Font(FONT_DISPLAY_TEXT_AREAS,
+				FONT_STYLE_OTHER_TEXT_DISPLAYS, FONT_SIZE_OTHER_TEXT_DISPLAYS));
+
+		upcomingEventsTextArea.setFont(new java.awt.Font(
+				FONT_DISPLAY_TEXT_AREAS, FONT_STYLE_OTHER_TEXT_DISPLAYS,
+				FONT_SIZE_OTHER_TEXT_DISPLAYS));
+		searchResultsTextArea.setFont(new java.awt.Font(
+				FONT_DISPLAY_TEXT_AREAS, FONT_STYLE_OTHER_TEXT_DISPLAYS,
+				FONT_SIZE_OTHER_TEXT_DISPLAYS));
+		floatingEventsTextArea.setFont(new java.awt.Font(
+				FONT_DISPLAY_TEXT_AREAS, FONT_STYLE_OTHER_TEXT_DISPLAYS,
+				FONT_SIZE_OTHER_TEXT_DISPLAYS)); // NOI18N
 
 	}
 
 	private void initializeGUIElements() {
-		jPanel1 = new javax.swing.JPanel();
-		textField1 = new java.awt.TextField();
-		jScrollPane4 = new javax.swing.JScrollPane();
-		jLabel4 = new javax.swing.JLabel();
-		jLabel3 = new javax.swing.JLabel();
+		panelContainingEverything = new javax.swing.JPanel();
+		userInputField = new java.awt.TextField();
+		scrollPaneForFeedback = new javax.swing.JScrollPane();
+		feedbackLabel = new javax.swing.JLabel();
+		suggestionLabel = new javax.swing.JLabel();
 		jLayeredPane1 = new javax.swing.JLayeredPane();
-		jPanel2 = new javax.swing.JPanel();
-		jScrollPane3 = new javax.swing.JScrollPane();
-		jTextArea2 = new javax.swing.JLabel();
-		jPanel3 = new javax.swing.JPanel();
-		jScrollPane1 = new javax.swing.JScrollPane();
-		jTextArea1 = new javax.swing.JLabel();
-		jPanel4 = new javax.swing.JPanel();
-		jScrollPane7 = new javax.swing.JScrollPane();
-		jTextArea4 = new javax.swing.JLabel();
-		jScrollPane2 = new javax.swing.JScrollPane();
-		jTextPane1 = new javax.swing.JTextPane();
+		upcomingEventsPanel = new javax.swing.JPanel();
+		scrollPaneForUpcoming = new javax.swing.JScrollPane();
+		upcomingEventsTextArea = new javax.swing.JLabel();
+		searchResulsPanel = new javax.swing.JPanel();
+		scrollPaneForSearch = new javax.swing.JScrollPane();
+		searchResultsTextArea = new javax.swing.JLabel();
+		floatingEventsPanel = new javax.swing.JPanel();
+		scrollPaneForFloating = new javax.swing.JScrollPane();
+		floatingEventsTextArea = new javax.swing.JLabel();
+		scrollPaneForSuggestions = new javax.swing.JScrollPane();
 	}
 
 	private void textField1KeyTyped(java.awt.event.KeyEvent evt)
 			throws Exception {// GEN-FIRST:event_textField1KeyTyped
-		if (evt.getKeyChar() != '\n')
+		if (evt.getKeyChar() != KEY_RETURN)
 			setSuggestionBoxTest(evt);
 		actUponUserCommand(evt);
 	}
 
 	private void actUponUserCommand(java.awt.event.KeyEvent evt)
 			throws Exception {
-		if (evt.getKeyChar() == '\n') {
+		if (evt.getKeyChar() == KEY_RETURN) {
+
 			flag = 0;
-			String data = textField1.getText();
-			/*
-			 * JDialog dialog=new JDialog();
-			 * dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-			 * dialog.setTitle("Caution Message!"); dialog.setBackground(new
-			 * java.awt.Color(59,59,59)); dialog.setSize(300,100);
-			 * dialog.setLocationRelativeTo(this); dialog.setVisible(true);
-			 * Insets insets=dialog.getInsets(); JLabel caution_Message=new
-			 * JLabel("Caution!"); caution_Message.setOpaque(true);
-			 * caution_Message.setBackground(new java.awt.Color(255,255,255));
-			 * caution_Message.setBounds(5+insets.left, 10+insets.top,5, 5);
-			 * dialog.add(caution_Message);
-			 */
-			// initialize_dialog_box();
+
+			String data = userInputField.getText();
+
 			if (data.equals("n")) {
-				if (view.equals("upcoming"))
-					upcoming_start_position += 6;
+				updateUpcomingStartPosition();
 				if (view.equals("floating")) {
 					setViewToFloating();
-					floating_start_position += 6;
+					updateFloatingStartPosition();
 				}
 				if (view.equals("search")) {
-					search_start_position += 6;
+					updateSearchStartPosition();
 					setViewToSearch();
 				}
 
 				displayDatabase("");
-				jLabel4.setText(String
-						.format("<html><p class=\"MsoNormal\"><b><span style=\"color: rgb(50,205,50)\"; >%s</span></b></p></html>",
-								"Switched to Next Page"));
+				feedbackLabel.setText(MESSAGE_NEXT_PAGE_HTML);
 				prepareForNextEntry(data);
 				return;
 
@@ -492,31 +574,19 @@ public class What2DoUI extends javax.swing.JFrame {
 			if (data.equals("p")) {
 				if (view.equals("upcoming")) {
 					setViewToUpcoming();
-					upcoming_start_position -= 6;
-
-					if (upcoming_start_position < 0) {
-						upcoming_start_position = 0;
-					}
+					decreaseUpcomingStartPosition();
 
 				}
 				if (view.equals("floating")) {
 					setViewToFloating();
-					floating_start_position -= 6;
-					if (floating_start_position < 0) {
-						floating_start_position = 0;
-					}
+					decreaseFloatingStartPosition();
 				}
 				if (view.equals("search")) {
-					search_start_position -= 6;
-					if (search_start_position < 0) {
-						search_start_position = 0;
-					}
+					decreaseSearchStartPosition();
 					setViewToSearch();
 				}
 				displayDatabase("");
-				jLabel4.setText(String
-						.format("<html><p class=\"MsoNormal\"><b><span style=\"color: rgb(50,205,50)\"; >%s</span></b></p></html>",
-								"Switched to Previous page."));
+				feedbackLabel.setText(MESSAGE_PREVIOUS_PAGE_HTML);
 				prepareForNextEntry(data);
 				return;
 
@@ -529,12 +599,13 @@ public class What2DoUI extends javax.swing.JFrame {
 					String event = updateStream(data, index);
 					if (event != null) {
 						data += event;
-						textField1.setText(data);
+						userInputField.setText(data);
 					} else {
-						textField1.setText("");
-						jLabel4.setText(String
-								.format("<html><p class=\"MsoNormal\"><b><span style=\"color: red\"; >%s</span></b></p></html>",
-										"ERROR: Update Index not Found"));
+						userInputField.setText("");
+						feedbackLabel
+								.setText(String
+										.format("<html><p class=\"MsoNormal\"><b><span style=\"color: red\"; >%s</span></b></p></html>",
+												"ERROR: Update Index not Found"));
 						prepareForNextEntry(data);
 						return;
 					}
@@ -546,49 +617,35 @@ public class What2DoUI extends javax.swing.JFrame {
 				searchView = true;
 				setViewToSearch();
 				Executor.searchToTrue();
-				jLabel4.setText(String
-						.format("<html><p class=\"MsoNormal\"><b><span style=\"color: rgb(0, 176, 80)\"; >%s</span></b></p></html>",
-								"Switched to Search View"));
+				feedbackLabel
+						.setText(String
+								.format("<html><p class=\"MsoNormal\"><b><span style=\"color: rgb(0, 176, 80)\"; >%s</span></b></p></html>",
+										"Switched to Search View"));
 				prepareForNextEntry(data);
 			} else if (data.toLowerCase().contains("floating")) {
 				searchView = false;
 				Executor.searchToFalse();
 				setViewToFloating();
-				jLabel4.setText(String
-						.format("<html><p class=\"MsoNormal\"><b><span style=\"color: rgb(0, 176, 80)\"; >%s</span></b></p></html>",
-								"Switched to Floating View"));
+				feedbackLabel
+						.setText(String
+								.format("<html><p class=\"MsoNormal\"><b><span style=\"color: rgb(0, 176, 80)\"; >%s</span></b></p></html>",
+										"Switched to Floating View"));
 				prepareForNextEntry(data);
 				return;
 			} else if (data.toLowerCase().contains("upcoming")) {
 				searchView = false;
 				Executor.searchToFalse();
 				setViewToUpcoming();
-				jLabel4.setText(String
-						.format("<html><p class=\"MsoNormal\"><b><span style=\"color: rgb(0, 176, 80)\"; >%s</span></b></p></html>",
-								"Switched to Default View"));
+				feedbackLabel
+						.setText(String
+								.format("<html><p class=\"MsoNormal\"><b><span style=\"color: rgb(0, 176, 80)\"; >%s</span></b></p></html>",
+										"Switched to Default View"));
 				prepareForNextEntry(data);
 				return;
 			}
-			/*
-			 * else { searchView = false; Executor.searchToFalse();
-			 * setViewToUpcoming();
-			 * 
-			 * }
-			 */
 			if (!(data.toLowerCase().contains("update"))) {
 				updateFlagBool = false;
 			}
-			/*
-			 * if (data.contains("back")) { searchView = false;
-			 * Executor.searchToFalse(); setViewToUpcoming(); }
-			 * 
-			 * if (data.contains("upcoming")) { searchView = false;
-			 * Executor.searchToFalse(); setViewToUpcoming(); } if
-			 * (data.contains("add")) { searchView = false;
-			 * Executor.searchToFalse(); setViewToUpcoming(); } if
-			 * (data.contains("+")) { searchView = false;
-			 * Executor.searchToFalse(); setViewToUpcoming(); }
-			 */
 			if (updateFlagBool == false) {
 				String message = analyzeInputUsingLogic(data);
 				ArrayList<String> feedback = Executor.getFeedback();
@@ -599,13 +656,6 @@ public class What2DoUI extends javax.swing.JFrame {
 					if (feedback.size() > 1)
 						feedbackMessage = "WARNING: The New Event is Clashed AND Before PRESENT TIME.";
 					feedbackMessage += "\nDo you want to PROCEED? - ENTER YES/NO";
-					/*
-					 * String input = JOptionPane.showInputDialog(this,
-					 * feedbackMessage, "Caution!",
-					 * JOptionPane.WARNING_MESSAGE);
-					 * JOptionPane.showInputDialog(this, feedbackMessage,
-					 * "Enter Y/N");
-					 */
 					String[] option = { "YES", "NO" };
 					String input;
 					Object inputObject = JOptionPane.showInputDialog(this,
@@ -634,117 +684,106 @@ public class What2DoUI extends javax.swing.JFrame {
 		}
 	}
 
-	/*
-	 * private void initialize_dialog_box() { JDialog dialog=new JDialog();
-	 * dialog.setTitle("Caution!"); jPanel1 = new javax.swing.JPanel(); jLabel2
-	 * = new javax.swing.JLabel(); jLabel1 = new javax.swing.JLabel();
-	 * 
-	 * dialog.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE
-	 * ); dialog.setBackground(new java.awt.Color(0, 153, 153));
-	 * dialog.setModal(true);
-	 * 
-	 * jPanel1.setBackground(new java.awt.Color(79, 79, 79));
-	 * jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new
-	 * java.awt.Color(0, 0, 0))); jPanel1.setForeground(new java.awt.Color(59,
-	 * 59, 59)); jPanel1.setOpaque(true);
-	 * 
-	 * jLabel2.setBackground(new java.awt.Color(255, 255, 255));
-	 * jLabel2.setBorder(javax.swing.BorderFactory.createLineBorder(new
-	 * java.awt.Color(0, 0, 0), 3)); jLabel2.setOpaque(true);
-	 * jLabel2.addKeyListener(new java.awt.event.KeyAdapter() { public void
-	 * keyTyped(java.awt.event.KeyEvent evt) { jLabel2KeyTyped(evt); }
-	 * 
-	 * private void jLabel2KeyTyped(KeyEvent evt) { // TODO Auto-generated
-	 * method stub
-	 * 
-	 * } });
-	 * 
-	 * jLabel1.setBackground(new java.awt.Color(255, 255, 255));
-	 * jLabel1.setText(
-	 * "You're proposed event clashes with another event! Proceed?(Y/N)");
-	 * jLabel1.setBorder(javax.swing.BorderFactory.createLineBorder(new
-	 * java.awt.Color(0, 0, 0), 3)); jLabel1.setOpaque(true);
-	 * 
-	 * javax.swing.GroupLayout jPanel1Layout = new
-	 * javax.swing.GroupLayout(jPanel1); jPanel1.setLayout(jPanel1Layout);
-	 * jPanel1Layout.setHorizontalGroup(
-	 * jPanel1Layout.createParallelGroup(javax.
-	 * swing.GroupLayout.Alignment.LEADING)
-	 * .addGroup(jPanel1Layout.createSequentialGroup() .addContainerGap()
-	 * .addGroup
-	 * (jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment
-	 * .LEADING) .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE,
-	 * 324, javax.swing.GroupLayout.PREFERRED_SIZE)
-	 * .addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
-	 * jPanel1Layout.createSequentialGroup() .addGap(0, 0, Short.MAX_VALUE)
-	 * .addComponent(jLabel1))) .addContainerGap()) );
-	 * 
-	 * jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new
-	 * java.awt.Component[] {jLabel1, jLabel2});
-	 * 
-	 * jPanel1Layout.setVerticalGroup(
-	 * jPanel1Layout.createParallelGroup(javax.swing
-	 * .GroupLayout.Alignment.LEADING)
-	 * .addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
-	 * jPanel1Layout.createSequentialGroup() .addContainerGap()
-	 * .addComponent(jLabel1)
-	 * .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-	 * .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 26,
-	 * javax.swing.GroupLayout.PREFERRED_SIZE)
-	 * .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-	 * );
-	 * 
-	 * jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new
-	 * java.awt.Component[] {jLabel1, jLabel2});
-	 * 
-	 * javax.swing.GroupLayout layout = new
-	 * javax.swing.GroupLayout(getContentPane());
-	 * getContentPane().setLayout(layout); layout.setHorizontalGroup(
-	 * layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-	 * .addGroup(layout.createSequentialGroup() .addContainerGap()
-	 * .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE,
-	 * javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-	 * .addContainerGap()) ); layout.setVerticalGroup(
-	 * layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-	 * .addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
-	 * layout.createSequentialGroup()
-	 * .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-	 * .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE,
-	 * javax.swing.GroupLayout.DEFAULT_SIZE,
-	 * javax.swing.GroupLayout.PREFERRED_SIZE) .addContainerGap()) );
-	 * jPanel1.add(jLabel1); jPanel1.add(jLabel2); dialog.add(jPanel1);
-	 * dialog.setVisible(true);
-	 * 
-	 * }
-	 */
+	private void decreaseSearchStartPosition() {
+		search_start_position -= 6;
+		if (search_start_position < 0) {
+			search_start_position = 0;
+		}
+	}
+
+	private void decreaseFloatingStartPosition() {
+		floating_start_position -= 6;
+		if (floating_start_position < 0) {
+			floating_start_position = 0;
+		}
+	}
+
+	private void decreaseUpcomingStartPosition() {
+		upcoming_start_position -= 6;
+
+		if (upcoming_start_position < 0) {
+			upcoming_start_position = 0;
+		}
+	}
+
+	private void updateSearchStartPosition() {
+		search_start_position += 6;
+	}
+
+	private void updateFloatingStartPosition() {
+		floating_start_position += 6;
+	}
+
+	private void updateUpcomingStartPosition() {
+		if (view.equals("upcoming"))
+			upcoming_start_position += 6;
+	}
+
 	private String analyzeInputUsingLogic(String data) throws Exception {
-		int index = Executor.analyze(data);
-		String message = MessageHandler.getMessage(index);
-		toUpdate = !(message.contains("Error"));
+		int index;
+		String message;
+
+		index = obtainIndexFromExecutor(data);
+		message = obtainMessageFromMessageHandler(index);
+		checkIfToUpdate(message);
+
 		return message;
+	}
+
+	private void checkIfToUpdate(String message) {
+		toUpdate = !(message.contains("Error"));
+	}
+
+	private String obtainMessageFromMessageHandler(int index) {
+		String message;
+		message = MessageHandler.getMessage(index);
+		return message;
+	}
+
+	private int obtainIndexFromExecutor(String data) throws Exception {
+		int index;
+		index = Executor.analyze(data);
+		return index;
 	}
 
 	private void setViewToFloating() {
 		view = "floating";
-		jPanel2.setVisible(false);
-		jPanel3.setVisible(false);
-		jPanel4.setVisible(true);
+		hideUpcomingDisplay();
+		hideFloatingDisplay();
+		unhideFloatingDisplay();
+	}
+
+	private void unhideFloatingDisplay() {
+		floatingEventsPanel.setVisible(true);
+	}
+
+	private void hideUpcomingDisplay() {
+		upcomingEventsPanel.setVisible(false);
 	}
 
 	private void setViewToUpcoming() {
 		view = "upcoming";
-		jPanel3.setVisible(false);
-		jPanel4.setVisible(false);
-		jPanel2.setVisible(true);
+		hideFloatingDisplay();
+		hideSearchDisplay();
+		unhideUpcomingDisplay();
+	}
+
+	private void unhideUpcomingDisplay() {
+		upcomingEventsPanel.setVisible(true);
 	}
 
 	private void setViewToSearch() {
 		view = "search";
-		jPanel2.setVisible(false);
-		jPanel4.setVisible(false);
-		jPanel3.setVisible(true);
+		hideUpcomingDisplay();
+		hideSearchDisplay();
+		unhideSearchDisplay();
 	}
 
+	private void unhideSearchDisplay() {
+		searchResulsPanel.setVisible(true);
+	}
+
+	// @Akaash
 	private void setSuggestionBoxTest(java.awt.event.KeyEvent evt) {
 		if (evt.getKeyChar() == 8) {
 			flag = 0;
@@ -753,13 +792,16 @@ public class What2DoUI extends javax.swing.JFrame {
 						incompleteString.length() - 1);
 			}
 			if (incompleteString.isEmpty()) {
-				jLabel3.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif;color: rgb(255,255,255); \">You can do any of the following :</span></b><span style=\"font-family: Helvetica, sans-serif;color: rgb(255,255,255) \">- </span><b><span style=\"font-family: Helvetica, sans-serif; color: red; \">add (+)/delete(-)/search/update/undo/done/undone/exit</span><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>");
+				suggestionLabel
+						.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif;color: rgb(255,255,255); \">You can do any of the following :</span></b><span style=\"font-family: Helvetica, sans-serif;color: rgb(255,255,255) \">- </span><b><span style=\"font-family: Helvetica, sans-serif; color: red; \">add (+)/delete(-)/search/update/undo/done/undone/exit</span><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>");
 			}
 		} else {
 			incompleteString += evt.getKeyChar();
 			if (nextEntryFlag == true) {
-				jLabel4.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(223,223,223)\">This is Igor, at your service.</b></span></p></html>");
-				jLabel3.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif;color: rgb(255,255,255); \">You can do any of the following :</span></b><span style=\"font-family: Helvetica, sans-serif;color: rgb(255,255,255) \">- </span><b><span style=\"font-family: Helvetica, sans-serif; color: red; \">add (+)/delete(-)/search/update/undo/done/undone/exit</span><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>");
+				feedbackLabel
+						.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(223,223,223)\">This is Igor, at your service.</b></span></p></html>");
+				suggestionLabel
+						.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif;color: rgb(255,255,255); \">You can do any of the following :</span></b><span style=\"font-family: Helvetica, sans-serif;color: rgb(255,255,255) \">- </span><b><span style=\"font-family: Helvetica, sans-serif; color: red; \">add (+)/delete(-)/search/update/undo/done/undone/exit</span><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>");
 				nextEntryFlag = false;
 			}
 		}
@@ -780,7 +822,8 @@ public class What2DoUI extends javax.swing.JFrame {
 				flag = 1;
 			}
 			lastEvent = evt.getKeyChar();
-			jLabel3.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \">FORMAT: [add] &nbsp <span style=\"color: red; font-family: Helvetica, sans-serif; \">[Key words]&nbsp [start time and date]&nbsp [End time and date]&nbsp [r-reminder time]</span></b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \"></span><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); color: rgb(192, 80, 77); \"></span><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>");
+			suggestionLabel
+					.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \">FORMAT: [add] &nbsp <span style=\"color: red; font-family: Helvetica, sans-serif; \">[Key words]&nbsp [start time and date]&nbsp [End time and date]&nbsp [r-reminder time]</span></b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \"></span><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); color: rgb(192, 80, 77); \"></span><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>");
 		}
 		if (flag == 0
 				&& ((("delete ".startsWith(incompleteString.toLowerCase())) || "- "
@@ -794,7 +837,8 @@ public class What2DoUI extends javax.swing.JFrame {
 				flag = 1;
 			}
 			lastEvent = evt.getKeyChar();
-			jLabel3.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \">FORMAT: [delete] &nbsp<span style=\"font-family: Helvetica, sans-serif; color: red; \">[Index Number]</span></b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \"></span><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); color: rgb(192, 80, 77); \"></span><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>");
+			suggestionLabel
+					.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \">FORMAT: [delete] &nbsp<span style=\"font-family: Helvetica, sans-serif; color: red; \">[Index Number]</span></b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \"></span><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); color: rgb(192, 80, 77); \"></span><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>");
 		}
 		if (flag == 0
 				&& ("done ".startsWith(incompleteString.toLowerCase()) || incompleteString
@@ -805,7 +849,8 @@ public class What2DoUI extends javax.swing.JFrame {
 				flag = 1;
 			}
 			lastEvent = evt.getKeyChar();
-			jLabel3.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \">FORMAT: [done]&nbsp <span style=\"font-family: Helvetica, sans-serif; color: red; \">[Index Number]</span></b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \"></span><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); color: rgb(192, 80, 77); \"></span><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>");
+			suggestionLabel
+					.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \">FORMAT: [done]&nbsp <span style=\"font-family: Helvetica, sans-serif; color: red; \">[Index Number]</span></b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \"></span><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); color: rgb(192, 80, 77); \"></span><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>");
 		}
 		if (flag == 0
 				&& ("search ".startsWith(incompleteString.toLowerCase()) || incompleteString
@@ -816,7 +861,8 @@ public class What2DoUI extends javax.swing.JFrame {
 				flag = 1;
 			}
 			lastEvent = evt.getKeyChar();
-			jLabel3.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \">FORMAT: [search] &nbsp<span style=\"font-family: Helvetica, sans-serif; color: red; \">[KeyWords (with/without Hash Tags)]</span></b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \"></span><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); color: rgb(192, 80, 77); \"></span><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>");
+			suggestionLabel
+					.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \">FORMAT: [search] &nbsp<span style=\"font-family: Helvetica, sans-serif; color: red; \">[KeyWords (with/without Hash Tags)]</span></b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \"></span><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); color: rgb(192, 80, 77); \"></span><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>");
 		}
 		if (flag == 0
 				&& ("update ".startsWith(incompleteString.toLowerCase()) || incompleteString
@@ -827,7 +873,8 @@ public class What2DoUI extends javax.swing.JFrame {
 				flag = 1;
 			}
 			lastEvent = evt.getKeyChar();
-			jLabel3.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \">FORMAT: [update] &nbsp<span style=\"font-family: Helvetica, sans-serif; color: red; \">[Index Number]</span></b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \"></span><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); color: rgb(192, 80, 77); \"></span><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>");
+			suggestionLabel
+					.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \">FORMAT: [update] &nbsp<span style=\"font-family: Helvetica, sans-serif; color: red; \">[Index Number]</span></b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \"></span><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); color: rgb(192, 80, 77); \"></span><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>");
 		}
 		if (flag == 0
 				&& ("undone ".startsWith((incompleteString).toLowerCase()) || incompleteString
@@ -838,7 +885,8 @@ public class What2DoUI extends javax.swing.JFrame {
 				flag = 1;
 			}
 			lastEvent = evt.getKeyChar();
-			jLabel3.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \">FORMAT: [undone]&nbsp <span style=\"font-family: Helvetica, sans-serif; color: red; \">[Index Number]</span></b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \"></span><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); color: rgb(192, 80, 77); \"></span><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>");
+			suggestionLabel
+					.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \">FORMAT: [undone]&nbsp <span style=\"font-family: Helvetica, sans-serif; color: red; \">[Index Number]</span></b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \"></span><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); color: rgb(192, 80, 77); \"></span><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>");
 		}
 		if (flag == 0
 				&& ("undo ".startsWith(incompleteString.toLowerCase()) || incompleteString
@@ -849,7 +897,8 @@ public class What2DoUI extends javax.swing.JFrame {
 				flag = 1;
 			}
 			lastEvent = evt.getKeyChar();
-			jLabel3.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \">FORMAT: [undo]</span></b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \"></span><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); color: rgb(192, 80, 77); \"></span><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>");
+			suggestionLabel
+					.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \">FORMAT: [undo]</span></b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \"></span><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); color: rgb(192, 80, 77); \"></span><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>");
 		}
 		if (flag == 0
 				&& ("exit ".startsWith(incompleteString.toLowerCase()) || incompleteString
@@ -860,7 +909,8 @@ public class What2DoUI extends javax.swing.JFrame {
 				flag = 1;
 			}
 			lastEvent = evt.getKeyChar();
-			jLabel3.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \">FORMAT: </span><span style=\"font-family: Helvetica, sans-serif; color: red; \"> [exit]</span></b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \"></span><b><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>");
+			suggestionLabel
+					.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \">FORMAT: </span><span style=\"font-family: Helvetica, sans-serif; color: red; \"> [exit]</span></b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \"></span><b><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>");
 		}
 		if (flag == 0
 				&& ("floating".startsWith(incompleteString.toLowerCase()) || incompleteString
@@ -871,8 +921,9 @@ public class What2DoUI extends javax.swing.JFrame {
 				flag = 1;
 			}
 			lastEvent = evt.getKeyChar();
-			jLabel3.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \">FORMAT: </span><span style=\"font-family: Helvetica, sans-serif; color: red; \"> [floating] <span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \"> - To Switch to Floating tasks.</span></b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \"></span><b><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>");
-		} 
+			suggestionLabel
+					.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \">FORMAT: </span><span style=\"font-family: Helvetica, sans-serif; color: red; \"> [floating] <span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \"> - To Switch to Floating tasks.</span></b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \"></span><b><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>");
+		}
 		if (flag == 0
 				&& ("upcoming".startsWith(incompleteString.toLowerCase()) || incompleteString
 						.toLowerCase().startsWith("upcoming"))
@@ -882,21 +933,23 @@ public class What2DoUI extends javax.swing.JFrame {
 				flag = 1;
 			}
 			lastEvent = evt.getKeyChar();
-			jLabel3.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \">FORMAT: </span><span style=\"font-family: Helvetica, sans-serif; color: red; \"> [upcoming] <span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \"> - To Switch to Floating tasks.</span></b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \"></span><b><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>");
-		} 
+			suggestionLabel
+					.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \">FORMAT: </span><span style=\"font-family: Helvetica, sans-serif; color: red; \"> [upcoming] <span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \"> - To Switch to Floating tasks.</span></b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \"></span><b><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>");
+		}
 		if (flag == 0 && foundFlag == false) {
-			jLabel3.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif;color: rgb(255,255,255); \">You can do any of the following :</span></b><span style=\"font-family: Helvetica, sans-serif;color: rgb(255,255,255) \">- </span><b><span style=\"font-family: Helvetica, sans-serif; color: red; \">add (+)/delete(-)/search/update/undo/done/undone/exit</span><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>");
+			suggestionLabel
+					.setText("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif;color: rgb(255,255,255); \">You can do any of the following :</span></b><span style=\"font-family: Helvetica, sans-serif;color: rgb(255,255,255) \">- </span><b><span style=\"font-family: Helvetica, sans-serif; color: red; \">add (+)/delete(-)/search/update/undo/done/undone/exit</span><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>");
 		}
 	}
 
 	private void prepareForNextEntry(String data) {
 		incompleteString = "";
 		nextEntryFlag = true;
-		textField1.setText("");
+		userInputField.setText("");
 		previousEntry.add(data);
 		previousIndex = previousEntry.size();
 	}
-
+//@Sandeep
 	private String updateStream(String message, int index) throws Exception {
 		String result = findEventByIndex(index);
 		String formattedResult = formatResult(result);
@@ -929,16 +982,13 @@ public class What2DoUI extends javax.swing.JFrame {
 	}
 
 	private String findEventByIndex(int index) {
-		ArrayList<String> upcomingEvents = Executor.printDataBase();
-		ArrayList<String> floatingEvents = Executor.printFloatingDataBase();
-		ArrayList<String> SearchResults = Executor.printSearchResults();
-		String index_string = Integer.toString(index) + "..";
+		String index_string = Integer.toString(index) + DOT_DOT;
 		if (index == 0) {
 			return null;
 		} else {
-			for (int i = 0; i < SearchResults.size(); i++)
-				if (SearchResults.get(i).startsWith(index_string))
-					return SearchResults.get(i);
+			for (int i = 0; i < searchResults.size(); i++)
+				if (searchResults.get(i).startsWith(index_string))
+					return searchResults.get(i);
 			for (int i = 0; i < upcomingEvents.size(); i++)
 				if (upcomingEvents.get(i).startsWith(index_string))
 					return upcomingEvents.get(i);
@@ -959,476 +1009,438 @@ public class What2DoUI extends javax.swing.JFrame {
 	}
 
 	private void displayDatabase(String message) {
+		obtainDataFromDatabase();
+		initializeFormattedDatabasesToNull();
+		formatLocalDatabase();
+		setUpDisplayStrings();
+		updateEndPositions();
+		fillInDatabases();
+		endDisplayStrings();
+		displayOnScreen();
 
-		ArrayList<String> upcomingEvents = Executor.printDataBase();
-		ArrayList<String> floatingEvents = Executor.printFloatingDataBase();
-		ArrayList<String> SearchResults = Executor.printSearchResults();
-		// upcoming_end_position=upcoming_start_position+6;
-
-		// index, name, hash-tags, start time end time, reminder
-		/*
-		 * String upcomingEventsString =
-		 * format(upcomingEvents,getMaximumLengths(upcomingEvents)); String
-		 * floatingEventsString = format(floatingEvents,
-		 * getMaximumLengths(floatingEvents)); String SearchResultsString =
-		 * format(SearchResults,getMaximumLengths(SearchResults));
-		 */
-		ArrayList<ArrayList<String>> demoUpcomingEvents = new ArrayList<ArrayList<String>>();
-		ArrayList<ArrayList<String>> demoFloatingEvents = new ArrayList<ArrayList<String>>();
-		ArrayList<ArrayList<String>> demoSearch = new ArrayList<ArrayList<String>>();
-		ArrayList<ArrayList<String>> formattedUpcomingEvents = new ArrayList<ArrayList<String>>();
-		ArrayList<ArrayList<String>> formattedFloatingEvents = new ArrayList<ArrayList<String>>();
-		ArrayList<ArrayList<String>> formattedSearchResults = new ArrayList<ArrayList<String>>();
-		for (int i = 0; i < 100; i++) {
-			ArrayList<String> temp = new ArrayList<String>();
-			for (int j = 0; j < 10; j++) {
-				temp.add("");
-			}
-			demoUpcomingEvents.add(temp);
+		if (!toUpdate) {
+			feedbackLabel.setText(String.format(
+					MESSAGE_FEEDBACK_NOT_UPDATE_HTML, message));
+		} else {
+			feedbackLabel.setText(String.format(MESSAGE_FEEDBACK_UPDATE_HTML,
+					message));
 		}
-		for (int i = 0; i < 100; i++) {
-			ArrayList<String> temp = new ArrayList<String>();
-			for (int j = 0; j < 10; j++) {
-				temp.add("");
-			}
-			demoFloatingEvents.add(temp);
-		}
-		for (int i = 0; i < 100; i++) {
-			ArrayList<String> temp = new ArrayList<String>();
-			for (int j = 0; j < 10; j++) {
-				temp.add("");
-			}
-			demoSearch.add(temp);
-		}
-		for (int i = 0; i < 100; i++) {
-			ArrayList<String> temp = new ArrayList<String>();
-			for (int j = 0; j < 10; j++) {
-				temp.add("");
-			}
-			formattedUpcomingEvents.add(temp);
-		}
-		for (int i = 0; i < 100; i++) {
-			ArrayList<String> temp = new ArrayList<String>();
-			for (int j = 0; j < 10; j++) {
-				temp.add("");
-			}
-			formattedFloatingEvents.add(temp);
-		}
-		for (int i = 0; i < 100; i++) {
-			ArrayList<String> temp = new ArrayList<String>();
-			for (int j = 0; j < 10; j++) {
-				temp.add("");
-			}
-			formattedSearchResults.add(temp);
-		}
-		formatForUpcoming(demoUpcomingEvents, upcomingEvents);
-		formatForSearch(demoSearch, SearchResults);
-		formatForFloating(demoFloatingEvents, floatingEvents);
+	}
 
-		format(formattedUpcomingEvents, upcomingEvents,
-				getMaximumLengths(upcomingEvents));
-		format(formattedFloatingEvents, floatingEvents,
-				getMaximumLengths(floatingEvents));
-		format(formattedSearchResults, SearchResults,
-				getMaximumLengths(SearchResults));
-		String html2 = "<html>";
-		String html3 = "<html>";
-		String html4 = "<html>";
+	private void fillInDatabases() {
+		data_upcoming_events = fillInUpcomingEventsDatabase();
+		data_floating_events = fillInFloatingEventsDatabase();
+		data_search_results = fillInSearchResultsDatabase();
+	}
 
-		// html2 +=
-		// "<b>------------------------------------------------------------------------------------------------------------------------</b></p>";
-		// html3 +=
-		// "<b>------------------------------------------------------------------------------------------------------------------------</b></p>";
-		// html4 += "<b>----------------------------------------------"
-		// +
-		// "------------------------------------------------------------------------------------------------------------------------------------------------------------------</b></p>";
-		// html4 +=
-		// "<b>------------------------------------------------------------------------------------------------------------------------</b></p>";
+	private void displayOnScreen() {
+		displayUpcomingEvents(data_upcoming_events);
+		displayFloatingEvents(data_floating_events);
+		displaySearchResults(data_search_results);
+	}
 
-		int j = 0;
-		/*
-		 * upcoming_end_position = (upcomingEvents.size() -
-		 * upcoming_start_position < 6 ? upcomingEvents.size() : 6);
-		 * floating_end_position = (floatingEvents.size() -
-		 * floating_start_position < 6 ? floatingEvents.size() : 6);
-		 * search_end_position = (SearchResults.size() - search_start_position <
-		 * 6 ? SearchResults .size() : 6);
-		 */
-		upcoming_end_position = upcoming_start_position + 6;
+	private void endDisplayStrings() {
+		data_upcoming_events += ENDING_HTML;
+		data_floating_events += ENDING_HTML;
+		data_search_results += ENDING_HTML;
+	}
 
-		floating_end_position = floating_start_position + 6;
+	private void setUpDisplayStrings() {
+		data_upcoming_events = STARTING_HTML;
+		data_floating_events = STARTING_HTML;
+		data_search_results = STARTING_HTML;
+	}
 
-		search_end_position = search_start_position + 6;
+	private void formatLocalDatabase() {
+		format(formattedUpcomingEvents, upcomingEvents);
+		format(formattedFloatingEvents, floatingEvents);
+		format(formattedSearchResults, searchResults);
+	}
 
-		if ((toUpdate) || (!toUpdate)) {
-			for (int i = upcoming_start_position; i < upcoming_end_position
-					&& !(formattedUpcomingEvents.get(i + 1).get(0).equals("")); i++) {
-				html2 += String.format("<br><p class=\"MsoNormal\"><b>%s",
-						formattedUpcomingEvents.get(i + 1).get(0) + ")");
+	private void obtainDataFromDatabase() {
+		upcomingEvents = obtainUpcomingEventsFromDatabase();
+		floatingEvents = obtainFloatingEventsFromDatabase();
+		searchResults = obtainSearchResultsFromDatabase();
+	}
 
-				try {
-					if (Integer.parseInt(formattedUpcomingEvents.get(i + 1)
-							.get(0).trim()) < 10) {
-						html2 += "&nbsp;";
-					}
-				} catch (Exception e) {
-					// do nothing
-				}
+	private void displaySearchResults(String data_search_results) {
+		searchResultsTextArea.setText(data_search_results);
+	}
 
-				if (formattedUpcomingEvents.get(i + 1).get(4).contains("true")) {
-					html2 += String
-							.format("<span style=\"color: rgb(0, 32, 96); font-family: courier; background-color: lime; background-position: initial initial; background-repeat: initial initial;\">%s</span>",
-									formattedUpcomingEvents.get(i + 1).get(1));
-				} else {
-					html2 += String
-							.format("<span style=\"color: rgb(0, 32, 96); font-family: courier; \">%s</span>",
-									formattedUpcomingEvents.get(i + 1).get(1));
-				}
-				for (j = 0; j < get_spaces_large(formattedUpcomingEvents.get(
-						i + 1).get(1)); j++) {
-					html2 += "&nbsp;";
-				}
-				if (formattedUpcomingEvents.get(i + 1).get(2).contains("HIGH")) {
-					html2 += String
-							.format("<span style=\"color: red; font-family: courier;\">%s</span> &nbsp;&nbsp;&nbsp;",
-									formattedUpcomingEvents.get(i + 1).get(2));
-				}
-				if (formattedUpcomingEvents.get(i + 1).get(2)
-						.contains("NORMAL")) {
-					html2 += String
-							.format("<span style=\"color: rgb(255,128,0); font-family: courier;\">%s</span> &nbsp;",
-									formattedUpcomingEvents.get(i + 1).get(2));
-				}
-				if (formattedUpcomingEvents.get(i + 1).get(2).contains("LOW")) {
-					html2 += String
-							.format("<span style=\"color: rgb(204,127,50); font-family: courier;\">%s</span> &nbsp;&nbsp;&nbsp;&nbsp;",
-									formattedUpcomingEvents.get(i + 1).get(2));
-				}
-				html2 += String
-						.format("&nbsp;<span style=\"color: rgb(155, 187, 89); font-family: courier;\">%s</span> &nbsp;",
-								formattedUpcomingEvents.get(i + 1).get(3));
-				for (j = 0; j < get_spaces_small(formattedUpcomingEvents.get(
-						i + 1).get(3)); j++) {
-					html2 += "&nbsp;";
-				}
-				html2 += "<span style=\"color: rgb(0, 0, 0); font-family: courier;\"";
-				html2 += "<b><i></b></i></span><span style=\"color: rgb(75, 172, 198); font-family: courier;\">";
+	private void displayFloatingEvents(String data_floating_events) {
+		floatingEventsTextArea.setText(data_floating_events);
+	}
 
-				html2 += String
-						.format("%s</span>&nbsp; <span style=\"color: rgb(0, 0, 0); font-family: courier;\">",
-								formattedUpcomingEvents.get(i + 1).get(5));
-				if (formattedUpcomingEvents.get(i + 1).get(6).contains(":")) {
-					html2 += "<b><i>to </b></i></span>&nbsp; <span style=\"color: rgb(79, 129, 189); font-family: courier;\">";
-				} else {
-					html2 += "<b><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b></i></span><span style=\"color: rgb(79, 129, 189); font-family: courier;\">";
-				}
-				html2 += String
-						.format("%s</span>&nbsp; <span style=\"color: rgb(0, 0, 0); font-family: courier;\">",
-								formattedUpcomingEvents.get(i + 1).get(6));
-				if (formattedUpcomingEvents.get(i + 1).get(7).contains("r-")) {
-					html2 += "<b><i>Alert Before : </b></i></span>&nbsp; <span style=\"color: rgb(228, 108, 10); font-family: courier;\">";
-				} else {
-					html2 += "<b><i></b></i></span>&nbsp; <span style=\"color: rgb(228, 108, 10); font-family: courier;\">";
-				}
-				html2 += String.format(
-						"%s</span></span></b></p>",
-						formattedUpcomingEvents.get(i + 1).get(7)
-								.replace("r-", ""));
-				html2 += "<b>------------------------------------------------------------------------------------------------------------------------</b></p>";
-			}
-			for (int i = floating_start_position; i < floating_end_position
-					&& !(formattedFloatingEvents.get(i + 1).get(0).equals("")); i++) {
+	private void displayUpcomingEvents(String data_upcoming_events) {
+		upcomingEventsTextArea.setText(data_upcoming_events);
+	}
 
-				html3 += String.format("<br><p class=\"MsoNormal\"><b>%s",
-						formattedFloatingEvents.get(i + 1).get(0) + ")");
+	private String fillInSearchResultsDatabase() {
+		for (int i = search_start_position; i < search_end_position; i++) {
+			boolean fieldIsEmpty = formattedSearchResults.get(i + 1).get(0)
+					.equals("");
+			if (!fieldIsEmpty) {
 
-				try {
-					if (Integer.parseInt(formattedFloatingEvents.get(i + 1)
-							.get(0).trim()) < 10) {
-						html3 += "&nbsp;";
-					}
-				} catch (Exception e) {
-					// do nothing
-				}
-				if (formattedFloatingEvents.get(i + 1).get(4).contains("true")) {
-					html3 += String
-							.format("<span style=\"color: rgb(0, 32, 96); font-family: courier; background-color: lime; background-position: initial initial; background-repeat: initial initial;\">%s</span>",
-									formattedFloatingEvents.get(i + 1).get(1));
-				} else {
-					html3 += String
-							.format("<span style=\"color: rgb(0, 32, 96); font-family: courier; \">%s</span>",
-									formattedFloatingEvents.get(i + 1).get(1));
-				}
-				for (j = 0; j < get_spaces_large(formattedFloatingEvents.get(
-						i + 1).get(1)); j++) {
-					html3 += "&nbsp;";
-				}
-				if (formattedFloatingEvents.get(i + 1).get(2).contains("HIGH")) {
-					html3 += String
-							.format("<span style=\"color: red; font-family: courier;\">%s</span> &nbsp;&nbsp;&nbsp;",
-									formattedFloatingEvents.get(i + 1).get(2));
-				}
-				if (formattedFloatingEvents.get(i + 1).get(2)
-						.contains("NORMAL")) {
-					html3 += String
-							.format("<span style=\"color: orange; font-family: courier;\">%s</span> &nbsp;",
-									formattedFloatingEvents.get(i + 1).get(2));
-				}
-				if (formattedFloatingEvents.get(i + 1).get(2).contains("LOW")) {
-					html3 += String
-							.format("<span style=\"color: rgb(204,127,50); font-family: courier;\">%s</span> &nbsp;&nbsp;&nbsp;&nbsp;",
-									formattedFloatingEvents.get(i + 1).get(2));
-				}
-				html3 += String
-						.format("&nbsp;<span style=\"color: rgb(155, 187, 89); font-family: courier;\">%s</span> &nbsp;",
-								formattedFloatingEvents.get(i + 1).get(3));
-				for (j = 0; j < get_spaces_large(formattedFloatingEvents.get(
-						i + 1).get(3)); j++) {
-					html3 += "&nbsp;";
-				}
-				html3 += "</p><b>------------------------------------------------------------------------------------------------------------------------</b></p>";
-			}
-			for (int i = search_start_position; i < search_end_position
-					&& !(formattedSearchResults.get(i + 1).get(0).equals("")); i++) {
-				html4 += String.format("<br><p class=\"MsoNormal\"><b>%s",
+				data_search_results += String.format(
+						ID_HTML,
 						formattedSearchResults.get(i + 1).get(0) + ")");
 
 				try {
 					if (Integer.parseInt(formattedSearchResults.get(i + 1)
 							.get(0).trim()) < 10) {
-						html4 += "&nbsp;";
+						data_search_results += SPACE_HTML;
 					}
 				} catch (Exception e) {
 					// do nothing
 				}
 				if (formattedSearchResults.get(i + 1).get(4).contains("true")) {
-					html4 += String
-							.format("<span style=\"color: rgb(0, 32, 96); font-family: courier; background-color: lime; background-position: initial initial; background-repeat: initial initial;\">%s</span>",
+					data_search_results += String
+							.format(NAME_HIGHLIGHTED_HTML,
 									formattedSearchResults.get(i + 1).get(1));
 				} else {
-					html4 += String
-							.format("<span style=\"color: rgb(0, 32, 96); font-family: courier; \">%s</span>",
+					data_search_results += String
+							.format(NAME_UNHIGHLIGHTED_HTML,
 									formattedSearchResults.get(i + 1).get(1));
 				}
-				for (j = 0; j < get_spaces_large(formattedSearchResults.get(
-						i + 1).get(1)); j++) {
-					html4 += "&nbsp;";
+				for (int j = 0; j < getSpacesForLargeWord(formattedSearchResults
+						.get(i + 1).get(1)); j++) {
+					data_search_results += SPACE_HTML;
 				}
 				if (formattedSearchResults.get(i + 1).get(2).contains("HIGH")) {
-					html4 += String
-							.format("<span style=\"color: red; font-family: courier;\">%s</span> &nbsp;&nbsp;&nbsp;",
+					data_search_results += String
+							.format(PRIORITY_HIGH_HTML,
 									formattedSearchResults.get(i + 1).get(2));
 				}
 				if (formattedSearchResults.get(i + 1).get(2).contains("NORMAL")) {
-					html4 += String
-							.format("<span style=\"color: orange; font-family: courier;\">%s</span> &nbsp;",
+					data_search_results += String
+							.format(PRIORITY_NORMAL_HTML,
 									formattedSearchResults.get(i + 1).get(2));
 				}
 				if (formattedSearchResults.get(i + 1).get(2).contains("LOW")) {
-					html4 += String
-							.format("<span style=\"color: rgb(204,127,50); font-family: courier;\">%s</span> &nbsp;&nbsp;&nbsp;&nbsp;",
+					data_search_results += String
+							.format(PRIORITY_LOW_HTML,
 									formattedSearchResults.get(i + 1).get(2));
 				}
-				html4 += String
-						.format("&nbsp;<span style=\"color: rgb(155, 187, 89); font-family: courier;\">%s</span> &nbsp;",
+				data_search_results += String
+						.format(HASHTAGS_HTML,
 								formattedSearchResults.get(i + 1).get(3));
-				for (j = 0; j < get_spaces_small(formattedSearchResults.get(
-						i + 1).get(3)); j++) {
-					html4 += "&nbsp;";
+				for (int j = 0; j < getSpacesForSmallWord(formattedSearchResults
+						.get(i + 1).get(3)); j++) {
+					data_search_results += SPACE_HTML;
 				}
-				html4 += "<span style=\"color: rgb(0, 0, 0); font-family: courier;\"";
-				html4 += "<b><i></b></i></span><span style=\"color: rgb(75, 172, 198); font-family: courier;\">";
+				data_search_results += String.format(START_TIME_HTML,formattedSearchResults.get(i + 1).get(5));
 
-				html4 += String
-						.format("%s</span>&nbsp; <span style=\"color: rgb(0, 0, 0); font-family: courier;\">",
-								formattedSearchResults.get(i + 1).get(5));
+				data_search_results += NORMAL_FONT_HTML;
 				if (formattedSearchResults.get(i + 1).get(6).contains(":")) {
-					html4 += "<b><i>to </b></i></span>&nbsp; <span style=\"color: rgb(79, 129, 189); font-family: courier;\">";
+					data_search_results += TO_HTML;
 				} else {
 
-					html4 += "<b><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b></i></span><span style=\"color: rgb(79, 129, 189); font-family: courier;\">";
+					data_search_results += SPACES_IF_NO_END_TIME_HTML;
 				}
-				html4 += String
-						.format("%s</span>&nbsp; <span style=\"color: rgb(0, 0, 0); font-family: courier;\">",
-								formattedSearchResults.get(i + 1).get(6));
+				data_search_results+=String.format(END_TIME_HTML, formattedSearchResults.get(i + 1).get(6));
+				data_search_results += NORMAL_FONT_HTML;
 				if (formattedSearchResults.get(i + 1).get(7).contains("r-")) {
-					html4 += "<b><i>Alert Before : </b></i></span>&nbsp; <span style=\"color: rgb(228, 108, 10); font-family: courier;\">";
-				} else {
-					html4 += "<b><i></b></i></span>&nbsp; <span style=\"color: rgb(228, 108, 10); font-family: courier;\">";
+					data_search_results += ALERT_BEFORE_HTML;
+				} 
+				
+				data_search_results += String.format(REMINDER_HTML,
+						formattedSearchResults.get(i + 1).get(7).replace("r-", ""));
+				data_search_results += ENDING_LINE_HTML;
+
+			}
+		}
+		return data_search_results;
+	}
+
+	private String fillInFloatingEventsDatabase() {
+		for (int i = floating_start_position; i < floating_end_position
+				&& !(formattedFloatingEvents.get(i + 1).get(0).equals("")); i++) {
+
+			data_floating_events += String.format(
+					ID_HTML, formattedFloatingEvents
+							.get(i + 1).get(0) + ")");
+
+			try {
+				if (Integer.parseInt(formattedFloatingEvents.get(i + 1).get(0)
+						.trim()) < 10) {
+					data_floating_events += SPACE_HTML;
 				}
-				html4 += String.format(
-						"%s</span></span></b></p>",
-						formattedSearchResults.get(i + 1).get(7)
-								.replace("r-", ""));
-				html4 += "<b>------------------------------------------------------------------------------------------------------------------------</b></p>";
+			} catch (Exception e) {
+				// do nothing
 			}
-			html2 += "</p></html>";
-			html3 += "</html>";
-			html4 += "</p></html>";
-			jTextArea2.setText(html2);
-			jTextArea4.setText(html3);
-			jTextArea1.setText(html4);
-			jLabel4.setText(String
-					.format("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif;color: rgb(50, 205, 50)\"; >%s</span></b></p></html>",
-							message));
+			if (formattedFloatingEvents.get(i + 1).get(4).contains("true")) {
+				data_floating_events += String
+						.format(NAME_HIGHLIGHTED_HTML,
+								formattedFloatingEvents.get(i + 1).get(1));
+			} else {
+				data_floating_events += String
+						.format(NAME_UNHIGHLIGHTED_HTML,
+								formattedFloatingEvents.get(i + 1).get(1));
+			}
+			for (int j = 0; j < getSpacesForLargeWord(formattedFloatingEvents
+					.get(i + 1).get(1)); j++) {
+				data_floating_events += SPACE_HTML;
+			}
+			if (formattedFloatingEvents.get(i + 1).get(2).contains("HIGH")) {
+				data_floating_events += String
+						.format(PRIORITY_HIGH_HTML,
+								formattedFloatingEvents.get(i + 1).get(2));
+			}
+			if (formattedFloatingEvents.get(i + 1).get(2).contains("NORMAL")) {
+				data_floating_events += String
+						.format(PRIORITY_NORMAL_HTML,
+								formattedFloatingEvents.get(i + 1).get(2));
+			}
+			if (formattedFloatingEvents.get(i + 1).get(2).contains("LOW")) {
+				data_floating_events += String
+						.format(PRIORITY_LOW_HTML,
+								formattedFloatingEvents.get(i + 1).get(2));
+			}
+			data_floating_events += String
+					.format(HASHTAGS_HTML,
+							formattedFloatingEvents.get(i + 1).get(3));
+			for (int j = 0; j < getSpacesForLargeWord(formattedFloatingEvents
+					.get(i + 1).get(3)); j++) {
+				data_floating_events += SPACE_HTML;
+			}
+			data_floating_events +=ENDING_LINE_HTML ;
 		}
-		if (!toUpdate) {
-			jLabel4.setText(String
-					.format("<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif;color: red; \">%s</span></b></p></html>",
-							message));
-		}
+		return data_floating_events;
 	}
 
-	private int get_spaces_small(String word) {
-		int ret = 10 - word.length();
-		return ret;
+	private String fillInUpcomingEventsDatabase() {
+		for (int i = upcoming_start_position; i < upcoming_end_position; i++) {
+			boolean fieldIsEmpty = formattedUpcomingEvents.get(i + 1).get(0)
+					.equals("");
+			if (!fieldIsEmpty) {
 
-	}
+				data_upcoming_events += String.format(
+						ID_HTML,
+						formattedUpcomingEvents.get(i + 1).get(0) + ")");
 
-	private int get_spaces_large(String word) {
-		int ret = 20 - word.length();
+				try {
+					if (Integer.parseInt(formattedUpcomingEvents.get(i + 1)
+							.get(0).trim()) < 10) {
+						data_upcoming_events += SPACE_HTML;
+					}
+				} catch (Exception e) {
+					// do nothing
+				}
+				if (formattedUpcomingEvents.get(i + 1).get(4).contains("true")) {
+					data_upcoming_events += String
+							.format(NAME_HIGHLIGHTED_HTML,
+									formattedUpcomingEvents.get(i + 1).get(1));
+				} else {
+					data_upcoming_events += String
+							.format(NAME_UNHIGHLIGHTED_HTML,
+									formattedUpcomingEvents.get(i + 1).get(1));
+				}
+				for (int j = 0; j < getSpacesForLargeWord(formattedUpcomingEvents
+						.get(i + 1).get(1)); j++) {
+					data_upcoming_events += SPACE_HTML;
+				}
+				if (formattedUpcomingEvents.get(i + 1).get(2).contains("HIGH")) {
+					data_upcoming_events += String
+							.format(PRIORITY_HIGH_HTML,
+									formattedUpcomingEvents.get(i + 1).get(2));
+				}
+				if (formattedUpcomingEvents.get(i + 1).get(2).contains("NORMAL")) {
+					data_upcoming_events += String
+							.format(PRIORITY_NORMAL_HTML,
+									formattedUpcomingEvents.get(i + 1).get(2));
+				}
+				if (formattedUpcomingEvents.get(i + 1).get(2).contains("LOW")) {
+					data_upcoming_events += String
+							.format(PRIORITY_LOW_HTML,
+									formattedUpcomingEvents.get(i + 1).get(2));
+				}
+				data_upcoming_events += String
+						.format(HASHTAGS_HTML,
+								formattedUpcomingEvents.get(i + 1).get(3));
+				for (int j = 0; j < getSpacesForSmallWord(formattedUpcomingEvents
+						.get(i + 1).get(3)); j++) {
+					data_upcoming_events += SPACE_HTML;
+				}
+				data_upcoming_events += String.format(START_TIME_HTML,formattedUpcomingEvents.get(i + 1).get(5));
 
-		return ret;
-	}
+				data_upcoming_events += NORMAL_FONT_HTML;
+				if (formattedUpcomingEvents.get(i + 1).get(6).contains(":")) {
+					data_upcoming_events += TO_HTML;
+				} else {
 
-	private void formatForUpcoming(ArrayList<ArrayList<String>> demo,
-			ArrayList<String> events) {
-		demo.get(0).set(0, "ID");
-		demo.get(0).set(1, "Event Name");
-		demo.get(0).set(2, "Details");
-		demo.get(0).set(3, "Start");
-		demo.get(0).set(4, "End");
-		demo.get(0).set(5, "Reminder");
-		for (int i = 0; i < events.size(); i++) {
-			String[] tempArray = events.get(i).split("\\..");
-			for (int j = 0; j < tempArray.length; j++) {
-				demo.get(i + 1).set(j, tempArray[j]);
+					data_upcoming_events += SPACES_IF_NO_END_TIME_HTML;
+				}
+				data_upcoming_events+=String.format(END_TIME_HTML, formattedUpcomingEvents.get(i + 1).get(6));
+				data_upcoming_events += NORMAL_FONT_HTML;
+				if (formattedUpcomingEvents.get(i + 1).get(7).contains("r-")) {
+					data_upcoming_events += ALERT_BEFORE_HTML;
+				} 
+				
+				data_upcoming_events += String.format(REMINDER_HTML,
+						formattedUpcomingEvents.get(i + 1).get(7).replace("r-", ""));
+				data_upcoming_events += ENDING_LINE_HTML;
+
 			}
 		}
+		return data_upcoming_events;
 	}
 
-	private void formatForSearch(ArrayList<ArrayList<String>> demo,
-			ArrayList<String> events) {
-		demo.get(0).set(0, "ID");
-		demo.get(0).set(1, "Event Name");
-		demo.get(0).set(2, "Details");
-		demo.get(0).set(3, "Start");
-		demo.get(0).set(4, "End");
-		demo.get(0).set(5, "Reminder");
-		for (int i = 0; i < events.size(); i++) {
-			String[] tempArray = events.get(i).split("\\..");
-			for (int j = 0; j < tempArray.length; j++) {
-				demo.get(i + 1).set(j, tempArray[j]);
+	private void updateEndPositions() {
+		upcoming_end_position = upcoming_start_position + 6;
+
+		floating_end_position = floating_start_position + 6;
+
+		search_end_position = search_start_position + 6;
+	}
+
+	private ArrayList<String> obtainSearchResultsFromDatabase() {
+		ArrayList<String> searchResults;
+		searchResults = Executor.printSearchResults();
+		return searchResults;
+	}
+
+	private ArrayList<String> obtainFloatingEventsFromDatabase() {
+		ArrayList<String> floatingEvents;
+		floatingEvents = Executor.printFloatingDataBase();
+		return floatingEvents;
+	}
+
+	private ArrayList<String> obtainUpcomingEventsFromDatabase() {
+		ArrayList<String> upcomingEvents;
+		upcomingEvents = Executor.printDataBase();
+		return upcomingEvents;
+	}
+
+	private void initializeFormattedDatabasesToNull() {
+		for (int i = 0; i < 100; i++) {
+			ArrayList<String> temporaryList = new ArrayList<String>();
+			for (int j = 0; j < 10; j++) {
+				temporaryList.add("");
 			}
+			formattedUpcomingEvents.add(temporaryList);
+		}
+		for (int i = 0; i < 100; i++) {
+			ArrayList<String> temporaryList = new ArrayList<String>();
+			for (int j = 0; j < 10; j++) {
+				temporaryList.add("");
+			}
+			formattedFloatingEvents.add(temporaryList);
+		}
+		for (int i = 0; i < 100; i++) {
+			ArrayList<String> temporaryList = new ArrayList<String>();
+			for (int j = 0; j < 10; j++) {
+				temporaryList.add("");
+			}
+			formattedSearchResults.add(temporaryList);
 		}
 	}
 
-	private void formatForFloating(ArrayList<ArrayList<String>> demo,
-			ArrayList<String> events) {
-		demo.get(0).set(0, "ID");
-		demo.get(0).set(1, "Event Name");
-		demo.get(0).set(2, "Details");
-		for (int i = 0; i < events.size(); i++) {
-			String[] tempArray = events.get(i).split("\\..");
-			for (int j = 0; j < tempArray.length; j++) {
-				demo.get(i + 1).set(j, tempArray[j]);
-			}
-		}
+	private int getSpacesForSmallWord(String word) {
+		int number_spaces_required = LENGTH_SMALL_WORD - word.length();
+		return number_spaces_required;
+
+	}
+
+	private int getSpacesForLargeWord(String word) {
+		int number_spaces_required = LENGHT_LARGE_WORD - word.length();
+
+		return number_spaces_required;
 	}
 
 	private void format(ArrayList<ArrayList<String>> formattedDisplay,
-			ArrayList<String> events, int[] maximumLengths) {
-		formattedDisplay.get(0).set(0,
-				"ID" + getSpaces(maximumLengths[0] - 2) + " ");
-		formattedDisplay.get(0).set(1,
-				"Event Name" + getSpaces(maximumLengths[1] - 10) + " ");
-		formattedDisplay.get(0).set(2,
-				"Details" + getSpaces(maximumLengths[2] - 7) + " ");
-		formattedDisplay.get(0).set(3,
-				"Start" + getSpaces(maximumLengths[3] - 5) + " ");
-		formattedDisplay.get(0).set(4,
-				"End" + getSpaces(maximumLengths[4] - 3) + " ");
-		formattedDisplay.get(0).set(5,
-				"Reminder" + getSpaces(maximumLengths[5] - 8) + " ");
+			ArrayList<String> events) {
+
 		for (int i = 0; i < events.size(); i++) {
-			String[] tempArray = events.get(i).split("\\..");
-			String[] tempArray2 = { "", "", "", "", "", "", "", "" };
-			for (int j = 0; j < tempArray.length; j++) {
-				tempArray2[j] = tempArray[j];
-			}
-			formattedDisplay.get(i + 1).set(0, tempArray2[0]);
-			tempArray2[1] = correctSize_large(tempArray2[1]);
-			formattedDisplay.get(i + 1).set(1, tempArray2[1]);
-			formattedDisplay.get(i + 1).set(2, tempArray2[2]);
-			tempArray2[3] = correctSize_small(tempArray2[3]);
-			formattedDisplay.get(i + 1).set(3, tempArray2[3]);
-			formattedDisplay.get(i + 1).set(4, tempArray2[4]);
-			formattedDisplay.get(i + 1).set(5, tempArray2[5]);
-			formattedDisplay.get(i + 1).set(6, tempArray2[6]);
-			formattedDisplay.get(i + 1).set(7, tempArray2[7]);
+
+			String[] individualEvents;
+			individualEvents = obtainFromOriginalDatabase(events, i);
+
+			String[] individualEventsForFormatting = new String[NUMBER_OF_FIELDS];
+			intializeToNull(individualEventsForFormatting);
+			transferElements(individualEvents, individualEventsForFormatting);
+
+			resizeLongFields(individualEventsForFormatting);
+
+			placeElementsIntoFormattedList(formattedDisplay, i,
+					individualEventsForFormatting);
 		}
 	}
 
-	private String correctSize_small(String string) {
-		if (string.length() < 10)
-			return string;
+	private void resizeLongFields(String[] individualEventsForFormatting) {
+		individualEventsForFormatting[INDEX_EVENT_NAME] = largeResizeForDisplay(individualEventsForFormatting[1]);
+		individualEventsForFormatting[INDEX_HASHTAG] = smallResizeForDisplay(individualEventsForFormatting[3]);
+	}
+
+	private void intializeToNull(String[] individualEventsForFormatting) {
+		for (int j = 0; j < NUMBER_OF_FIELDS; j++) {
+			individualEventsForFormatting[j] = "";
+		}
+	}
+
+	private String[] obtainFromOriginalDatabase(ArrayList<String> events, int i) {
+		String[] individualEvents;
+		individualEvents = events.get(i).split("\\..");
+		return individualEvents;
+	}
+
+	private void placeElementsIntoFormattedList(
+			ArrayList<ArrayList<String>> formattedDisplay, int i,
+			String[] individualEventsForFormatting) {
+		formattedDisplay.get(i + 1).set(0, individualEventsForFormatting[0]);
+		formattedDisplay.get(i + 1).set(1, individualEventsForFormatting[1]);
+		formattedDisplay.get(i + 1).set(2, individualEventsForFormatting[2]);
+		formattedDisplay.get(i + 1).set(3, individualEventsForFormatting[3]);
+		formattedDisplay.get(i + 1).set(4, individualEventsForFormatting[4]);
+		formattedDisplay.get(i + 1).set(5, individualEventsForFormatting[5]);
+		formattedDisplay.get(i + 1).set(6, individualEventsForFormatting[6]);
+		formattedDisplay.get(i + 1).set(7, individualEventsForFormatting[7]);
+	}
+
+	private void transferElements(String[] individualEvents,
+			String[] individualEventsForFormatting) {
+		for (int j = 0; j < individualEvents.length; j++) {
+			individualEventsForFormatting[j] = individualEvents[j];
+		}
+	}
+
+	private String smallResizeForDisplay(String wordToResize) {
+		boolean is_OK_length = wordToResize.length() < LENGTH_SMALL_WORD;
+		if (is_OK_length)
+			return wordToResize;
 		else {
-			return string.substring(0, 6) + "..";
+			return wordToResize
+					.substring(POSITION_START, LENGHT_MAX_SMALL_WORD)
+					+ DOT_DOT;
 		}
 	}
 
-	private String correctSize_large(String string) {
-		if (string.length() < 20)
-			return string;
+	private String largeResizeForDisplay(String wordToResize) {
+		boolean is_OK_length = wordToResize.length() < LENGHT_LARGE_WORD;
+		if (is_OK_length)
+			return wordToResize;
 		else {
-			return string.substring(0, 15) + "..";
+			return wordToResize
+					.substring(POSITION_START, LENGHT_MAX_LARGE_WORD)
+					+ DOT_DOT;
 		}
 	}
 
-	private String getSpaces(int number) {
-		String spaces = "";
-		for (int i = 0; i < number; i++) {
-			spaces += " ";
-		}
-		return spaces;
-	}
+	private void textField1KeyPressed(java.awt.event.KeyEvent evt) {
 
-	private int[] getMaximumLengths(ArrayList<String> unformatted) {
-		int[] lengths = new int[8];
-		lengths[0] = 2;
-		lengths[1] = 10;
-		lengths[2] = 7;
-		lengths[3] = 5;
-		lengths[4] = 3;
-		lengths[5] = 8;
-		lengths[6] = 0;
-		lengths[7] = 0;
-		for (int i = 0; i < unformatted.size(); i++) {
-			String[] tempStorage = unformatted.get(i).split("\\..");
-			for (int k = 0; k < tempStorage.length; k++) {
-				if (tempStorage[k].length() > lengths[k])
-					lengths[k] = tempStorage[k].length();
+		boolean onlyOneEntry = (previousIndex == previousEntry.size() - 1);
+		boolean noEntries = previousEntry.isEmpty();
+		boolean unusedPreviousEntriesRemaining = previousIndex > 0;
+
+		if (evt.getKeyCode() == ARROW_KEY_DOWN
+				&& unusedPreviousEntriesRemaining && !noEntries) {
+			userInputField.setText(previousEntry.get(--previousIndex));
+		}
+		if (evt.getKeyCode() == ARROW_KEY_UP && !onlyOneEntry && !noEntries) {
+			userInputField.setText(previousEntry.get(++previousIndex));
+		} else {
+			if (evt.getKeyCode() == ARROW_KEY_UP && onlyOneEntry) {
+				userInputField.setText("");
 			}
-		}
-		return lengths;
-	}
-
-	private void textField1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_textField1ActionPerformed
-	// TODO add your handling code here:
-	}// GEN-LAST:event_textField1ActionPerformed
-
-	private void textField1KeyPressed(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_textField1KeyPressed
-		if (evt.getKeyCode() == 38 && previousIndex > 0
-				&& !previousEntry.isEmpty()) {
-			textField1.setText(previousEntry.get(--previousIndex));
-		}
-		if (evt.getKeyCode() == 40 && previousIndex != previousEntry.size() - 1
-				&& !(previousEntry.isEmpty())) {
-			textField1.setText(previousEntry.get(++previousIndex));
-		} else if (evt.getKeyCode() == 40
-				&& previousIndex == previousEntry.size() - 1
-				&& !(previousEntry.isEmpty())) {
-			textField1.setText("");
 		}
 	}
 
@@ -1438,15 +1450,7 @@ public class What2DoUI extends javax.swing.JFrame {
 	 * @throws Exception
 	 */
 	public static void main(String args[]) throws Exception {
-		/* Set the Nimbus look and feel */
-		// <editor-fold defaultstate="collapsed"
-		// desc=" Look and feel setting code (optional) ">
-		/*
-		 * If Nimbus (introduced in Java SE 6) is not available, stay with the
-		 * default look and feel. For details see
-		 * http://download.oracle.com/javase
-		 * /tutorial/uiswing/lookandfeel/plaf.html
-		 */
+
 		MessageHandler.setUpList();
 		Log.setup();
 		AlarmThread newAlarm = new AlarmThread();
@@ -1477,8 +1481,6 @@ public class What2DoUI extends javax.swing.JFrame {
 			java.util.logging.Logger.getLogger(What2DoUI.class.getName()).log(
 					java.util.logging.Level.SEVERE, null, ex);
 		}
-		// </editor-fold>
-		/* Create and display the form */
 		java.awt.EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -1487,25 +1489,22 @@ public class What2DoUI extends javax.swing.JFrame {
 		});
 	}
 
-	// Variables declaration - do not modify
+	// Declaration of JComponents
 	private javax.swing.JLayeredPane jLayeredPane1;
-	private javax.swing.JPanel jPanel1;
-	private javax.swing.JPanel jPanel2;
-	private javax.swing.JPanel jPanel3;
-	private javax.swing.JPanel jPanel4;
-	private javax.swing.JScrollPane jScrollPane1;
-	private javax.swing.JScrollPane jScrollPane2;
-	private javax.swing.JScrollPane jScrollPane3;
-	private javax.swing.JScrollPane jScrollPane4;
-	private javax.swing.JScrollPane jScrollPane7;
-	private javax.swing.JLabel jTextArea1;
-	private javax.swing.JLabel jTextArea2;
-	private javax.swing.JLabel jTextArea4;
-	private javax.swing.JLabel jLabel3;
-	private javax.swing.JLabel jLabel4;
-	private java.awt.TextField textField1;
-	private javax.swing.JTextPane jTextPane1;
+	private javax.swing.JPanel panelContainingEverything;
+	private javax.swing.JPanel upcomingEventsPanel;
+	private javax.swing.JPanel searchResulsPanel;
+	private javax.swing.JPanel floatingEventsPanel;
+	private javax.swing.JScrollPane scrollPaneForSearch;
+	private javax.swing.JScrollPane scrollPaneForSuggestions;
+	private javax.swing.JScrollPane scrollPaneForUpcoming;
+	private javax.swing.JScrollPane scrollPaneForFeedback;
+	private javax.swing.JScrollPane scrollPaneForFloating;
+	private javax.swing.JLabel searchResultsTextArea;
+	private javax.swing.JLabel upcomingEventsTextArea;
+	private javax.swing.JLabel floatingEventsTextArea;
+	private javax.swing.JLabel suggestionLabel;
+	private javax.swing.JLabel feedbackLabel;
+	private java.awt.TextField userInputField;
 
-	// super.setIconImage(image);
-	// End of variables declaration
 }
