@@ -1,6 +1,5 @@
 package event;
 import global.Clock;
-import global.StringOperation;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -187,7 +186,7 @@ public class Event {
 			return false;
 		} 
 		String isDone = eventContent[INDEX_FOR_EVENT_ISDONE];
-		if(!StringOperation.isValidIsDone(isDone)) {
+		if(isValidIsDone(isDone)) {
 			return false;
 		}
 		for(int timeFieldIndex = INDEX_FOR_EVENT_REMINDER_TIME; timeFieldIndex <= INDEX_FOR_COMPLETED_TIME; timeFieldIndex++) {
@@ -203,6 +202,12 @@ public class Event {
 		return true;
 	}
 	
+	private static boolean isValidIsDone(String isDone) {
+		if(!isDone.equalsIgnoreCase("true") && !isDone.equalsIgnoreCase("false")) {
+			return false;
+		} 
+		return true;
+	}
 	public void markDone() {
 		//if(_eventEndTime.isBefore(DateTime.now()) && !(Clock.isBigBangTime(_eventEndTime))) {
 			//_timeCompleted = _eventEndTime;

@@ -1,6 +1,5 @@
 package logic;
 import global.Clock;
-import global.StringOperation;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -92,7 +91,7 @@ public class LogicSplitter {
 	}
 	protected static String extractCommandTypeAndUpdateInputString(
 			String command, Vector<String> parameterList) throws Exception {
-		command = StringOperation.removeExtraSpace(command);
+		command = removeExtraSpace(command);
 		command = command + STRING_SPACE;
 		parameterList.add(command.substring(0, command.indexOf(STRING_SPACE)));
 		command = command.replace(parameterList.get(0), EMPTY_STRING);
@@ -100,6 +99,10 @@ public class LogicSplitter {
 		return command;
 	}
 
+	private static String removeExtraSpace(String input) {
+		input = input.replaceAll(" {1,}", " ").trim();
+		return input;
+	}
 /*	protected static String extractTimeFieldsAndUpdateInputString(
 			int[] reminderFound, String userInput,
 			Vector<String> parameterList, Vector<Integer> timeIndexes,
@@ -180,7 +183,7 @@ public class LogicSplitter {
 					int indexStart = 0;
 					int indexEnd = PatternLib.isFindDateTime(temp)[2];
 					j += PatternLib.isFindDateTime(temp)[2]-1;
-					timeList.add(StringOperation.prepareInputToAnalyzeTime(temp.substring(indexStart, indexEnd)));
+					timeList.add(prepareInputToAnalyzeTime(temp.substring(indexStart, indexEnd)));
 					userInput += temp.substring(indexStart, indexEnd);
 					timeIndexes.add(j);
 					timeIndexes.add(indexEnd);
@@ -251,10 +254,10 @@ public class LogicSplitter {
 			int secondTimePattern = PatternLib.isMatchDateTime(userInput
 					.substring(startSecond, endSecond));
 			DateTime time1 = PatternLib
-					.getDateTime(StringOperation.prepareInputToAnalyzeTime(userInput.substring(startFirst, endFirst)),
+					.getDateTime(prepareInputToAnalyzeTime(userInput.substring(startFirst, endFirst)),
 							firstTimePattern);
 			DateTime time2 = PatternLib.getDateTime(
-					StringOperation.prepareInputToAnalyzeTime(userInput.substring(startSecond, endSecond)),
+					prepareInputToAnalyzeTime(userInput.substring(startSecond, endSecond)),
 					secondTimePattern);
 			if (userInput.substring(endFirst - 1, startSecond + 1).contains(
 					" to")) {
@@ -274,7 +277,7 @@ public class LogicSplitter {
 	protected static void extractKeywordsAlongWithHashTags(String userInput,
 			Vector<String> parameterList) {
 		if (!userInput.trim().isEmpty()
-				&& StringOperation.isInteger(userInput.trim()) == -1) {
+				&& isInteger(userInput.trim()) == -1) {
 			try
 			{
 			parameterList.add(userInput.substring(0,
@@ -333,5 +336,118 @@ public class LogicSplitter {
 			parameterList.remove(i + 1);
 		}
 		return parameterList;
+	}
+	
+	private static String correctTime(String input) {
+		input = input.replaceFirst("\\.", ":");
+		Pattern pat = Pattern.compile("^(00?):?(00?) ?((am))?");
+		Matcher mat = pat.matcher(input);
+		if (mat.find()) {
+			int pos = mat.end();  
+			input = input.substring(pos, input.length());
+			input = insertCharAt(input, "23:59", 0);
+		}
+		if (input.matches("^\\d\\d?")) {
+			StringBuilder sb = new StringBuilder(input);
+			sb.append(":00");
+			input = sb.toString();
+		}
+		if (input.matches("^\\d\\d?\\,[0-9tn].{0,}")) {
+			input = input.replaceFirst(",", ":00,");
+		}
+		if (input.matches("^\\d\\d? ?((am)|(pm)).{0,}")) {
+			input = input.replaceFirst("(am)", ":00am");
+			input = input.replaceFirst("(pm)", ":00pm");
+		}
+		return input;
+	}
+	
+	private static String toLowerCase(String input) {
+		input = input.toLowerCase().trim();
+		return input;
+	}
+	
+	
+	
+	public static String removeSpace(String input) {
+		input = input.replaceAll(" ", "");
+		return input;
+	}
+	
+	public static String insertCharAt(String input, String ch, int i) {
+		StringBuffer buffer = new StringBuffer(input);
+		input = buffer.insert(i, ch).toString();	
+		return input;
+	}
+	
+	private static String correctDate(String input) {
+		input = input.replaceAll("-", "/");
+		Pattern pat = Pattern.compile("\\d[a-z&&[^ap]]");
+		Matcher mat = pat.matcher(input);
+		while(mat.find()) {
+			int pos = mat.start();
+			input = insertCharAt(input, "/", pos + 1);
+		}
+		pat = Pattern.compile("[a-z]\\d");
+		mat = pat.matcher(input);
+		while(mat.find()) {
+			int pos = mat.start();
+			input = insertCharAt(input, "/", pos + 1);
+		}
+		return input;
+	}
+	
+	private static String prepareInputToAnalyzeTime(String input) {
+		input = toLowerCase(input);
+		input = addDateTimeSeparator(input);
+		input = removeSpace(input);
+		input = correctTime(input);
+		input = correctDate(input);
+		input = removeDateTimeSeparator(input);
+		return input;
+	}
+	
+	private static String addDateTimeSeparator(String input) {
+		Pattern pat = Pattern.compile("[0-9] [0-9t]");
+		Matcher mat = pat.matcher(input);
+		if(mat.find()) {
+			int pos = mat.start();
+			input = insertCharAt(input, ",", pos + 1);
+		}
+		pat = Pattern.compile("[0-9] (ne)");
+		mat = pat.matcher(input);
+		if(mat.find()) {
+			int pos = mat.start();
+			input = insertCharAt(input, ",", pos + 1);
+		}
+		pat = Pattern.compile("m [0-9]");
+		mat = pat.matcher(input);
+		if(mat.find()) {
+			int pos = mat.start();
+			input = insertCharAt(input, ",", pos + 1);
+		}
+		pat = Pattern.compile("[a-z] [a-z]");
+		mat = pat.matcher(input);
+		while(mat.find()) {
+			int pos = mat.start();
+			input = insertCharAt(input, ",", pos + 1);
+			mat = pat.matcher(input);
+		}
+		return input;
+	}
+	
+	private static String removeDateTimeSeparator(String input) {
+		input = input.replaceAll(",", " ");
+		return input;
+	}
+	
+	private static int isInteger(String input) {
+		int intValue;
+		try {
+			intValue = Integer.parseInt(input);
+		} catch (NumberFormatException e){
+			return -1;
+		}
+		return intValue;
 	}
 }
