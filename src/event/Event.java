@@ -186,7 +186,7 @@ public class Event {
 			return false;
 		} 
 		String isDone = eventContent[INDEX_FOR_EVENT_ISDONE];
-		if(isValidIsDone(isDone)) {
+		if(!isValidIsDone(isDone)) {
 			return false;
 		}
 		for(int timeFieldIndex = INDEX_FOR_EVENT_REMINDER_TIME; timeFieldIndex <= INDEX_FOR_COMPLETED_TIME; timeFieldIndex++) {

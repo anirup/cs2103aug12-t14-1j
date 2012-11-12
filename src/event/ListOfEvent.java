@@ -1,17 +1,14 @@
 package event;
  
 import executor.Executor;
-import fileIO.DatabaseManager;
+import fileIO.FileIO;
 import global.Clock;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Vector;
-
 import org.joda.time.DateTime;
-
 import alarm.AlarmType;
 import alarm.ListOfAlarm;
 
@@ -21,10 +18,8 @@ public class ListOfEvent {
 	private static ArrayList<ListOfEventObserver> listOfObserver= new ArrayList<ListOfEventObserver>();
 	private static final String fileName = "What2Do.txt";
 	private static final String displayFormat = "%1$d..%2$s";
-	
 	private static ArrayList<String> feedback = new ArrayList<String>();
 	private static final String STRING_NULL = "";
-	private static DatabaseManager database;
 	
 	public static void addObserver(ListOfEventObserver observer) {
 		listOfObserver.add(observer);
@@ -40,19 +35,17 @@ public class ListOfEvent {
 	public static void setUpDataFromDatabase() throws Exception {
 		addObserver(Executor.getInstance());
 		addObserver(ListOfAlarm.getInstance());
-		database = new DatabaseManager(fileName);
-		database.setUpDataFromDatabase();
+		FileIO database = new FileIO(fileName);
+		database.setUpDatabase();
 		notifyObservers();
 		feedback.clear();
 	}
 	
 	public static void syncDataToDatabase() throws IOException {
-		if(database == null) {
-			database = new DatabaseManager(fileName);
-		}
+		FileIO database = new FileIO(fileName);
 		ArrayList<String> listOfEventInString = new ArrayList<String>();
 		listOfEventInString = getContentToSyncToDatabase();
-		database.syncDataToDatabase(listOfEventInString);
+		database.syncToDatabase(listOfEventInString);
 	}
 	
 	public void clearFeedback() {
