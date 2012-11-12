@@ -2,7 +2,6 @@ package actionArchive;
  
 import java.util.LinkedList;
 
- 
 public class ListOfActionArchive {
 	private static LinkedList<ActionArchive> listOfUserLog = new LinkedList<ActionArchive>();
 	
@@ -14,7 +13,7 @@ public class ListOfActionArchive {
 	public static String undo() {
 		ActionArchive lastActionArchive = listOfUserLog.pollLast();
 		if(lastActionArchive == null) {
-			return "";
+			return "Error: No undo action available";
 		}
 		return lastActionArchive.rollBack();
 	}	

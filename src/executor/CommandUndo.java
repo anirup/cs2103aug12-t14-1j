@@ -1,5 +1,6 @@
 package executor;
 
+import logAndException.MessageHandler;
 import actionArchive.ListOfActionArchive;
 import event.ListOfEvent;
 
@@ -18,10 +19,7 @@ public class CommandUndo extends Command {
 			return;
 		}					
 		String undoMessage = ListOfActionArchive.undo();
-		if(undoMessage=="") {		
-			setLogAndMessage(LOG_ERROR, ERROR_UNDO);
-			return;
-		}
+		MessageHandler.setMessage(SUCCESSFUL_UNDO, undoMessage);
 		
 		ListOfEvent.notifyObservers();
 		

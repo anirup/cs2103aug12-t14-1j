@@ -17,9 +17,8 @@ public class ActionArchiveDelete extends ActionArchive{
 	}
 	
 	public String rollBack() {
-		ListOfEvent.add(_deletedEvent);
-		String messageUndo = String.format(MESSAGE_UNDO_DELETE, _deletedEvent.getEventName());
-		
+		String nameOfDeletedEvent = ListOfEvent.add(_deletedEvent);
+		String messageUndo = String.format(MESSAGE_UNDO_DELETE, nameOfDeletedEvent);
 		return messageUndo;
 	}
 }

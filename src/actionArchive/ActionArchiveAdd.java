@@ -16,8 +16,8 @@ public class ActionArchiveAdd extends ActionArchive {
 	}
 
 	public String rollBack() {
-		ListOfEvent.remove(_addedEvent);
-		String messageUndo = String.format(MESSAGE_UNDO_ADD, _addedEvent.getEventName());
+		String nameOfAddEvent = ListOfEvent.remove(_addedEvent);
+		String messageUndo = String.format(MESSAGE_UNDO_ADD, nameOfAddEvent);
 		return messageUndo;
 	} 
 }
