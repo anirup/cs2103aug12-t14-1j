@@ -1,3 +1,5 @@
+//@author A0088658H
+
 package gui;
 
 
@@ -21,20 +23,26 @@ import java.awt.*;
  * 
  * @author SANDEEP
  */
-public class What2DoUI extends javax.swing.JFrame {
+public class IgorUI extends javax.swing.JFrame {
 
+	private static final String MESSAGE_WARNING = "WARNING!";
+	private static final String MESSAGE_PAST_EVENTS = "\nPastEvents wont be shown but can be searched for.";
+	private static final String MESSAGE_PROCEED_QUESTION = "\nDo you want to PROCEED? - ENTER YES/NO";
+	private static final String MESSAGE_CLASHED_EVENT_WARNING = "WARNING: The New Event is Clashed AND Before PRESENT TIME.";
+	//standard inputs
 	private static final String ERROR_MESSAGE = "Error";
-	private static final String MESSAGE_SWITCH_DEFAULT_HTML = "<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(50,205,50)\"; >Switched to Default View</span></b></p></html>";
-	private static final String MESSAGE_SHIFT_FLOATING_HTML = "<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(50,205,50)\"; >Switched to Floating View</span></b></p></html>";
 	private static final String UPCOMING = "upcoming";
 	private static final String UPDATE = "update";
-	private static final String MESSAGE_SWITCH_TO_SEARCH_HTML = "<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(50,205,50)\"; >Switched to Search View</span></b></p></html>";
-	private static final String MESSAGE_ERROR_UPDATE_INDEX = "<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; color: red\"; >ERROR: Update Index not Found</span></b></p></html>";
 	private static final String SEARCH = "search";
 	private static final String FLOATING = "floating";
 	private static final String PREVIOUS_PAGE_COMMAND = "p";
 	private static final String NEXT_PAGE_COMMAND = "n";
+
 	// HTML Codes for messages
+	private static final String MESSAGE_SWITCH_DEFAULT_HTML = "<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(50,205,50)\"; >Switched to Default View</span></b></p></html>";
+	private static final String MESSAGE_SHIFT_FLOATING_HTML = "<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(50,205,50)\"; >Switched to Floating View</span></b></p></html>";
+	private static final String MESSAGE_SWITCH_TO_SEARCH_HTML = "<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(50,205,50)\"; >Switched to Search View</span></b></p></html>";
+	private static final String MESSAGE_ERROR_UPDATE_INDEX = "<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; color: red\"; >ERROR: Update Index not Found</span></b></p></html>";
 	private static final String MESSAGE_UPCOMING_DISPLAY_HTML = "<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \">FORMAT: </span><span style=\"font-family: Helvetica, sans-serif; color: red; \"> [upcoming] <span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \"> - To Switch to Floating tasks.</span></b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \"></span><b><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>";
 	private static final String MESSAGE_FORMAT_DISPLAY_HTML = "<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \">FORMAT: </span><span style=\"font-family: Helvetica, sans-serif; color: red; \"> [floating] <span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \"> - To Switch to Floating tasks.</span></b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \"></span><b><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>";
 	private static final String MESSAGE_EXIT_FORMAT_HTML = "<html><p class=\"MsoNormal\"><b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \">FORMAT: </span><span style=\"font-family: Helvetica, sans-serif; color: red; \"> [exit]</span></b><span style=\"font-family: Helvetica, sans-serif; color: rgb(255,255,255); \"></span><b><span style=\"color: rgb(192, 80, 77); \"></span></b></p></html>";
@@ -102,8 +110,9 @@ public class What2DoUI extends javax.swing.JFrame {
 	private static final int KEY_CODE_C = 70;
 	private static final int KEY_CODE_F = 85;
 	private static final int KEY_CODE_CONTROL = 17;
+	private static final int MAX_EVENTS_PER_PAGE = 6;
 
-	public What2DoUI() {
+	public IgorUI() {
 		initComponents();
 	}
 
@@ -222,9 +231,9 @@ public class What2DoUI extends javax.swing.JFrame {
 		jLayeredPane1.add(upcomingEventsPanel,
 				javax.swing.JLayeredPane.DEFAULT_LAYER);
 		javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(
-				searchResulsPanel);
-		searchResulsPanel.setLayout(jPanel3Layout);
-		searchResulsPanel.setLayout(jPanel3Layout);
+				searchResultsPanel);
+		searchResultsPanel.setLayout(jPanel3Layout);
+		searchResultsPanel.setLayout(jPanel3Layout);
 		jPanel3Layout.setHorizontalGroup(jPanel3Layout.createParallelGroup(
 				javax.swing.GroupLayout.Alignment.LEADING).addGroup(
 				jPanel3Layout
@@ -243,9 +252,9 @@ public class What2DoUI extends javax.swing.JFrame {
 								javax.swing.GroupLayout.DEFAULT_SIZE,
 								TEXT_AREAS_PREFERRED_SIZE_VERTICAL,
 								Short.MAX_VALUE).addContainerGap()));
-		searchResulsPanel.setBounds(TEXT_AREA_X_COORDINATE,
+		searchResultsPanel.setBounds(TEXT_AREA_X_COORDINATE,
 				TEXT_AREAS_Y_COORDINATE, TEXT_AREAS_WIDTH, TEXT_AREAS_HEIGHT);
-		jLayeredPane1.add(searchResulsPanel,
+		jLayeredPane1.add(searchResultsPanel,
 				javax.swing.JLayeredPane.DEFAULT_LAYER);
 		javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(
 				floatingEventsPanel);
@@ -274,8 +283,8 @@ public class What2DoUI extends javax.swing.JFrame {
 				javax.swing.JLayeredPane.DEFAULT_LAYER);
 
 		javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(
-				panelContainingEverything);
-		panelContainingEverything.setLayout(jPanel1Layout);
+				layeredPane);
+		layeredPane.setLayout(jPanel1Layout);
 		jPanel1Layout
 				.setHorizontalGroup(jPanel1Layout
 						.createParallelGroup(
@@ -367,13 +376,13 @@ public class What2DoUI extends javax.swing.JFrame {
 		getContentPane().setLayout(layout);
 		layout.setHorizontalGroup(layout.createParallelGroup(
 				javax.swing.GroupLayout.Alignment.LEADING).addComponent(
-				panelContainingEverything,
+				layeredPane,
 				javax.swing.GroupLayout.PREFERRED_SIZE,
 				javax.swing.GroupLayout.DEFAULT_SIZE,
 				javax.swing.GroupLayout.PREFERRED_SIZE));
 		layout.setVerticalGroup(layout.createParallelGroup(
 				javax.swing.GroupLayout.Alignment.LEADING).addComponent(
-				panelContainingEverything,
+				layeredPane,
 				javax.swing.GroupLayout.PREFERRED_SIZE,
 				javax.swing.GroupLayout.DEFAULT_SIZE,
 				javax.swing.GroupLayout.PREFERRED_SIZE));
@@ -385,11 +394,11 @@ public class What2DoUI extends javax.swing.JFrame {
 	}
 
 	private void hideSearchDisplay() {
-		floatingEventsPanel.setVisible(false);
+		searchResultsPanel.setVisible(false);
 	}
 
 	private void hideFloatingDisplay() {
-		searchResulsPanel.setVisible(false);
+		floatingEventsPanel.setVisible(false);
 	}
 
 	private void setTextAlignment() {
@@ -480,26 +489,20 @@ public class What2DoUI extends javax.swing.JFrame {
 	}
 
 	private void setBackgrounds() {
-		panelContainingEverything.setBackground(new java.awt.Color(
-				GREY_BACKGROUND_R, GREY_BACKGROUND_G, GREY_BACKGROUND_B));
-		upcomingEventsPanel.setBackground(new java.awt.Color(GREY_BACKGROUND_R,
-				GREY_BACKGROUND_G, GREY_BACKGROUND_B));
-		searchResulsPanel.setBackground(new java.awt.Color(GREY_BACKGROUND_R,
-				GREY_BACKGROUND_G, GREY_BACKGROUND_B));
-		suggestionLabel.setBackground(new java.awt.Color(GREY_BACKGROUND_R,
-				GREY_BACKGROUND_G, GREY_BACKGROUND_B));
-		feedbackLabel.setBackground(new java.awt.Color(GREY_BACKGROUND_R,
-				GREY_BACKGROUND_G, GREY_BACKGROUND_B));
-		floatingEventsPanel.setBackground(new java.awt.Color(GREY_BACKGROUND_R,
-				GREY_BACKGROUND_G, GREY_BACKGROUND_B));
-		userInputField.setBackground(new java.awt.Color(WHITE_BACKGROUND_R,
-				WHITE_BACKGROUND_G, WHITE_BACKGROUND_B));
-		searchResultsTextArea.setBackground(new java.awt.Color(
-				WHITE_BACKGROUND_R, WHITE_BACKGROUND_G, WHITE_BACKGROUND_B));
-		upcomingEventsTextArea.setBackground(new java.awt.Color(
-				WHITE_BACKGROUND_R, WHITE_BACKGROUND_G, WHITE_BACKGROUND_B));
-		floatingEventsTextArea.setBackground(new java.awt.Color(
-				WHITE_BACKGROUND_R, WHITE_BACKGROUND_G, WHITE_BACKGROUND_B));
+		java.awt.Color greyColor = new java.awt.Color(
+				GREY_BACKGROUND_R, GREY_BACKGROUND_G, GREY_BACKGROUND_B);
+		java.awt.Color whiteColor = new java.awt.Color(WHITE_BACKGROUND_R,
+				WHITE_BACKGROUND_G, WHITE_BACKGROUND_B);
+		layeredPane.setBackground(greyColor);
+		upcomingEventsPanel.setBackground(greyColor);
+		searchResultsPanel.setBackground(greyColor);
+		suggestionLabel.setBackground(greyColor);
+		feedbackLabel.setBackground(greyColor);
+		floatingEventsPanel.setBackground(greyColor);
+		userInputField.setBackground(whiteColor);
+		searchResultsTextArea.setBackground(whiteColor);
+		upcomingEventsTextArea.setBackground(whiteColor);
+		floatingEventsTextArea.setBackground(whiteColor);
 	}
 
 	private void setFonts() {
@@ -524,7 +527,7 @@ public class What2DoUI extends javax.swing.JFrame {
 	}
 
 	private void initializeGUIElements() {
-		panelContainingEverything = new javax.swing.JPanel();
+		layeredPane = new javax.swing.JPanel();
 		userInputField = new java.awt.TextField();
 		scrollPaneForFeedback = new javax.swing.JScrollPane();
 		feedbackLabel = new javax.swing.JLabel();
@@ -533,7 +536,7 @@ public class What2DoUI extends javax.swing.JFrame {
 		upcomingEventsPanel = new javax.swing.JPanel();
 		scrollPaneForUpcoming = new javax.swing.JScrollPane();
 		upcomingEventsTextArea = new javax.swing.JLabel();
-		searchResulsPanel = new javax.swing.JPanel();
+		searchResultsPanel = new javax.swing.JPanel();
 		scrollPaneForSearch = new javax.swing.JScrollPane();
 		searchResultsTextArea = new javax.swing.JLabel();
 		floatingEventsPanel = new javax.swing.JPanel();
@@ -550,7 +553,7 @@ public class What2DoUI extends javax.swing.JFrame {
 				setSuggestionBoxTest(evt);
 			}
 			actUponUserCommand(evt);
-			// actUponUserCommand(evt, userInputField.getText());
+			
 		} else {
 			prepareForNextEntry("");
 		}
@@ -658,14 +661,14 @@ public class What2DoUI extends javax.swing.JFrame {
 					if (feedback.size() == 1)
 						feedbackMessage = feedback.get(0);
 					if (feedback.size() > 1)
-						feedbackMessage = "WARNING: The New Event is Clashed AND Before PRESENT TIME.";
-					feedbackMessage += "\nDo you want to PROCEED? - ENTER YES/NO";
+						feedbackMessage = MESSAGE_CLASHED_EVENT_WARNING;
+					feedbackMessage += MESSAGE_PROCEED_QUESTION;
 					if (feedbackMessage.contains("Present"))
-						feedbackMessage += "\nPastEvents wont be shown but can be searched for.";
+						feedbackMessage += MESSAGE_PAST_EVENTS;
 					String[] option = { "YES", "NO" };
 					String input;
 					Object inputObject = JOptionPane.showInputDialog(this,
-							feedbackMessage, "WARNING!",
+							feedbackMessage, MESSAGE_WARNING,
 							JOptionPane.WARNING_MESSAGE, null, option, "YES");
 					if (inputObject != null)
 						input = inputObject.toString();
@@ -762,7 +765,7 @@ public class What2DoUI extends javax.swing.JFrame {
 	private void setViewToFloating() {
 		view = FLOATING;
 		hideUpcomingDisplay();
-		hideFloatingDisplay();
+		hideSearchDisplay();
 		unhideFloatingDisplay();
 	}
 
@@ -793,10 +796,10 @@ public class What2DoUI extends javax.swing.JFrame {
 	}
 
 	private void unhideSearchDisplay() {
-		searchResulsPanel.setVisible(true);
+		searchResultsPanel.setVisible(true);
 	}
 
-	// @Akaash
+	// @A0088617R
 	private void setSuggestionBoxTest(java.awt.event.KeyEvent evt) {
 		if (evt.getKeyChar() == 8) {
 			flag = 0;
@@ -937,7 +940,6 @@ public class What2DoUI extends javax.swing.JFrame {
 			suggestionLabel.setText(MESSAGE_SUGGESTION_INITIAL_HTML);
 		}
 	}
-
 	private void prepareForNextEntry(String data) {
 		incompleteString = "";
 		nextEntryFlag = true;
@@ -947,8 +949,8 @@ public class What2DoUI extends javax.swing.JFrame {
 			previousIndex = previousEntry.size();
 		}
 	}
+	//@author A0088658H
 
-	// @Sandeep
 	private String updateStream(String message, int index) throws Exception {
 		String result = findEventByIndex(index);
 		String formattedResult = formatResult(result);
@@ -1016,34 +1018,16 @@ public class What2DoUI extends javax.swing.JFrame {
 		upcomingEvents = dataToUser.upcomingEvents;
 		floatingEvents = dataToUser.floatingEvents;
 		searchResults = dataToUser.searchResults;
-		if (dataToUser.upcomingEvents.size()>6){
-			int number=(int)Math.ceil(dataToUser.upcomingEvents.size()/6.0);
-			upcomingEventsTextArea.setBorder(javax.swing.BorderFactory
-					.createTitledBorder(null, String.format(MESSAGE_TITLE_UPCOMING+" (%d Pages)",number),
-							javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
-							javax.swing.border.TitledBorder.DEFAULT_POSITION,
-							new java.awt.Font(FONT_HEADERS, FONT_HEADER_STYLE,
-									FONT_HEADER_SIZE), java.awt.Color.black));
+		if (dataToUser.upcomingEvents.size()>MAX_EVENTS_PER_PAGE){
+			showNumberOfPagesInUpcoming();
 
 		}
-		if (dataToUser.searchResults.size()>6){
-			int number=(int)Math.ceil(dataToUser.searchResults.size()/6.0);
-			searchResultsTextArea.setBorder(javax.swing.BorderFactory
-					.createTitledBorder(null, String.format(MESSAGE_TITLE_SEARCH+" (%d Pages)",number),
-							javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
-							javax.swing.border.TitledBorder.DEFAULT_POSITION,
-							new java.awt.Font(FONT_HEADERS, FONT_HEADER_STYLE,
-									FONT_HEADER_SIZE), java.awt.Color.black));
+		if (dataToUser.searchResults.size()>MAX_EVENTS_PER_PAGE){
+			showNumberOfPagesInSearch();
 
 		}
-		if (dataToUser.floatingEvents.size()>6){
-			int number=(int)Math.ceil(dataToUser.floatingEvents.size()/6.0);
-			floatingEventsTextArea.setBorder(javax.swing.BorderFactory
-					.createTitledBorder(null, String.format(MESSAGE_TITLE_FLOATING+" (%d Pages)",number),
-							javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
-							javax.swing.border.TitledBorder.DEFAULT_POSITION,
-							new java.awt.Font(FONT_HEADERS, FONT_HEADER_STYLE,
-									FONT_HEADER_SIZE), java.awt.Color.black));
+		if (dataToUser.floatingEvents.size()>MAX_EVENTS_PER_PAGE){
+			showNumberOfPagesInFloating();
 
 		}
 		displayOnScreen();
@@ -1055,6 +1039,36 @@ public class What2DoUI extends javax.swing.JFrame {
 			feedbackLabel.setText(String.format(MESSAGE_FEEDBACK_UPDATE_HTML,
 					message));
 		}
+	}
+
+	private void showNumberOfPagesInFloating() {
+		int number=(int)Math.ceil(dataToUser.floatingEvents.size()/6.0);
+		floatingEventsTextArea.setBorder(javax.swing.BorderFactory
+				.createTitledBorder(null, String.format(MESSAGE_TITLE_FLOATING+" (%d Pages)",number),
+						javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
+						javax.swing.border.TitledBorder.DEFAULT_POSITION,
+						new java.awt.Font(FONT_HEADERS, FONT_HEADER_STYLE,
+								FONT_HEADER_SIZE), java.awt.Color.black));
+	}
+
+	private void showNumberOfPagesInSearch() {
+		int number=(int)Math.ceil(dataToUser.searchResults.size()/6.0);
+		searchResultsTextArea.setBorder(javax.swing.BorderFactory
+				.createTitledBorder(null, String.format(MESSAGE_TITLE_SEARCH+" (%d Pages)",number),
+						javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
+						javax.swing.border.TitledBorder.DEFAULT_POSITION,
+						new java.awt.Font(FONT_HEADERS, FONT_HEADER_STYLE,
+								FONT_HEADER_SIZE), java.awt.Color.black));
+	}
+
+	private void showNumberOfPagesInUpcoming() {
+		int number=(int)Math.ceil(dataToUser.upcomingEvents.size()/6.0);
+		upcomingEventsTextArea.setBorder(javax.swing.BorderFactory
+				.createTitledBorder(null, String.format(MESSAGE_TITLE_UPCOMING+" (%d Pages)",number),
+						javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
+						javax.swing.border.TitledBorder.DEFAULT_POSITION,
+						new java.awt.Font(FONT_HEADERS, FONT_HEADER_STYLE,
+								FONT_HEADER_SIZE), java.awt.Color.black));
 	}
 
 	private void displayOnScreen() {
@@ -1140,31 +1154,31 @@ public class What2DoUI extends javax.swing.JFrame {
 				}
 			}
 		} catch (ClassNotFoundException ex) {
-			java.util.logging.Logger.getLogger(What2DoUI.class.getName()).log(
+			java.util.logging.Logger.getLogger(IgorUI.class.getName()).log(
 					java.util.logging.Level.SEVERE, null, ex);
 		} catch (InstantiationException ex) {
-			java.util.logging.Logger.getLogger(What2DoUI.class.getName()).log(
+			java.util.logging.Logger.getLogger(IgorUI.class.getName()).log(
 					java.util.logging.Level.SEVERE, null, ex);
 		} catch (IllegalAccessException ex) {
-			java.util.logging.Logger.getLogger(What2DoUI.class.getName()).log(
+			java.util.logging.Logger.getLogger(IgorUI.class.getName()).log(
 					java.util.logging.Level.SEVERE, null, ex);
 		} catch (javax.swing.UnsupportedLookAndFeelException ex) {
-			java.util.logging.Logger.getLogger(What2DoUI.class.getName()).log(
+			java.util.logging.Logger.getLogger(IgorUI.class.getName()).log(
 					java.util.logging.Level.SEVERE, null, ex);
 		}
 		java.awt.EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				new What2DoUI().setVisible(true);
+				new IgorUI().setVisible(true);
 			}
 		});
 	}
 
 	// Declaration of JComponents
 	private javax.swing.JLayeredPane jLayeredPane1;
-	private javax.swing.JPanel panelContainingEverything;
+	private javax.swing.JPanel layeredPane;
 	private javax.swing.JPanel upcomingEventsPanel;
-	private javax.swing.JPanel searchResulsPanel;
+	private javax.swing.JPanel searchResultsPanel;
 	private javax.swing.JPanel floatingEventsPanel;
 	private javax.swing.JScrollPane scrollPaneForSearch;
 	private javax.swing.JScrollPane scrollPaneForSuggestions;

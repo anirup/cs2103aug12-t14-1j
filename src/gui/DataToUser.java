@@ -1,3 +1,4 @@
+//@author A0088658H
 package gui;
 
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class DataToUser {
 		private static final int LENGHT_MAX_LARGE_WORD = 15;
 		private static final int LENGHT_MAX_SMALL_WORD = 6;
 		private static final int POSITION_START = 0;
-		private static final int LENGHT_LARGE_WORD = 20;
+		private static final int LENGHT_LARGE_WORD = 25;
 		private static final int LENGTH_SMALL_WORD = 10;
 		
 	

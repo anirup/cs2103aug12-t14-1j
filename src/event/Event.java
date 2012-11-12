@@ -1,3 +1,5 @@
+//@author A00077245B
+
 package event;
 import global.Clock;
 

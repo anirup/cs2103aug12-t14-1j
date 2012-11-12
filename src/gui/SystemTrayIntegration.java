@@ -1,3 +1,9 @@
+//@author A0088658H
+/*Disclaimer: Incorporated concepts from code provided by our tutor, Vaarnan Drolia
+ * JIntellitype(open-source project) and the Internet
+ * 
+ */
+
 package gui;
 
 import java.awt.AWTException;
