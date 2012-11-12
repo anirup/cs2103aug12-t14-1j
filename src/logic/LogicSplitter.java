@@ -1,3 +1,4 @@
+//@author A0088617R
 package logic;
 import global.Clock;
 
@@ -96,7 +97,7 @@ public class LogicSplitter {
 		command = removeExtraSpace(command);
 		command = command + STRING_SPACE;
 		parameterList.add(command.substring(0, command.indexOf(STRING_SPACE)));
-		command = command.replace(parameterList.get(0), EMPTY_STRING);
+		command = command.substring(command.indexOf(parameterList.get(0))+parameterList.get(0).length());
 		command = command.trim();
 		return command;
 	}
@@ -105,73 +106,7 @@ public class LogicSplitter {
 		input = input.replaceAll(" {1,}", " ").trim();
 		return input;
 	}
-/*	protected static String extractTimeFieldsAndUpdateInputString(
-			int[] reminderFound, String userInput,
-			Vector<String> parameterList, Vector<Integer> timeIndexes,
-			int[] timeCount) throws Exception {
-		Vector<String> timeList=new Vector<String>();
-		for (int j = 0; j < userInput.length(); j++) {
-			String temp = userInput.substring(j, userInput.length());
-			String original = temp;
-			userInput = userInput.substring(0, j);
-			temp = StringOperation.prepareInputToAnalyzeTime(temp);
-			if (PatternLib.isFindDateTime(temp)[1] == 0) {
-				int i;
-					int indexStart = PatternLib.isFindDateTime(temp)[1];
-					int indexEnd = PatternLib.isFindDateTime(temp)[2];
-					String formatted = temp.substring(indexStart, indexEnd);
-					for (i = original.length(); i >= 0; i--) {
-						if (!StringOperation.prepareInputToAnalyzeTime(
-								original.substring(0, i)).contains(formatted)) {
-							break;
-						}
-					}
-					j += PatternLib.isFindDateTime(temp)[2];
-					timeList.add(temp.substring(0, indexEnd));
-					userInput += temp.substring(0, indexEnd);
-					timeIndexes.add(j);
-					timeIndexes.add(indexEnd);
-					if (i < original.length() - 1) {
-						userInput = userInput + original.substring(i + 1);
-					} else
-						userInput += EMPTY_STRING;
-				timeCount[0]++;
-				if(timeCount[0]>2)
-					timeList.remove(0);
-			} else if (PatternLib.isFindReminderTime(original)[1] == 0) {
-				if (reminderFound[0] < 1) {
-					int a[] = PatternLib.isFindReminderTime(original);
-					userInput = userInput
-							+ original.substring(0,
-									PatternLib.isFindReminderTime(original)[2]);
-					if (reminderFound[0] == 0) {
-						parameterList.add(original.substring(0,
-								PatternLib.isFindReminderTime(original)[2]));
-
-					}
-					j += a[2];
-					int i;
-					String formatted = original.substring(
-							PatternLib.isFindReminderTime(original)[1],
-							PatternLib.isFindReminderTime(original)[2]);
-					for (i = original.length(); i >= 0; i--) {
-						if (!original.substring(0, i).contains(formatted)) {
-							break;
-						}
-					}
-					if (i < original.length() - 1) {
-						userInput = userInput + original.substring(i + 1);
-					} else
-						userInput += EMPTY_STRING;
-				}
-				reminderFound[0]++;
-			} else {
-				userInput = userInput + original;
-			}
-		}
-		parameterList.addAll(timeList);
-		return userInput;
-	}	*/
+	
 	protected static String extractTimeFieldsAndUpdateInputString(
 			int[] reminderFound, String userInput,
 			Vector<String> parameterList, Vector<Integer> timeIndexes,
