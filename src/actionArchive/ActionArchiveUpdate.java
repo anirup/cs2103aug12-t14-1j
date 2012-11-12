@@ -3,12 +3,11 @@ package actionArchive;
 import event.Event;
 import event.ListOfEvent;
  
- 
 public class ActionArchiveUpdate extends ActionArchive{
 	private Event _eventAfterUpdated;
 	private Event _eventBeforeUpdated; 
 	
-	private static final String MESSAGE_UNDO_UPDATE = "Undo: Update %1$s by %2$s";
+	private static final String MESSAGE_UNDO_UPDATE = "Undo: Update %1$s";
 	
 	public ActionArchiveUpdate(Event eventBeforeUpdated, Event eventAfterUpdated) {
 		_eventAfterUpdated = eventAfterUpdated;
@@ -24,9 +23,8 @@ public class ActionArchiveUpdate extends ActionArchive{
 	}
 	
 	public String rollBack() {
-		ListOfEvent.update(_eventAfterUpdated, _eventBeforeUpdated);
-	
-		String messageUndo = String.format(MESSAGE_UNDO_UPDATE, _eventBeforeUpdated.getEventName(), _eventAfterUpdated.getEventName());
+		String nameOfUpdatedEvents = ListOfEvent.update(_eventAfterUpdated, _eventBeforeUpdated);
+		String messageUndo = String.format(MESSAGE_UNDO_UPDATE, nameOfUpdatedEvents);
 		return messageUndo;
 	}
 }
