@@ -1,0 +1,77 @@
+add eventA 5pm to 6pm tomorrow
+add eventB 8am today r-2min
+add floatingA
+add floatingB
+add yahoo#cs2103
+add architecture#project
+add board#construction
+add event#high
+add lowEventLow#low
+add meeting#project#cs2103#high 5pm to 6pm tomorrow
+add highEvent#high
+delete 1
+add watch TBBT#high
+add watch HIMYM#high
+search floating #construction
+delete 2
+back
+delete 599
+delete 6
+delete 7
+undo
+add test#module
+undo
+update 3 manga#read#high
+update 6 updatedEvent
+add football next Monday
+add soccer 11pm tmr r-2min
+add dinner 21.00 tmr
+add floatingC#high
+delete 1
+done 1
+done 2
+done 5
+undone 1
+done 6
+done 5
+update 5 new event 
+add zzzz#sleep
+add zener#high
+search z
+delete 1
+back
+undo
+delete 2
+undo
+add invalid #high #low #normal #5pm this mon r- 5 min
+add     lalala #low next friday       r-1day
+add test date 45 #high 5pm 7/7/2012 r-1 day
+add test date 46 #low #work 17pm 9sep 
+add test date 47 #low #high 17:00 9-september to 10:00 10/sep #work
+a- test date 48 #high r-5min 
+add test date 49 #high 5pm #low today r- 5 min
+add test date 50 #high 5pm tomorrow r- 0 min to 7pm tomorrow 
+add test date 51 #low #work 0:00 tomorrow r-5 min 
+add test date 52 
+add 
+add test      hash 54 #high low #work #impt 0pm tmr
+undo invalid
+d-   not a number 
+delete 10000000000000000000
+add today new project today 5pm to 7pm #high r- 5 min #work
+add multiple time 5pm to 7pm today to 9am next fri #high r- 5 min
+update 20 new event 58 7pm next mon r- 5 min
+update 700000000000
+invalid command
+done 1
+done 2
+done 3 
+done 4
+done invalid
+done 5
+undo
+undo
+undo
+update 5 6
+u- 5 #high
+a-  learn java #cs2103
