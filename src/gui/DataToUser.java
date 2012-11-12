@@ -17,7 +17,7 @@ public class DataToUser {
 		private static final String SPACE_HTML = "&nbsp;";
 		private static final String HASHTAGS_HTML = "&nbsp;<span style=\"color: rgb(155, 187, 89); font-family: courier;\">%s</span> &nbsp;";
 		private static final String PRIORITY_LOW_HTML = "<span style=\"color: rgb(204,127,50); font-family: courier;\">%s</span> &nbsp;&nbsp;&nbsp;&nbsp;";
-		private static final String PRIORITY_NORMAL_HTML = "<span style=\"color: orange; font-family: courier;\">%s</span> &nbsp;";
+		private static final String PRIORITY_NORMAL_HTML = "<span style=\"color: rgb(255,128,0); font-family: courier;\">%s</span> &nbsp;";
 		private static final String PRIORITY_HIGH_HTML = "<span style=\"color: red; font-family: courier;\">%s</span> &nbsp;&nbsp;&nbsp;";
 		private static final String NAME_UNHIGHLIGHTED_HTML = "<span style=\"color: rgb(0, 32, 96); font-family: courier; \">%s</span>";
 		private static final String NAME_HIGHLIGHTED_HTML = "<span style=\"color: rgb(0, 32, 96); font-family: courier; background-color: lime; background-position: initial initial; background-repeat: initial initial;\">%s</span>";
@@ -92,6 +92,9 @@ public class DataToUser {
 		return searchResults;
 	}
 	private void initializeFormattedDatabasesToNull() {
+		formattedUpcomingEvents.clear();
+		formattedFloatingEvents.clear();
+		formattedSearchResults.clear();
 		for (int i = 0; i < 100; i++) {
 			ArrayList<String> temporaryList = new ArrayList<String>();
 			for (int j = 0; j < 10; j++) {
@@ -100,6 +103,7 @@ public class DataToUser {
 			formattedUpcomingEvents.add(temporaryList);
 		}
 		for (int i = 0; i < 100; i++) {
+
 			ArrayList<String> temporaryList = new ArrayList<String>();
 			for (int j = 0; j < 10; j++) {
 				temporaryList.add("");

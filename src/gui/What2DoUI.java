@@ -405,13 +405,13 @@ public class What2DoUI extends javax.swing.JFrame {
 				.createTitledBorder(null, MESSAGE_TITLE_SEARCH,
 						javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
 						javax.swing.border.TitledBorder.DEFAULT_POSITION,
-						new java.awt.Font("Comic Sans MS", 1, 14),
+						new java.awt.Font(FONT_HEADERS, 1, 14),
 						java.awt.Color.black));
 		floatingEventsTextArea.setBorder(javax.swing.BorderFactory
 				.createTitledBorder(null, MESSAGE_TITLE_FLOATING,
 						javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
 						javax.swing.border.TitledBorder.DEFAULT_POSITION,
-						new java.awt.Font("Comic Sans MS", 1, 14),
+						new java.awt.Font(FONT_HEADERS, 1, 14),
 						java.awt.Color.black));
 	}
 
